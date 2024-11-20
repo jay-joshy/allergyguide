@@ -1,0 +1,24 @@
+{% set section = section_name %} 
+{% set data = load_data(path="static/toml/test.toml") %}
+{% set data = data[section] %} {# Access the specified section dynamically #}
+<div class="code-block">
+  {{ "## " ~ data.A | markdown | safe }}
+  <pre class="txt">
+{{ data.A}}
+{{data.B}}
+{{data.C}}
+</pre>
+</div>
+<style>
+  .code-block {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  pre.txt{
+    white-space: pre-wrap;
+    margin: 0;
+    padding: 12px;
+    font-family: monospace;
+  }
+</style>

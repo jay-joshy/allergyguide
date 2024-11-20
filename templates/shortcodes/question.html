@@ -1,0 +1,43 @@
+<blockquote class="callout_question">
+  {% set icon = load_data(path="static/icon/question.svg") %}
+  <div class="icon">
+    <span>
+      {{ icon | safe }}
+      <span><strong>
+          {{ question }}
+        </strong></span>
+    </span>
+  </div>
+  <details>
+    <summary>Answer:</summary>
+    <div class="content">
+      {{ body | markdown | safe }}
+    </div>
+  </details>
+</blockquote>
+<style>
+  .callout_question{
+      line-height: inherit;
+      margin-bottom: 20px;
+      border: 1.5px solid;
+      border-color: #449bff;
+      background-color: #101f32;
+      color: #f6e071;
+      .icon {
+        height: 1.75em;
+        display: flex;
+        align-items: center;
+      }
+      .content {
+        p {
+          margin: 0;
+          color: #fff9dc;
+  
+          +p {
+            margin: 0.2em 0 0.5em;
+          }
+        }
+      }
+  
+    }
+</style>

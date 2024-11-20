@@ -1,0 +1,42 @@
+<blockquote class="callout_important">
+  {% set icon = load_data(path="static/icon/important.svg") %}
+  <div class="icon">
+    <span>
+      {{ icon | safe }}
+      {% if header %}
+      <span><strong>
+          {{ header }}
+        </strong></span>
+      {% endif %}
+    </span>
+  </div>
+  <div class="content">
+    {{ body | markdown | safe }}
+  </div>
+</blockquote>
+<style>
+  .callout_important {
+    line-height: inherit;
+    margin-bottom: 20px;
+    border: 1.5px solid;
+    border-color: #ff4444;
+    background-color: #320a0a;
+    color: #ff7575;
+    .icon {
+      height: 1.75em;
+      display: flex;
+      align-items: center;
+    }
+    .content {
+      p {
+        margin: 0;
+        color: #ffdbc9;
+
+        +p {
+          margin: 0.2em 0 0.5em;
+        }
+      }
+    }
+
+  }
+</style>
