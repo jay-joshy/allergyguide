@@ -11,7 +11,7 @@
     </span>
   </div>
   <div class="content">
-    {{ body | markdown | safe }}
+    {{ body | markdown | safe  }}
   </div>
 </blockquote>
 <style>
@@ -22,21 +22,40 @@
     border-color: #ff4444;
     background-color: #320a0a;
     color: #ff7575;
-    .icon {
-      height: 1.75em;
-      display: flex;
-      align-items: center;
-    }
-    .content {
-      p {
-        margin: 0;
-        color: #ffdbc9;
+    padding: 10px;
+  }
 
-        +p {
-          margin: 0.2em 0 0.5em;
-        }
-      }
-    }
+  .callout_important .icon {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
 
+  .callout_important .icon span {
+    display: flex;
+    align-items: center;
+  }
+
+  .callout_important .icon span svg {
+    width: 1.5em; /* Adjust the width as needed */
+    height: 1.5em; /* Adjust the height as needed */
+  }
+
+  .callout_important .icon span strong {
+    margin-left: 15px; /* Increase margin to accommodate larger icon */
+    flex: 1;
+  }
+
+  .callout_important .content {
+    padding: 10px;
+  }
+
+  .callout_important .content p {
+    margin: 0;
+    color: #ffdbc9;
+  }
+
+  .callout_important .content p + p {
+    margin: 0.2em 0 0.5em;
   }
 </style>

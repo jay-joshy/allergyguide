@@ -13,6 +13,9 @@ toc = true
 authors = ["test", "test2"]
 +++
 
+In the template itself the below line is included.
+However, it does not work when used in the .md file.
+
 Tis is the content
 Macros don't work here
 {% import "macros.html" as m %}

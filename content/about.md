@@ -30,6 +30,12 @@ To create a comprehensive resident-led and faculty reviewed website for high-yie
 
 [insert macros for portraits and descriptions]
 
+{{ profile_grid() }}
+
+# Are we sponsored?
+
+... not yet!
+
 # Technical mumbo-jumbo
 
 This site is open-source and hosted on GitHub. It is built using the excellent static website generator [Zola](https://www.getzola.org/), with the [Abridge theme](https://github.com/Jieiku/abridge.css).

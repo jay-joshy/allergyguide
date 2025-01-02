@@ -15,9 +15,9 @@ authors = ["test", "test2"]
 
 ## text_image_to_right
 
-{ { text_image_to_right(text="# Here is some text on the left.", src="/research/example.jpg", alt="An image description", caption = "test caption") }}
+{ { text_image_to_right(text="# Here is some text on the left.", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
-{{ text_image_to_right(text="# Here is some text on the left.", src="/research/example.jpg", alt="An image description", caption = "test caption") }}
+{{ text_image_to_right(text="# Here is some text on the left.", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
 ## widget_penfast
 
@@ -29,11 +29,11 @@ authors = ["test", "test2"]
 ### important
 
 { % important(header = "important header") %}
-This is an important section.
+test
 {% end %}
 
 {% important(header = "important header") %}
-This is an important section.
+test
 {% end %}
 
 ### warning
@@ -68,7 +68,23 @@ important bx only!!!
 warning box only content
 {% end %}
 
-### test_toml_load
+## test_toml_load
 
 { { test_toml_load(section_name = "label_1") }}
 {{ test_toml_load(section_name = "label_1") }}
+
+## wide_contact_card
+
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+
+## contact_card_gallery
+
+{{ card_grid() }}
+
+## profile_grid
+
+{{profile_grid()}}
+
+## load_macro
+
+{{ load_macro(topic_name = "example_topic") }}
