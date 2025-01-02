@@ -1,0 +1,83 @@
+{% set data = load_data(path="static/toml/medications.toml") %}
+<div class="drug-cards">
+  {% for drug, details in data %}
+  <div class="drug-card">
+    <h2>{{ drug | capitalize }}</h2>
+    <div class="drug-card-content">
+      <div class="drug-card-column">
+        <p><strong>Brand Names:</strong>
+          {% for brand in details.brand_names %}
+                            {{ brand }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}</p>
+        <p><strong>Cost:</strong>
+          {{ details.cost[0].price }} ({{ details.cost[0].province }})</p>
+        <p><strong>Mechanism of Action:</strong>
+          {{ details.moa }}</p>
+        <p><strong>Half-life:</strong>
+          {{ details.half_life }}</p>
+        <p><strong>Routes:</strong>
+          {{ details.routes }}</p>
+        <p><strong>Doses:</strong></p>
+        <ul>
+          {% for dose in details.doses %}
+          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="drug-card-column">
+        <p><strong>Age Group:</strong>
+          {{ details.age_group }}</p>
+        <p><strong>Pregnancy:</strong>
+          {{ details.pregnancy }}</p>
+        <p><strong>Contraindications:</strong>
+          {{ details.contraindications }}</p>
+        <p><strong>Common Side Effects:</strong>
+          {{ details.side_effects.common }}</p>
+        <p><strong>Severe Side Effects:</strong>
+          {{ details.side_effects.severe }}</p>
+        <p><strong>Monograph Links:</strong></p>
+        <ul class="monograph-links">
+          {% for link in details.monograph_links %}
+          <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<style>
+  .drug-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.drug-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drug-card h2 {
+    margin-top: 0;
+}
+
+.drug-card-content {
+    display: flex;
+    gap: 20px;
+}
+
+.drug-card-column {
+    flex: 1;
+}
+
+.drug-card ul {
+    padding-left: 20px;
+}
+
+.monograph-links {
+    font-size: 0.8em;
+}
+</style>
