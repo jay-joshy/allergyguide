@@ -2,4 +2,4 @@
 template = "pages.html"
 +++
 
-I want this to show something?
+{{ topic_macros_toml_load() }}

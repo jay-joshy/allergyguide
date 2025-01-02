@@ -1,5 +1,5 @@
 +++
-title = "test research title"
+title = "drug1"
 description = "description of md page"
 date = 2024-11-10T15:00:00Z
 draft = false

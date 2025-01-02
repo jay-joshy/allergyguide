@@ -2,14 +2,12 @@
 
 TODO:
 
-```md
 - Shortcodes:
   - Picture with caption underneath, modern
   - Render macro in code block from .JSON => show error if it doesn’t work
   - Template for macros/ which just lists them all out
   - Profiles — circular picture with caption underneath
   - About template
-```
 
 ## Goals
 

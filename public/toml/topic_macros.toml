@@ -1,0 +1,23 @@
+[example_topic]
+topic = "topic name, ie. Congestive Heart Failure Exacerbation"
+content = '''
+# CHFe
+O2, UO
+Likely precipitant(s): diet, med, CAD, arrhythmia, infection, PE, AKI, substance
+This is a very long line to demonstrate that the block should have wrap around text and should not just get cut off hopefully.
+Ix: 
+trop, ECG, BNP, metabolic profile, TSH, Cr, liver panel
+CXR
+?cath
+Mx:
+NP vs BiPAP
+IV Lasix
+I&O, upright, salt/fluid restrict
+GDMT when out of CHFe
+'''
+
+[allergic_rhinitis]
+topic = "Allergic Rhinitis"
+content = '''
+Placeholder macro  
+'''

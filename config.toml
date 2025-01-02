@@ -7,7 +7,7 @@ base_url = "https://allergyguide.ca"
 # If you use the npm/node script then all you have to do is set offline = true, and everything else is automatic.
 
 title = "Allergyguide"
-description = "Allergyguide.ca, a resident focused guide to clinica allergy and immunology." #for SEO aim for 140-180 Characters
+description = "Allergyguide.ca, a resident focused guide to clinical allergy and immunology." #for SEO aim for 140-180 Characters
 
 default_language = "en"
 compile_sass = true

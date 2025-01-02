@@ -1,0 +1,14 @@
+[label_1]
+A = "Value for A"
+B = "Value for B"
+C = "Value for C"
+
+[label_2]
+A = "label 2 data"
+B = "Value for B2"
+C = "Value for C2"
+
+[label_3]
+A = "label 3 data"
+B = "Value for B3"
+C = "Value for C3"
