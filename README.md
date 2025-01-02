@@ -2,10 +2,11 @@
 
 TODO:
 
+- home-page -- create sections with links to pages
+- 404 page
 - Shortcodes:
   - Picture with caption underneath, modern
-  - Render macro in code block from .JSON => show error if it doesn’t work
-  - Template for macros/ which just lists them all out
+  - Template for macros/ which just lists them all out X DONE
   - Profiles — circular picture with caption underneath
   - About template
 

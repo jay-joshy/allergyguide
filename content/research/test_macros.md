@@ -52,8 +52,20 @@ This is a warning section.
 This is the question answer
 {% end %}
 
-{% question(question= "this is the question") %}
+{% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad") %}
 This is the question answer
+{% end %}
+
+### important_box_only
+
+{% important_box_only() %}
+important bx only!!!
+{% end %}
+
+### warning_box_only
+
+{% warning_box_only() %}
+warning box only content
 {% end %}
 
 ### test_toml_load

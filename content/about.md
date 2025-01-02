@@ -3,12 +3,33 @@ title = "About"
 path = "about"
 template = "pages.html"
 draft = false
+[extra]
+toc = true
 +++
 
-This site provides a demo for the [abridge theme](https://github.com/Jieiku/abridge) for [Zola](https://www.getzola.org/) the static site generator.
+# Our goals
 
-Abridge was created by [Jake G (jieiku)](https://github.com/Jieiku) to be fast and lightweight, using semantic html, a class-light [abridge.css](https://github.com/Jieiku/abridge.css), and No Mandatory JS.
+To create a comprehensive resident-led and faculty reviewed website for high-yield and pragmatic information about most things allergy & immunology, meant to help residents in clinic. In particular:
 
-Nearly half of the existing Zola MIT themes were inspiration for features and design of this theme.
+{% important_box_only() %}
 
-Abridge is licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Sections for major conditions, including copy-pasteable macros and practical pearls
+2. Sections for therapies and medications
+3. Clinical decision tools
+4. Patient resources (a one stop shop for handouts!)
+
+{% end %}
+
+#### Secondary goals (if time permits)
+
+- Set of questions for RC studying
+- Critical appraisal of new research
+- Patient resources translated into different languages
+
+# The editors
+
+[insert macros for portraits and descriptions]
+
+# Technical mumbo-jumbo
+
+This site is open-source and hosted on GitHub. It is built using the excellent static website generator [Zola](https://www.getzola.org/), with the [Abridge theme](https://github.com/Jieiku/abridge.css).
