@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://allergyguide.ca/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://allergyguide.ca/abridge.css?h=b208070bfa65ed205a0e" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://allergyguide.ca" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://allergyguide.ca/manifest.min.json" />
+  <link rel="mask-icon" href="https://allergyguide.ca/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="icon" type="image/svg+xml" href="https://allergyguide.ca/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://allergyguide.ca/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://allergyguide.ca/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://allergyguide.ca/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Allergyguide Atom Feed" href="https://allergyguide.ca/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Testing the templating | Allergyguide</title>
+  <meta name="author" content="Joshua Yu" />
+  <meta name="copyright" content="Allergyguide" />
+  <meta name="description" content="description of md page" />
+  <link rel="canonical" href="https://allergyguide.ca/research/template-testing/" />
+  <meta name="keywords" content="Image, Markdown, Shortcodes, Swap, allergy, immunology, resident, allergyguide" />
+  <meta property="og:url" content="https://allergyguide.ca/research/template-testing/" />
+  <meta name="twitter:url" content="https://allergyguide.ca/research/template-testing/" />
+  <meta property="og:description" content="description of md page" />
+  <meta name="twitter:description" content="description of md page" />
+  <meta property="og:title" content="Testing the templating | Allergyguide" />
+  <meta name="twitter:title" content="Testing the templating | Allergyguide" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://allergyguide.ca/banner.png" />
+  <meta property="og:image" content="https://allergyguide.ca/banner.png" />
+  <meta property="og:site_name" content="Allergyguide" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2024-12-10" />
+  <script defer src="https://allergyguide.ca/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://allergyguide.ca/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://allergyguide.ca" title="Allergyguide"><svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f90" viewBox="0 0 96 96" width="28" height="28"><path stroke-width="14" d="M14 99 46 7h4l32 92"/><path stroke-width="9" d="M-3 82c43-26 59-26 102 0"/><path stroke-linecap="round" stroke-width="1.5" d="M94 72v7m-5-9.8v7m-5-9.8v7.1M79 64v7M63 57.7v7m-5-8.2v7m-5-7.8v7m-5-7.2v7m-5-6.7v7m-5-6.3v7m-5-5.8v7M17 64v7m-5-4.6v7m-5-4.2v7M2 72v7"/></svg>llergyguide</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://allergyguide.ca/macros/"> Macros </a></li><li><a class="s110" href="https://allergyguide.ca/topics/"> Topics </a></li><li><a class="s110" href="https://allergyguide.ca/medications/"> Meds </a></li><li><a class="s110" href="https://allergyguide.ca/clinical_tools/"> Tools </a></li><li><a class="s110" href="https://allergyguide.ca/research/"> Research </a></li><li><a class="s110" href="https://allergyguide.ca/tags/"> Tags </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+    <hr />
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://allergyguide.ca/research/template-testing/">Testing the templating</a></h1>
+
+      <span class="s95"> test,  test2 <span class="rpad"></span> December 10, 2024 <span class="rpad"></span> #<a href="https://allergyguide.ca/tags/research/">Research</a>  #<a href="https://allergyguide.ca/tags/something/">Something</a>  #<a href="https://allergyguide.ca/tags/images/">Images</a> </span>
+
+    
+
+
+
+    <label>
+        TKEJAL:KSJDALSKJF
+        <input type="text" />
+    </label>
+
+<p>In the template itself the below line is included.
+However, it does not work when used in the .md file.</p>
+<p>Tis is the content
+Macros don't work here
+{% import "macros.html" as m %}
+{{ m::input(label="TKEJAL:KSJDALSKJF", type="text") }}</p>
+
+      <nav>
+        <div>
+        </div>
+        <div>
+          <a href="https://allergyguide.ca/research/test-macros/"> testing_macros &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a class="js m-protected" href="#am9zaC55dUBtZWRwb3J0YWwuY2E=" target="_blank" title="Mail"><i type="Button" class="svg mail" title="Mail"></i></a><a href="https://github.com/jay-joshy/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://allergyguide.ca/about/"> About </a>
+        <a class="rpad s90" href="https://allergyguide.ca/contribute/"> Contribute </a>
+        <a class="rpad s90" href="https://allergyguide.ca/privacy/"> Privacy </a>
+        <a class="rpad s90" href="https://allergyguide.ca/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> © <span id="year">2025</span> Allergyguide.ca • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">under creative commons</a>.</p>
+      <p class = "s90"><br>A project by residents, for residents :)</p>
+    </div>
+  </footer>
+</body>
+</html>

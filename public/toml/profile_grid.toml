@@ -1,0 +1,14 @@
+# Used for the editor bios in the about section
+
+[title1]
+src = "/images/example.jpg"
+name = "title 1"
+text = "placeholder"
+[title2]
+src = "/images/example.jpg"
+name = "title 2"
+text = "placeholder"
+[title3]
+src = "/images/example.jpg"
+name = "title 3"
+text = "placeholder"

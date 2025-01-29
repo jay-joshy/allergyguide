@@ -1,0 +1,31 @@
+# Used in the contact_carousel.html shortcode to display on the homepage
+
+[title1]
+url = "/research/"
+src = "/images/example.jpg"
+title = "title 1"
+text = "placeholder"
+
+[title2]
+url = "/research/"
+src = "/images/seabackground.jpg"
+title = "title 2"
+text = "placeholder"
+
+[title3]
+url = "/research/"
+src = "/images/example.jpg"
+title = "title 3"
+text = "placeholder"
+
+[title4]
+url = "/research/"
+src = "/images/example.jpg"
+title = "title 3"
+text = "placeholder"
+
+[title5]
+url = "/research/"
+src = "/images/example.jpg"
+title = "title 3"
+text = "placeholder"
