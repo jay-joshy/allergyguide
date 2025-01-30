@@ -1,4 +1,5 @@
 .env
+public
 themes
 build
 storage
