@@ -400,22 +400,7 @@ GDMT when out of CHFe
 &lt;&#x2F;div&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;load_macro.css&quot;&gt;
 &lt;!-- For top right copy button --&gt;
-&lt;script&gt;
-  function copyToClipboard(button) {
-    const codeBlock = button.nextElementSibling; &#x2F;&#x2F; Get the sibling `.txt` div
-    const text = codeBlock.textContent || codeBlock.innerText;
-    
-    navigator.clipboard.writeText(text).then(() =&gt; {
-      button.textContent = &quot;Copied!&quot;; &#x2F;&#x2F; Temporarily change button text
-      setTimeout(() =&gt; button.textContent = &quot;Copy&quot;, 2000); &#x2F;&#x2F; Revert after 2 seconds
-    }).catch(err =&gt; {
-      console.error(&quot;Failed to copy text: &quot;, err);
-      button.textContent = &quot;Error&quot;;
-      setTimeout(() =&gt; button.textContent = &quot;Copy&quot;, 2000);
-    });
-  }
-&lt;&#x2F;script&gt;
-&lt;h2 id=&quot;medications-toml-load&quot;&gt;medications_toml_load&lt;&#x2F;h2&gt;
+&lt;script src=&quot;&#x2F;js&#x2F;load_macro.js&quot;&gt;&lt;&#x2F;script&gt;&lt;h2 id=&quot;medications-toml-load&quot;&gt;medications_toml_load&lt;&#x2F;h2&gt;
 
 &lt;div class=&quot;medications_toml_load&quot;&gt;
   
