@@ -153,51 +153,7 @@ test
 
   &lt;&#x2F;div&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;style&gt;
-  .callout_important {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #ff4444;
-    background-color: #320a0a;
-    color: #ff7575;
-    padding: 10px;
-  }
-
-  .callout_important .icon {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-
-  .callout_important .icon span {
-    display: flex;
-    align-items: center;
-  }
-
-  .callout_important .icon span svg {
-    width: 1.5em; &#x2F;* Adjust the width as needed *&#x2F;
-    height: 1.5em; &#x2F;* Adjust the height as needed *&#x2F;
-  }
-
-  .callout_important .icon span strong {
-    margin-left: 15px; &#x2F;* Increase margin to accommodate larger icon *&#x2F;
-    flex: 1;
-  }
-
-  .callout_important .content {
-    padding: 10px;
-  }
-
-  .callout_important .content p {
-    margin: 0;
-    color: #ffdbc9;
-  }
-
-  .callout_important .content p + p {
-    margin: 0.2em 0 0.5em;
-  }
-&lt;&#x2F;style&gt;&lt;h3 id=&quot;warning&quot;&gt;warning&lt;&#x2F;h3&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;important.css&quot;&gt;&lt;h3 id=&quot;warning&quot;&gt;warning&lt;&#x2F;h3&gt;
 &lt;p&gt;{ % warning(header = &quot;warning header&quot;) %}
 This is a warning section.
 {% end %}&lt;&#x2F;p&gt;

@@ -1,0 +1,43 @@
+  .callout_important {
+    line-height: inherit;
+    margin-bottom: 20px;
+    border: 1.5px solid;
+    border-color: #ff4444;
+    background-color: #320a0a;
+    color: #ff7575;
+    padding: 10px;
+  }
+
+  .callout_important .icon {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .callout_important .icon span {
+    display: flex;
+    align-items: center;
+  }
+
+  .callout_important .icon span svg {
+    width: 1.5em; /* Adjust the width as needed */
+    height: 1.5em; /* Adjust the height as needed */
+  }
+
+  .callout_important .icon span strong {
+    margin-left: 15px; /* Increase margin to accommodate larger icon */
+    flex: 1;
+  }
+
+  .callout_important .content {
+    padding: 10px;
+  }
+
+  .callout_important .content p {
+    margin: 0;
+    color: #ffdbc9;
+  }
+
+  .callout_important .content p + p {
+    margin: 0.2em 0 0.5em;
+  }

@@ -16,3 +16,4 @@ static/js/pagefind-*.css
 static/js/pagefind.*.pf_meta
 static/js/index
 static/js/fragment
+.DS_Store
