@@ -381,7 +381,7 @@ Value for C3
  
 &lt;div class=&quot;load_macro&quot;&gt;
   &lt;div class=&quot;code-block-container&quot;&gt;
-    &lt;button class=&quot;copy-button&quot; onclick=&quot;copyToClipboard(this)&quot;&gt;Copy&lt;&#x2F;button&gt;
+    &lt;button class=&quot;copy-button&quot;&gt;Copy&lt;&#x2F;button&gt;
     &lt;div class=&quot;txt&quot;&gt;# CHFe
 O2, UO
 Likely precipitant(s): diet, med, CAD, arrhythmia, infection, PE, AKI, substance
