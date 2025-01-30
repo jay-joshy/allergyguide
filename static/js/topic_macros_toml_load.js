@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function copyToClipboard(button) {
+    // THIS IS A COMMENT THAT SHOULD SHOW UP.
     const codeBlock = button.nextElementSibling; // Get the sibling `.txt` div
     const text = codeBlock.textContent || codeBlock.innerText;
 
