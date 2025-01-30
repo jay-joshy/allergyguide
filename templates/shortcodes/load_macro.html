@@ -1,59 +1,14 @@
 {% set section = topic_name %} 
 {% set data = load_data(path="static/toml/topic_macros.toml") %}
 {% set data = data[section] %} {# Access the specified section dynamically #}
-<div class="code-block">
+<div class="load_macro">
   <div class="code-block-container">
     <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
     <div class="txt">{{ data.content }}</div>
   </div>
 </div>
-<style>
-  .txt {
-    white-space: pre-wrap;
-    margin: 0;
-    padding: 12px;
-    font-family: monospace;
-    background-color: #2d2d2d; /* Dark gray background */
-    border: 1px solid #444; /* Subtle dark border */
-    border-radius: 1px; /* Rounded corners */
-    color: #ddd; /* Light gray text */
-    font-size: 15px; /* Adjust the font size here */
-  }
-
-  .code-block-container {
-    position: relative;
-  }
-
-  .copy-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    font-size: 12px;
-    background-color: #444; /* Dark button background */
-    color: #ddd; /* Light button text */
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Darker shadow for contrast */
-    transition: background-color 0.2s, color 0.2s;
-  }
-
-  .copy-button:hover {
-    background-color: #666; /* Slightly lighter on hover */
-    color: #fff; /* Pure white text on hover */
-  }
-
-  .copy-button:active {
-    background-color: #888; /* Even lighter background on click */
-    color: #fff; /* Pure white text on click */
-  }
-
-  .code-block {
-    border-radius: 5px;
-    overflow: hidden;
-  }
-</style>
+<link rel="stylesheet" href="/css/load_macro.css">
+<!-- For top right copy button -->
 <script>
   function copyToClipboard(button) {
     const codeBlock = button.nextElementSibling; // Get the sibling `.txt` div

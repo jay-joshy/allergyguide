@@ -1,10 +1,10 @@
-.important {
+.warning {
     line-height: inherit;
     margin-bottom: 20px;
     border: 1.5px solid;
-    border-color: #ff4444;
-    background-color: #320a0a;
-    color: #ff7575;
+    border-color: #449bff;
+    background-color: #101f32;
+    color: #f6e071;
     padding: 10px;
 
 
@@ -38,7 +38,7 @@
 
     .content p {
         margin: 0;
-        color: #ffdbc9;
+        color: #fff9dc;
     }
 
     .content p+p {

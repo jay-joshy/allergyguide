@@ -1,4 +1,4 @@
-<blockquote class="callout_question">
+<blockquote class="question">
   {% set icon = load_data(path="static/icon/question.svg") %}
   <div class="icon">
     <span>
@@ -15,48 +15,4 @@
     </div>
   </details>
 </blockquote>
-<style>
-  .callout_question {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #449bff;
-    background-color: #101f32;
-    color: #f6e071;
-    padding: 10px;
-  }
-
-  .callout_question .icon {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-
-  .callout_question .icon span {
-    display: flex;
-    align-items: center;
-  }
-
-  .callout_question .icon span svg {
-    width: 2em; /* Adjust the width as needed */
-    height: 2em; /* Adjust the height as needed */
-  }
-
-  .callout_question .icon span strong {
-    margin-left: 15px; /* Increase margin to accommodate larger icon */
-    flex: 1;
-  }
-
-  .callout_question .content {
-    padding: 10px;
-  }
-
-  .callout_question .content p {
-    margin: 0;
-    color: #fff9dc;
-  }
-
-  .callout_question .content p + p {
-    margin: 0.2em 0 0.5em;
-  }
-</style>
+<link rel="stylesheet" href="/css/question.css">

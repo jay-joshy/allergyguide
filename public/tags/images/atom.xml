@@ -50,7 +50,7 @@ Macros don&#x27;t work here
         
         <content type="html" xml:base="https://allergyguide.ca/research/test-macros/">&lt;h2 id=&quot;text-image-to-right&quot;&gt;text_image_to_right&lt;&#x2F;h2&gt;
 &lt;p&gt;{ { text_image_to_right(text=&quot;# Here is some text on the left.&quot;, src=&quot;&#x2F;images&#x2F;example.jpg&quot;, alt=&quot;An image description&quot;, caption = &quot;test caption&quot;) }}&lt;&#x2F;p&gt;
-&lt;div class=&quot;text-image-container&quot;&gt;
+&lt;div class=&quot;text_image_to_right&quot;&gt;
   &lt;div class=&quot;text-content&quot;&gt;
     &lt;h1 id=&quot;here-is-some-text-on-the-left&quot;&gt;Here is some text on the left.&lt;&#x2F;h1&gt;
 
@@ -62,7 +62,9 @@ Macros don&#x27;t work here
 &lt;&#x2F;div&gt;
     
   &lt;&#x2F;div&gt;
-&lt;&#x2F;div&gt;&lt;h2 id=&quot;widget-penfast&quot;&gt;widget_penfast&lt;&#x2F;h2&gt;
+&lt;&#x2F;div&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;text_image_to_right.css&quot;&gt;
+&lt;h2 id=&quot;widget-penfast&quot;&gt;widget_penfast&lt;&#x2F;h2&gt;
 &lt;p&gt;{ { widget_penfast() }}
 &lt;!-- PEN-FAST Widget --&gt;
 &lt;!-- Author: Joshua Yu --&gt;
@@ -136,7 +138,7 @@ Macros don&#x27;t work here
 &lt;p&gt;{ % important(header = &quot;important header&quot;) %}
 test
 {% end %}&lt;&#x2F;p&gt;
-&lt;blockquote class=&quot;callout_important&quot;&gt;
+&lt;blockquote class=&quot;important&quot;&gt;
   
   &lt;div class=&quot;icon&quot;&gt;
     &lt;span&gt;
@@ -157,7 +159,7 @@ test
 &lt;p&gt;{ % warning(header = &quot;warning header&quot;) %}
 This is a warning section.
 {% end %}&lt;&#x2F;p&gt;
-&lt;blockquote class=&quot;callout_warning&quot;&gt;
+&lt;blockquote class=&quot;warning&quot;&gt;
   
   &lt;div class=&quot;icon&quot;&gt;
     &lt;span&gt;
@@ -174,55 +176,11 @@ This is a warning section.
 
   &lt;&#x2F;div&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;style&gt;
-  .callout_warning {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #449bff;
-    background-color: #101f32;
-    color: #f6e071;
-    padding: 10px;
-  }
-
-  .callout_warning .icon {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-
-  .callout_warning .icon span {
-    display: flex;
-    align-items: center;
-  }
-
-  .callout_warning .icon span svg {
-    width: 1.5em; &#x2F;* Adjust the width as needed *&#x2F;
-    height: 1.5em; &#x2F;* Adjust the height as needed *&#x2F;
-  }
-
-  .callout_warning .icon span strong {
-    margin-left: 15px; &#x2F;* Increase margin to accommodate larger icon *&#x2F;
-    flex: 1;
-  }
-
-  .callout_warning .content {
-    padding: 10px;
-  }
-
-  .callout_warning .content p {
-    margin: 0;
-    color: #fff9dc;
-  }
-
-  .callout_warning .content p + p {
-    margin: 0.2em 0 0.5em;
-  }
-&lt;&#x2F;style&gt;&lt;h3 id=&quot;question&quot;&gt;question&lt;&#x2F;h3&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;warning.css&quot;&gt;&lt;h3 id=&quot;question&quot;&gt;question&lt;&#x2F;h3&gt;
 &lt;p&gt;{ % question(question= &quot;this is the question&quot;) %}
 This is the question answer
 {% end %}&lt;&#x2F;p&gt;
-&lt;blockquote class=&quot;callout_question&quot;&gt;
+&lt;blockquote class=&quot;question&quot;&gt;
   
   &lt;div class=&quot;icon&quot;&gt;
     &lt;span&gt;
@@ -240,115 +198,21 @@ This is the question answer
     &lt;&#x2F;div&gt;
   &lt;&#x2F;details&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;style&gt;
-  .callout_question {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #449bff;
-    background-color: #101f32;
-    color: #f6e071;
-    padding: 10px;
-  }
-
-  .callout_question .icon {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-
-  .callout_question .icon span {
-    display: flex;
-    align-items: center;
-  }
-
-  .callout_question .icon span svg {
-    width: 2em; &#x2F;* Adjust the width as needed *&#x2F;
-    height: 2em; &#x2F;* Adjust the height as needed *&#x2F;
-  }
-
-  .callout_question .icon span strong {
-    margin-left: 15px; &#x2F;* Increase margin to accommodate larger icon *&#x2F;
-    flex: 1;
-  }
-
-  .callout_question .content {
-    padding: 10px;
-  }
-
-  .callout_question .content p {
-    margin: 0;
-    color: #fff9dc;
-  }
-
-  .callout_question .content p + p {
-    margin: 0.2em 0 0.5em;
-  }
-&lt;&#x2F;style&gt;&lt;h3 id=&quot;important-box-only&quot;&gt;important_box_only&lt;&#x2F;h3&gt;
-&lt;blockquote class=&quot;callout_important&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;question.css&quot;&gt;&lt;h3 id=&quot;important-box-only&quot;&gt;important_box_only&lt;&#x2F;h3&gt;
+&lt;blockquote class=&quot;important_box_only&quot;&gt;
   &lt;div class=&quot;content&quot;&gt;
     &lt;p&gt;important bx only!!!&lt;&#x2F;p&gt;
 
   &lt;&#x2F;div&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;style&gt;
-  .callout_important {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #ff4444;
-    background-color: #320a0a;
-    color: #ff7575;
-    .icon {
-      height: 1.75em;
-      display: flex;
-      align-items: center;
-    }
-    .content {
-      p {
-        margin: 0;
-        color: #ffdbc9;
-
-        +p {
-          margin: 0.2em 0 0.5em;
-        }
-      }
-    }
-
-  }
-&lt;&#x2F;style&gt;&lt;h3 id=&quot;warning-box-only&quot;&gt;warning_box_only&lt;&#x2F;h3&gt;
-&lt;blockquote class=&quot;callout_warning&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;important_box_only.css&quot;&gt;&lt;h3 id=&quot;warning-box-only&quot;&gt;warning_box_only&lt;&#x2F;h3&gt;
+&lt;blockquote class=&quot;warning_box_only&quot;&gt;
   &lt;div class=&quot;content&quot;&gt;
     &lt;p&gt;warning box only content&lt;&#x2F;p&gt;
 
   &lt;&#x2F;div&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;style&gt;
-  .callout_warning {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #449bff;
-    background-color: #101f32;
-    color: #f6e071;
-    .icon {
-      height: 1.75em;
-      display: flex;
-      align-items: center;
-    }
-    .content {
-      p {
-        margin: 0;
-        color: #fff9dc;
-
-        +p {
-          margin: 0.2em 0 0.5em;
-        }
-      }
-    }
-
-  }
-&lt;&#x2F;style&gt;&lt;h2 id=&quot;test-toml-load&quot;&gt;test_toml_load&lt;&#x2F;h2&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;warning_box_only.css&quot;&gt;&lt;h2 id=&quot;test-toml-load&quot;&gt;test_toml_load&lt;&#x2F;h2&gt;
 &lt;p&gt;{ { test_toml_load(section_name = &quot;label_1&quot;) }}
  
 
@@ -419,54 +283,9 @@ Value for C3
     &lt;&#x2F;div&gt;
   &lt;&#x2F;a&gt;
 &lt;&#x2F;div&gt;
-&lt;style&gt;
-  .wide_contact_card{
-    max-width: 95%;
-    margin: 16px;
-}
-
-  .contact-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    background-color: #1e1e1e; &#x2F;* Dark mode background *&#x2F;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.contact-card-link:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
-
-.contact-card-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-bottom: 2px solid #333; &#x2F;* Divider effect *&#x2F;
-}
-
-.contact-card-content {
-    padding: 15px;
-    text-align: center;
-}
-
-.contact-card-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #ffffff; &#x2F;* Light text for dark mode *&#x2F;
-    margin: 10px 0;
-}
-
-.contact-card-body {
-    font-size: 0.9em;
-    color: #cccccc; &#x2F;* Subdued text color *&#x2F;
-}
-&lt;&#x2F;style&gt;&lt;h2 id=&quot;contact-card-gallery&quot;&gt;contact_card_gallery&lt;&#x2F;h2&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;wide_contact_card.css&quot;&gt;&lt;h2 id=&quot;contact-card-gallery&quot;&gt;contact_card_gallery&lt;&#x2F;h2&gt;
 &lt;!-- This shortcode will pull from the homepage_grid.toml file to show a grid of contact cards. --&gt;
-&lt;div class=&quot;contact-card-grid&quot;&gt;
+&lt;div class=&quot;card_grid&quot;&gt;
   
     
   &lt;div class=&quot;grid-item&quot;&gt;
@@ -520,61 +339,11 @@ Value for C3
   &lt;&#x2F;div&gt;
   
 &lt;&#x2F;div&gt;
-&lt;style&gt;
-  .contact-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    justify-content: center; &#x2F;* Center the grid horizontally *&#x2F;
-    align-content: start; &#x2F;* Align the rows to start neatly *&#x2F;
-}
-
-.contact-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    background-color: #1e1e1e; &#x2F;* Dark mode background *&#x2F;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.contact-card-link:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
-
-.contact-card-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-bottom: 2px solid #333; &#x2F;* Divider effect *&#x2F;
-}
-
-.contact-card-content {
-    padding: 15px;
-    text-align: center;
-}
-
-.contact-card-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #ffffff; &#x2F;* Light text for dark mode *&#x2F;
-    margin: 10px 0;
-}
-
-.contact-card-body {
-    font-size: 0.9em;
-    color: #cccccc; &#x2F;* Subdued text color *&#x2F;
-}
-&lt;&#x2F;style&gt;&lt;h2 id=&quot;profile-grid&quot;&gt;profile_grid&lt;&#x2F;h2&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;card_grid.css&quot;&gt;&lt;h2 id=&quot;profile-grid&quot;&gt;profile_grid&lt;&#x2F;h2&gt;
 &lt;!-- This shortcode will pull from the profile_grid.toml file to show a grid of profile cards. --&gt;
-&lt;!-- This shortcode will pull from the profile_grid.toml file to show a grid of profile cards. --&gt;
-&lt;div class=&quot;profile-card-grid&quot;&gt;
+&lt;div class=&quot;profile_grid&quot;&gt;
   
-    
+  
   &lt;div class=&quot;grid-item&quot;&gt;
     &lt;div class=&quot;profile-card&quot;&gt;
       &lt;img src=&quot;&amp;#x2F;images&amp;#x2F;example.jpg&quot; alt=&quot;title 1&quot; class=&quot;profile-card-image&quot;&gt;
@@ -606,55 +375,11 @@ Value for C3
   &lt;&#x2F;div&gt;
   
 &lt;&#x2F;div&gt;
-&lt;style&gt;
-  .profile-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.profile-card {
-    background-color: #f5f5f5; &#x2F;* Light background *&#x2F;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-}
-
-.profile-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.profile-card-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-bottom: 2px solid #ddd; &#x2F;* Divider effect *&#x2F;
-}
-
-.profile-card-content {
-    padding: 15px;
-}
-
-.profile-card-name {
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #333; &#x2F;* Dark text *&#x2F;
-    margin: 10px 0;
-}
-
-.profile-card-description {
-    font-size: 1em;
-    color: #666; &#x2F;* Subdued text color *&#x2F;
-}
-&lt;&#x2F;style&gt;&lt;h2 id=&quot;load-macro&quot;&gt;load_macro&lt;&#x2F;h2&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;profile_grid.css&quot;&gt;&lt;h2 id=&quot;load-macro&quot;&gt;load_macro&lt;&#x2F;h2&gt;
  
 
  
-&lt;div class=&quot;code-block&quot;&gt;
+&lt;div class=&quot;load_macro&quot;&gt;
   &lt;div class=&quot;code-block-container&quot;&gt;
     &lt;button class=&quot;copy-button&quot; onclick=&quot;copyToClipboard(this)&quot;&gt;Copy&lt;&#x2F;button&gt;
     &lt;div class=&quot;txt&quot;&gt;# CHFe
@@ -673,53 +398,8 @@ GDMT when out of CHFe
 &lt;&#x2F;div&gt;
   &lt;&#x2F;div&gt;
 &lt;&#x2F;div&gt;
-&lt;style&gt;
-  .txt {
-    white-space: pre-wrap;
-    margin: 0;
-    padding: 12px;
-    font-family: monospace;
-    background-color: #2d2d2d; &#x2F;* Dark gray background *&#x2F;
-    border: 1px solid #444; &#x2F;* Subtle dark border *&#x2F;
-    border-radius: 1px; &#x2F;* Rounded corners *&#x2F;
-    color: #ddd; &#x2F;* Light gray text *&#x2F;
-    font-size: 15px; &#x2F;* Adjust the font size here *&#x2F;
-  }
-
-  .code-block-container {
-    position: relative;
-  }
-
-  .copy-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    font-size: 12px;
-    background-color: #444; &#x2F;* Dark button background *&#x2F;
-    color: #ddd; &#x2F;* Light button text *&#x2F;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); &#x2F;* Darker shadow for contrast *&#x2F;
-    transition: background-color 0.2s, color 0.2s;
-  }
-
-  .copy-button:hover {
-    background-color: #666; &#x2F;* Slightly lighter on hover *&#x2F;
-    color: #fff; &#x2F;* Pure white text on hover *&#x2F;
-  }
-
-  .copy-button:active {
-    background-color: #888; &#x2F;* Even lighter background on click *&#x2F;
-    color: #fff; &#x2F;* Pure white text on click *&#x2F;
-  }
-
-  .code-block {
-    border-radius: 5px;
-    overflow: hidden;
-  }
-&lt;&#x2F;style&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;load_macro.css&quot;&gt;
+&lt;!-- For top right copy button --&gt;
 &lt;script&gt;
   function copyToClipboard(button) {
     const codeBlock = button.nextElementSibling; &#x2F;&#x2F; Get the sibling `.txt` div
@@ -734,9 +414,10 @@ GDMT when out of CHFe
       setTimeout(() =&gt; button.textContent = &quot;Copy&quot;, 2000);
     });
   }
-&lt;&#x2F;script&gt;&lt;h2 id=&quot;medications-toml-load&quot;&gt;medications_toml_load&lt;&#x2F;h2&gt;
+&lt;&#x2F;script&gt;
+&lt;h2 id=&quot;medications-toml-load&quot;&gt;medications_toml_load&lt;&#x2F;h2&gt;
 
-&lt;div class=&quot;drug-cards&quot;&gt;
+&lt;div class=&quot;medications_toml_load&quot;&gt;
   
   &lt;div class=&quot;drug-card&quot;&gt;
     &lt;h2&gt;Bilastine&lt;&#x2F;h2&gt;
@@ -881,41 +562,7 @@ GDMT when out of CHFe
   &lt;&#x2F;div&gt;
   
 &lt;&#x2F;div&gt;
-&lt;style&gt;
-  .drug-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.drug-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.drug-card h2 {
-    margin-top: 0;
-}
-
-.drug-card-content {
-    display: flex;
-    gap: 20px;
-}
-
-.drug-card-column {
-    flex: 1;
-}
-
-.drug-card ul {
-    padding-left: 20px;
-}
-
-.monograph-links {
-    font-size: 0.8em;
-}
-&lt;&#x2F;style&gt;</content>
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;css&#x2F;medications_toml_load.css&quot;&gt;</content>
         
     </entry>
     <entry xml:lang="en">

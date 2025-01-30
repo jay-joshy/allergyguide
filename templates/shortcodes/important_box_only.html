@@ -1,31 +1,6 @@
-<blockquote class="callout_important">
+<blockquote class="important_box_only">
   <div class="content">
     {{ body | markdown | safe }}
   </div>
 </blockquote>
-<style>
-  .callout_important {
-    line-height: inherit;
-    margin-bottom: 20px;
-    border: 1.5px solid;
-    border-color: #ff4444;
-    background-color: #320a0a;
-    color: #ff7575;
-    .icon {
-      height: 1.75em;
-      display: flex;
-      align-items: center;
-    }
-    .content {
-      p {
-        margin: 0;
-        color: #ffdbc9;
-
-        +p {
-          margin: 0.2em 0 0.5em;
-        }
-      }
-    }
-
-  }
-</style>
+<link rel="stylesheet" href="/css/important_box_only.css">

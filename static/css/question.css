@@ -1,12 +1,11 @@
-.important {
+.question {
     line-height: inherit;
     margin-bottom: 20px;
     border: 1.5px solid;
-    border-color: #ff4444;
-    background-color: #320a0a;
-    color: #ff7575;
+    border-color: #449bff;
+    background-color: #101f32;
+    color: #f6e071;
     padding: 10px;
-
 
     .icon {
         display: flex;
@@ -20,9 +19,9 @@
     }
 
     .icon span svg {
-        width: 1.5em;
+        width: 2em;
         /* Adjust the width as needed */
-        height: 1.5em;
+        height: 2em;
         /* Adjust the height as needed */
     }
 
@@ -38,7 +37,7 @@
 
     .content p {
         margin: 0;
-        color: #ffdbc9;
+        color: #fff9dc;
     }
 
     .content p+p {

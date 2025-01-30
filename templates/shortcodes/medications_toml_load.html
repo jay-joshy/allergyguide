@@ -1,5 +1,5 @@
 {% set data = load_data(path="static/toml/medications.toml") %}
-<div class="drug-cards">
+<div class="medications_toml_load">
   {% for drug, details in data %}
   <div class="drug-card">
     <h2>{{ drug | capitalize }}</h2>
@@ -46,38 +46,4 @@
   </div>
   {% endfor %}
 </div>
-<style>
-  .drug-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.drug-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.drug-card h2 {
-    margin-top: 0;
-}
-
-.drug-card-content {
-    display: flex;
-    gap: 20px;
-}
-
-.drug-card-column {
-    flex: 1;
-}
-
-.drug-card ul {
-    padding-left: 20px;
-}
-
-.monograph-links {
-    font-size: 0.8em;
-}
-</style>
+<link rel="stylesheet" href="/css/medications_toml_load.css">
