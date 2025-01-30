@@ -1,3 +1,11 @@
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".copy-button").forEach(button => {
+    button.addEventListener("click", function () {
+      copyToClipboard(this);
+    });
+  });
+});
+
 function copyToClipboard(button) {
     const codeBlock = button.nextElementSibling; // Get the sibling `.txt` div
     const text = codeBlock.textContent || codeBlock.innerText;
@@ -12,10 +20,3 @@ function copyToClipboard(button) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".copy-button").forEach(button => {
-    button.addEventListener("click", function () {
-      copyToClipboard(this);
-    });
-  });
-});
