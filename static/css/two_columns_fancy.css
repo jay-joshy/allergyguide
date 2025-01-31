@@ -35,7 +35,7 @@
   }
 
   /* Accent colors for light mode */
-  .column h2, .column p {
+  .column h2, .column p, .column ul, .column ol, .column li {
     color: #222;
   }
 }
@@ -59,7 +59,7 @@
   }
 
   /* Accent colors for dark mode */
-  .column h2, .column p {
+  .column h2, .column p, .column ul, .column ol, .column li {
     color: #e0e0e0;
   }
 }
