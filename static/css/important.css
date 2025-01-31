@@ -1,6 +1,6 @@
 .important {
     line-height: inherit;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     border: 1.5px solid;
     border-color: #ff4444;
     background-color: #320a0a;
@@ -11,7 +11,7 @@
     .icon {
         display: flex;
         align-items: flex-start;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
     }
 
     .icon span {
@@ -33,7 +33,8 @@
     }
 
     .content {
-        padding: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
     }
 
     .content p {
@@ -44,4 +45,14 @@
     .content p+p {
         margin: 0.2em 0 0.5em;
     }
+
+    .content ol, ul {
+      color: #ffdbc9 ;
+    }
+
+    .content li {
+      color: #ffdbc9 ;
+    }
+
+    
 }

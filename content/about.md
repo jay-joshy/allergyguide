@@ -3,6 +3,7 @@ title = "About"
 path = "about"
 template = "pages.html"
 draft = false
+in_search_index = false
 +++
 
 # Our goals

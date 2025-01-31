@@ -1,10 +1,11 @@
+<!-- NOTE: the for loop will automatically sort the .toml by the contents within the [] -- be mindful of this -->
 {% set data = load_data(path="static/toml/topic_macros.toml") %}
 <div class="topic_macros_toml_load">
   {% for section_name, section_data in data %}
-  {{ "## " ~ section_data.topic | markdown | safe }}
+  {{ "### " ~ section_data.topic | markdown | safe }}
   <div class="code-block-container">
     <button class="copy-button">Copy</button>
-    <div class="txt">{{ section_data.content }}</div>
+    <div class="txt">{{ section_data.content | replace(from="{current_date}", to=now() | date(format="%B %d, %Y")) }}</div>
   </div>
   {% endfor %}
 </div>

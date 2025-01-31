@@ -57,7 +57,7 @@ menu = [
   { url = "macros", name = "Macros", slash = true, blank = false, size = "s110" },
   { url = "topics", name = "Topics", slash = true, blank = false, size = "s110" },
   { url = "medications", name = "Meds", slash = true, blank = false, size = "s110" },
-  { url = "clinical_tools", name = "Tools", slash = true, blank = false, size = "s110" },
+  { url = "tools", name = "Tools", slash = true, blank = false, size = "s110" },
   { url = "research", name = "Research", slash = true, blank = false, size = "s110" },
   { url = "tags", name = "Tags", slash = true, blank = false, size = "s110" },
 ]

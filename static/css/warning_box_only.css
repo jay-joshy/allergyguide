@@ -1,6 +1,6 @@
   .warning_box_only{
     line-height: inherit;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     border: 1.5px solid;
     border-color: #449bff;
     background-color: #101f32;
@@ -19,6 +19,17 @@
           margin: 0.2em 0 0.5em;
         }
       }
+
+      ol, ul {
+        color: #fff9dc;
+      }
+
+      li {
+        color: #fff9dc;
+      }
+
+
+      
     }
 
   }

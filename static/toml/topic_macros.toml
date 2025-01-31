@@ -1,4 +1,4 @@
-[example_topic]
+[_xample_topic]
 topic = "topic name, ie. Congestive Heart Failure Exacerbation"
 content = '''
 # CHFe
@@ -20,4 +20,97 @@ GDMT when out of CHFe
 topic = "Allergic Rhinitis"
 content = '''
 Placeholder macro  
+'''
+
+[_consult]
+topic = "Consult template"
+content = '''
+CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
+
+We assessed this patient in the clinical allergy and immunology clinic today on {current_date} with Dr. XX. As you know, they are a XX referred for assessment of XX.
+
+PAST MEDICAL HISTORY:
+
+ATOPIC HISTORY:
+Asthma:
+Food allergies:
+Drug allergies:
+Venom allergies:
+Eczema:
+Rhinitis:
+
+MEDICATIONS:
+
+FAMILY HISTORY:
+
+SOCIAL HISTORY:
+Home environment:
+Occupation:
+Private coverage:
+Smoking:
+Pets:
+
+HISTORY OF PRESENTING ILLNESS:
+
+PHYSICAL EXAM:
+On physical examination, they were not in distress.
+Assessment of the head and neck reveled no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
+Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
+There were no rashes present on examination of the skin.
+
+INVESTIGATIONS:
+
+Skin prick testing:
+
+IMPRESSION:
+
+PLAN:
+
+Follow-up:
+We have not arranged any follow-up at this time, but they are welcome to contact us as required.
+We have arranged for follow-up in XX or sooner if required.
+
+Thank you for allowing us to take part in this patient's care. Please feel free to contact us if there are any questions or concerns.
+
+Yours sincerely,
+
+'''
+
+[_followup]
+topic = "Follow-up template"
+content = '''
+CLINICAL ALLERGY AND IMMUNOLOGY FOLLOW-UP
+
+Dr. XX and I saw this patient in follow up in the Clinical Immunology and Allergy Clinic on {current_date}. They were last seen on XX previously. As you know, they are a XX who we follow for XX.
+
+Their last assessment and plan was:
+
+RELEVANT ALLERGIC AND MEDICAL HISTORY:
+
+CURRENT MEDICATIONS:
+
+INTERVAL HISTORY:
+
+[Issue by issue]
+
+Otherwise:
+
+PHYSICAL EXAM:
+On physical examination, they were not in distress.
+Assessment of the head and neck reveled no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
+Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
+There were no rashes present on examination of the skin.
+
+INVESTIGATIONS:
+
+ASSESSMENT AND PLAN:
+
+fOLLOW-UP:
+We have not arranged any follow-up at this time, but they are welcome to contact us as required.
+We have arranged for follow-up in XX or sooner if required.
+
+Thank you once again for involving us in this patient's care. Please do not hesitate to contact us if you have any further questions or concerns.
+
+Sincerely,
+
 '''

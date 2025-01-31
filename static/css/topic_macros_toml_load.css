@@ -7,16 +7,29 @@
         margin: 0;
         padding: 12px;
         font-family: monospace;
-        background-color: #2d2d2d;
-        /* Dark gray background */
-        border: 1px solid #444;
-        /* Subtle dark border */
-        border-radius: 1px;
-        /* Rounded corners */
-        color: #ddd;
-        /* Light gray text */
-        font-size: 15px;
-        /* Adjust the font size here */
+        background-color: #2d2d2d; /* Dark gray background */
+        border: 1px solid #444; /* Subtle dark border */
+        border-radius: 4px; /* Slightly larger rounded corners */
+        color: #ddd; /* Light gray text */
+        font-size: 15px; /* Adjust the font size here */
+        max-height: 500px; /* Limit the maximum height */
+        overflow-y: auto; /* Enable vertical scrolling when content overflows */
+        scrollbar-width: thin; /* Firefox: Make scrollbar thin */
+        scrollbar-color: #666 #2d2d2d; /* Firefox: Custom scrollbar colors */
+    }
+
+    /* Custom scrollbar for Webkit browsers (Chrome, Edge, Safari) */
+    .txt::-webkit-scrollbar {
+        width: 8px; /* Set width of scrollbar */
+    }
+
+    .txt::-webkit-scrollbar-thumb {
+        background-color: #666; /* Scrollbar thumb color */
+        border-radius: 4px; /* Rounded scrollbar */
+    }
+
+    .txt::-webkit-scrollbar-track {
+        background-color: #2d2d2d; /* Scrollbar track color */
     }
 
     .code-block-container {
@@ -29,30 +42,23 @@
         right: 10px;
         padding: 5px 10px;
         font-size: 12px;
-        background-color: #444;
-        /* Dark button background */
-        color: #ddd;
-        /* Light button text */
+        background-color: #444; /* Dark button background */
+        color: #ddd; /* Light button text */
         border: none;
         border-radius: 3px;
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        /* Darker shadow for contrast */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Darker shadow for contrast */
         transition: background-color 0.2s, color 0.2s;
     }
 
     .copy-button:hover {
-        background-color: #666;
-        /* Slightly lighter on hover */
-        color: #fff;
-        /* Pure white text on hover */
+        background-color: #666; /* Slightly lighter on hover */
+        color: #fff; /* Pure white text on hover */
     }
 
     .copy-button:active {
-        background-color: #888;
-        /* Even lighter background on click */
-        color: #fff;
-        /* Pure white text on click */
+        background-color: #888; /* Even lighter background on click */
+        color: #fff; /* Pure white text on click */
     }
-
 }
+

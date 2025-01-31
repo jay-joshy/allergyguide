@@ -43,4 +43,13 @@
     .content p+p {
         margin: 0.2em 0 0.5em;
     }
+
+    .content ol, ul {
+      color: #fff9dc;
+    }
+
+    .content li {
+      color: #fff9dc;
+    }
+
 }

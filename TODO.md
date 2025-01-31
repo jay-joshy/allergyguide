@@ -1,15 +1,9 @@
 TODO:
 
-- draft home page
-- about page
-  - add author pictures
-- content (need one example page per section)
-  - macros
-  - topics
-  - meds
-  - research
-- Shortcodes:
-- tomls
-  - macros for topics X DONE
-  - research appraisal
-- contributing guide (ie. style)
+- Add pearls section to medications toml and edit shortcode
+- Make landing page for /topics with the easy breakdown -- as a table?
+  - Make some template pages
+- Decide on design of home page
+- Add author pictures to about
+- Add a fake mock template research page
+- Decide on contributing style guidelines for pages

@@ -87,7 +87,7 @@ warning box only content
 
 ## load_macro
 
-{{ load_macro(topic_name = "example_topic") }}
+{{ load_macro(topic_name = "_xample_topic") }}
 
 ## medications_toml_load
 

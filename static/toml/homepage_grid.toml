@@ -1,31 +1,20 @@
 # Used in the card_grid.html shortcode to display on the homepage
-
+# the actual [] content doesn't matter much
+# 
 [title1]
-url = "/research/"
+url = "/macros/"
 src = "/images/example.jpg"
-title = "title 1"
-text = "placeholder"
+title = "Macros"
+text = "Quick, concise, high-yield macros for charting"
 
 [title2]
-url = "/research/"
+url = "/topics/"
 src = "/images/seabackground.jpg"
-title = "title 2"
+title = "Topics"
 text = "placeholder"
 
 [title3]
 url = "/research/"
 src = "/images/example.jpg"
-title = "title 3"
-text = "placeholder"
-
-[title4]
-url = "/research/"
-src = "/images/example.jpg"
-title = "title 3"
-text = "placeholder"
-
-[title5]
-url = "/research/"
-src = "/images/example.jpg"
-title = "title 3"
-text = "placeholder"
+title = "Research in Allergy/Immunology"
+text = "A collection of critical appraisals"

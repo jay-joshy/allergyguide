@@ -6,31 +6,34 @@ A resident-led and faculty-reviewed website for high-yield and concise informati
 
 Secondary goals if time permits includes:
 
-- Hosting our own LLM with capabilities of searching through allergy guidelines
 - Set of questions for RC studying
 - Critical appraisal of new research
 - Patient resources translated into different languages
+- Hosting our own LLM with capabilities of searching through allergy guidelines
+
+**Please see the current draft website for a better idea of what is envisioned: [allergyguide.ca](https://allergyguide.ca)**
 
 ## What is required to make this succeed both short and long term?
 
-- Consistent editor (Josh)
+- A consistent editor (hopefully Josh)
 - A well defined contributing process (and a way for non-coders to contribute)
 - Well defined topics to address / have goals towards
 - Resident contribution across Canada
 - Faculty support (as reviewers, maybe as sponsors?)
 
+For further details re: contributing process, formatting, content for topics/macros/etc., **please see the [contribution page](https://allergyguide.ca/contribute/)**
+
 ## Site structure:
 
 - Homepage
-- Conditions/Topics
+- Conditions/Topics -- patient resources are included for each
 - Meds -- categorized medication cards for easy reference
 - Clinical tools
-- Research
-- Patient resources
-- About - goals of the site, contributors, etc.
-- Contribute - workflow, style guides, etc
+- Research -- short critical appraisals of mostly landmark studies relevant to patient education
+- About -- goals of the site, contributors, etc.
+- Contribute -- workflow, style guides, etc
 
-### Topics
+### Topics/Conditions
 
 Sections:
 
@@ -38,9 +41,9 @@ Sections:
   - SPT, IgE, Food challenges, Drug Challenges
 - Hypersensitivity
   - Drugs
-    - principles and approach
-    - desensitization
-    - vaccines
+    - Principles and approach
+    - Desensitization
+    - Vaccines
     - SCAD
     - Penicillin allergy
   - Food
@@ -69,85 +72,7 @@ Sections:
   - T-cell mediated
 - Misc
 
-#### General topic structure
-
-- Macro to c/p
-- Summary:
-  - Condition name, epidemiology, pathophysiology, manifestations, diagnosis, management.
-- Definitions:
-  - Things to know up front before reading the article
-- Presentation
-  - Clinical: (history and exam)
-  - Labwork:
-- Diagnosis:
-  - Criteria / approach
-  - Differentials
-- Investigations:
-- Management:
-  - Usual:
-  - Special circumstances:
-- Natural history / prognosis:
-- Patient resource sheet:
-- Quiz yourself:
-- Further Reading:
-- Authors:
-  - Primary: list
-  - Reviewers: list
-  - Editor: list
-
-### research articles:
-
-Systematic review vs primary evidence
-
-- Metadata
-  - Title
-  - Year
-  - Journal
-  - Trial name
-- PICO + Conclusion
-- Figures
-- Description
-  - Background
-  - Objective
-  - Methods
-  - Results
-  - Limitations
-  - Conclusion
-
-### medications:
-
-Example below:
-
-```
-category = "antihistamine"
-brand_names = ["Blexten"]
-cost = [{ province = "ON", price = "~$1 CAD per 20mg tab" }]
-moa = "H1 antagonist. Marketed as limited CNS distribution."
-half_life = "~15 hours"
-routes = "oral tab, liquid (uncommon)"
-doses = [
-  { indication = "CSU, AR", dose = "20mg daily to QID", notes = "adult dosing" },
-  { indication = "CSU, AR", dose = "10mg daily to QID", notes = "pediatric dosing" },
-]
-age_group = ">=12 years of age; has been used off-label in younger children"
-pregnancy = "Avoid (not enough data)"
-contraindications = "Hypersensitivity, QT prolongation or history of torsades"
-side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
-side_effects.severe = "Torsades (very rare)"
-monograph_links = ["https://pdf.hres.ca/dpd_pm/00062419.PDF"]
-```
-
-## Contribution process
-
-Prerequisites: 1) there are staff who we have available to proofread drafts for topic sections 2) there is an editor who can take charge over the 'section'
-
-1. Resident or fellow picks a topic they wish to do, and connect with editor for that 'section' (to be defined later)
-2. Timeline is set for 1st rough draft (~ 2 weeks?), which can be completed in whatever editor they want
-3. Editor and contributor back and forth initial edits
-4. Edited draft is sent to staff, necessary edits are made
-5. Editor / Josh / someone with some coding knowledge will add content into website (there is some formatting nuances)
-
-## Nitty gritty internals:
+## Nitty-gritty internals:
 
 Some data will be stored as .toml or for ease of editing. Most likely we will pursue .toml given it is much more human readable.
 

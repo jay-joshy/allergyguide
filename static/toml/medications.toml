@@ -9,6 +9,7 @@ doses = [
   { indication = "CSU, AR", dose = "20mg daily to QID", notes = "adult dosing" },
   { indication = "CSU, AR", dose = "10mg daily to QID", notes = "pediatric dosing" },
 ]
+pearls = ["Theoretically does not cross BBB"]
 age_group = ">=12 years of age; has been used off-label in younger children"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
@@ -27,6 +28,7 @@ doses = [
   { indication = "AR, CSU", dose = "10mg once daily", notes = "adult dosing" },
   { indication = "AR, CSU", dose = "5mg once daily", notes = "pediatric dosing (ages 2-5)" },
 ]
+pearls = ["Insert pearl here"]
 age_group = ">=2 years of age"
 pregnancy = "Considered safe (Category B)"
 contraindications = "Hypersensitivity to loratadine or desloratadine"
@@ -45,6 +47,7 @@ doses = [
   { indication = "AR, CSU", dose = "180mg once daily", notes = "adult dosing" },
   { indication = "AR, CSU", dose = "30mg twice daily", notes = "pediatric dosing (ages 2-11)" },
 ]
+pearls = ["Insert pearl here"]
 age_group = ">=2 years of age"
 pregnancy = "Considered safe (Category B)"
 contraindications = "Hypersensitivity to fexofenadine"
