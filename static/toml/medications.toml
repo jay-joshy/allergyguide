@@ -1,4 +1,5 @@
 [bilastine]
+category = "antihistamine"
 brand_names = ["Blexten"]
 cost = [{ province = "ON", price = "~$1 CAD per 20mg tab" }]
 moa = "H1 antagonist. Marketed as limited CNS distribution."
@@ -16,6 +17,7 @@ side_effects.severe = "Torsades (very rare)"
 monograph_links = ["https://pdf.hres.ca/dpd_pm/00062419.PDF"]
 
 [loratadine]
+category = "antihistamine"
 brand_names = ["Claritin", "Alavert"]
 cost = [{ province = "ON", price = "~$0.50 CAD per 10mg tab" }]
 moa = "H1 antagonist with minimal CNS penetration."
@@ -33,6 +35,7 @@ side_effects.severe = "Rare anaphylaxis, hepatic dysfunction"
 monograph_links = ["https://example.com/loratadine-monograph"]
 
 [fexofenadine]
+category = "antihistamine"
 brand_names = ["Allegra", "Telfast"]
 cost = [{ province = "ON", price = "~$1.20 CAD per 180mg tab" }]
 moa = "H1 antagonist. Non-sedating antihistamine."

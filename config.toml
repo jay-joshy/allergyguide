@@ -109,11 +109,11 @@ copyright_override = '© $CURRENT_YEAR $SITE_TITLE.ca • Website content is lic
 ### To always set the page title exactly eg "Abridge" then comment out title_addition or set to false (not recommend, bad for SEO)
 ###############################################################################
 
-title_separator = "|"                                                                               # Separator between title and title_addition, set as |, -, _, etc
-title_addition = "Allergyguide | Clinical allergy and immunology guide for residents, by residents" # a default value for title addition (for SEO aim for 50-70 characters including the title and separator 'Abridge | title_addition')
-author = "Joshua Yu"                                                                                # Put Your Name here
-keywords = "allergy, immunology, resident, allergyguide"                                            # used for the primary site index
-banner = "banner.png"                                                                               # Used as default image for OpenGraph/Twitter if page specific image is undefined.
+title_separator = "|"                                                  # Separator between title and title_addition, set as |, -, _, etc
+title_addition = "Clinical allergy and immunology guide for residents" # a default value for title addition (for SEO aim for 50-70 characters including the title and separator 'Abridge | title_addition')
+author = "Joshua Yu"                                                   # Put Your Name here
+keywords = "allergy, immunology, resident, allergyguide"               # used for the primary site index
+banner = "banner.png"                                                  # Used as default image for OpenGraph/Twitter if page specific image is undefined.
 # twitter_meta = "your-user-name"                                                                     # for SEO: twitter:site and twitter:creator
 # google = "Your Google Site verification code."
 # bing = "Your Bing Site verification code."
@@ -128,6 +128,9 @@ seo = true # enable or disable seo-related meta tags: opengraph, facebook, twitt
 ###   https://github.com/Jieiku/abridge/blob/master/templates/macros/social.html
 ###############################################################################
 
+
+## TO ENABLE SOME OF THE ICONS YOU MUST GO INTO THE /sass/abridge.css to ENABLE THEM.
+
 # feed = true                 # this adds the RSS feed icon in the footer.
 mail = "josh.yu@medportal.ca"
 # mastodon = "https://mastodon.example.com/@username"
@@ -139,7 +142,7 @@ mail = "josh.yu@medportal.ca"
 #facebook = "your-user-name"
 #linkedin = "your-user-name"
 #gitlab = "your-user-name"
-github = "jay-joshy"
+github = "jay-joshy/allergyguide"
 #codeberg = "your-user-name" # Everything after https://codeberg.org/   eg: username  *or*  username/repository
 #github_sponsor = "your-user-name"
 #bitbucket = "your-user-name"

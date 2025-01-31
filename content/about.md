@@ -3,13 +3,11 @@ title = "About"
 path = "about"
 template = "pages.html"
 draft = false
-[extra]
-toc = true
 +++
 
 # Our goals
 
-To create a comprehensive resident-led and faculty reviewed website for high-yield and pragmatic information about most things allergy & immunology, meant to help residents in clinic. In particular:
+To create a comprehensive cross-Canada resident-led and faculty reviewed website for **high-yield and pragmatic** information about clinical allergy & immunology, meant to help residents and fellows in clinic. In particular:
 
 {% important_box_only() %}
 
@@ -22,7 +20,7 @@ To create a comprehensive resident-led and faculty reviewed website for high-yie
 
 #### Secondary goals (if time permits)
 
-- Set of questions for RC studying
+- Sets of questions for RC studying (and maybe an Anki deck)
 - Critical appraisal of new research
 - Patient resources translated into different languages
 
@@ -34,8 +32,8 @@ To create a comprehensive resident-led and faculty reviewed website for high-yie
 
 # Are we sponsored?
 
-... not yet!
+... Not yet!
 
 # Technical mumbo-jumbo
 
-This site is open-source and hosted on GitHub. It is built using the excellent static website generator [Zola](https://www.getzola.org/), with the [Abridge theme](https://github.com/Jieiku/abridge.css).
+This site is open-source and hosted on Netlify. It is built using the excellent static website generator [Zola](https://www.getzola.org/), with the [Abridge theme](https://github.com/Jieiku/abridge.css).

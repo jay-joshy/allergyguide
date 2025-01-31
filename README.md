@@ -1,30 +1,8 @@
 # Allergyguide.ca
 
-TODO:
-
-- home-page -- create sections with links to pages X DONE
-- about page
-  - add author pictures
-- 404 page -- tweak
-- content (need one example page per section)
-  - macros
-  - topics
-  - meds
-  - research
-- Shortcodes:
-  - Picture with caption underneath, modern X DONE
-  - Template for macros/ which just lists them all out X DONE
-  - Profiles — circular picture with caption underneath X DONE
-- tomls
-  - macros for topics X DONE
-  - research appraisal
-  - medications
-- connect allergy.ca to github upon deployment
-- contributing guide (ie. style)
-
 ## Goals
 
-A resident-led and faculty reviewed website for high-yield and concise information about 1) conditions 2) therapies/medications 3) Clinical decision tools 4) patient resources. It is meant for **practical use by residents**.
+A resident-led and faculty-reviewed website for high-yield and concise information about 1) conditions 2) therapies/medications 3) Clinical decision tools 4) patient resources. It is meant for **practical use by residents**.
 
 Secondary goals if time permits includes:
 
@@ -33,124 +11,67 @@ Secondary goals if time permits includes:
 - Critical appraisal of new research
 - Patient resources translated into different languages
 
+## What is required to make this succeed both short and long term?
+
+- Consistent editor (Josh)
+- A well defined contributing process (and a way for non-coders to contribute)
+- Well defined topics to address / have goals towards
+- Resident contribution across Canada
+- Faculty support (as reviewers, maybe as sponsors?)
+
 ## Site structure:
 
-- About - goals of the site, contributors, etc.
-- Privacy - boilerplate -- we're not collecting anything
-- Contribute - WIP, style guides, etc. Also for shortcode guides.
-- Main page -- slideshow, links to click on,
-- Research
+- Homepage
 - Conditions/Topics
+- Meds -- categorized medication cards for easy reference
 - Clinical tools
-- Meds
+- Research
 - Patient resources
+- About - goals of the site, contributors, etc.
+- Contribute - workflow, style guides, etc
 
-## Data structures
+### Topics
 
-Some data will be stored as .toml or .json for ease of editing. Most likely we will pursue .toml given it is much more human readable.
+Sections:
 
-### research articles:
-
-Systematic review vs primary evidence
-
-- Metadata
-  - Title
-  - Year
-  - Journal
-  - Trial name: Option
-- Tags: list[str]
-- Summary
-- PICO
-- Figures
-  - (Path to photo, description)
-- Description
-  - Background
-  - Objective
-  - Methods
-  - Results
-  - Limitations
-  - Conclusion
-
-### medications:
-
-- Generic
-- Brand names
-- Cost:: (province and coverage)
-- Mechanism of action:
-- Doses:
-  - Indication, dose, adjustments
-- Contraindications:
-- Side effects:
-  - Severe
-  - Common
-
-### macros (for conditions to c/p)
-
-- History
-- Investigations:
-- Management:
-
-## Topic breakdown
-
-1. list them all out or 2) break them down into sections
-   easier to navigate if you break them down into sections
-   It might be easier to just list them all out and THEN figure out it later.
-   That, or USE the tags to find things more easily
-
-Tests
-
-- SPT, IgE
-
-Drug allergy principles
-
-- desensitization
-- vaccine
-- SCADs
-- DRESS
-- IgE mediated
-
-Food allergy
-
-- IgE mediated
-- Non IgE mediated
-- PFAS
-- Oral challenges
-- EoE
-- immunotherapy
-
-Derm
-
-- atopic dermatitis
-- CSU
-- angioedema
-- contact dermatitis
-
-ENT/Resp
-
-- Asthma
-- Allergic rhinitis
-- chronic sinusitis
-- immunotherapy
-- ABPA
-- EGPA
-
-Immunology
-
-- Principles
-- B cell mediated
-- T cell mediated
+- Tests
+  - SPT, IgE, Food challenges, Drug Challenges
+- Hypersensitivity
+  - Drugs
+    - principles and approach
+    - desensitization
+    - vaccines
+    - SCAD
+    - Penicillin allergy
+  - Food
+    - IgE mediated
+    - PFAS
+    - Non-IgE mediated (EoE, etc)
+    - Immunotherapy
+  - Airway and ENT
+    - Allergic Rhinitis
+    - Asthma
+    - Chronic sinusitis
+    - ABPA
+  - Dermatology
+    - Chronic urticaria
+    - Angioedema
+    - Atopic dermatitis
+    - Contact dermatitis
+  - Misc
+    - Idiopathic/recurrent anaphylaxis
+    - Mast cell disorders
+    - Eosinophilia
+    - Elevated IgE
+- Immunology
+  - Principles
+  - B-cell mediated
+  - T-cell mediated
 - Misc
 
-Misc?
-MCAS, recurrent anaphylaxis
-Eosinophilia
-Elevated IgE
+#### General topic structure
 
-## Topic structure
-
-Not defined in .toml as I want the structure to be fairly flexible. In general though:
-
-- Macro (defined in a separate file)
+- Macro to c/p
 - Summary:
   - Condition name, epidemiology, pathophysiology, manifestations, diagnosis, management.
 - Definitions:
@@ -165,7 +86,7 @@ Not defined in .toml as I want the structure to be fairly flexible. In general t
 - Management:
   - Usual:
   - Special circumstances:
-- Prognosis:
+- Natural history / prognosis:
 - Patient resource sheet:
 - Quiz yourself:
 - Further Reading:
@@ -174,14 +95,66 @@ Not defined in .toml as I want the structure to be fairly flexible. In general t
   - Reviewers: list
   - Editor: list
 
-## Running the site:
+### research articles:
 
-Install zola:
+Systematic review vs primary evidence
 
-```zsh
-brew install zola
+- Metadata
+  - Title
+  - Year
+  - Journal
+  - Trial name
+- PICO + Conclusion
+- Figures
+- Description
+  - Background
+  - Objective
+  - Methods
+  - Results
+  - Limitations
+  - Conclusion
+
+### medications:
+
+Example below:
+
 ```
+category = "antihistamine"
+brand_names = ["Blexten"]
+cost = [{ province = "ON", price = "~$1 CAD per 20mg tab" }]
+moa = "H1 antagonist. Marketed as limited CNS distribution."
+half_life = "~15 hours"
+routes = "oral tab, liquid (uncommon)"
+doses = [
+  { indication = "CSU, AR", dose = "20mg daily to QID", notes = "adult dosing" },
+  { indication = "CSU, AR", dose = "10mg daily to QID", notes = "pediatric dosing" },
+]
+age_group = ">=12 years of age; has been used off-label in younger children"
+pregnancy = "Avoid (not enough data)"
+contraindications = "Hypersensitivity, QT prolongation or history of torsades"
+side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
+side_effects.severe = "Torsades (very rare)"
+monograph_links = ["https://pdf.hres.ca/dpd_pm/00062419.PDF"]
+```
+
+## Contribution process
+
+Prerequisites: 1) there are staff who we have available to proofread drafts for topic sections 2) there is an editor who can take charge over the 'section'
+
+1. Resident or fellow picks a topic they wish to do, and connect with editor for that 'section' (to be defined later)
+2. Timeline is set for 1st rough draft (~ 2 weeks?), which can be completed in whatever editor they want
+3. Editor and contributor back and forth initial edits
+4. Edited draft is sent to staff, necessary edits are made
+5. Editor / Josh / someone with some coding knowledge will add content into website (there is some formatting nuances)
+
+## Nitty gritty internals:
+
+Some data will be stored as .toml or for ease of editing. Most likely we will pursue .toml given it is much more human readable.
+
+### Running the site:
 
 https://www.getzola.org/
 https://abridge.pages.dev/
 https://thedataquarry.com/posts/static-site-zola/#code
+
+Site is deployed from Netlify from GitHub. It is all open-source.
