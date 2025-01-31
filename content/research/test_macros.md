@@ -13,11 +13,17 @@ series = "Research"
 authors = ["test", "test2"]
 +++
 
+# kbd
+
+Press <kbd>CTRL+ALT+Delete</kbd> to end the
+
 ## text_image_to_right
 
-{ { text_image_to_right(text="# Here is some text on the left.", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
+{ { text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
-{{ text_image_to_right(text="# Here is some text on the left.", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
+{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
+
+Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use the important {{}} shortcode within the text image to right text.
 
 ## widget_penfast
 
@@ -30,10 +36,15 @@ authors = ["test", "test2"]
 
 { % important(header = "important header") %}
 test
+
 {% end %}
 
 {% important(header = "important header") %}
 test
+Press <kbd>CTRL+ALT+Delete</kbd> to end the
+
+You can't put another shortcode inside here sadly...
+I think you probably can but it's difficult...
 {% end %}
 
 ### warning
@@ -92,3 +103,27 @@ warning box only content
 ## medications_toml_load
 
 {{ medications_toml_load()}}
+
+## two_columns
+
+{% two_columns() %}
+Left column text goes here.
+
+## Markdown should be supported
+
+<!-- split -->
+
+Right column text goes here.
+{% end %}
+
+## two_columns_fancy
+
+{% two_columns_fancy() %}
+Left column text goes here.
+
+## Markdown should be supported
+
+<!-- split -->
+
+Right column text goes here.
+{% end %}

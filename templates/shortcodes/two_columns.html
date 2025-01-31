@@ -1,0 +1,9 @@
+<div class="two_columns">
+  <div class="column">
+    {{ body | split(pat="<!-- split -->") | first | markdown | safe }}
+  </div>
+  <div class="column">
+    {{ body | split(pat="<!-- split -->") | last | markdown | safe }}
+  </div>
+</div>
+<link rel="stylesheet" href="/css/two_columns.css">

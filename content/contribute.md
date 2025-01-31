@@ -80,6 +80,8 @@ Not all topics will fit this general structure; this is meant as a general scaff
 - Patient resource sheet:
 - Quiz yourself:
 - Further Reading:
+  - clinical guidelines
+  - other sources
 - Authors:
   - Primary: list
   - Reviewers: list
