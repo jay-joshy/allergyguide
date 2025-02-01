@@ -108,3 +108,7 @@ Left column text goes here.
 
 Right column text goes here.
 {% end %}
+
+## contributors
+
+{{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}

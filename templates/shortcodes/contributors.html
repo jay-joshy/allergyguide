@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<div class="contributors">
+  {% if authors %}
+  <div class="contributor-group">
+    <i class="fas fa-pen-nib"></i>
+    <strong>Author{% if authors | length > 1 %}s{% endif %}:</strong>
+    {% for author in authors %}
+    <span class="contributor">{{ author }}</span>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+  </div>
+  {% endif %}
+
+    {% if editors %}
+  <div class="contributor-group">
+    <i class="fas fa-user-edit"></i>
+    <strong>Editor{% if editors | length > 1 %}s{% endif %}:</strong>
+    {% for editor in editors %}
+    <span class="contributor">{{ editor }}</span>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+  </div>
+  {% endif %}
+
+    {% if staff_reviewers %}
+  <div class="contributor-group">
+    <i class="fas fa-star"></i>
+    <strong>Staff Reviewer{% if staff_reviewers | length > 1 %}s{% endif %}:</strong>
+    {% for reviewer in staff_reviewers %}
+    <span class="contributor">{{ reviewer }}</span>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+  </div>
+  {% endif %}
+</div>
