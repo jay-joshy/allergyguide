@@ -46,9 +46,6 @@ external_links_no_referrer = false # rel="noreferrer"
 smart_punctuation = false          # `...` to `…`, `"quote"` to `“curly”` etc
 
 [extra]
-# A nonce to allow for mermaid
-csp_nonce = "e0c993fc-1208-48be-a43f-ac6af249613c"
-
 ###############################################################################
 ### Layout & Format
 ### position: top, bottom, both, false(hidden)
