@@ -8,8 +8,7 @@ Secondary goals if time permits includes:
 
 - Set of questions for RC studying
 - Critical appraisal of new research
-- Patient resources translated into different languages
-- Hosting our own LLM with capabilities of searching through allergy guidelines
+- Patient resources translated into different languages -- also with specific geographics (ie. BC, ON, etc.)
 
 **Please see the current draft website for a better idea of what is envisioned: [allergyguide.ca](https://allergyguide.ca)**
 

@@ -7,6 +7,7 @@ template = "pages.html"
 
 ## Hypersensitivity disorders
 
+- [General approach to hypersensitivity disorders](@/topics/hypersensitivity/hypersensitivity_approach.md)
 - <kbd><kbd>Food</kbd></kbd>
   - [IgE-mediated](/topics/hypersensitivity/foods/ige)
   - [PFAS](/topics/hypersensitivity/foods/pfas)
