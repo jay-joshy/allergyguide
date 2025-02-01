@@ -62,15 +62,17 @@ Sections:
     - Atopic dermatitis
     - Contact dermatitis
   - Misc
+    - Anaphylaxis
     - Idiopathic/recurrent anaphylaxis
     - Mast cell disorders
-    - Eosinophilia
-    - Elevated IgE
+    - Venom hypersensitivity
 - Immunology
   - Principles
   - B-cell mediated
   - T-cell mediated
 - Misc
+  - Eosinophilia
+  - Elevated IgE
 
 ## Nitty-gritty internals:
 
