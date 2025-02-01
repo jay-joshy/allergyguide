@@ -9,6 +9,8 @@ in_search_index = false
 toc = true
 +++
 
+See below for markdown syntax used for the custom shortcodes used in this website.
+
 ## kbd
 
 ```md
