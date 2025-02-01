@@ -179,7 +179,7 @@
 {%- block gotop %}
 {%- endblock gotop %}
 
-<script type="module" src="/js/mermaid.js"></script>
+<script type="module" src="/js/mermaid.js" nonce="{{ config.extra.csp_nonce }}"></script>
 
 </body>
 </html>
