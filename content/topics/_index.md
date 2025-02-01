@@ -8,7 +8,7 @@ template = "pages.html"
 ## Hypersensitivity disorders
 
 - <kbd><kbd>Food</kbd></kbd>
-  - [IgE mediated](/topics/hypersensitivity/foods/ige)
+  - [IgE-mediated](/topics/hypersensitivity/foods/ige)
   - [PFAS](/topics/hypersensitivity/foods/pfas)
   - [Non-IgE mediated (EoE, etc.)](@/topics/hypersensitivity/foods/non_ige.md)
   - [Immunotherapy](/topics/hypersensitivity/foods/immunotherapy)
@@ -16,7 +16,7 @@ template = "pages.html"
   - [Approach](/topics/hypersensitivity/drugs/approach)
   - [Desensitization](/topics/hypersensitivity/drugs/desensitization)
   - [Vaccines](/topics/hypersensitivity/drugs/vaccines)
-  - [SCAD](/topics/hypersensitivity/drugs/scad)
+  - [SCAR](/topics/hypersensitivity/drugs/scar)
   - [Penicillin allergy](/topics/hypersensitivity/drugs/penicillin)
 - <kbd><kbd>Airway and ENT</kbd></kbd>
   - [Allergic Rhinitis](@/topics/hypersensitivity/airway_ent/allergic_rhinitis.md)
@@ -34,6 +34,7 @@ template = "pages.html"
   - [Atopic dermatitis](@/topics/hypersensitivity/dermatology/atopic_dermatitis.md)
   - [Contact dermatitis](@/topics/hypersensitivity/dermatology/contact_dermatitis.md)
 - <kbd><kbd>Misc</kbd></kbd>
+  - [Anaphylaxis](@/topics/hypersensitivity/misc/anaphylaxis.md)
   - [Idiopathic/recurrent anaphylaxis](@/topics/hypersensitivity/misc/idiopathic_anaphylaxis.md)
   - [Mast cell disorders](@/topics/hypersensitivity/misc/mast_cell_disorders.md)
 

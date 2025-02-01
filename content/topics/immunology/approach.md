@@ -1,14 +1,14 @@
 +++
-title = "[name of condition]"
+title = "Approach to immune deficiencies"
 description = "[description of md page]"
 date = 2025-01-01
 draft = false
 
 [taxonomies]
-tags = ["tag1","tag2","tag3"]
+tags = ["immunology"]
 [extra]
 toc = true
-series = "tag1"
+series = "immunology"
 authors = ["author 1", "author 2"]
 +++
 

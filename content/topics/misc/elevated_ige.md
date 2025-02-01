@@ -1,14 +1,14 @@
 +++
-title = "[name of condition]"
+title = "Elevated IgE"
 description = "[description of md page]"
 date = 2025-01-01
 draft = false
 
 [taxonomies]
-tags = ["tag1","tag2","tag3"]
+tags = ["misc"]
 [extra]
 toc = true
-series = "tag1"
+series = "misc"
 authors = ["author 1", "author 2"]
 +++
 
