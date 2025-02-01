@@ -1,25 +1,21 @@
 +++
-title = "testing_macros"
-description = "page to test macros and others"
-date = 2024-11-10T15:00:00Z
+title = "Shortcodes"
+description = "Testing of shortcodes"
+date = 2024-11-24
 draft = false
+in_search_index = false
 
-[taxonomies]
-tags = ["Research","Something","Images"]
 [extra]
-keywords = "Image, Markdown, Shortcodes, Swap"
 toc = true
-series = "Research"
-authors = ["test", "test2"]
 +++
 
-# kbd
+<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
+
+## kbd
 
 Press <kbd>CTRL+ALT+Delete</kbd> to end the
 
 ## text_image_to_right
-
-{ { text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
 {{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
@@ -27,17 +23,11 @@ Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not 
 
 ## widget_penfast
 
-{ { widget_penfast() }}
 {{ widget_penfast() }}
 
 ## Custom boxes
 
 ### important
-
-{ % important(header = "important header") %}
-test
-
-{% end %}
 
 {% important(header = "important header") %}
 test
@@ -49,19 +39,11 @@ I think you probably can but it's difficult...
 
 ### warning
 
-{ % warning(header = "warning header") %}
-This is a warning section.
-{% end %}
-
 {% warning(header = "warning header") %}
 This is a warning section.
 {% end %}
 
 ### question
-
-{ % question(question= "this is the question") %}
-This is the question answer
-{% end %}
 
 {% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad") %}
 This is the question answer
@@ -81,7 +63,6 @@ warning box only content
 
 ## test_toml_load
 
-{ { test_toml_load(section_name = "label_1") }}
 {{ test_toml_load(section_name = "label_1") }}
 
 ## wide_contact_card
@@ -109,7 +90,7 @@ warning box only content
 {% two_columns() %}
 Left column text goes here.
 
-## Markdown should be supported
+### Markdown should be supported
 
 <!-- split -->
 
@@ -121,7 +102,7 @@ Right column text goes here.
 {% two_columns_fancy() %}
 Left column text goes here.
 
-## Markdown should be supported
+### Markdown should be supported
 
 <!-- split -->
 

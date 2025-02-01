@@ -10,8 +10,7 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out ...
-Connect with us through ...
+Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out, connect with us (see the mail button at the bottom of the page).
 
 ## Contribution process
 
@@ -24,7 +23,7 @@ Prerequisites: 1) there are staff who we have available to proofread drafts for 
 
 3. Editor and contributor back and forth initial edits
 4. Edited draft is sent to staff, necessary edits are made
-5. Editor / Josh / someone with some coding knowledge will add content into website (there are some formatting nuances)
+5. Editor / Josh / someone with some coding knowledge will add content into website (there are some formatting nuances -- see [shortcodes guide](/shortcodes))
 
 ## Stylistic Principles
 
@@ -34,6 +33,7 @@ Prerequisites: 1) there are staff who we have available to proofread drafts for 
 - Use clear, structured formatting (headings, bullet points, tables) for readability
 - Avoid passive voice where possible
 - Abbreviations are fine but must be defined
+- While a single topic might be quite complex (i.e. asthma), each page is still meant to be relatively simple -- the goal is **not** to be a comprehensive textbook. Link to a resource that goes more in depth at that juncture, or to another subpage.
 
 {% end %}
 

@@ -8,48 +8,48 @@ template = "pages.html"
 ## Hypersensitivity disorders
 
 - <kbd><kbd>Food</kbd></kbd>
-  - IgE mediated
-  - PFAS
-  - Non-IgE mediated (EoE, etc)
-  - Immunotherapy
+  - [IgE mediated](/topics/hypersensitivity/foods/ige)
+  - [PFAS](/topics/hypersensitivity/foods/pfas)
+  - [Non-IgE mediated (EoE, etc.)](@/topics/hypersensitivity/foods/non_ige.md)
+  - [Immunotherapy](/topics/hypersensitivity/foods/immunotherapy)
 - <kbd><kbd>Drugs</kbd></kbd>
-  - Principles and approach
-  - Desensitization
-  - Vaccines
-  - SCAD
-  - Penicillin allergy
+  - [Approach](/topics/hypersensitivity/drugs/approach)
+  - [Desensitization](/topics/hypersensitivity/drugs/desensitization)
+  - [Vaccines](/topics/hypersensitivity/drugs/vaccines)
+  - [SCAD](/topics/hypersensitivity/drugs/scad)
+  - [Penicillin allergy](/topics/hypersensitivity/drugs/penicillin)
 - <kbd><kbd>Airway and ENT</kbd></kbd>
-  - Allergic Rhinitis
-  - Asthma
-  - Chronic sinusitis
-  - ABPA
+  - [Allergic Rhinitis](@/topics/hypersensitivity/airway_ent/allergic_rhinitis.md)
+  - [Asthma](/topics/hypersensitivity/airway_ent/asthma)
+  - [Chronic sinusitis](@/topics/hypersensitivity/airway_ent/chronic_sinusitis.md)
+  - [ABPA](/topics/hypersensitivity/airway_ent/abpa)
 
 <!-- split -->
 
 ## Hypersensitivity disorders continued
 
 - <kbd><kbd>Dermatology</kbd></kbd>
-  - [Chronic urticaria](/topics/hypersensitivity/csu)
-  - Angioedema
-  - Atopic dermatitis
-  - Contact dermatitis
+  - [Chronic urticaria](/topics/hypersensitivity/dermatology/csu)
+  - [Angioedema](/topics/hypersensitivity/dermatology/angioedema)
+  - [Atopic dermatitis](@/topics/hypersensitivity/dermatology/atopic_dermatitis.md)
+  - [Contact dermatitis](@/topics/hypersensitivity/dermatology/contact_dermatitis.md)
 - <kbd><kbd>Misc</kbd></kbd>
-  - Idiopathic/recurrent anaphylaxis
-  - Mast cell disorders
+  - [Idiopathic/recurrent anaphylaxis](@/topics/hypersensitivity/misc/idiopathic_anaphylaxis.md)
+  - [Mast cell disorders](@/topics/hypersensitivity/misc/mast_cell_disorders.md)
 
 ## Immunology
 
-- Principles
-- B-cell mediated
-- T-cell mediated
+- [Approach and principles](/topics/immunology/approach)
+- [B-cell mediated](@/topics/immunology/b_cell.md)
+- [T-cell mediated](@/topics/immunology/t_cell.md)
 
 ## Tests
 
-- SPT, IgE, Food challenges, Drug Challenges
+- [SPT/IgE/Intradermal](@/topics/tests/spt_ige_intradermal.md), [Food challenges](@/topics/tests/food_challenge.md), [Drug Challenges](@/topics/tests/drug_challenge.md)
 
 ## Misc
 
-- Eosinophilia
-- Elevated IgE
+- [Eosinophilia](/topics/misc/eosinophilia)
+- [Elevated IgE](@/topics/misc/elevated_ige.md)
 
 {% end %}
