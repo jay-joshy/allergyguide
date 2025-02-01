@@ -9,25 +9,51 @@ in_search_index = false
 toc = true
 +++
 
-<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
-
 ## kbd
 
-Press <kbd>CTRL+ALT+Delete</kbd> to end the
+```md
+<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
+```
+
+<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
 
 ## text_image_to_right
 
+Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
+
+```md
+{% raw() %}
+{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
+{% end %}
+```
+
 {{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
-Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use the important {{}} shortcode within the text image to right text.
-
 ## widget_penfast
+
+```md
+{% raw() %}
+{{ widget_penfast() }}
+{% end %}
+```
 
 {{ widget_penfast() }}
 
 ## Custom boxes
 
 ### important
+
+```md
+{% raw() %}
+{% important(header = "important header") %}
+test
+Press <kbd>CTRL+ALT+Delete</kbd> to end the
+
+You can't put another shortcode inside here sadly...
+I think you probably can but it's difficult...
+{% end %}
+{% end %}
+```
 
 {% important(header = "important header") %}
 test
@@ -39,11 +65,27 @@ I think you probably can but it's difficult...
 
 ### warning
 
+```md
+{% raw() %}
+{% warning(header = "warning header") %}
+This is a warning section.
+{% end %}
+{% end %}
+```
+
 {% warning(header = "warning header") %}
 This is a warning section.
 {% end %}
 
 ### question
+
+```md
+{% raw() %}
+{% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad") %}
+This is the question answer
+{% end %}
+{% end %}
+```
 
 {% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad") %}
 This is the question answer
@@ -51,11 +93,27 @@ This is the question answer
 
 ### important_box_only
 
+```md
+{% raw() %}
+{% important_box_only() %}
+important bx only!!!
+{% end %}
+{% end %}
+```
+
 {% important_box_only() %}
 important bx only!!!
 {% end %}
 
 ### warning_box_only
+
+```md
+{% raw() %}
+{% warning_box_only() %}
+warning box only content
+{% end %}
+{% end %}
+```
 
 {% warning_box_only() %}
 warning box only content
@@ -63,29 +121,79 @@ warning box only content
 
 ## test_toml_load
 
+```md
+{% raw() %}
+{{ test_toml_load(section_name = "label_1") }}
+{% end %}
+```
+
 {{ test_toml_load(section_name = "label_1") }}
 
 ## wide_contact_card
+
+```md
+{% raw() %}
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+{% end %}
+```
 
 {{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
 
 ## contact_card_gallery
 
+```md
+{% raw() %}
+{{ card_grid() }}
+{% end %}
+```
+
 {{ card_grid() }}
 
 ## profile_grid
+
+```md
+{% raw() %}
+{{profile_grid()}}
+{% end %}
+```
 
 {{profile_grid()}}
 
 ## load_macro
 
+```md
+{% raw() %}
+{{ load_macro(topic_name = "_xample_topic") }}
+{% end %}
+```
+
 {{ load_macro(topic_name = "_xample_topic") }}
 
 ## medications_toml_load
 
+```md
+{% raw() %}
+{{ medications_toml_load()}}
+{% end %}
+```
+
 {{ medications_toml_load()}}
 
 ## two_columns
+
+```md
+{% raw() %}
+{% two_columns() %}
+Left column text goes here.
+
+### Markdown should be supported
+
+<!-- split -->
+
+Right column text goes here.
+{% end %}
+{% end %}
+```
 
 {% two_columns() %}
 Left column text goes here.
@@ -99,6 +207,20 @@ Right column text goes here.
 
 ## two_columns_fancy
 
+```md
+{% raw() %}
+{% two_columns_fancy() %}
+Left column text goes here.
+
+### Markdown should be supported
+
+<!-- split -->
+
+Right column text goes here.
+{% end %}
+{% end %}
+```
+
 {% two_columns_fancy() %}
 Left column text goes here.
 
@@ -111,22 +233,32 @@ Right column text goes here.
 
 ## contributors
 
+```md
+{% raw() %}
+{{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
+{% end %}
+```
+
 {{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
 
 ## mermaid
 
-this should only work with templates of page or pages.html
-
+```md
+{% raw() %}
 {% mermaid() %}
-graph TD
-A[Enter Chart Definition] --> B(Preview)
-B --> C{decide}
-C --> D[Keep]
-C --> E[Edit Definition]
-E --> B
-D --> F[Save Image and Code]
-F --> B
+sequenceDiagram
+Alice ->> Bob: Hello Bob, how are you?
+Bob-->>John: How about you John?
+Bob--x Alice: I am good thanks!
+Bob-x John: I am good thanks!
+Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+    Bob-->Alice: Checking with John...
+    Alice->John: Yes... John, how are you?
+
 {% end %}
+{% end %}
+```
 
 {% mermaid() %}
 sequenceDiagram
