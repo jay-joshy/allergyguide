@@ -37,6 +37,7 @@ template = "pages.html"
   - [Anaphylaxis](@/topics/hypersensitivity/misc/anaphylaxis.md)
   - [Idiopathic/recurrent anaphylaxis](@/topics/hypersensitivity/misc/idiopathic_anaphylaxis.md)
   - [Mast cell disorders](@/topics/hypersensitivity/misc/mast_cell_disorders.md)
+  - [Venom hypersensitivity](/topics/hypersensitivity/misc/venom)
 
 ## Immunology
 
