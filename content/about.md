@@ -37,10 +37,12 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 
 # Technical mumbo-jumbo
 
-This site is open-source and hosted on Netlify. It is built using the excellent static website generator [Zola](https://www.getzola.org/), with the [Abridge theme](https://github.com/Jieiku/abridge.css).
+This project is open-source and built using the excellent static website generator [Zola](https://www.getzola.org/), with the [Abridge theme](https://github.com/Jieiku/abridge.css).
 
 # Medical Disclaimer
 
+{% important(header = "PLEASE NOTE:") %}
 **This information is for educational and informational purposes only and does not replace professional medical advice.** The content is not meant to be complete or exhaustive or to be applicable to any specific individual's medical condition. Always consult a licensed healthcare provider for concerns about your health -- the content of this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment.
 
 We assume no legal duty to correct or update the website nor to resolve or clarify any inconsistent information that might be a part of the website.
+{% end %}

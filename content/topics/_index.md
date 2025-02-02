@@ -1,6 +1,8 @@
 +++
-title = "topics"
+title = "TOPICS AND CONDITIONS"
 template = "pages.html"
+description = "topics and conditions"
+in_search_index = false
 +++
 
 {% two_columns_fancy() %}

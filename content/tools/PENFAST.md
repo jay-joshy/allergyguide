@@ -1,12 +1,13 @@
 +++
 title = "PEN-FAST"
-description = "Risk stratification tool for immediate penicillin reactions"
+description = "Risk stratification tool for immediate penicillin reactions. PENFAST, PEN-FAST"
 date = 2024-11-10T15:00:00Z
 draft = false
 
 [taxonomies]
 tags = ["tools", "drug allergy"]
 [extra]
+keywords = "PENFAST, PEN-FAST, penicillin, drugs"
 toc = true
 series = "tools"
 authors = ["Joshua Yu"]
