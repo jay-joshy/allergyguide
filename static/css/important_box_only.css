@@ -5,11 +5,13 @@
   border-color: #ff4444;
   background-color: #320a0a;
   color: #ff7575;
+
   .icon {
     height: 1.75em;
     display: flex;
     align-items: center;
   }
+
   .content {
     p {
       margin: 0;
@@ -20,13 +22,15 @@
       }
 
     }
+
     /* Ensure ordered and unordered lists inherit the correct color */
-    ol, ul {
-      color: #ffdbc9 ;
+    ol,
+    ul {
+      color: #ffdbc9;
     }
 
     li {
-      color: #ffdbc9 ;
+      color: #ffdbc9;
     }
   }
 

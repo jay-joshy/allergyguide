@@ -1,34 +1,34 @@
 .medications_toml_load {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+
+  .drug-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .drug-card h2 {
+    margin-top: 0;
+  }
+
+  .drug-card-content {
     display: flex;
-    flex-direction: column;
     gap: 20px;
+  }
 
+  .drug-card-column {
+    flex: 1;
+  }
 
-    .drug-card {
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 16px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+  .drug-card ul {
+    padding-left: 20px;
+  }
 
-    .drug-card h2 {
-        margin-top: 0;
-    }
-
-    .drug-card-content {
-        display: flex;
-        gap: 20px;
-    }
-
-    .drug-card-column {
-        flex: 1;
-    }
-
-    .drug-card ul {
-        padding-left: 20px;
-    }
-
-    .monograph-links {
-        font-size: 0.8em;
-    }
+  .monograph-links {
+    font-size: 0.8em;
+  }
 }

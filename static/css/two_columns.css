@@ -1,11 +1,11 @@
     .two_columns {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        font-size: 20px;
-    }
-    .two_columns .column {
-        flex: 1;
-        min-width: 200px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 20px;
     }
 
+    .two_columns .column {
+      flex: 1;
+      min-width: 200px;
+    }

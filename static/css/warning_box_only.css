@@ -1,15 +1,17 @@
-  .warning_box_only{
+  .warning_box_only {
     line-height: inherit;
     margin-bottom: 0px;
     border: 1.5px solid;
     border-color: #449bff;
     background-color: #101f32;
     color: #f6e071;
+
     .icon {
       height: 1.75em;
       display: flex;
       align-items: center;
     }
+
     .content {
       p {
         margin: 0;
@@ -20,7 +22,8 @@
         }
       }
 
-      ol, ul {
+      ol,
+      ul {
         color: #fff9dc;
       }
 
@@ -29,7 +32,7 @@
       }
 
 
-      
+
     }
 
   }
