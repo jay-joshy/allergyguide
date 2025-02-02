@@ -5,9 +5,9 @@
   {{ "### " ~ section_data.topic | markdown | safe }}
   <div class="code-block-container">
     <button class="copy-button">Copy</button>
-    <div class="txt">{{ section_data.content | replace(from="{current_date}", to=now() | date(format="%B %d, %Y")) }}</div>
+    <div class="txt">{{ section_data.content | replace(from="{current_date}", to=now() | date(format="%B %d, %Y")) }}
+    </div>
   </div>
   {% endfor %}
 </div>
 <script src="/js/topic_macros_toml_load.js"></script>
-<link rel="stylesheet" href="/css/topic_macros_toml_load.css">

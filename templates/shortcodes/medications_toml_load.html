@@ -7,8 +7,8 @@
       <div class="drug-card-column">
         <p><strong>Brand Names:</strong>
           {% for brand in details.brand_names %}
-                            {{ brand }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}</p>
+          {{ brand }}{% if not loop.last %}, {% endif %}
+          {% endfor %}</p>
         <p><strong>Cost:</strong>
           {{ details.cost[0].price }} ({{ details.cost[0].province }})</p>
         <p><strong>Mechanism of Action:</strong>
@@ -46,4 +46,3 @@
   </div>
   {% endfor %}
 </div>
-<link rel="stylesheet" href="/css/medications_toml_load.css">

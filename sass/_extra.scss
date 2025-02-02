@@ -1,6 +1,23 @@
 /******************************************************************************
  *   Extra - Put your extra SASS/CSS here, it will get bundled with abridge.css
  *****************************************************************************/
+@use "shortcodes/card_grid";
+@use "shortcodes/contributors";
+@use "shortcodes/important";
+@use "shortcodes/important_box_only";
+@use "shortcodes/load_macro";
+@use "shortcodes/profile_grid";
+@use "shortcodes/question";
+@use "shortcodes/test_toml_load";
+@use "shortcodes/text_image_to_right";
+@use "shortcodes/topic_macros_toml_load";
+@use "shortcodes/two_columns";
+@use "shortcodes/two_columns_fancy";
+@use "shortcodes/warning";
+@use "shortcodes/warning_box_only";
+@use "shortcodes/wide_contact_card";
+@use "shortcodes/widget_penfast";
+@use "shortcodes/medications_toml_load";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
