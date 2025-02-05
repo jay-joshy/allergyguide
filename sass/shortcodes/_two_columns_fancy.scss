@@ -1,81 +1,45 @@
+/* Define theme variables */
+:root:not(.switch) {
+  /* Dark mode */
+  --tcf_bg-color: #121212;
+  --tcf_text-color: #e0e0e0;
+  --tcf_column-bg: #2c2c2c;
+  --tcf_column-border: #444;
+}
+
+:root.switch {
+  /* Light mode */
+  --tcf_bg-color: #fafafa;
+  --tcf_text-color: #333;
+  --tcf_column-bg: #fff;
+  --tcf_column-border: #e0e0e0;
+}
+
 /* General styling for the columns */
 .two_columns_fancy {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  /* Reduced the gap between columns */
   justify-content: space-between;
-  margin: 2rem auto;
+  margin: 0rem auto;
+  /* max-width: 1200px; */
+  padding: 1rem;
+  background-color: var(--tcf_bg-color);
+  color: var(--tcf_text-color);
 
 
   .column {
     flex: 1 1 48%;
-    /* Keeps two columns with some breathing space */
     box-sizing: border-box;
     padding: 1.5rem;
     border-radius: 8px;
     overflow: hidden;
     position: relative;
-    /* For positioning the vertical line */
+    background-color: var(--tcf_column-bg);
+    border: 1px solid var(--tcf_column-border);
   }
 
-  /* Light mode styles */
-  @media (prefers-color-scheme: light) {
-    body {
-      background-color: #fafafa;
-      color: #333;
-    }
-
-    .two_columns {
-      max-width: 1200px;
-      padding: 2rem;
-    }
-
-    .column {
-      background-color: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e0e0e0;
-    }
-
-    /* Accent colors for light mode */
-    .column h2,
-    .column p,
-    .column ul,
-    .column ol,
-    .column li {
-      color: #222;
-    }
-  }
-
-  /* Dark mode styles */
-  @media (prefers-color-scheme: dark) {
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-
-    .two_columns {
-      max-width: 1200px;
-      padding: 2rem;
-    }
-
-    .column {
-      background-color: #2c2c2c;
-      /* box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1); */
-      border: 1px solid #444;
-    }
-
-    /* Accent colors for dark mode */
-    .column h2,
-    .column p,
-    .column ul,
-    .column ol,
-    .column li {
-      color: #e0e0e0;
-    }
-  }
-
-  /* Aesthetic typography and spacing */
+  /* Typography */
   h2,
   p {
     margin: 0 0 1rem 0;
@@ -83,26 +47,33 @@
     line-height: 1.6;
   }
 
-  p {
-    font-size: 1rem;
-    color: inherit;
-  }
-
   h2 {
     font-size: 1.25rem;
     font-weight: 600;
   }
 
+  p {
+    font-size: 1rem;
+    color: inherit;
+  }
+
+  /* Ensures text inside the column adjusts based on theme */
+  .column h2,
+  .column p,
+  .column ul,
+  .column ol,
+  .column li {
+    color: var(--tcf_text-color);
+  }
+
   /* Responsive behavior */
   @media (max-width: 768px) {
-    .two_columns {
+    .two_columns_fancy {
       flex-direction: column;
     }
 
     .column {
       width: 100%;
     }
-
   }
-
 }
