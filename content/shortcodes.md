@@ -17,6 +17,14 @@ See below for markdown syntax used for the custom shortcodes used in this websit
 This is a test
 {% end %}
 
+## admonition
+
+{% admonition(type="warning", icon="note", title="An important tip") %}
+Stay hydrated~
+
+This method is particularly useful for longer content or multiple paragraphs.
+{% end %}
+
 ## kbd
 
 ```md
