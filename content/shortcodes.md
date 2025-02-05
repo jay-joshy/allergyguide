@@ -11,6 +11,12 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
+## example_colormode
+
+{% example_colormode() %}
+This is a test
+{% end %}
+
 ## kbd
 
 ```md
