@@ -1,3 +1,33 @@
+:root:not(.switch) {
+  /* Dark mode variables */
+  --tmtl_bg_color: #2d2d2d;
+  --tmtl_border_color: #444;
+  --tmtl_text_color: #ddd;
+  --tmtl_scrollbar_thumb: #666;
+  --tmtl_scrollbar_track: #2d2d2d;
+  --tmtl_button_bg: #444;
+  --tmtl_button_text: #ddd;
+  --tmtl_button_hover_bg: #666;
+  --tmtl_button_hover_text: #fff;
+  --tmtl_button_active_bg: #888;
+  --tmtl_button_active_text: #fff;
+}
+
+:root.switch {
+  /* Light mode variables */
+  --tmtl_bg_color: #f5f5f5;
+  --tmtl_border_color: #ddd;
+  --tmtl_text_color: #333;
+  --tmtl_scrollbar_thumb: #bbb;
+  --tmtl_scrollbar_track: #f5f5f5;
+  --tmtl_button_bg: #ddd;
+  --tmtl_button_text: #333;
+  --tmtl_button_hover_bg: #ccc;
+  --tmtl_button_hover_text: #000;
+  --tmtl_button_active_bg: #bbb;
+  --tmtl_button_active_text: #000;
+}
+
 .topic_macros_toml_load {
   border-radius: 5px;
   overflow: hidden;
@@ -7,42 +37,29 @@
     margin: 0;
     padding: 12px;
     font-family: monospace;
-    background-color: #2d2d2d;
-    /* Dark gray background */
-    border: 1px solid #444;
-    /* Subtle dark border */
+    background-color: var(--tmtl_bg_color);
+    border: 1px solid var(--tmtl_border_color);
     border-radius: 4px;
-    /* Slightly larger rounded corners */
-    color: #ddd;
-    /* Light gray text */
+    color: var(--tmtl_text_color);
     font-size: 15px;
-    /* Adjust the font size here */
     max-height: 500px;
-    /* Limit the maximum height */
     overflow-y: auto;
-    /* Enable vertical scrolling when content overflows */
     scrollbar-width: thin;
-    /* Firefox: Make scrollbar thin */
-    scrollbar-color: #666 #2d2d2d;
-    /* Firefox: Custom scrollbar colors */
+    scrollbar-color: var(--tmtl_scrollbar_thumb) var(--tmtl_scrollbar_track);
   }
 
   /* Custom scrollbar for Webkit browsers (Chrome, Edge, Safari) */
   .txt::-webkit-scrollbar {
     width: 8px;
-    /* Set width of scrollbar */
   }
 
   .txt::-webkit-scrollbar-thumb {
-    background-color: #666;
-    /* Scrollbar thumb color */
+    background-color: var(--tmtl_scrollbar_thumb);
     border-radius: 4px;
-    /* Rounded scrollbar */
   }
 
   .txt::-webkit-scrollbar-track {
-    background-color: #2d2d2d;
-    /* Scrollbar track color */
+    background-color: var(--tmtl_scrollbar_track);
   }
 
   .code-block-container {
@@ -55,29 +72,22 @@
     right: 10px;
     padding: 5px 10px;
     font-size: 12px;
-    background-color: #444;
-    /* Dark button background */
-    color: #ddd;
-    /* Light button text */
+    background-color: var(--tmtl_button_bg);
+    color: var(--tmtl_button_text);
     border: none;
     border-radius: 3px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    /* Darker shadow for contrast */
     transition: background-color 0.2s, color 0.2s;
   }
 
   .copy-button:hover {
-    background-color: #666;
-    /* Slightly lighter on hover */
-    color: #fff;
-    /* Pure white text on hover */
+    background-color: var(--tmtl_button_hover_bg);
+    color: var(--tmtl_button_hover_text);
   }
 
   .copy-button:active {
-    background-color: #888;
-    /* Even lighter background on click */
-    color: #fff;
-    /* Pure white text on click */
+    background-color: var(--tmtl_button_active_bg);
+    color: var(--tmtl_button_active_text);
   }
 }
