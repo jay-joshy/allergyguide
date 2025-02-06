@@ -11,6 +11,12 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
+## remote_text
+
+```md
+{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
+```
+
 ## Custom boxes
 
 ### important
