@@ -10,7 +10,7 @@ in_search_index = false
 
 To create a comprehensive cross-Canada resident-led and faculty reviewed website for **high-yield and pragmatic** information about clinical allergy & immunology, meant to help residents and fellows in clinic. In particular:
 
-{% important_box_only() %}
+{% admonition(type="danger", icon="tip", title="MAIN GOALS") %}
 
 1. Sections for major conditions, including copy-pasteable macros and practical pearls
 2. Sections for therapies and medications

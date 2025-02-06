@@ -115,10 +115,12 @@
     font-weight: 580;
   }
 
-  p {
+  p,
+  ul,
+  li,
+  ol {
     margin: 0;
-    padding: 0;
-
+    padding-top: 0;
   }
 }
 
