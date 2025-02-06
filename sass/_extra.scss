@@ -19,6 +19,7 @@
 @use "shortcodes/medications_toml_load";
 @use "shortcodes/example_colormode";
 @use "shortcodes/admonition";
+@use "shortcodes/wip";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {

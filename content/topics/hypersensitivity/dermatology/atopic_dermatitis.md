@@ -11,6 +11,7 @@ toc = true
 series = "dermatology"
 authors = ["author 1", "author 2"]
 +++
+{{ wip() }}
 
 </br>
 </br>

@@ -100,7 +100,7 @@ warning box only content
 ## admonition
 
 Credit to [tabi](https://welpo.github.io/tabi/blog/shortcodes/#admonitions) for the styling. It's more pleasant colour scheme wise and it changes with the light/dark mode.
-Options for type/icon: note, tip, info, warning, danger
+Options for type/icon: note, tip, info, warning, danger, pearl, question (only the icon)
 
 These can be mixed and matched.
 
@@ -136,6 +136,9 @@ Blah blah
 blah blah
 {% end %}
 
+{% admonition(type="note", icon="question", title="question icon") %}
+blah blah
+{% end %}
 We also have the elusive pearl mode:
 
 ```md
@@ -339,3 +342,7 @@ This is a test
 ```
 
 {{ test_toml_load(section_name = "label_1") }}
+
+## wip
+
+{{ wip() }}
