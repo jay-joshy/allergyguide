@@ -18,6 +18,7 @@
 
   .admonition-icon {
     fill: var(--admonition-#{$type}-border);
+    color: var(--admonition-#{$type}-border);
   }
 }
 
