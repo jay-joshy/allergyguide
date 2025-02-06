@@ -11,7 +11,7 @@
   /* Light mode */
   --tcf_bg-color: #fafafa;
   --tcf_text-color: #333;
-  --tcf_column-bg: #fff;
+  --tcf_column-bg: #fafafa;
   --tcf_column-border: #e0e0e0;
 }
 
@@ -24,7 +24,6 @@
   margin: 0rem auto;
   /* max-width: 1200px; */
   padding: 1rem;
-  background-color: var(--tcf_bg-color);
   color: var(--tcf_text-color);
 
 
