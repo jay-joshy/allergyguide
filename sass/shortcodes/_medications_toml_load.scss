@@ -6,6 +6,12 @@
   --medstl_shadow: rgba(0, 0, 0, 0.5);
   --medstl_link: #1e90ff;
   --medstl_icon: #ffa500;
+  --pearls_background: #542954;
+  /* Slightly less vibrant than #6b2a6b, but still rich */
+  --pearls_text: #ffffff;
+  /* Keep text white for contrast */
+  --pearls_icon: #ff85c1;
+  /* Softer pink for the icon, not as bright as #ff6ec7 */
 }
 
 :root.switch {
@@ -16,6 +22,12 @@
   --medstl_shadow: rgba(0, 0, 0, 0.1);
   --medstl_link: #0645ad;
   --medstl_icon: #ff4500;
+  --pearls_background: #ffe6f2;
+  /* Light pink background */
+  --pearls_text: #660066;
+  /* Dark pink text */
+  --pearls_icon: #cc0066;
+  /* Dark pink icon */
 }
 
 .medications_toml_load {
@@ -72,6 +84,45 @@
               text-decoration: underline;
             }
           }
+        }
+      }
+    }
+
+    .pearls-section {
+      background-color: var(--pearls_background);
+      color: var(--pearls_text);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 0px;
+      margin-top: 16px;
+      grid-column: span 2;
+      /* Span both columns */
+
+      .pearl-icon {
+        width: 1.4rem;
+        /* Adjust size as needed */
+        height: 1.4rem;
+        /* Adjust size as needed */
+        fill: var(--pearls_icon);
+        padding-top: 0.2rem;
+        margin-right: 8px;
+      }
+
+      h3 {
+        margin-top: 0;
+        color: var(--pearls_icon);
+
+        i {
+          margin-right: 8px;
+        }
+      }
+
+      ul {
+        margin-left: 0.5rem;
+        list-style-type: disc;
+
+        li {
+          margin: 0.5em 0;
         }
       }
     }

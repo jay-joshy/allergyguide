@@ -13,11 +13,8 @@ Organizational:
 
 Shortcodes:
 
-- Add pearls section to medications toml
 - Add tags sort ability to medications toml
-- Add shortcode for single medication
 - Add tags to the medicatoins toml
-- add question to admonition shortcode
 - consolidate and make dark/light themes for your boxes, particularly the question box (which does not look good on mobile)
 
 Other stylistic:

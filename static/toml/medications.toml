@@ -28,7 +28,7 @@ doses = [
   { indication = "AR, CSU", dose = "10mg once daily", notes = "adult dosing" },
   { indication = "AR, CSU", dose = "5mg once daily", notes = "pediatric dosing (ages 2-5)" },
 ]
-pearls = ["Insert pearl here"]
+# pearls = ["Insert pearl here"]
 age_group = ">=2 years of age"
 pregnancy = "Considered safe (Category B)"
 contraindications = "Hypersensitivity to loratadine or desloratadine"
