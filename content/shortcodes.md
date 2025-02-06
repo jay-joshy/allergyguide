@@ -11,42 +11,6 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
-## example_colormode
-
-{% example_colormode() %}
-This is a test
-{% end %}
-
-## kbd
-
-```md
-<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
-```
-
-<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
-
-## text_image_to_right
-
-Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
-
-```md
-{% raw() %}
-{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
-{% end %}
-```
-
-{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
-
-## widget_penfast
-
-```md
-{% raw() %}
-{{ widget_penfast() }}
-{% end %}
-```
-
-{{ widget_penfast() }}
-
 ## Custom boxes
 
 ### important
@@ -166,65 +130,31 @@ Blah blah
 blah blah
 {% end %}
 
-## test_toml_load
+We also have the elusive pearl mode:
 
 ```md
 {% raw() %}
-{{ test_toml_load(section_name = "label_1") }}
+{% admonition(type="pearl", icon="pearl", title="PEARL") %}
+Insert sage clinical pearl
+{% end %}
 {% end %}
 ```
 
-{{ test_toml_load(section_name = "label_1") }}
+{% admonition(type="pearl", icon="pearl", title="PEARL") %}
+Insert sage clinical pearl
+{% end %}
 
-## wide_contact_card
+## text_image_to_right
+
+Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
 
 ```md
 {% raw() %}
-{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 {% end %}
 ```
 
-{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
-
-## contact_card_gallery
-
-```md
-{% raw() %}
-{{ card_grid() }}
-{% end %}
-```
-
-{{ card_grid() }}
-
-## profile_grid
-
-```md
-{% raw() %}
-{{profile_grid()}}
-{% end %}
-```
-
-{{profile_grid()}}
-
-## load_macro
-
-```md
-{% raw() %}
-{{ load_macro(topic_name = "_xample_topic") }}
-{% end %}
-```
-
-{{ load_macro(topic_name = "_xample_topic") }}
-
-## medications_toml_load
-
-```md
-{% raw() %}
-{{ medications_toml_load()}}
-{% end %}
-```
-
-{{ medications_toml_load()}}
+{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
 
 ## two_columns
 
@@ -319,3 +249,87 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
     Alice->John: Yes... John, how are you?
 
 {% end %}
+
+## widget_penfast
+
+```md
+{% raw() %}
+{{ widget_penfast() }}
+{% end %}
+```
+
+{{ widget_penfast() }}
+
+## wide_contact_card
+
+```md
+{% raw() %}
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+{% end %}
+```
+
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+
+## contact_card_gallery
+
+```md
+{% raw() %}
+{{ card_grid() }}
+{% end %}
+```
+
+{{ card_grid() }}
+
+## profile_grid
+
+```md
+{% raw() %}
+{{profile_grid()}}
+{% end %}
+```
+
+{{profile_grid()}}
+
+## load_macro
+
+```md
+{% raw() %}
+{{ load_macro(topic_name = "_xample_topic") }}
+{% end %}
+```
+
+{{ load_macro(topic_name = "_xample_topic") }}
+
+## medications_toml_load
+
+```md
+{% raw() %}
+{{ medications_toml_load()}}
+{% end %}
+```
+
+{{ medications_toml_load()}}
+
+## example_colormode
+
+{% example_colormode() %}
+This is a test
+{% end %}
+
+## kbd
+
+```md
+<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
+```
+
+<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
+
+## test_toml_load
+
+```md
+{% raw() %}
+{{ test_toml_load(section_name = "label_1") }}
+{% end %}
+```
+
+{{ test_toml_load(section_name = "label_1") }}

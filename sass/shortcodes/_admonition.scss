@@ -42,6 +42,13 @@
   --admonition-danger-border: #e74f54;
   --admonition-danger-bg: #4c1012;
   --admonition-danger-code: #8c2e00;
+
+  --admonition-pearl-border: #ff4d58;
+  /* More intense coral-pink */
+  --admonition-pearl-bg: #5e2a3a;
+  /* Darker pinkish-brown */
+  --admonition-pearl-code: #a94d5b;
+  /* Muted pink with stronger hue */
 }
 
 :root.switch {
@@ -65,6 +72,13 @@
   --admonition-danger-border: #d8292e;
   --admonition-danger-bg: #ffebed;
   --admonition-danger-code: #fcc1c5;
+
+  --admonition-pearl-border: #ff4b6a;
+  /* More pink for the border */
+  --admonition-pearl-bg: #ffebef;
+  /* Light pink background */
+  --admonition-pearl-code: #f4a8b3;
+  /* Softer pink for code background */
 }
 
 .admonition {
@@ -142,4 +156,8 @@
 
 .admonition.danger {
   @include admonition-type('danger');
+}
+
+.admonition.pearl {
+  @include admonition-type('pearl');
 }

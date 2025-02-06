@@ -5,19 +5,19 @@
     <h2>{{ drug | capitalize }}</h2>
     <div class="drug-card-content">
       <div class="drug-card-column">
-        <p><strong>Brand Names:</strong>
+        <p><strong><i class="fas fa-tags"></i> Brand Names:</strong>
           {% for brand in details.brand_names %}
           {{ brand }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
-        <p><strong>Cost:</strong>
+        <p><strong><i class="fas fa-dollar-sign"></i> Cost:</strong>
           {{ details.cost[0].price }} ({{ details.cost[0].province }})</p>
-        <p><strong>Mechanism of Action:</strong>
+        <p><strong>MoA:</strong>
           {{ details.moa }}</p>
-        <p><strong>Half-life:</strong>
+        <p><strong><i class="fas fa-hourglass-half"></i> Half-life:</strong>
           {{ details.half_life }}</p>
-        <p><strong>Routes:</strong>
+        <p><strong><i class="fas fa-route"></i> Routes:</strong>
           {{ details.routes }}</p>
-        <p><strong>Doses:</strong></p>
+        <p><strong><i class="fas fa-syringe"></i> Doses:</strong></p>
         <ul>
           {% for dose in details.doses %}
           <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
@@ -25,17 +25,17 @@
         </ul>
       </div>
       <div class="drug-card-column">
-        <p><strong>Age Group:</strong>
+        <p><strong><i class="fas fa-user"></i> Age Group:</strong>
           {{ details.age_group }}</p>
-        <p><strong>Pregnancy:</strong>
+        <p><strong><i class="fas fa-baby"></i> Pregnancy:</strong>
           {{ details.pregnancy }}</p>
-        <p><strong>Contraindications:</strong>
+        <p><strong><i class="fas fa-ban"></i> Contraindications:</strong>
           {{ details.contraindications }}</p>
-        <p><strong>Common Side Effects:</strong>
+        <p><strong><i class="fas fa-exclamation-triangle"></i> Common SEs:</strong>
           {{ details.side_effects.common }}</p>
-        <p><strong>Severe Side Effects:</strong>
+        <p><strong><i class="fas fa-skull-crossbones"></i> Severe SEs:</strong>
           {{ details.side_effects.severe }}</p>
-        <p><strong>Monograph Links:</strong></p>
+        <p><strong><i class="fas fa-book"></i> Monograph Links:</strong></p>
         <ul class="monograph-links">
           {% for link in details.monograph_links %}
           <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
