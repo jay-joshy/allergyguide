@@ -110,17 +110,21 @@
 
 .admonition-content {
   grid-column: span 2;
+  padding-left: 0.2em;
 
   strong {
     font-weight: 580;
   }
 
-  p,
+  p {
+    margin: 0;
+  }
+
   ul,
   li,
   ol {
     margin: 0;
-    padding-top: 0;
+    margin-left: 0.2rem;
   }
 }
 
