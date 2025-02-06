@@ -368,8 +368,10 @@ This is a test
 
 # example
 
+proof of concept that 1) you can load in simple arrays and 2) use macros
+
 ```md
-{{/* example(a = ["test1", "test2"]) */}}
+{{/* example(a = ["test1", "test2"], n = 10) */}}
 ```
 
-{{ example(a = ["test1", "test2"]) }}
+{{ example(a = ["test1", "test2"], n = 10) }}
