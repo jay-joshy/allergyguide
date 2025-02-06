@@ -1,0 +1,45 @@
+.text_image {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; // Space between text and image
+
+  .text-content {
+    flex: 1;
+  }
+
+  .image-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .caption p {
+    font-size: 0.9rem;
+    font-weight: 0.5;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  // Default: text on the left, image on the right
+  &.text_position_left {
+    .text-content {
+      order: 1;
+    }
+
+    .image-content {
+      order: 2;
+    }
+  }
+
+  // Option: text on the right, image on the left
+  &.text_position_right {
+    .text-content {
+      order: 2;
+      padding-left: 1rem;
+    }
+
+    .image-content {
+      order: 1;
+    }
+  }
+}

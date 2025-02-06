@@ -11,12 +11,6 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
-## remote_text
-
-```md
-{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
-```
-
 ## Custom boxes
 
 ### important
@@ -153,17 +147,33 @@ Insert sage clinical pearl
 Insert sage clinical pearl
 {% end %}
 
-## text_image_to_right
+## text_image
 
 Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
 
 ```md
 {% raw() %}
-{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
+{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+_Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
+{% end %}
 {% end %}
 ```
 
-{{ text_image_to_right(text="# Here is some text on the left.</br><kbd>CTRL+ALT+Delete</kbd>", src="/images/example.jpg", alt="An image description", caption = "test caption") }}
+{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+_Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
+{% end %}
+
+```md
+{% raw() %}
+{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+_Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
+{% end %}
+{% end %}
+```
+
+{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+_Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
+{% end %}
 
 ## two_columns
 
@@ -346,3 +356,9 @@ This is a test
 ## wip
 
 {{ wip() }}
+
+## remote_text
+
+```md
+{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
+```

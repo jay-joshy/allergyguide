@@ -12,7 +12,7 @@ authors = ["Joshua Yu"]
 
 Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out, connect with us (see the mail button at the bottom of the page).
 
-# TODO:
+## TODO:
 
 ```md
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
@@ -20,7 +20,9 @@ Thanks for checking us out! If you're interested in clinical allergy and immunol
 
 ## Contribution process
 
-Prerequisites: 1) there are staff who we have available to proofread drafts for topic sections 2) there is an editor who can take charge over the 'section' 3) We have a google drive "Resident Contributor Dashboard" (i.e. showing available topics and who’s working on what) to organize our efforts
+### Content
+
+Prerequisites: A) there are staff available to proofread drafts for topic sections B) there is an editor who can take charge over the 'section' C) We have a google drive "Resident Contributor Dashboard" (i.e. showing available topics and who’s working on what) to organize our efforts
 
 1. Resident or fellow picks a topic they wish to do, and connect with editor for that 'section' (to be defined later)
 2. Timeline is set for 1st rough draft (~ 2 weeks?)
@@ -29,7 +31,13 @@ Prerequisites: 1) there are staff who we have available to proofread drafts for 
 
 3. Editor and contributor back and forth initial edits
 4. Edited draft is sent to staff, necessary edits are made
-5. Editor / Josh / someone with some coding knowledge will add content into website (there are some formatting nuances -- see [shortcodes guide](/shortcodes))
+5. Editor / Josh / someone with some coding knowledge will add content into website
+
+### Website / coding
+
+Prerequisites: you are reasonably comfortable with markdown, html, js, scss/css, and git. To learn the structure of the website, please refer to the [Zola documentation](https://www.getzola.org/). Pages are written in markdown with [Tera templating](https://keats.github.io/tera/).
+Josh will be the main person approving pull requests for the time being.
+Re: adding content to website -- there are some formatting nuances, and a myriad of [shortcodes](/shortcodes) that can be used.
 
 ## Stylistic Principles
 

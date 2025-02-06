@@ -1,6 +1,6 @@
-<div class="text_image_to_right">
+<div class="text_image {% if text_position %}text_position_{{ text_position }}{% endif %}">
   <div class="text-content">
-    {{ text | markdown | safe }}
+    {{ body | markdown | safe }}
   </div>
   <div class="image-content">
     <img src="{{ src }}" alt="{{ alt }}">
