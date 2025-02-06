@@ -1,6 +1,26 @@
 {% set data = load_data(path="static/toml/medications.toml") %}
+
+<!-- Load all valid drugs names from toml -->
+{% set all_drugs = [] %}
+{% for drug, _ in data %}
+{% set_global all_drugs = all_drugs | concat(with=[drug]) %}
+{% endfor %}
+
+<!-- load meds input; if none given go with all drugs -->
+{% set meds = meds | default(value=all_drugs) %}
+
+<!-- check if any invalid meds were provided -->
+{% for med in meds %}
+{% if med not in all_drugs %}
+{{ throw(message=med ~ " is not a valid medication name. Please refer to medications.toml for the correct possible
+names.") }}
+{% endif %}
+{% endfor %}
+
+
 <div class="medications_toml_load">
   {% for drug, details in data %}
+  {% if drug in meds %}
   <div class="drug-card">
     <h2>{{ drug | capitalize }}</h2>
     <div class="drug-card-content">
@@ -44,5 +64,6 @@
       </div>
     </div>
   </div>
+  {% endif %}
   {% endfor %}
 </div>

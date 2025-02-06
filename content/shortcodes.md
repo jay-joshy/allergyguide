@@ -321,13 +321,16 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
 
 ## medications_toml_load
 
+param: meds (list of str)
+if not provided default will show all medications from the toml
+
 ```md
 {% raw() %}
-{{ medications_toml_load()}}
+{{ medications_toml_load(meds=["bilastine"])}}
 {% end %}
 ```
 
-{{ medications_toml_load()}}
+{{ medications_toml_load(meds=["bilastine"])}}
 
 ## example_colormode
 
@@ -362,3 +365,11 @@ This is a test
 ```md
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
 ```
+
+# example
+
+```md
+{{/* example(a = ["test1", "test2"]) */}}
+```
+
+{{ example(a = ["test1", "test2"]) }}
