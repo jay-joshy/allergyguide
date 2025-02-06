@@ -17,14 +17,6 @@ See below for markdown syntax used for the custom shortcodes used in this websit
 This is a test
 {% end %}
 
-## admonition
-
-{% admonition(type="warning", icon="note", title="An important tip") %}
-Stay hydrated~
-
-This method is particularly useful for longer content or multiple paragraphs.
-{% end %}
-
 ## kbd
 
 ```md
@@ -133,6 +125,45 @@ warning box only content
 
 {% warning_box_only() %}
 warning box only content
+{% end %}
+
+## admonition
+
+Credit to [tabi](https://welpo.github.io/tabi/blog/shortcodes/#admonitions) for the styling. It's more pleasant colour scheme wise and it changes with the light/dark mode.
+Options for type/icon: note, tip, info, warning, danger
+
+These can be mixed and matched.
+
+```md
+{% raw() %}
+{% admonition(type="danger", icon="danger", title="Warning DANGER") %}
+This is a danger admonition with a danger icon.
+
+**Markdown can be used here :)**
+{% end %}
+{% end %}
+```
+
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a danger admonition with a danger icon.
+
+**Markdown can be used here :)**
+{% end %}
+
+{% admonition(type="warning", icon="warning", title="WARNING") %}
+Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text
+{% end %}
+
+{% admonition(type="info", icon="info", title="INFO") %}
+BLah blah
+{% end %}
+
+{% admonition(type="tip", icon="tip", title="TIP") %}
+Blah blah
+{% end %}
+
+{% admonition(type="note", icon="note", title="NOTE") %}
+blah blah
 {% end %}
 
 ## test_toml_load

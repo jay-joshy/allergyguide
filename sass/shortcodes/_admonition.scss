@@ -17,7 +17,7 @@
   }
 
   .admonition-icon {
-    background-color: var(--admonition-#{$type}-border);
+    fill: var(--admonition-#{$type}-border);
   }
 }
 
@@ -68,17 +68,20 @@
 }
 
 .admonition {
-  display: flex;
-  align-items: flex-start;
-  margin-block: 1em;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: start;
   border-radius: 10px;
   border-inline-start: 6px solid;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 0;
   padding: 0.8rem;
   color: var(--text-color-high-contrast);
   font-family: var(--sans-serif-font);
 
   p {
-    /* margin-inline-start: -1.75rem; */
     margin-block-end: 0;
     font-family: inherit;
   }
@@ -91,47 +94,34 @@
 }
 
 .admonition-content {
-  flex: 1;
+  grid-column: span 2;
 
   strong {
     font-weight: 580;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+
   }
 }
 
 .admonition-icon {
   display: flex;
   align-items: center;
-  margin: 0.3rem;
   background-size: contain;
   background-repeat: no-repeat;
   aspect-ratio: 1/1;
   width: 1.5rem;
+
 }
 
 .admonition-title {
+  display: inline-block;
   opacity: 0.92;
   font-weight: bold;
-  font-size: 0.82rem;
-}
-
-.admonition-icon-note {
-  background-image: url('/icon/t_note.svg');
-}
-
-.admonition-icon-tip {
-  background-image: url('/icon/t_tip.svg');
-}
-
-.admonition-icon-info {
-  background-image: url('/icon/t_info.svg');
-}
-
-.admonition-icon-warning {
-  background-image: url('/icon/t_warning.svg');
-}
-
-.admonition-icon-danger {
-  background-image: url('/icon/t_danger.svg');
+  font-size: 1rem;
 }
 
 .admonition.note {
