@@ -17,11 +17,31 @@ names.") }}
 {% endif %}
 {% endfor %}
 
+<!-- Set up filter: -->
+{% set filter = filter | default(value=false) %}
+{% if filter %}
+{% set all_categories = [] %}
+{% for _, details in data %}
+{% for category in details.categories %}
+{% if category not in all_categories %}
+{% set_global all_categories = all_categories | concat(with=[category]) %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if filter %}
+<div class="category-filters">
+  <button class="filter-button active" data-category="all">All</button>
+  {% for category in all_categories %}
+  <button class="filter-button" data-category="{{ category }}">{{ category }}</button>
+  {% endfor %}
+</div>
+{% endif %}
 
 <div class="medications_toml_load">
   {% for drug, details in data %}
   {% if drug in meds %}
-  <div class="drug-card">
+  <div class="drug-card" data-categories="{{ details.categories | join(sep=',') }}">
     <h2>{{ drug | capitalize }}</h2>
     <div class="drug-card-content">
       <div class="drug-card-column">
@@ -94,3 +114,33 @@ names.") }}
   {% endif %}
   {% endfor %}
 </div>
+
+{% if filter %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const filterButtons = document.querySelectorAll('.filter-button');
+    const drugCards = document.querySelectorAll('.drug-card');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to the clicked button
+        button.classList.add('active');
+
+        const selectedCategory = button.dataset.category;
+
+        // Filter drug cards
+        drugCards.forEach(card => {
+          const cardCategories = card.dataset.categories.split(',');
+          if (selectedCategory === 'all' || cardCategories.includes(selectedCategory)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endif %}

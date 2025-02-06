@@ -37,7 +37,7 @@ side_effects.severe = "Rare anaphylaxis, hepatic dysfunction"
 monograph_links = ["https://example.com/loratadine-monograph"]
 
 [fexofenadine]
-categories = ["antihistamine"]
+categories = ["testcategory", "antihistamine"]
 brand_names = ["Allegra", "Telfast"]
 cost = [{ province = "ON", price = "~$1.20 CAD per 180mg tab" }]
 moa = "H1 antagonist. Non-sedating antihistamine."

@@ -13,8 +13,6 @@ Organizational:
 
 Shortcodes:
 
-- Add tags sort ability to medications toml
-- Add tags to the medicatoins toml
 - consolidate and make dark/light themes for your boxes, particularly the question box (which does not look good on mobile)
 
 Other stylistic:
