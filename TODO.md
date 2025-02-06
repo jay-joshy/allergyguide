@@ -3,6 +3,7 @@ Content:
 - Make example articles for 1) a condition (ie. penicillin allergy) 2) macro 3) research
 - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - Add a fake mock template research page
+- port original pen-fast questions over with extra options
 
 Organizational:
 
