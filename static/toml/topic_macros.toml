@@ -27,7 +27,8 @@ topic = "Consult template"
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
 
-We assessed this patient in the clinical allergy and immunology clinic today on {current_date} with Dr. XX. As you know, they are a XX referred for assessment of XX.
+We assessed this patient in the clinical allergy and immunology clinic today on {current_date} with Dr. XX.
+As you know, they are a XX referred for assessment of XX.
 
 PAST MEDICAL HISTORY:
 
@@ -66,14 +67,13 @@ IMPRESSION:
 
 PLAN:
 
-Follow-up:
+FOLLOW-UP:
 We have not arranged any follow-up at this time, but they are welcome to contact us as required.
 We have arranged for follow-up in XX or sooner if required.
 
 Thank you for allowing us to take part in this patient's care. Please feel free to contact us if there are any questions or concerns.
 
 Yours sincerely,
-
 '''
 
 [_followup]
@@ -81,7 +81,9 @@ topic = "Follow-up template"
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY FOLLOW-UP
 
-Dr. XX and I saw this patient in follow up in the Clinical Immunology and Allergy Clinic on {current_date}. They were last seen on XX previously. As you know, they are a XX who we follow for XX.
+Dr. XX and I saw this patient in follow up in the Clinical Immunology and Allergy Clinic on {current_date}.
+They were last seen on XX previously.
+As you know, they are a XX who we follow for XX.
 
 Their last assessment and plan was:
 
@@ -105,12 +107,11 @@ INVESTIGATIONS:
 
 ASSESSMENT AND PLAN:
 
-fOLLOW-UP:
+FOLLOW-UP:
 We have not arranged any follow-up at this time, but they are welcome to contact us as required.
 We have arranged for follow-up in XX or sooner if required.
 
 Thank you once again for involving us in this patient's care. Please do not hesitate to contact us if you have any further questions or concerns.
 
 Sincerely,
-
 '''
