@@ -133,26 +133,65 @@ names.") }}
     const filterButtons = document.querySelectorAll('.filter-button');
     const drugCards = document.querySelectorAll('.drug-card');
 
+    // When a button is clicked, update its active state and the displayed cards.
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to the clicked button
-        button.classList.add('active');
+        const category = button.dataset.category;
 
-        const selectedCategory = button.dataset.category;
-
-        // Filter drug cards
-        drugCards.forEach(card => {
-          const cardCategories = card.dataset.categories.split(',');
-          if (selectedCategory === 'all' || cardCategories.includes(selectedCategory)) {
-            card.style.display = 'block';
+        if (category === 'all') {
+          // If "All" is clicked, clear other active states and activate only "All"
+          filterButtons.forEach(btn => {
+            if (btn.dataset.category === 'all') {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+        } else {
+          // Toggle the active state for non-"All" buttons
+          button.classList.toggle('active');
+          // If any non-"all" filters are active, ensure "All" is not active
+          let anyActive = false;
+          filterButtons.forEach(btn => {
+            if (btn.dataset.category !== 'all' && btn.classList.contains('active')) {
+              anyActive = true;
+            }
+          });
+          if (anyActive) {
+            document.querySelector('.filter-button[data-category="all"]').classList.remove('active');
           } else {
-            card.style.display = 'none';
+            // If none are active, default back to "All"
+            document.querySelector('.filter-button[data-category="all"]').classList.add('active');
           }
-        });
+        }
+
+        updateCards();
       });
     });
+
+    function updateCards() {
+      // Build a list of active filters (excluding "all")
+      let activeCategories = [];
+      filterButtons.forEach(btn => {
+        if (btn.classList.contains('active') && btn.dataset.category !== 'all') {
+          activeCategories.push(btn.dataset.category);
+        }
+      });
+
+      drugCards.forEach(card => {
+        // Get card's categories (make sure to trim spaces if necessary)
+        const cardCategories = card.dataset.categories.split(',').map(c => c.trim());
+
+        // Show the card if no specific filters are active
+        // or if it matches any active category.
+        if (activeCategories.length === 0) {
+          card.style.display = 'block';
+        } else {
+          const matches = activeCategories.every(cat => cardCategories.includes(cat));
+          card.style.display = matches ? 'block' : 'none';
+        }
+      });
+    }
   });
 </script>
 {% endif %}
