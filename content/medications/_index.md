@@ -1,18 +1,9 @@
 +++
 template = "pages.html"
 +++
-
-Ideally this section is split up into relevant sections, to make it easier to browse:
-
-Antihistamines
-Inhalers
-Nasal sprays
-Topical steroids
-Moisturizers
-DMARDs
-Biologics
-Misc
-
-## Medication cards:
-
+<br>
+{% admonition(type="info", icon="tip", title="Quickly find meds by") %}
+<kbd><kbd>Ctrl-F</kbd></kbd> or the additive filter buttons. Clear filters by clicking "All".
+{% end %}
+<br>
 {{medications_toml_load(filter = true)}}
