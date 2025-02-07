@@ -50,7 +50,10 @@ names.") }}
           {{ brand }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
         <p><strong><i class="fas fa-dollar-sign"></i> Cost:</strong>
-          {{ details.cost[0].price }} ({{ details.cost[0].province }})</p>
+          {% for item in details.cost %}
+          {{ item.price }} ({{ item.province }}){% if not loop.last %}; {% endif %}
+          {% endfor %}
+        </p>
         <p><strong>MoA:</strong>
           {{ details.moa }}</p>
         <p><strong><i class="fas fa-hourglass-half"></i> Half-life:</strong>
@@ -78,7 +81,16 @@ names.") }}
         <p><strong><i class="fas fa-book"></i> Monograph Links:</strong></p>
         <ul class="monograph-links">
           {% for link in details.monograph_links %}
-          <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+          {% set parts = link | split(pat="/") %}
+          {% set filename = parts | last | split(pat="_") %}
+          <li><a href="{{ link }}" target="_blank">
+              {% for a in filename %}
+              {% if loop.index == 1 %}{{a | capitalize }}
+              {% elif loop.index == 2 %} ({{a | trim }}
+              {% else %}- {{a | split(pat=".") | first }})
+              {% endif %}
+              {% endfor %}
+            </a></li>
           {% endfor %}
         </ul>
       </div>

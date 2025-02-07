@@ -11,6 +11,12 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
+## custom_macro
+
+{% custom_macro() %}
+Here is a custom macro copy paste section
+{% end %}
+
 ## Custom boxes
 
 ### important

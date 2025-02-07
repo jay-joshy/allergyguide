@@ -103,11 +103,14 @@ Not all topics will fit this general structure; this is meant as a general scaff
 
 #### Medications
 
+- categories include: antihistamines, puffers, nasal sprays, topicals, steroids, DMARDs, biologics, eye-drops
+- monographs will be statically hosted and linked. Filenames formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug.
+
 Example:
 
 ```toml
 [bilastine]
-category = "antihistamine"
+categories = ["antihistamine"]
 brand_names = ["Blexten"]
 cost = [{ province = "ON", price = "~$1 CAD per 20mg tab" }]
 moa = "H1 antagonist. Marketed as limited CNS distribution."
@@ -123,7 +126,7 @@ pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
 side_effects.severe = "Torsades (very rare)"
-monograph_links = ["https://pdf.hres.ca/dpd_pm/00062419.PDF"]
+monograph_links = ["../monographs/bilastine_2021_1.pdf"]
 ```
 
 #### Research appraisals
@@ -136,7 +139,7 @@ Systematic review vs primary evidence
   - Journal
   - Trial name
 - PICO + Conclusion
-- Figures
+- Figures -- will be hosted statically
 - Description
   - Background
   - Objective

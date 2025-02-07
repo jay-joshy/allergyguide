@@ -15,12 +15,12 @@ pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
 side_effects.severe = "Torsades (very rare)"
-monograph_links = ["https://pdf.hres.ca/dpd_pm/00062419.PDF"]
+monograph_links = ["../monographs/bilastine_2021_1.pdf"]
 
 [loratadine]
 categories = ["antihistamine"]
 brand_names = ["Claritin", "Alavert"]
-cost = [{ province = "ON", price = "~$0.50 CAD per 10mg tab" }]
+cost = [{ province = "ON", price = "~$0.50 CAD per 10mg tab" }, { province = "BC", price = "~$1000 CAD per 10mg tab" }]
 moa = "H1 antagonist with minimal CNS penetration."
 half_life = "~8 hours (active metabolite ~27 hours)"
 routes = "oral tab, liquid, disintegrating tab"
@@ -34,7 +34,7 @@ pregnancy = "Considered safe (Category B)"
 contraindications = "Hypersensitivity to loratadine or desloratadine"
 side_effects.common = "Headache, dry mouth, fatigue (~2-3%)"
 side_effects.severe = "Rare anaphylaxis, hepatic dysfunction"
-monograph_links = ["https://example.com/loratadine-monograph"]
+monograph_links = ["/icon/test.pdf"]
 
 [fexofenadine]
 categories = ["testcategory", "antihistamine"]
