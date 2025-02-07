@@ -2,6 +2,7 @@
 title = "Shortcodes"
 description = "Testing of shortcodes"
 date = 2024-11-24
+updated = 2025-02-07
 draft = false
 in_search_index = false
 
@@ -10,12 +11,6 @@ toc = true
 +++
 
 See below for markdown syntax used for the custom shortcodes used in this website.
-
-## custom_macro
-
-{% custom_macro() %}
-Here is a custom macro copy paste section
-{% end %}
 
 ## Custom boxes
 
@@ -314,6 +309,12 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
 ```
 
 {{profile_grid()}}
+
+## custom_macro
+
+{% custom_macro() %}
+Here is a custom macro copy paste section
+{% end %}
 
 ## load_macro
 
