@@ -42,7 +42,7 @@ names.") }}
   {% for drug, details in data %}
   {% if drug in meds %}
   <div class="drug-card" data-categories="{{ details.categories | join(sep=',') }}">
-    <h2>{{ drug | capitalize }}</h2>
+    <h2>{{ drug | split(pat="_") | first | replace(from="-", to=" ") | capitalize }}</h2>
     <div class="drug-card-content">
       <div class="drug-card-column">
         <p><strong><i class="fas fa-tags"></i> Brand Names:</strong>

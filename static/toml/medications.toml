@@ -1,13 +1,62 @@
-[bilastine]
-categories = ["antihistamine"]
-brand_names = ["Blexten"]
-cost = [{ province = "ON", price = "~$1 CAD per 20mg tab" }]
-moa = "H1 antagonist. Marketed as limited CNS distribution."
-half_life = "~15 hours"
-routes = "oral tab, liquid (uncommon)"
+# RULES:
+# [medname] must be formatted as {generic (hyphenate if combination)} with {_route} if dramatically different from oral.
+# for example: [budesonide_inhaler] because the oral form is used for EoE.
+# similarly, [fluticasone-furoate_inhaler] - note the hyphenation used between the drug combos.
+
+[template_med]
+categories = ["testcategory", "testA", "testB"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
 doses = [
-  { indication = "CSU, AR", dose = "20mg daily to QID", notes = "adult dosing" },
-  { indication = "CSU, AR", dose = "10mg daily to QID", notes = "pediatric dosing" },
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[rupatadine]
+categories = ["2G antihistamine"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[bilastine]
+categories = ["2G antihistamine"]
+brand_names = ["Blexten"]
+cost = [{ province = "ON", price = "~$1 CAD / 20mg tab" }]
+moa = "2nd generation H1 antagonist."
+half_life = "~15 hours"
+routes = "PO tab, liquid (uncommon)"
+doses = [
+  { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "adult dosing" },
+  { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "pediatric dosing" },
 ]
 pearls = ["Theoretically does not cross BBB"]
 age_group = ">=12 years of age; has been used off-label in younger children"
@@ -18,39 +67,268 @@ side_effects.severe = "Torsades (very rare)"
 monograph_links = ["../monographs/bilastine_2021_1.pdf"]
 
 [loratadine]
-categories = ["antihistamine"]
-brand_names = ["Claritin", "Alavert"]
-cost = [{ province = "ON", price = "~$0.50 CAD per 10mg tab" }, { province = "BC", price = "~$1000 CAD per 10mg tab" }]
-moa = "H1 antagonist with minimal CNS penetration."
-half_life = "~8 hours (active metabolite ~27 hours)"
-routes = "oral tab, liquid, disintegrating tab"
-doses = [
-  { indication = "AR, CSU", dose = "10mg once daily", notes = "adult dosing" },
-  { indication = "AR, CSU", dose = "5mg once daily", notes = "pediatric dosing (ages 2-5)" },
+categories = ["2G antihistamine"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-# pearls = ["Insert pearl here"]
-age_group = ">=2 years of age"
-pregnancy = "Considered safe (Category B)"
-contraindications = "Hypersensitivity to loratadine or desloratadine"
-side_effects.common = "Headache, dry mouth, fatigue (~2-3%)"
-side_effects.severe = "Rare anaphylaxis, hepatic dysfunction"
-monograph_links = ["/icon/test.pdf"]
-
-[fexofenadine]
-categories = ["testcategory", "antihistamine"]
-brand_names = ["Allegra", "Telfast"]
-cost = [{ province = "ON", price = "~$1.20 CAD per 180mg tab" }]
-moa = "H1 antagonist. Non-sedating antihistamine."
-half_life = "~14 hours"
+moa = "Insert MoA"
+half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
 doses = [
-  { indication = "AR, CSU", dose = "180mg once daily", notes = "adult dosing" },
-  { indication = "AR, CSU", dose = "30mg twice daily", notes = "pediatric dosing (ages 2-11)" },
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
 pearls = ["Insert pearl here"]
-age_group = ">=2 years of age"
-pregnancy = "Considered safe (Category B)"
-contraindications = "Hypersensitivity to fexofenadine"
-side_effects.common = "Headache (~1%), dizziness (<1%)"
-side_effects.severe = "Rare hypersensitivity reactions"
-monograph_links = ["https://example.com/fexofenadine-monograph"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[cetirizine]
+categories = ["2G antihistamine"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[fexofenadine]
+categories = ["2G antihistamine"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[desloratadine]
+categories = ["2G antihistamine"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[diphenhydramine]
+categories = ["1G antihistamine"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[sabutamol]
+categories = ["inhaler", "SABA"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[budesonide_inhaler]
+categories = ["inhaler", "steroid"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+
+[fluticasone-furoate_inhaler]
+categories = ["inhaler", "steroid"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+
+[fluticasone-propionate_inhaler]
+categories = ["inhaler", "steroid"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+
+[mometasone-furoate_inhaler]
+categories = ["inhaler", "steroid"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[beclomethasone-dipropionate_inhaler]
+categories = ["inhaler", "steroid"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]
+
+[ciclesonide_inhaler]
+categories = ["inhaler", "steroid"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = "oral tab, liquid, ODT"
+doses = [
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["../monographs/example_2025_1.pdf"]

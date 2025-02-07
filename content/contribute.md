@@ -103,8 +103,9 @@ Not all topics will fit this general structure; this is meant as a general scaff
 
 #### Medications
 
-- categories include: antihistamines, puffers, nasal sprays, topicals, steroids, DMARDs, biologics, eye-drops
-- monographs will be statically hosted and linked. Filenames formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug.
+- categories include: antihistamines, inhalers, nasal sprays, topicals, steroids, DMARDs, biologics, eye-drops
+- monographs will be statically hosted and linked. Filenames formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug
+- see the medications.toml file for more detail
 
 Example:
 

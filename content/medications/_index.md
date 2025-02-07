@@ -5,7 +5,7 @@ template = "pages.html"
 Ideally this section is split up into relevant sections, to make it easier to browse:
 
 Antihistamines
-Puffers
+Inhalers
 Nasal sprays
 Topical steroids
 Moisturizers
