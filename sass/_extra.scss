@@ -20,6 +20,7 @@
 @use "shortcodes/example_colormode";
 @use "shortcodes/admonition";
 @use "shortcodes/wip";
+@use "shortcodes/mermaid";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {

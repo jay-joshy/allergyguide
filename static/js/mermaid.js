@@ -28,7 +28,8 @@ function initializeMermaid() {
   // Initialize with proper theme
   mermaid.initialize({
     theme: theme,
-    themeVariables: isLightMode ? lightThemeVariables : darkThemeVariables,
+    // look: neo,
+    // themeVariables: isLightMode ? lightThemeVariables : darkThemeVariables,
     startOnLoad: false
   });
 
