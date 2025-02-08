@@ -15,6 +15,7 @@ Organizational:
 Shortcodes:
 
 - consolidate and make dark/light themes for your boxes, particularly the question box (which does not look good on mobile)
+- add fuzzy find to the macros (better than ctrl-f) and also adjust .toml for search keywords too
 
 Other stylistic:
 
