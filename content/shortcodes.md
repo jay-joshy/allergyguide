@@ -275,6 +275,30 @@ Left column text goes here.
 Right column text goes here.
 {% end %}
 
+## spoiler
+
+```md
+{% raw() %}
+this is a spoiler that you can click: {{ spoiler(text="text to hide", fixed_blur=false) }}
+{% end %}
+```
+
+this is a spoiler that you can click: {{ spoiler(body="text to hide", fixed_blur=false) }}
+
+You can also use it like so (fixed_blur = true means you can't see it ever):
+
+```md
+{% raw() %}
+{% spoiler(fixed_blur = true) %}
+testing this
+{% end %}
+{% end %}
+```
+
+{% spoiler(fixed_blur = true) %}
+testing this
+{% end %}
+
 ## contributors
 
 ```md

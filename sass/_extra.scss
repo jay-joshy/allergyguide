@@ -21,6 +21,7 @@
 @use "shortcodes/admonition";
 @use "shortcodes/wip";
 @use "shortcodes/mermaid";
+@use "shortcodes/spoiler";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
