@@ -33,11 +33,12 @@ names.") }}
 
   {% if filter %}
   <div class="search-container">
-    <input type="text" id="search-input" placeholder="Search medications with fuzzy find..." autofocus>
+    <input type="text" id="search-input" placeholder="Search medications by generic/brand name with fuzzy find..."
+      autofocus>
   </div>
   <div class="category-filters">
     <button class="filter-button active" data-category="all">All</button>
-    {% for category in all_categories %}
+    {% for category in all_categories | sort %}
     <button class="filter-button" data-category="{{ category }}">{{ category }}</button>
     {% endfor %}
   </div>

@@ -7,20 +7,25 @@
     flex: 1;
   }
 
-  .image-content img {
-    max-width: 100%;
-    height: auto;
-    display: block;
+  .image-content {
+    display: flex;
+    flex-direction: column; // Stack image and caption vertically
+
+    img {
+      max-width: 100%;
+      height: auto;
+      max-height: 25em;
+      display: block;
+    }
   }
 
+  // Optional: Caption default styling
   .caption p {
     font-size: 0.9rem;
-    font-weight: 0.5;
-    text-align: center;
     margin-top: 5px;
   }
 
-  // Default: text on the left, image on the right
+  // Variant: text on left, image on right (right justified image)
   &.text_position_left {
     .text-content {
       order: 1;
@@ -28,10 +33,15 @@
 
     .image-content {
       order: 2;
+      align-items: flex-end; // right align the image & caption
+    }
+
+    .caption p {
+      text-align: right;
     }
   }
 
-  // Option: text on the right, image on the left
+  // Variant: text on right, image on left (left justified image)
   &.text_position_right {
     .text-content {
       order: 2;
@@ -40,6 +50,11 @@
 
     .image-content {
       order: 1;
+      align-items: flex-start; // left align the image & caption
+    }
+
+    .caption p {
+      text-align: left;
     }
   }
 }

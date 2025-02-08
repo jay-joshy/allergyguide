@@ -72,7 +72,7 @@ Example:
 
 #### Topics
 
-Not all topics will fit this general structure; this is meant as a general scaffold.
+Not all topics will fit this general structure; this is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points. See [here for some styling options](#styling-options-available) you could use. If you're comfortable with html/md, see [shortcodes](/shortcodes) for the full suite of options available.
 
 - Macro to c/p
 - Summary:
@@ -101,6 +101,55 @@ Not all topics will fit this general structure; this is meant as a general scaff
   - Reviewers: list
   - Editor: list
 
+##### Styling options available
+
+Insert admonitions or callouts to draw attention to key facts.
+
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a _danger_ section.
+{% end %}
+<br>
+{% admonition(type="warning", icon="warning", title="WARNING") %}
+This is a _warning_ section.
+{% end %}
+<br>
+{% admonition(type="info", icon="info", title="INFO") %}
+This is a _info_ section.
+{% end %}
+<br>
+{% admonition(type="tip", icon="tip", title="TIP") %}
+Tips
+{% end %}
+<br>
+{% admonition(type="note", icon="note", title="NOTE") %}
+Note
+{% end %}
+<br>
+{% admonition(type="note", icon="question", title="question icon") %}
+Question
+{% end %}
+<br>
+{% admonition(type="pearl", icon="pearl", title="PEARL") %}
+Sage clinical pearl
+{% end %}
+
+Add images. You can either have them take up the full width, or push them to the side (left or right):
+{% text_image(src="/images/peanut_meme.png", alt="An image description", caption = "example caption") %}
+_Here is some text_ on the left.
+
+And here is some more text!
+
+Here is **some BOLDED text**
+{% end %}
+
+You can also add tables in markdown:
+
+| Name   | Comment                                                                 |
+| :----- | :---------------------------------------------------------------------- |
+| Alice  | Always involved in various communications                               |
+| Bob    | A good guy, who likes to communicate with Alice                         |
+| Malroy | Not so nice guy. Tries to mess with the communication of Alice and Bob. |
+
 #### Medications
 
 - categories include: antihistamines, inhalers, nasal sprays, topicals, steroids, DMARDs, biologics, eye-drops
@@ -111,15 +160,15 @@ Example:
 
 ```toml
 [bilastine]
-categories = ["antihistamine"]
+categories = ["2G antihistamine"]
 brand_names = ["Blexten"]
-cost = [{ province = "ON", price = "~$1 CAD per 20mg tab" }]
-moa = "H1 antagonist. Marketed as limited CNS distribution."
+cost = [{ province = "ON", price = "~$1 CAD / 20mg tab" }]
+moa = "2nd generation H1 antagonist."
 half_life = "~15 hours"
-routes = "oral tab, liquid (uncommon)"
+routes = "PO tab, liquid (uncommon)"
 doses = [
-  { indication = "CSU, AR", dose = "20mg daily to QID", notes = "adult dosing" },
-  { indication = "CSU, AR", dose = "10mg daily to QID", notes = "pediatric dosing" },
+  { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "adult dosing" },
+  { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "pediatric dosing" },
 ]
 pearls = ["Theoretically does not cross BBB"]
 age_group = ">=12 years of age; has been used off-label in younger children"
@@ -129,6 +178,9 @@ side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For refe
 side_effects.severe = "Torsades (very rare)"
 monograph_links = ["../monographs/bilastine_2021_1.pdf"]
 ```
+
+How it'll actually look:
+{{ medications_toml_load(meds=["bilastine"])}}
 
 #### Research appraisals
 
