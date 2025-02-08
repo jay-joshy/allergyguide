@@ -19,6 +19,7 @@
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    justify-items: center;
   }
 
   .contact-card-link:hover {
@@ -27,9 +28,10 @@
   }
 
   .contact-card-image {
-    width: 100%;
+    width: auto;
+    height: 100%;
     /* height of image adjust here */
-    height: 300px;
+    /* height: 300px; */
     object-fit: cover;
     border-bottom: 2px solid #333;
     /* Divider effect */

@@ -8,19 +8,21 @@ in_search_index = false
 
 # Our goals
 
-To create a comprehensive cross-Canada resident-led and faculty reviewed website for **high-yield and pragmatic** information about clinical allergy & immunology, meant to help residents and fellows in clinic. In particular:
+To create a comprehensive cross-Canada resident-led and faculty reviewed website for **high-yield and pragmatic** information about clinical allergy & immunology. Our target audience is primarily PGY2/PGY3 level (also family physician), but secondary goals include more fellow-focused content.
 
 {% admonition(type="danger", icon="tip", title="MAIN GOALS") %}
 
 1. Sections for major conditions, including copy-pasteable macros and practical pearls
 2. Sections for therapies and medications
-3. Clinical decision tools
+3. Clinical decision tools, consent forms
 4. Patient resources (a one stop shop for handouts!)
 
 {% end %}
 
 #### Secondary goals (if time permits)
 
+- "Deep dives" within sections for fellows
+- Informal case reports with well-defined learning points
 - Sets of questions for RC studying (and maybe an Anki deck)
 - Critical appraisal of new research
 - Patient resources translated into different languages

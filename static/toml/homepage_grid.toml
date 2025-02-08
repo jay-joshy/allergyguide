@@ -2,16 +2,17 @@
 # the actual [] content doesn't matter much
 # 
 [title1]
+url = "/topics/"
+src = "/images/peanut_meme.png"
+title = "Topics"
+text = "See index of conditions"
+
+[title2]
 url = "/macros/"
 src = "/images/example.jpg"
 title = "Macros"
 text = "Quick, concise, high-yield macros for charting"
 
-[title2]
-url = "/topics/"
-src = "/images/seabackground.jpg"
-title = "Topics"
-text = "placeholder"
 
 [title3]
 url = "/research/"

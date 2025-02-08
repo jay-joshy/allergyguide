@@ -13,7 +13,8 @@
 
 
   <div class="wip-content">
-    <p>{{ body | default(value="This page is a work in progress. If you want to help contribute, see below :)") }}</p>
+    <p>{{ body | default(value="This page is a work in progress. If you want to help contribute, see below :)") |
+      markdown | safe }}</p>
     <a href="/contribute/" class="wip-link">Contribute</a>
   </div>
 </div>
