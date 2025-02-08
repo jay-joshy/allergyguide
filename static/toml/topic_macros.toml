@@ -1,5 +1,6 @@
 [_xample_topic]
 topic = "topic name, ie. Congestive Heart Failure Exacerbation"
+keywords = ["example topic", "example", "hippopotamus"]
 content = '''
 # CHFe
 O2, UO
@@ -18,12 +19,14 @@ GDMT when out of CHFe
 
 [allergic_rhinitis]
 topic = "Allergic Rhinitis"
+keywords = ["rhinitis", "ar", "rhinosinusitis"]
 content = '''
 Placeholder macro  
 '''
 
 [_consult]
 topic = "Consult template"
+keywords = ["template", "consult"]
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
 
@@ -78,6 +81,7 @@ Yours sincerely,
 
 [_followup]
 topic = "Follow-up template"
+keywords = ["template", "follow up"]
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY FOLLOW-UP
 

@@ -1,13 +1,79 @@
-<!-- NOTE: the for loop will automatically sort the .toml by the contents within the [] -- be mindful of this -->
 {% set data = load_data(path="static/toml/topic_macros.toml") %}
+
+<!-- Set up filter: -->
+{% set filter = filter | default(value=false) %}
+
 <div class="topic_macros_toml_load">
+
+  {% if filter %}
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Search macros by condition/topic with fuzzy find..." autofocus>
+  </div>
+  {% endif %}
+
+  {# Wrap each block in a container with searchable data attributes #}
   {% for section_name, section_data in data %}
-  {{ "### " ~ section_data.topic | markdown | safe }}
-  <div class="code-block-container">
-    <button class="copy-button">Copy</button>
-    <div class="txt">{{ section_data.content | replace(from="{current_date}", to=now() | date(format="%B %d, %Y")) }}
+  <div class="macro-block" data-topic="{{ section_data.topic }}"
+    data-keywords="{{ section_data.keywords | join(sep=' ') }}">
+    {{ "#### " ~ section_data.topic | markdown | safe }}
+    <div class="code-block-container">
+      <button class="copy-button">Copy</button>
+      <div class="txt">{{ section_data.content | trim | replace(from="{current_date}", to=now() |
+        date(format="%B %d, %Y")) }}
+      </div>
     </div>
   </div>
   {% endfor %}
 </div>
+
 <script src="/js/topic_macros_toml_load.js"></script>
+
+{% if filter %}
+<!-- Load fuzzysort library -->
+<script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.1.0/fuzzysort.min.js"></script>
+<script>
+  // Wait until the DOM is fully loaded.
+  document.addEventListener("DOMContentLoaded", function () {
+    // 1. Gather all macro blocks along with their searchable text
+    const macroBlocks = Array.from(document.querySelectorAll('.macro-block')).map(el => {
+      // Get the topic and keywords from data attributes.
+      // (If keywords or topic are missing, default to an empty string.)
+      const topic = el.getAttribute('data-topic') || "";
+      const keywords = el.getAttribute('data-keywords') || "";
+      return {
+        el: el,
+        // Combine topic and keywords so that both are searched together.
+        searchable: topic + " " + keywords
+      };
+    });
+
+    // 2. Set up the search input event listener.
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function () {
+      const query = this.value.trim();
+
+      // If the query is empty, show all blocks.
+      if (query === "") {
+        macroBlocks.forEach(block => {
+          block.el.style.display = "";
+        });
+        return;
+      }
+
+      // 3. Use fuzzysort to perform the fuzzy search.
+      // The `go` method will compare the query with each block’s 'searchable' text.
+      const results = fuzzysort.go(query, macroBlocks, {key: 'searchable'});
+
+      // Hide all blocks first.
+      macroBlocks.forEach(block => {
+        block.el.style.display = "none";
+      });
+
+      // Then show only those blocks that were matched.
+      results.forEach(result => {
+        result.obj.el.style.display = "";
+      });
+    });
+  });
+</script>
+{% endif %}
