@@ -12,6 +12,42 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
+## Re: nesting shortcodes
+
+The below code does not work:
+
+```md
+{% raw() %}
+{% warning(header = "warning header") %}
+{{ warning_box_only(body="# nested warning!") }}
+{% end %}
+{% end %}
+```
+
+It will instead throw this error:
+
+```zsh
+Error: Reason: Failed to render 'shortcodes/warning.html'
+Error: Reason: Filter call 'markdown' failed
+Error: Reason: Failed to render markdown filter: Failed to render warning_box_only shortcode
+
+Caused by:
+    0: Failed to render 'shortcodes/warning_box_only.html'
+    1: Filter 'markdown' not found
+```
+
+Calling {{/* warning_box_only(body="nested warning!") */}} is essentially asking to inject html in place of the shortcode. However, if you look at warning_box_only.html:
+
+```html
+<blockquote class="warning_box_only">
+  <div class="content">
+    {{ body | markdown | safe }}
+  </div>
+</blockquote>
+```
+
+it is expecting the body to be MARKDOWN, not HTML. If you remove the markdown filter from warning_box_only.html, then it will work -- but the markdown within the warning_box_only will not be rendered properly.
+
 ## Custom boxes
 
 ### important
@@ -22,8 +58,8 @@ See below for markdown syntax used for the custom shortcodes used in this websit
 test
 Press <kbd>CTRL+ALT+Delete</kbd> to end the
 
-You can't put another shortcode inside here sadly...
-I think you probably can but it's difficult...
+So it turns out you CAN put shortcodes inside other shortcodes, but it cannot be the % % with a body type.
+{{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
 {% end %}
 {% end %}
 ```
@@ -32,8 +68,8 @@ I think you probably can but it's difficult...
 test
 Press <kbd>CTRL+ALT+Delete</kbd> to end the
 
-You can't put another shortcode inside here sadly...
-I think you probably can but it's difficult...
+So it turns out you CAN put shortcodes inside other shortcodes, but it cannot be the % % with a body type.
+{{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
 {% end %}
 
 ### warning
@@ -42,12 +78,23 @@ I think you probably can but it's difficult...
 {% raw() %}
 {% warning(header = "warning header") %}
 This is a warning section.
+
+Here is an attempt at the % % nested shortcode.
+{% important_box_only() %}
+important bx only!!!
 {% end %}
+{% end %}
+
 {% end %}
 ```
 
 {% warning(header = "warning header") %}
 This is a warning section.
+
+Here is an attempt at the % % nested shortcode.
+{% important_box_only() %}
+important bx only!!!
+{% end %}
 {% end %}
 
 ### question
