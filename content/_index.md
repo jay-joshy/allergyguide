@@ -1,6 +1,9 @@
 +++
 title = "Homepage"
 template = "pages.html"
+description = "Homepage of allergyguide.ca"
+draft = false
+in_search_index = false
 +++
 
 {{ card_grid() }}
