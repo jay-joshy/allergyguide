@@ -419,6 +419,14 @@ excludes weekends
 
 ## custom_macro
 
+```md
+{% raw() %}
+{% custom_macro() %}
+Here is a custom macro copy paste section
+{% end %}
+{% end %}
+```
+
 {% custom_macro() %}
 Here is a custom macro copy paste section
 {% end %}
@@ -472,9 +480,21 @@ This is a test
 
 ## wip
 
+```md
+{% raw() %}
+{{ wip() }}
+{% end %}
+```
+
 {{ wip() }}
 
 ## remote_text
+
+```md
+{% raw() %}
+{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
+{% end %}
+```
 
 ```md
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
@@ -482,7 +502,7 @@ This is a test
 
 # example
 
-proof of concept that 1) you can load in simple arrays and 2) use macros
+proof of concept that 1) you can load in simple arrays and 2) use tera macros
 
 ```md
 {{/* example(a = ["test1", "test2"], n = 10) */}}
