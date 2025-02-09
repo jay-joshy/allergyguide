@@ -21,3 +21,10 @@ authors = ["author 1", "author 2"]
 ## Summary:
 
 WIP
+
+# rough
+
+droplets
+
+- see ubc research
+- goal is not to eat but to reduce risk of anaphylaxis from cross contam

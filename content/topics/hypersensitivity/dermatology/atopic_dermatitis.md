@@ -21,3 +21,21 @@ authors = ["author 1", "author 2"]
 ## Summary:
 
 WIP
+
+# rough
+
+topical
+hydrocort
+betaderm
+clobetasol
+
+OD vs BID vs PRN
+
+non steroidal
+protopic
+elidel
+eucrisa
+ruxolinib
+
+dupi
+updacitivb

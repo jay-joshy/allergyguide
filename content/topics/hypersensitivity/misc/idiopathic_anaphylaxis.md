@@ -21,3 +21,9 @@ authors = ["author 1", "author 2"]
 ## Summary:
 
 WIP
+
+## TODO:
+
+Ddx:
+
+- cholinergic urticaria with anaphylaxis: [see article](https://pubmed.ncbi.nlm.nih.gov/26619922/)

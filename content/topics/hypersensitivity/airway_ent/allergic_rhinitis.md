@@ -21,3 +21,19 @@ authors = ["author 1", "author 2"]
 ## Summary:
 
 WIP
+
+# rough
+
+INCS OTC
+flonase
+nasocort
+
+INCS RX
+avamys
+naosnex
+omnaris
+rhinocort
+
+INCS AH
+ryaltris - mometasone + olopatadine
+dymista -fluct prop + azel

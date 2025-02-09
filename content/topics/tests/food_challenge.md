@@ -91,3 +91,16 @@ are typically observed for at least 1 to 2 hours for an immediatetype reaction
 With a negative OFC, this Work Group recommends
 encouraging the patient to ingest the food in a manner typical of
 dietary consumption, at least eating it periodically
+
+# rough
+
+peanut challenge
+syringe is pretty easy
+(doesn't work for all butters --- speaking from experience. Wear gloves if you are allergic -- also from experience)
+0.4 ml
+1
+4
+10
+=> 15 = 3tbsp
+
+ask families to bring vehicles for food
