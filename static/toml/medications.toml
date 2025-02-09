@@ -27,7 +27,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [rupatadine]
 categories = ["2G antihistamine"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Rupall", "Rupafin", "Rupita"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -68,7 +68,7 @@ monograph_links = ["../monographs/bilastine_2021_1.pdf"]
 
 [loratadine]
 categories = ["2G antihistamine"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Claritin", "Alavert"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -90,7 +90,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [cetirizine]
 categories = ["2G antihistamine"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Reactine", "Allacan"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -112,7 +112,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [fexofenadine]
 categories = ["2G antihistamine"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Allegra"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -134,7 +134,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [desloratadine]
 categories = ["2G antihistamine"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Aerius", "Clarinex"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -156,7 +156,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [diphenhydramine]
 categories = ["1G antihistamine"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Benadryl", "Nytol"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -176,9 +176,9 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["../monographs/example_2025_1.pdf"]
 
-[sabutamol]
+[salbutamol]
 categories = ["inhaler", "SABA"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Ventolin", "Albuterol (not a brand name)"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -190,7 +190,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -200,7 +200,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [budesonide_inhaler]
 categories = ["inhaler", "steroid"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Pulmicort Turbuhaler"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -212,7 +212,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -223,7 +223,7 @@ monograph_links = ["../monographs/example_2025_1.pdf"]
 
 [fluticasone-furoate_inhaler]
 categories = ["inhaler", "steroid"]
-brand_names = ["brandnameA", "brandnameB"]
+brand_names = ["Arnuity Ellipta"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
@@ -235,7 +235,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -258,7 +258,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -281,7 +281,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -303,7 +303,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -325,7 +325,7 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"

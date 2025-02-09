@@ -1,9 +1,11 @@
 Content:
 
 - Make example articles for 1) a condition (ie. penicillin allergy) 2) macro 3) research
+- Pediatric medicine crash course
 - port original pen-fast questions over with extra options
 - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
+- Billing tips (would have to be province specific -- VERY fellow focused and low priority)
 
 Organizational:
 
@@ -15,7 +17,6 @@ Organizational:
 Shortcodes:
 
 - consolidate and make dark/light themes for your boxes, particularly the question box (which does not look good on mobile)
-- add fuzzy find to the macros (better than ctrl-f) and also adjust .toml for search keywords too
 
 Other stylistic:
 

@@ -12,5 +12,4 @@ toc = true
 authors = ["test", "test2"]
 +++
 
-macros cannot be used within the acutal md tiself
-however, they can be used wtihin shortcords and other html docs
+{{wip()}}
