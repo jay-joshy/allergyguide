@@ -13,6 +13,8 @@ authors = ["author 1", "author 2"]
 +++
 {{ wip() }}
 
+<div class="blur-container">
+
 Allergen immunotherapy (AIT) is an effective treatment for allergic rhinitis/conjunctivitis (AR/AC), allergic asthma, atopic dermatitis with aeroallergen sensitization (ie, dust mites), and stinging-insect hypersensitivity. **Patients should demonstrate specific IgE antibodies to relevant allergens to which they are allergic, either by skin testing or appropriate in vitro tests.** There are no specific age limits; however, children should be able to communicate effectively, and comorbidities in elderly should be considered. **Duration of therapy should be patient individualized, but most guidelines recommend 3–5 years of maintenance therapy for aeroallergens (repeat skin or blood testing not recommended).** AIT may be given indefinitely for severe stinging-insect hypersensitivity, particularly in patients with severe reactions or systemic mastocytosis.
 
 # Perennial SCIT
@@ -76,3 +78,5 @@ Patient information / monograph: [ALK 2022](/monographs/acarizax_2022_1.pdf)
 ## orlistat
 
 # Monitoring:
+
+</div>

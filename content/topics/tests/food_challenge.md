@@ -16,6 +16,8 @@ authors = ["author 1", "author 2"]
 </br>
 </br>
 
+<div class="blur-container">
+
 ```
 Prior to challenge risks/benefits discussed
 Patient does not have any concurrent illness, does not use betablockers/ACEi or NSAIDs, has not recently had alcohol, has not exercised strenuously <2h prior to this visit, and is not sleep deprived.
@@ -104,3 +106,5 @@ syringe is pretty easy
 => 15 = 3tbsp
 
 ask families to bring vehicles for food
+
+</div>

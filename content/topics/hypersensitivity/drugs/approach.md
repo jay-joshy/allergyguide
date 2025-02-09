@@ -15,6 +15,7 @@ authors = ["author 1", "author 2"]
 
 </br>
 </br>
+<div class="blur-container">
 
 ```md
 Drug:
@@ -74,3 +75,5 @@ The patient does not have a history of asthma or nasal polyps
 The patient does not have a history of chronic urticaria
 Their reaction is most in keeping with COX-1 mediated
 ```
+
+</div>

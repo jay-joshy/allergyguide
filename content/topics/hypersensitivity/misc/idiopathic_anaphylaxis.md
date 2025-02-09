@@ -13,6 +13,8 @@ authors = ["author 1", "author 2"]
 +++
 {{ wip() }}
 
+<div class="blur-container">
+
 </br>
 </br>
 
@@ -27,3 +29,6 @@ WIP
 Ddx:
 
 - cholinergic urticaria with anaphylaxis: [see article](https://pubmed.ncbi.nlm.nih.gov/26619922/)
+-
+
+</div>

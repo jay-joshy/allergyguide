@@ -29,3 +29,17 @@ pre.language-md {
   word-break: break-word;
   overflow-wrap: anywhere;
 }
+
+.blur-container {
+  filter: blur(5px);
+
+  /* Disable text selection */
+  user-select: none;
+  /* Standard */
+  -webkit-user-select: none;
+  /* Chrome, Safari, and Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer and Edge */
+}

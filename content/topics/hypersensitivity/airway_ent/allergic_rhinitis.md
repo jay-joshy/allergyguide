@@ -13,6 +13,8 @@ authors = ["author 1", "author 2"]
 +++
 {{ wip() }}
 
+<div class="blur-container">
+
 </br>
 </br>
 
@@ -37,3 +39,5 @@ rhinocort
 INCS AH
 ryaltris - mometasone + olopatadine
 dymista -fluct prop + azel
+
+</div>

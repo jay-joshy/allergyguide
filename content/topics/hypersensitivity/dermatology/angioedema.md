@@ -19,8 +19,6 @@ angioedema
 </br>
 </br>
 
-{{ load_macro(topic_name = "_xample_topic") }}
+<div class="blur-container">
 
-## Summary:
-
-WIP
+</div>

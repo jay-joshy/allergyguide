@@ -15,9 +15,6 @@ authors = ["author 1", "author 2"]
 
 </br>
 </br>
+<div class="blur-container">
 
-{{ load_macro(topic_name = "_xample_topic") }}
-
-## Summary:
-
-WIP
+</div>

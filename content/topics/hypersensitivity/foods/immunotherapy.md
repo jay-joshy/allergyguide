@@ -16,6 +16,8 @@ authors = ["author 1", "author 2"]
 </br>
 </br>
 
+<div class="blur-container">
+
 {{ load_macro(topic_name = "_xample_topic") }}
 
 ## Summary:
@@ -28,3 +30,6 @@ droplets
 
 - see ubc research
 - goal is not to eat but to reduce risk of anaphylaxis from cross contam
+-
+
+</div>
