@@ -23,7 +23,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [rupatadine]
 categories = ["2G antihistamine"]
@@ -45,7 +45,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [bilastine]
 categories = ["2G antihistamine"]
@@ -64,7 +64,7 @@ pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
 side_effects.severe = "Torsades (very rare)"
-monograph_links = ["../monographs/bilastine_2021_1.pdf"]
+monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 
 [loratadine]
 categories = ["2G antihistamine"]
@@ -86,7 +86,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [cetirizine]
 categories = ["2G antihistamine"]
@@ -108,7 +108,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [fexofenadine]
 categories = ["2G antihistamine"]
@@ -130,7 +130,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [desloratadine]
 categories = ["2G antihistamine"]
@@ -152,7 +152,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [diphenhydramine]
 categories = ["1G antihistamine"]
@@ -174,7 +174,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [salbutamol]
 categories = ["inhaler", "SABA"]
@@ -196,7 +196,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [budesonide_inhaler]
 categories = ["inhaler", "steroid"]
@@ -218,7 +218,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 
 [fluticasone-furoate_inhaler]
@@ -241,7 +241,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 
 [fluticasone-propionate_inhaler]
@@ -264,7 +264,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 
 [mometasone-furoate_inhaler]
@@ -287,7 +287,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [beclomethasone-dipropionate_inhaler]
 categories = ["inhaler", "steroid"]
@@ -309,7 +309,7 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]
 
 [ciclesonide_inhaler]
 categories = ["inhaler", "steroid"]
@@ -331,4 +331,4 @@ pregnancy = "insert information, can link to data"
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["../monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/example_2025_1.pdf"]

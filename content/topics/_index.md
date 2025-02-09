@@ -26,6 +26,7 @@ in_search_index = false
   - [Asthma](/topics/hypersensitivity/airway_ent/asthma)
   - [Chronic sinusitis](@/topics/hypersensitivity/airway_ent/chronic_sinusitis.md)
   - [ABPA](/topics/hypersensitivity/airway_ent/abpa)
+  - [Aeroallergen immunotherapy](@/topics/hypersensitivity/airway_ent/aeroallergen_immunotherapy.md)
 
 <!-- split -->
 
