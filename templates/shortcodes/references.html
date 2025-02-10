@@ -1,0 +1,83 @@
+{# Load the JSON reference data passed into the shortcode #}
+{% set references = load_data(literal=body, format="json") %}
+
+{# This hidden popup will later be toggled on/off #}
+<div id="ref-popup" class="ref-popup">
+  <div class="ref-popup-content">
+    <span id="ref-close" class="ref-close">&times;</span>
+    <div id="ref-popup-inner"></div>
+  </div>
+</div>
+
+{# Pass the JSON data into JavaScript – note: the `jsonify` filter will output proper JSON #}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // The full list of reference objects loaded from the shortcode JSON input.
+    const references = {{references | json_encode() | safe
+  }};
+
+  // Function to close the popup.
+  function closePopup() {
+    document.getElementById('ref-popup').classList.remove('active');
+  }
+
+  // Find each element in the document that lists reference IDs.
+  document.querySelectorAll('.references').forEach(function (refEl) {
+    // Get the comma-separated list of reference IDs, trimming any whitespace.
+    const ids = refEl.textContent.split(',').map(id => id.trim());
+
+    // Create a clickable icon element.
+    const iconEl = document.createElement('span');
+    iconEl.className = 'ref-icon';
+    // You can adjust the image path if needed; here it is assumed to be at /static/icon/important.svg
+    iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmarks-fill" viewBox="0 0 16 16"><path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5z"/><path d="M4.268 1A2 2 0 0 1 6 0h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L13 13.768V2a1 1 0 0 0-1-1z"/></svg>';
+
+    // When the icon is clicked, build and display the popup with the selected references.
+    iconEl.addEventListener('click', function () {
+      let popupContent = '';
+      // Loop over the IDs listed in the marker.
+      ids.forEach(function (id) {
+        // Look up the reference object matching this ID.
+        const ref = references.find(function (r) {return r.id === id;});
+        if (ref) {
+          popupContent += '<div class="ref-entry">';
+          // Show the AHA style bibliography.
+          popupContent += '<p class="ref-text">' + ref.aha_bib + '</p>';
+          // If there are any extra notes, show them.
+          if (ref.notes && ref.notes.trim() !== "") {
+            popupContent += '<p class="ref-notes">' + ref.notes + '</p>';
+          }
+          // Include a clickable link.
+          popupContent += '<a class="ref-link" href="' + ref.url + '" target="_blank">More info</a>';
+          popupContent += '</div>';
+        }
+      });
+      // Update the popup inner content.
+      document.getElementById('ref-popup-inner').innerHTML = popupContent;
+      // Show the popup by adding an "active" class.
+      document.getElementById('ref-popup').classList.add('active');
+    });
+
+    // Replace the original marker with the icon.
+    refEl.parentNode.replaceChild(iconEl, refEl);
+  });
+
+  // Attach a handler to close the popup when the close button is clicked.
+  document.getElementById('ref-close').addEventListener('click', closePopup);
+
+  // Close the popup if the user clicks outside the popup content.
+  document.getElementById('ref-popup').addEventListener('click', function (event) {
+    // If the click happened directly on the overlay (not within the popup content).
+    if (event.target === this) {
+      closePopup();
+    }
+  });
+
+  // Listen for the Escape key to close the popup.
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closePopup();
+    }
+  });
+});
+</script>

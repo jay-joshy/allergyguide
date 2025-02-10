@@ -1,0 +1,119 @@
+// Use your theme variables for dark/light mode
+:root:not(.switch) {
+  /* Dark mode */
+  --ref_background: #1e1e1e;
+  --ref_text: #ffffff;
+  --ref_border: #444;
+  --ref_shadow: rgba(0, 0, 0, 0.5);
+  --ref_link: #1e90ff;
+  --ref_icon: #ffa500;
+}
+
+:root.switch {
+  /* Light mode */
+  --ref_background: #ffffff;
+  --ref_text: #000000;
+  --ref_border: #ccc;
+  --ref_shadow: rgba(0, 0, 0, 0.1);
+  --ref_link: #0645ad;
+  --ref_icon: #ff4500;
+}
+
+/* Popup overlay (hidden by default) */
+.ref-popup {
+  display: none; // hidden initially
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); // semi-transparent background
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; // on top of other elements
+}
+
+/* Show popup when active */
+.ref-popup.active {
+  display: flex;
+}
+
+/* Popup inner content styling */
+.ref-popup-content {
+  background: var(--ref_background);
+  color: var(--ref_text);
+  border: 1px solid var(--ref_border);
+  padding: 1rem;
+  max-height: 80vh;
+  overflow-y: auto; // allow scrolling if content is long
+  box-shadow: 0 2px 10px var(--ref_shadow);
+  border-radius: 5px;
+  width: 90%;
+  max-width: 60vw;
+  position: relative;
+}
+
+/* Close button style */
+.ref-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Reference icon style */
+.ref-icon {
+  /* display: inline-block; */
+  /* vertical-align: middle; */
+
+  display: inline-block;
+  align-items: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  aspect-ratio: 1/1;
+  cursor: pointer; // Shows the pointer cursor on hover.
+
+}
+
+.ref-icon svg {
+  transition: fill 0.2s;
+  fill: var(--ref_icon); // Your highlight color
+
+  width: 1rem;
+  height: 1rem;
+
+}
+
+.ref-icon svg:hover {
+  fill: var(--ref_icon); // Your highlight color
+  transform: scale(1.5);
+}
+
+/* (Optional) Force a fill color on the SVG if desired.
+   This may need adjustments depending on your SVG file structure.
+.ref-icon img {
+  filter: brightness(0) saturate(100%) invert(50%) sepia(100%) hue-rotate(20deg);
+}
+*/
+
+/* Individual reference entry styling */
+.ref-entry {
+  margin-bottom: 1rem;
+}
+
+/* Styling for the reference text and notes */
+.ref-text,
+.ref-notes {
+  margin: 0 0 0.5rem 0;
+}
+
+/* Link styling */
+.ref-link {
+  color: var(--ref_link);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
