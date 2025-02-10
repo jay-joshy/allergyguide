@@ -22,6 +22,7 @@
 @use "shortcodes/wip";
 @use "shortcodes/mermaid";
 @use "shortcodes/spoiler";
+@use "shortcodes/timeline";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
