@@ -38,19 +38,31 @@
   display: flex;
 }
 
-/* Popup inner content styling */
 .ref-popup-content {
   background: var(--ref_background);
   color: var(--ref_text);
   border: 1px solid var(--ref_border);
   padding: 1rem;
-  max-height: 80vh;
   overflow-y: auto; // allow scrolling if content is long
   box-shadow: 0 2px 10px var(--ref_shadow);
   border-radius: 5px;
   width: 90%;
-  max-width: 60vw;
+  max-width: 60vw; // Default for landscape
+  max-height: 80vh; // defauly for landspace
+
   position: relative;
+
+  @media screen and (orientation: portrait) {
+    max-width: 80vw; // Increase width in portrait mode
+    max-height: 50vh; // defauly for landspace
+
+  }
+
+  @media screen and (orientation: landscape) {
+    max-width: 60vw; // Keep the default in landscape mode
+    max-height: 80vh; // defauly for landspace
+
+  }
 }
 
 /* Close button style */
@@ -135,6 +147,6 @@ a {
 .ref-separator {
   border: none;
   height: 1px;
-  background: linear-gradient(to right, transparent, var(--ref_icon), transparent);
+  background: linear-gradient(to right, var(--ref_icon), transparent);
   margin: 12px 0;
 }

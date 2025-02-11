@@ -1,6 +1,18 @@
 {# Load the JSON reference data passed into the shortcode #}
 {% set references = load_data(literal=body, format="json") %}
 
+{# check for duplicate references and throw error if so #}
+{% set unique_ids = [] %}
+{% for ref in references %}
+
+{% if ref.id in unique_ids %}
+{{ throw(message="Ref ID: " ~ ref.id ~ " has been duplicated. Please fix your JSON.") }}
+{% endif %}
+
+{% set_global unique_ids = unique_ids | concat(with=[ref.id]) %}
+{% endfor %}
+
+
 {# This hidden popup will later be toggled on/off #}
 <div id="ref-popup" class="ref-popup">
   <div class="ref-popup-content">
