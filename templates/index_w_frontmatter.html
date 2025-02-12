@@ -43,6 +43,8 @@ example.com/blog/ example.com/software/
     {%- elif section.content %}
     {{ section.content | safe }}
     {%- endif %}
+
+    <hr class="front-matter_separator">
   </div>
   {%- for page in paginator.pages %}
   <article>

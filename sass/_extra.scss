@@ -45,3 +45,10 @@ pre.language-md {
   -ms-user-select: none;
   /* Internet Explorer and Edge */
 }
+
+.front-matter_separator {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, orange, transparent);
+  margin-top: 1rem;
+}
