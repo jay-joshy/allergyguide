@@ -47,45 +47,45 @@ names.") }}
         <p><strong><i class="fas fa-tags"></i>
             Brand Names:</strong>
           {% for brand in details.brand_names %}
-          {{ brand }}{% if not loop.last %}, {% endif %}
+          {{ brand | markdown | safe }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
         <p><strong><i class="fas fa-dollar-sign"></i>
             Cost:</strong>
           {% for item in details.cost %}
-          {{ item.price }} ({{ item.province }}){% if not loop.last %}; {% endif %}
+          {{ item.price | markdown | safe }} ({{ item.province | markdown | safe }}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
         <p><strong>MoA:</strong>
-          {{ details.moa }}</p>
+          {{ details.moa | markdown | safe }}</p>
         <p><strong><i class="fas fa-hourglass-half"></i>
             Half-life:</strong>
-          {{ details.half_life }}</p>
+          {{ details.half_life | markdown | safe }}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
-          {{ details.routes }}</p>
+          {{ details.routes | markdown | safe }}</p>
         <p><strong><i class="fas fa-syringe"></i>
             Doses:</strong></p>
         <ul>
           {% for dose in details.doses %}
-          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
+          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes | markdown | safe }})</li>
           {% endfor %}
         </ul>
       </div>
       <div class="drug-card-column">
         <p><strong><i class="fas fa-user"></i>
             Age Group:</strong>
-          {{ details.age_group }}</p>
+          {{ details.age_group | markdown | safe }}</p>
         <p><strong><i class="fas fa-baby"></i>
             Pregnancy:</strong>
-          {{ details.pregnancy }}</p>
+          {{ details.pregnancy | markdown | safe }}</p>
         <p><strong><i class="fas fa-ban"></i>
             Contraindications:</strong>
-          {{ details.contraindications }}</p>
+          {{ details.contraindications | markdown | safe }}</p>
         <p><strong><i class="fas fa-exclamation-triangle"></i>
             Common SEs:</strong>
-          {{ details.side_effects.common }}</p>
+          {{ details.side_effects.common | markdown | safe }}</p>
         <p><strong><i class="fas fa-skull-crossbones"></i>
             Severe SEs:</strong>
-          {{ details.side_effects.severe }}</p>
+          {{ details.side_effects.severe | markdown | safe }}</p>
         <p><strong><i class="fas fa-book"></i>
             Monograph Links:</strong></p>
         <ul class="monograph-links">
