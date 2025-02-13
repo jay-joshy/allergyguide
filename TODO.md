@@ -2,7 +2,7 @@ Content:
 
 - Make example articles for 1) a condition (ie. penicillin allergy) 2) macro 3) research
 - Pediatric medicine crash course
-- port original pen-fast questions over with extra options
+- port original pen-fast questions over with extra options; need to see if .PDF js packages are possible.
 - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
 - Billing tips (would have to be province specific -- VERY fellow focused and low priority)
