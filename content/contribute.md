@@ -72,7 +72,7 @@ Example:
 
 #### Topics
 
-Not all topics will fit this general structure; this is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points. See [here for some styling options](#styling-options-available) you could use. If you're comfortable with html/md, see [shortcodes](/shortcodes) for the full suite of options available.
+Not all topics will fit this general structure; this is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points. See [here for some styling options](#styling-options-available) you could use. If you're comfortable with .html/.md, see [shortcodes](/shortcodes) for the full suite of options available.
 
 - Macro to c/p
 - Summary:
@@ -114,7 +114,7 @@ This is a _warning_ section.
 {% end %}
 <br>
 {% admonition(type="info", icon="info", title="INFO") %}
-This is a _info_ section.
+This is an _info_ section.
 {% end %}
 <br>
 {% admonition(type="tip", icon="tip", title="TIP") %}
