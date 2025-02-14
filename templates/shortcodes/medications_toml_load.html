@@ -41,7 +41,11 @@ names.") }}
   {% for drug, details in data %}
   {% if drug in meds %}
   <div class="drug-card" data-categories="{{ details.categories | join(sep=',') }}" data-brand-names="{{ details.brand_names | join(sep=',') }}">
-    <h2 class="generic-name">{{ drug | split(pat="_") | first | replace(from="-", to=" ") | capitalize }}</h2>
+    <h2 class="generic-name">{{ drug | split(pat="_") | first | replace(from="-", to=" ") | capitalize }}
+    {% set z = drug | split(pat="_") | last %}
+    {% if z != drug %}
+     ({{ z }})
+    {% endif %}</h2>
     <div class="drug-card-content">
       <div class="drug-card-column">
         <p><strong><i class="fas fa-tags"></i>
@@ -75,8 +79,7 @@ names.") }}
             Age Group:</strong>
           {{ details.age_group }}</p>
         <p><strong><i class="fas fa-baby"></i>
-            Pregnancy:</strong>
-          {{ details.pregnancy | markdown | safe }}</p>
+            Pregnancy:</strong>{{ details.pregnancy | markdown | safe }}</p>
         <p><strong><i class="fas fa-ban"></i>
             Contraindications:</strong>
           {{ details.contraindications | markdown | safe }}</p>
