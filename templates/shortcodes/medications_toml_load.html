@@ -47,26 +47,26 @@ names.") }}
         <p><strong><i class="fas fa-tags"></i>
             Brand Names:</strong>
           {% for brand in details.brand_names %}
-          {{ brand | markdown | safe }}{% if not loop.last %}, {% endif %}
+          {{ brand }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
         <p><strong><i class="fas fa-dollar-sign"></i>
             Cost:</strong>
           {% for item in details.cost %}
-          {{ item.price | markdown | safe }} ({{ item.province | markdown | safe }}){% if not loop.last %}; {% endif %}
+          {{ item.price }} ({{ item.province }}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
         <p><strong>MoA:</strong>
           {{ details.moa | markdown | safe }}</p>
         <p><strong><i class="fas fa-hourglass-half"></i>
             Half-life:</strong>
-          {{ details.half_life | markdown | safe }}</p>
+          {{ details.half_life  }}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
-          {{ details.routes | markdown | safe }}</p>
+          {{ details.routes }}</p>
         <p><strong><i class="fas fa-syringe"></i>
             Doses:</strong></p>
         <ul>
           {% for dose in details.doses %}
-          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes | markdown | safe }})</li>
+          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
           {% endfor %}
         </ul>
       </div>
