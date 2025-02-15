@@ -6,6 +6,7 @@ Content:
 - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
 - Billing tips (would have to be province specific -- VERY fellow focused and low priority)
+- consider creation of video resources if time permits -- a much later goal
 
 Organizational:
 

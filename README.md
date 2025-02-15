@@ -4,13 +4,7 @@
 
 A resident-led and faculty-reviewed website for high-yield and concise information about 1) conditions 2) therapies/medications 3) patient resources. It is meant for **practical use by residents/fellows, or other non-allergist physicians looking to learn**.
 
-Secondary goals if time permits includes:
-
-- Sets of questions for RC studying
-- Case reviews of high-yield clinical scenarios
-- Deep-dives in separate subpages for more fellow-focused content for each topic
-- Critical appraisal of landmark / new research
-- Patient resources translated into different languages -- also with specific geographics (ie. BC, ON, etc.)
+Please refer to the [about](allergyguide.ca/about/) section of the website for more specific breakdown of the goals.
 
 ## What is required to make this succeed both short and long term?
 
@@ -32,10 +26,10 @@ For further details re: contributing process, formatting, content for topics/mac
 - About -- goals of the site, contributors, etc.
 - Contribute -- workflow, style guides, etc
 
-## Running the site:
+## Nitty gritty about site function:
 
+Site is deployed from Netlify from GitHub. It is built using Zola, an excellent open-source static site generator with the Abridge theme as a base. It uses Tera templating for the webpages. It is all open-source.
+
+See the following links for more details:
 https://www.getzola.org/
 https://abridge.pages.dev/
-https://thedataquarry.com/posts/static-site-zola/#code
-
-Site is deployed from Netlify from GitHub. It is all open-source.

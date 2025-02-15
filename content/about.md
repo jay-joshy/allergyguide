@@ -21,9 +21,9 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 
 #### Secondary goals (if time permits)
 
-- "Deep dives" within sections for fellows
+- Deep-dives in separate subpages for more fellow-focused content for each topic
 - Informal case reports with well-defined learning points
-- Patient resources translated into different languages
+- Patient resources translated into different languages -- also with specific geographics (ie. BC, ON, etc.)
 - Sets of questions for RC studying (and maybe an Anki deck)
 - Critical appraisal of new research
 - How to bill (for fellows)
