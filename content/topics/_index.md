@@ -24,7 +24,7 @@ in_search_index = false
 - <kbd><kbd>Airway and ENT</kbd></kbd>
   - [Allergic Rhinitis](@/topics/hypersensitivity/airway_ent/allergic_rhinitis.md)
   - [Asthma](/topics/hypersensitivity/airway_ent/asthma)
-  - [Chronic sinusitis](@/topics/hypersensitivity/airway_ent/chronic_sinusitis.md)
+  - [Chronic rhinosinusitis](@/topics/hypersensitivity/airway_ent/chronic_rhinosinusitis.md)
   - [ABPA](/topics/hypersensitivity/airway_ent/abpa)
   - [Aeroallergen immunotherapy](@/topics/hypersensitivity/airway_ent/aeroallergen_immunotherapy.md)
 
