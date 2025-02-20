@@ -150,3 +150,13 @@ a {
   background: linear-gradient(to right, var(--ref_icon), transparent);
   margin: 12px 0;
 }
+
+.ref-bib {
+  padding-left: 2rem; /* Adjusts the amount of space for the hanging indent */
+
+  .item {
+  text-indent: -2rem; /* Moves the first line back */
+  padding-left: 0rem; /* Creates space for the remaining lines */
+    
+  }
+}

@@ -554,7 +554,7 @@ Here is another sentence with one reference <span class="references">2</span>
 
 ... rest of the document content
 
-{% references() %}
+{% references(showBib = true) %}
 [{
 "id": "1",
 "aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
@@ -581,7 +581,7 @@ Here is another sentence with one reference <span class="references">2</span>
 
 ... rest of the document content
 
-{% references() %}
+{% references(showBib = true) %}
 [{
 "id": "1",
 "aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",

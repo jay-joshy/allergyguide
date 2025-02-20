@@ -21,6 +21,18 @@
   </div>
 </div>
 
+{# For biblography #}
+{% set showBib = showBib | default(value=false) %}
+{% if showBib %}
+<div class="ref-bib">
+  {% for ref in references %}
+    <div class = "item">
+      {{ ref.id }}. {{ ref.aha_bib }}. <a class="ref-link" href="{{ref.url}}" target="_blank">Link.</a>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 {# Pass the JSON data into JavaScript – note: the `jsonify` filter will output proper JSON #}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -54,7 +66,7 @@
         if (ref) {
           popupContent += '<div class="ref-entry">';
           // Show the AHA style bibliography.
-          popupContent += '<p class="ref-text"><a class="ref-link" href="' + ref.url + '" target="_blank">' + ref.aha_bib + '</a></p>';
+          popupContent += '<p class="ref-text"><a class="ref-link" href="' + ref.url + '" target="_blank">' + ref.id + ".  " + ref.aha_bib + '</a></p>';
           // If there are any extra notes, show them.
           if (ref.notes && ref.notes.trim() !== "") {
             popupContent += '<p class="ref-notes">' + ref.notes + '</p>';
