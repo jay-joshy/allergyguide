@@ -2,26 +2,6 @@
 # keywords -- part of the search index for the fuzzy find
 # content -- plain text macro
 
-[_xample_topic]
-topic = "topic name, ie. Congestive Heart Failure Exacerbation"
-keywords = ["example topic", "example", "hippopotamus"]
-content = '''
-# CHFe
-O2, UO
-Likely precipitant(s): diet, med, CAD, arrhythmia, infection, PE, AKI, substance
-This is a very long line to demonstrate that the block should have wrap around text and should not just get cut off hopefully.
-Ix: 
-trop, ECG, BNP, metabolic profile, TSH, Cr, liver panel
-CXR
-?cath
-Mx:
-NP vs BiPAP
-IV Lasix
-I&O, upright, salt/fluid restrict
-GDMT when out of CHFe
-'''
-
-
 [_consult]
 topic = "Consult template"
 keywords = ["template", "consult"]
@@ -134,7 +114,7 @@ Placeholder macro
 
 [chronic_rhinosinusitis]
 topic = "Chronic rhinosinusitis"
-keywords = ["CRS", "sinusitis", "polyps"]
+keywords = ["CRS", "sinusitis", "polyp"]
 content = '''
 Contrib factors -- asthma, AR, CF, ASA sensitivity, reucrrent infx
 purulent drainage, facial pain/pressure/fullness, nasal obstruction, hyposmia
@@ -150,7 +130,34 @@ Recommendations:
 - SPT for common aeroallergens
 - CT head non-constrast for ostiomeatal complex vs ENT referral
 - B-cell immunodeficiency workup in setting of suspicious symptoms / acute recurrent sinusitis
-- Nasal saline rinses, avoidance of triggers 
-- Rx: INCS, LTRA if ASA sensitive, dupilimab for CRSwNP
+- Non-Rx: Nasal saline rinses, avoidance of triggers 
+- Rx: INCS, LTRA if ASA sensitive, dupilimab for CRSwNP, tx for AR if present
 '''
 
+[spt_aeroallergen]
+topic = "Skin prick panel - aeroallergens"
+keywords = ["spt", "aeroallergen", "panel", "prick"]
+content = '''
+
+in progress
+
+
+'''
+
+
+
+[spt_food]
+topic = "Skin prick panel - food"
+keywords = ["spt", "food", "panel", "prick"]
+content = '''
+  
+in progress
+'''
+
+[spt_venom]
+topic = "Skin prick panel - food"
+keywords = ["spt", "food", "panel", "prick"]
+content = '''
+  
+in progress
+'''

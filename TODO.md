@@ -1,30 +1,35 @@
 Content:
 
-- Make example articles for 1) a condition (ie. penicillin allergy) 2) macro 3) research landmark article
+- Make example articles for 1) a condition 2) macro 3) research landmark article
+  - Chronic rhinosinusitis, landmark trials (ie. Omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP) 
   - done: medication example
-- Topics:
+- Topics to add:
   - Pediatric medicine crash course
   - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
+- auto SPT formatter -- ie fuzzy find search extract -> enter -> enter mm -> ctrl enter to move to next; formatted section showing up underneath in a table or something; able to repeat if needed (will auto label as repeat)
+- Figure out how to make website more visible to web crawlers -- while it is indexed the homepage is not showing up on search?
+
+Lower priority content:
+
 - port original pen-fast questions over with extra options; need to see if .PDF js packages are possible.
-- Billing tips (would have to be province specific -- VERY fellow focused and low priority)
-- consider creation of video resources if time permits -- a much later goal
+- creation of video resources if time permits 
+- Billing tips (would have to be province specific -- VERY fellow focused)
 
 Organizational:
 
 - fully flesh out contribution process
 - set up example google drive
 - Reach out to staff re: supporting the project / funding?
-- other resident / fellow support / thoughts?
 - team structure?
   - main editor: josh
-  - main staff: ?
+  - main staff: ?TBD
   - other editors: ? other fellows interested -- ~3-4? to coordinate the editing process and reaching out to staff
-  - editors who also can code / contribute: 1-2?
+  - editors who also can code / contribute: 1-2 but if needed Josh can do all of this (less sustainable however)
 
 Shortcodes:
 
-- consolidate and make dark/light themes for your boxes, particularly the question box (which does not look good on mobile)
+- consolidate and make light/dark themes for original admonitions
 
 Other stylistic:
 
