@@ -8,6 +8,8 @@ Content:
   - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
 - auto SPT formatter -- ie fuzzy find search extract -> enter -> enter mm -> ctrl enter to move to next; formatted section showing up underneath in a table or something; able to repeat if needed (will auto label as repeat)
+  - should have option to add quick note to text as well if needed
+  - should have option for custom SPT as well if needed
 - Figure out how to make website more visible to web crawlers -- while it is indexed the homepage is not showing up on search?
 
 Lower priority content:
@@ -30,6 +32,7 @@ Organizational:
 Shortcodes:
 
 - consolidate and make light/dark themes for original admonitions
+- for image next to text -- if orientation vertical, display on top or bottom instead of shrinking it all. In addition -- picture click should open into new tab
 
 Other stylistic:
 
