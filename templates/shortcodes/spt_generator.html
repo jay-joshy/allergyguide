@@ -1,0 +1,29 @@
+<div class="spt_generator">
+  <div class="entry-creation">
+    <!-- TODO! -->
+    <!-- 1. The user is presented with 3 input bars in-line. The first input bar is a search bar with drop-down results -- as they type they get a fuzzy find search through possible allergens (see .js file for list). If they type in something that doesn't exist, they should also have the option of creating a custom allergen entry. This input bar should be focused (ie. autofocus) -->
+    <!-- 2. They should be able to TAB to the next input bar, which allows them to input the mm diameter of the test. -->
+    <!-- 3. The last input bar is for an optional note for the entry. -->
+    <!-- 4. Once they press CTRL-ENTER, the entry is "added", and a new 'fresh' set of 3 input bars pushes the entry below. The old entry will be displayed both as an editable section below the 'fresh' input and also in the display below.
+So, after adding an entry, the inputs reset, and the added entry is shown in an editable section (maybe as a row with the three fields and an X button), and also in the code blocks.
+
+     -->
+    <!-- 5. Each entry once entered should have an X to the very right that allows it to be quickly deleted. -->
+  </div>
+  <!-- Beneath the entry creation section, is the display section which shows the plaintext tables in code blocks for easy copy and pasting. One section is for a simple list of entries, the other is for the table with two columns format. -->
+  <div class="display-block">
+    <div class="column">
+      <div class="code-block-container">
+        <button class="copy-button">Copy</button>
+        <div class="txt" id="simpleList"></div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="code-block-container">
+        <button class="copy-button">Copy</button>
+        <div class="txt" id="tableFormat"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module" src="/js/spt_generator.js"></script>
