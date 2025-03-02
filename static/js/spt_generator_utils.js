@@ -23,6 +23,26 @@ export const ALLERGENS = {
   venoms: ["honeybee", "wasp", "white faced hornet", "yellow hornet", "yellow jacket"],
 };
 
+export const TEMPLATES = {
+  controls: ["(+) control", "(-) control"],
+  commonNuts: ALLERGENS.foods.nuts,
+  commonFruits: ALLERGENS.foods.fruits,
+};
+
+// Utility to flatten allergens
+export function flattenAllergens(obj) {
+  let results = [];
+  for (const key in obj) {
+    const item = obj[key];
+    if (Array.isArray(item)) {
+      results.push(...item.filter(i => i !== ""));
+    } else if (typeof item === "object") {
+      results.push(...flattenAllergens(item));
+    }
+  }
+  return results;
+}
+
 function wrapText(text, maxWidth) {
   const words = text.split(" ");
   let lines = [];
@@ -103,7 +123,7 @@ export function getTable(entryList, useCol, sort) {
 
   function formatCell(ent) {
     if (!ent) return { line1: "", noteLines: [] };
-    let line1 = `${ent.allergen !== "" ? ent.allergen : "Enter allergen"} -- ${ent.diameter != null && !isNaN(ent.diameter) ? ent.diameter + 'mm' : 'Enter #'}`;
+    let line1 = `${ent.allergen !== "" ? ent.allergen : "Enter allergen"} -- ${ent.diameter != null && (!isNaN(ent.diameter) || ent.diameter == "") ? ent.diameter + 'mm' : 'Enter #'}`;
     let noteLines = [];
     if (ent.note) {
       const wrapped = wrapText(ent.note, noteWrapWidth);

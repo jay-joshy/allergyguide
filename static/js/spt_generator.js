@@ -1,25 +1,4 @@
-import { ALLERGENS, getTable, copyToClipboard } from "./spt_generator_utils.js";
-
-const TEMPLATES = {
-  controls: ["(+) control", "(-) control"],
-  commonNuts: ALLERGENS.foods.nuts,
-  commonFruits: ["pear", "peach", "apple"],
-};
-
-
-// Utility to flatten allergens
-function flattenAllergens(obj) {
-  let results = [];
-  for (const key in obj) {
-    const item = obj[key];
-    if (Array.isArray(item)) {
-      results.push(...item.filter(i => i !== ""));
-    } else if (typeof item === "object") {
-      results.push(...flattenAllergens(item));
-    }
-  }
-  return results;
-}
+import { ALLERGENS, TEMPLATES, flattenAllergens, getTable, copyToClipboard } from "./spt_generator_utils.js";
 
 const allergenList = flattenAllergens(ALLERGENS);
 
