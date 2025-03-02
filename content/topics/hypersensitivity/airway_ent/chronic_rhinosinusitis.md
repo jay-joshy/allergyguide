@@ -11,6 +11,7 @@ toc = true
 series = "airway and ent"
 authors = ["Joshua Yu"]
 +++
+
 {{ wip() }}
 
 </br>
@@ -18,18 +19,13 @@ authors = ["Joshua Yu"]
 
 <div class="blur-container">
 
-{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
-
 ## Bottom-line:
-CRS is a complex inflammatory syndrome with two subtypes: CRSwNP and CRSsNP. Diagnosis requires both structural evidence of sinus inflammation and some cardinal symptoms: congestion/fullness, facial pain/pressure, nasal obstruction/blockage, and purulent drainage. Workup and management 
+
+CRS is a complex inflammatory syndrome with two subtypes: CRSwNP and CRSsNP. Diagnosis requires both structural evidence of sinus inflammation and some cardinal symptoms: congestion/fullness, facial pain/pressure, nasal obstruction/blockage, and purulent drainage. Workup and management
 
 ## Definitions
 
-
-
-
-## Sources: 
-
+## Sources:
 
 - Macro to c/p
 - Summary:
@@ -57,7 +53,6 @@ CRS is a complex inflammatory syndrome with two subtypes: CRSwNP and CRSsNP. Dia
   - Primary: list
   - Reviewers: list
   - Editor: list
-
 
 {% references() %}
 [{

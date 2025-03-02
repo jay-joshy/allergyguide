@@ -68,7 +68,7 @@ Re: adding content to website -- there are some formatting nuances, and a myriad
 - Recommendations: non-pharmacologic, pharmacologic
 
 Example:
-{{ load_macro(topic_name = "_xample_topic") }}
+{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
 
 #### Topics
 

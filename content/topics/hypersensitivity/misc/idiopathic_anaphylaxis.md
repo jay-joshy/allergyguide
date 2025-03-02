@@ -11,14 +11,13 @@ toc = true
 series = "anaphylaxis"
 authors = ["author 1", "author 2"]
 +++
+
 {{ wip() }}
 
 <div class="blur-container">
 
 </br>
 </br>
-
-{{ load_macro(topic_name = "_xample_topic") }}
 
 ## Summary:
 
