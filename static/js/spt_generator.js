@@ -558,7 +558,7 @@ function updateDisplays() {
   }
 
   const summaryCopyBtn = paragraphDisplay.parentElement.querySelector('.copy-button');
-  if (tableText.trim() === "") {
+  if (summaryText.trim() === "") {
     summaryCopyBtn.style.display = 'none';
   } else {
     summaryCopyBtn.style.display = '';

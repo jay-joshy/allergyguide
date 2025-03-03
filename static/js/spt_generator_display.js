@@ -208,9 +208,15 @@ export function getSummary(entryList) {
 
   let summary = "";
 
+  // --------- CONSTRUCT SUMMARY ----------
+  let currentDate = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  if (sortedPositiveKeys.length > 0 || sortedNegativeAllergens.length > 0) {
+    summary += "---- " + currentDate + " ----";
+  }
+
   // Construct the positive results summary using sorted keys
   if (sortedPositiveKeys.length > 0) {
-    summary += `Skin testing was positive for ${formatEntries(sortedPositiveKeys, positiveAllergens)}.`;
+    summary += `\nSkin testing was positive for ${formatEntries(sortedPositiveKeys, positiveAllergens)}.`;
   }
 
   // Construct the negative results summary using sorted allergens
