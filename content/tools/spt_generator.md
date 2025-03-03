@@ -13,12 +13,15 @@ authors = ["Joshua Yu"]
 +++
 
 </br>
+</br>
 
+{% admonition(type="info", icon="tip", title="Quick start") %}
 This tool works best on desktop, _**not mobile**_. See [**instructions**](@/tools/resources/spt_generator_instructions.md).
 
-<kbd>TAB</kbd> and <kbd>SHIFT-TAB</kbd> to navigate within one entry.
-<kbd>CTRL-ENTER</kbd> or <kbd>CMD-ENTER</kbd> to submit one entry.
+Type an allergen, <kbd><kbd>TAB</kbd></kbd> and <kbd><kbd>SHIFT-TAB</kbd></kbd> to cycle through suggestions. You can also type a custom allergen. <kbd><kbd>ENTER</kbd></kbd> to move to diameter input. <kbd><kbd>ENTER</kbd></kbd> again to submit.
+
 Mix and match the templates to save time.
 
-<br>
+{% end %}
+
 {{ spt_generator() }}

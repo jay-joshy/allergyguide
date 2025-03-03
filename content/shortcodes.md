@@ -12,10 +12,6 @@ toc = true
 
 See below for markdown syntax used for the custom shortcodes used in this website.
 
-## spt_generator
-
-{{ spt_generator() }}
-
 ## Re: nesting shortcodes
 
 The below code does not work:
