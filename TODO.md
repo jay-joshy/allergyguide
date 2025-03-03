@@ -1,7 +1,7 @@
 Content:
 
 - Make example articles for 1) a condition 2) macro 3) research landmark article
-  - Chronic rhinosinusitis, landmark trials (ie. Omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP)
+  - Chronic rhinosinusitis, landmark trials (ie. omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP)
   - done: medication example
 - Topics to add:
   - Pediatric medicine crash course
