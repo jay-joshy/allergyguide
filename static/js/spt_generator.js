@@ -18,7 +18,17 @@ import { ALLERGENS, TEMPLATES, flattenAllergens, getTable, copyToClipboard } fro
  * Note: Sorting uses ALLERGENS' hierarchical order (main categories → subcategories → allergen position).  In addition, when editing an existing entry's allergen, there is intentionally no dropdown for suggestions. getTable() will also handle cases where an entry diameter is NaN or null.
  */
 
+/**
+* Represents an allergen entry with measurement and notes
+* @class
+*/
 class Entry {
+  /**
+   * Create a new allergen entry
+   * @param {string} allergen - Name of the allergen
+   * @param {number} diameter - Measurement diameter in millimeters
+   * @param {string|null} note - Optional note about the entry
+   */
   constructor(allergen, diameter, note) {
     this.allergen = allergen.trim();
     this.diameter = diameter;
@@ -26,9 +36,17 @@ class Entry {
   }
 }
 
+/** @type {Entry[]} Array of allergen entries */
 let entries = [];
+
+/** @type {string[]} Flattened list of all allergens for search */
 const cachedFlattenedAllergens = flattenAllergens(ALLERGENS);
 
+/**
+ * Escape HTML special characters to prevent XSS
+ * @param {string} unsafe - Unsafe input string
+ * @returns {string} Sanitized HTML-safe string
+ */
 function escapeHtml(unsafe) {
   return unsafe.replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -37,6 +55,7 @@ function escapeHtml(unsafe) {
     .replace(/'/g, "&#039;");
 }
 
+// DOM Content Loaded Handler
 document.addEventListener("DOMContentLoaded", function() {
   const mainContainer = document.querySelector(".spt_generator");
   const entryCreation = document.querySelector(".entry-creation");
@@ -47,6 +66,10 @@ document.addEventListener("DOMContentLoaded", function() {
   updateDisplays();
 });
 
+/**
+ * Create main input components
+ * @returns {[HTMLDivElement, HTMLDivElement]} Tuple containing input row and entries list elements
+ */
 function createInputComponents() {
   // Input Row
   const inputRow = document.createElement("div");
@@ -71,6 +94,10 @@ function createInputComponents() {
   return [inputRow, entriesList];
 }
 
+/**
+ * Create allergen input with dropdown container
+ * @returns {[HTMLDivElement, HTMLInputElement, HTMLDivElement]} Tuple containing container, input, and dropdown
+ */
 function createAllergenInput() {
   const container = document.createElement("div");
   container.className = "input-container allergen-input";
@@ -97,6 +124,12 @@ function createAllergenInput() {
   return [container, input, dropdown];
 }
 
+/**
+ * Create number input with validation
+ * @param {string} placeholder - Input placeholder text
+ * @param {string} ariaLabel - ARIA label for accessibility
+ * @returns {HTMLInputElement} Configured number input element
+ */
 function createNumberInput(placeholder, ariaLabel) {
   const input = document.createElement("input");
   input.type = "number";
@@ -107,6 +140,12 @@ function createNumberInput(placeholder, ariaLabel) {
   return input;
 }
 
+/**
+ * Create text input field
+ * @param {string} placeholder - Input placeholder text
+ * @param {string} ariaLabel - ARIA label for accessibility
+ * @returns {HTMLInputElement} Configured text input element
+ */
 function createTextInput(placeholder, ariaLabel) {
   const input = document.createElement("input");
   input.type = "text";
@@ -115,10 +154,19 @@ function createTextInput(placeholder, ariaLabel) {
   return input;
 }
 
+/**
+ * Validate number input to prevent negative values
+ * @param {Event} e - Input event
+ */
 function validateNumberInput(e) {
   if (e.target.value < 0) e.target.value = 0;
 }
 
+/**
+ * Set up all event listeners for the component
+ * @param {HTMLElement} container - Main container element
+ * @param {HTMLElement} entriesList - Entries list container
+ */
 function setupEventListeners(container, entriesList) {
   // Reset Button
   container.querySelector('#reset-btn').addEventListener('click', handleReset);
@@ -165,6 +213,10 @@ function setupEventListeners(container, entriesList) {
   entriesList.addEventListener('click', handleEntryDeletion);
 }
 
+/**
+ * Handle reset button click
+ * @listens HTMLElement#click
+ */
 function handleReset() {
   entries = [];
   renderEntries();
@@ -172,6 +224,11 @@ function handleReset() {
   this.blur();
 }
 
+/**
+ * Handle template button clicks
+ * @param {Event} e - Click event
+ * @listens HTMLElement#click
+ */
 function handleTemplateAdd(e) {
   const template = TEMPLATES[e.target.dataset.template];
   template.forEach(allergen => {
@@ -182,6 +239,11 @@ function handleTemplateAdd(e) {
   this.blur();
 }
 
+/**
+ * Handle allergen search input with fuzzy matching
+ * @param {Event} e - Input event
+ * @listens HTMLInputElement#input
+ */
 function handleAllergenSearch(e) {
   const query = e.target.value;
   const dropdown = this.parentNode.querySelector('.dropdown');
@@ -228,10 +290,15 @@ function handleAllergenSearch(e) {
   e.target.setAttribute('aria-expanded', isVisible);
 }
 
+/**
+ * Create custom dropdown option for non-matching queries
+ * @param {string} query - User search query
+ * @param {HTMLInputElement} inputElement - Associated input element
+ * @returns {HTMLDivElement} Custom option element
+ */
 function createCustomOption(query, inputElement) {
   const option = document.createElement("div");
   option.className = "dropdown-item";
-  // option.textContent = `Add "${query}"`;
   option.setAttribute("role", "option");
   option.addEventListener("click", () => {
     inputElement.value = query;
@@ -240,6 +307,11 @@ function createCustomOption(query, inputElement) {
   return option;
 }
 
+/**
+ * Handle keyboard navigation in dropdown
+ * @param {KeyboardEvent} e - Keydown event
+ * @listens HTMLInputElement#keydown
+ */
 function handleDropdownNavigation(e) {
   const dropdown = this.parentNode.querySelector('.dropdown');
   if (!dropdown.classList.contains('visible')) return;
@@ -289,7 +361,12 @@ function handleDropdownNavigation(e) {
   }
 }
 
-// Update the handleOutsideClick function
+/**
+ * Handle clicks outside allergen input
+ * @param {Event} e - Focusout or click event
+ * @listens Document#focusout
+ * @listens Document#click
+ */
 function handleOutsideClick(e) {
   const allergenContainer = document.querySelector('.allergen-input');
   const dropdown = document.querySelector('.dropdown');
@@ -309,7 +386,11 @@ function handleOutsideClick(e) {
   }
 }
 
-
+/**
+ * Handle new entry submission
+ * @param {KeyboardEvent} e - Keydown event
+ * @listens HTMLInputElement#keydown
+ */
 function handleEntrySubmission(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -339,6 +420,10 @@ function handleEntrySubmission(e) {
   }
 }
 
+
+/**
+ * Render all entries in the list
+ */
 function renderEntries() {
   const entriesList = document.querySelector('.entries-list');
   entriesList.innerHTML = '';
@@ -379,6 +464,13 @@ function renderEntries() {
   });
 }
 
+/**
+ * Create editable input field for entries
+ * @param {string} value - Initial input value
+ * @param {string} type - Input type (text/number)
+ * @param {function} handler - Input change handler
+ * @returns {HTMLInputElement} Configured input element
+ */
 function createEditableInput(value, type, handler) {
   const input = document.createElement("input");
   input.type = type;
@@ -387,6 +479,11 @@ function createEditableInput(value, type, handler) {
   return input;
 }
 
+/**
+ * Handle updates to existing entries
+ * @param {Event} e - Input event
+ * @listens HTMLElement#input
+ */
 function handleEntryUpdate(e) {
   if (e.target.tagName === 'INPUT') {
     const index = Array.from(e.target.closest('.entry').parentNode.children)
@@ -403,6 +500,11 @@ function handleEntryUpdate(e) {
   }
 }
 
+/**
+ * Handle entry deletion
+ * @param {Event} e - Click event
+ * @listens HTMLElement#click
+ */
 function handleEntryDeletion(e) {
   if (e.target.classList.contains('delete')) {
     const entryDiv = e.target.closest('.entry');
@@ -417,7 +519,9 @@ function handleEntryDeletion(e) {
   }
 }
 
-// Helper function to update the data-index attributes
+/**
+ * Update data-index attributes after modifications
+ */
 function updateEntryIndices() {
   document.querySelectorAll('.entries-list .entry').forEach((entryDiv, idx) => {
     entryDiv.setAttribute('data-index', idx);
@@ -450,6 +554,11 @@ function updateDisplays() {
   }
 }
 
+/**
+ * Scroll dropdown item into view
+ * @param {HTMLElement} container - Dropdown container
+ * @param {HTMLElement} item - Target dropdown item
+ */
 function scrollItemIntoView(container, item) {
   const containerRect = container.getBoundingClientRect();
   const itemRect = item.getBoundingClientRect();
