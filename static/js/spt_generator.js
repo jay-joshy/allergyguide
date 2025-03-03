@@ -253,7 +253,8 @@ function handleAllergenSearch(e) {
 
   // Use fuzzysort with the updated scoring range (0 to 1) and new API.
   const results = fuzzysort.go(query, cachedFlattenedAllergens, {
-    threshold: 0.1, // Adjust threshold as needed based on new score range
+    key: 'search',
+    threshold: 0.1,
     limit: 10
   });
 
@@ -261,14 +262,13 @@ function handleAllergenSearch(e) {
     results.forEach(result => {
       const option = document.createElement("div");
       option.className = "dropdown-item";
-      // Use highlight() if available; otherwise, fall back to escaped plain text.
-      const highlighted = result.highlight('<span class="highlight">', '</span>');
-      option.innerHTML = highlighted || escapeHtml(result.target);
+      // Always display the canonical name.
+      option.innerHTML = escapeHtml(result.obj.display);
       option.id = `option-${Math.random().toString(36).substr(2, 9)}`;
       option.setAttribute("role", "option");
       option.setAttribute("aria-selected", "false");
       option.addEventListener("click", () => {
-        e.target.value = result.target; // Use the original string value
+        e.target.value = result.obj.display;
         dropdown.classList.remove("visible");
         e.target.setAttribute('aria-expanded', 'false');
         e.target.removeAttribute('aria-activedescendant');
@@ -277,7 +277,6 @@ function handleAllergenSearch(e) {
       dropdown.append(option);
     });
   } else {
-    // Create custom option if no match meets the threshold
     dropdown.append(createCustomOption(query, e.target));
   }
 
@@ -538,7 +537,6 @@ function updateDisplays() {
   const simpleText = getTable(entries, false, true);
   const tableText = getTable(entries, true, true);
   const summaryText = getSummary(entries);
-  console.log(summaryText);
 
   simpleList.textContent = simpleText;
   tableFormat.textContent = tableText;

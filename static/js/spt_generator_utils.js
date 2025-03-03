@@ -28,7 +28,20 @@ export function flattenAllergens(obj) {
   for (const key in obj) {
     const item = obj[key];
     if (Array.isArray(item)) {
-      results.push(...item.filter(i => i !== ""));
+      item.forEach(el => {
+        if (typeof el === 'object' && el.name) {
+          // Add the canonical name for display/search
+          results.push({ display: el.name, search: el.name });
+          // Add each synonym as a searchable term, but keep the canonical display name.
+          if (Array.isArray(el.synonyms)) {
+            el.synonyms.forEach(syn => {
+              results.push({ display: el.name, search: syn });
+            });
+          }
+        } else if (typeof el === 'string') {
+          results.push({ display: el, search: el });
+        }
+      });
     } else if (typeof item === "object") {
       results.push(...flattenAllergens(item));
     }
@@ -49,5 +62,64 @@ export function escapeHtml(unsafe) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+/**
+ * Wrap text to specified maximum width
+ * @param {string} text - Text to wrap
+ * @param {number} maxWidth - Maximum characters per line
+ * @returns {string[]} Array of wrapped lines
+ */
+export function wrapText(text, maxWidth) {
+  const words = text.split(" ");
+  let lines = [];
+  let currentLine = "";
+  for (const word of words) {
+    if ((currentLine + word).length > maxWidth) {
+      lines.push(currentLine.trim());
+      currentLine = word + " ";
+    } else {
+      currentLine += word + " ";
+    }
+  }
+  if (currentLine.trim().length > 0) {
+    lines.push(currentLine.trim());
+  }
+  return lines;
+}
+
+/**
+ * Create hierarchical index map for sorting allergens
+ * @param {Object} allergens - ALLERGENS structure
+ * @returns {Map<string, number[]>} Map of allergens to their category indices
+ */
+export function buildAllergenOrderMap(allergens) {
+  const orderMap = new Map();
+  const mainCategories = Object.keys(allergens);
+  for (let mainIndex = 0; mainIndex < mainCategories.length; mainIndex++) {
+    const mainKey = mainCategories[mainIndex];
+    const mainValue = allergens[mainKey];
+    if (typeof mainValue === 'object' && !Array.isArray(mainValue)) {
+      const subGroups = Object.keys(mainValue);
+      for (let subIndex = 0; subIndex < subGroups.length; subIndex++) {
+        const subKey = subGroups[subIndex];
+        const subValue = mainValue[subKey];
+        if (Array.isArray(subValue)) {
+          subValue.forEach((allergen, allergenIndex) => {
+            // Use the canonical name if allergen is an object
+            const key = typeof allergen === 'object' ? allergen.display || allergen.name : allergen;
+            orderMap.set(key, [mainIndex, subIndex, allergenIndex]);
+          });
+        }
+      }
+    } else if (Array.isArray(mainValue)) {
+      mainValue.forEach((allergen, allergenIndex) => {
+        const key = typeof allergen === 'object' ? allergen.display || allergen.name : allergen;
+        orderMap.set(key, [mainIndex, allergenIndex]);
+      });
+    }
+  }
+  return orderMap;
+}
+
 
 
