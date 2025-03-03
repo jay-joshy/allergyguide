@@ -1,5 +1,5 @@
 /* Theme Variables
-================================================== */
+-------------------------------------------------- */
 :root {
   /* Dark Theme (Default) */
   --sptgen_bg_color: #1e1e1e;
@@ -14,8 +14,7 @@
   --sptgen_button_active_text: #ffffff;
   --sptgen_scrollbar_thumb: #555;
   --sptgen_scrollbar_track: #1e1e1e;
-  --sptgen_highlight_color: #f1c40f;
-  /* Highlight color as a font color change */
+  --sptgen_highlight_color: #f39c12;
 }
 
 :root.switch {
@@ -33,11 +32,27 @@
   --sptgen_scrollbar_thumb: #ddd;
   --sptgen_scrollbar_track: #fafafa;
   --sptgen_highlight_color: #d35400;
-  /* A warmer accent for light mode */
+}
+
+/* Mixin for button states */
+@mixin button-states($bg, $hover-bg, $active-bg, $text, $hover-text, $active-text) {
+  background: $bg;
+  color: $text;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background: $hover-bg;
+    color: $hover-text;
+  }
+
+  &:active {
+    background: $active-bg;
+    color: $active-text;
+  }
 }
 
 /* Main Component Styles
-================================================== */
+-------------------------------------------------- */
 .spt_generator {
   border-radius: 8px;
   overflow: visible;
@@ -45,6 +60,7 @@
   padding: 1rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 
+  /* Allergen Input Container */
   .allergen-input {
     position: relative;
   }
@@ -71,7 +87,6 @@
     position: relative;
   }
 
-  /* Buttons */
   .copy-button {
     position: absolute;
     top: 10px;
@@ -82,19 +97,9 @@
     font-size: 12px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    color: var(--sptgen_button_text);
-    background-color: var(--sptgen_button_bg);
-    transition: background-color 0.2s, color 0.2s;
-
-    &:hover {
-      color: var(--sptgen_button_hover_text);
-      background-color: var(--sptgen_button_hover_bg);
-    }
-
-    &:active {
-      color: var(--sptgen_button_active_text);
-      background-color: var(--sptgen_button_active_bg);
-    }
+    @include button-states(var(--sptgen_button_bg), var(--sptgen_button_hover_bg),
+      var(--sptgen_button_active_bg), var(--sptgen_button_text),
+      var(--sptgen_button_hover_text), var(--sptgen_button_active_text));
   }
 
   /* Form Elements */
@@ -102,15 +107,16 @@
     margin-bottom: 2rem;
 
     .input-row {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
 
       .input-container,
       .allergen-input,
       input[type="number"],
       input[type="text"] {
-        flex: 1;
+        width: 100%;
         min-width: 0;
       }
 
@@ -120,7 +126,6 @@
     }
 
     .input-container {
-      flex: 1;
       position: relative;
 
       input {
@@ -130,10 +135,11 @@
         border-radius: 4px;
         color: var(--sptgen_text_color);
         background: var(--sptgen_bg_color);
-        transition: border-color 0.2s;
+        transition: border-color 0.2s, box-shadow 0.2s;
 
         &:focus {
-          border-color: var(--sptgen_button_hover_bg);
+          border-color: var(--sptgen_highlight_color);
+          box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.3);
           outline: none;
         }
       }
@@ -142,31 +148,38 @@
     .entries-list {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0rem;
 
       .entry {
-        display: flex;
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 4fr 0.2fr;
+        gap: 0.2rem;
         align-items: center;
-        padding: 0rem;
-        /* background: rgba(255, 255, 255, 0.05); */
-        border-radius: 4px;
+        padding: 0rem 0;
+
+        &:first-child {
+          border-top: 1px solid var(--sptgen_border_color);
+
+        }
 
         input {
           flex: 1;
           padding: 0.5rem;
-          border: 1px solid var(--sptgen_border_color);
+          /* border: 1px solid var(--sptgen_border_color); */
+          border-bottom: 1px solid var(--sptgen_border_color);
+          border-left: 1px solid var(--sptgen_border_color);
+          border-bottom: 1px solid var(--sptgen_border_color);
+
           border-radius: 4px;
           color: var(--sptgen_text_color);
           background: var(--sptgen_bg_color);
 
           &[type="number"] {
-            text-align: left;
+            text-align: center;
           }
 
-          /* Centered allergen text */
           &.allergen-cell {
-            text-align: right;
+            text-align: center;
           }
         }
 
@@ -183,6 +196,12 @@
             background: #cc0000;
           }
         }
+
+        &:focus-within {
+          background: rgba(243, 156, 18, 0.15);
+          border: 1px solid var(--sptgen_highlight_color);
+        }
+
       }
     }
   }
@@ -196,7 +215,8 @@
     z-index: 100;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transform: translateY(-0.1rem);
+    transition: opacity 0.25s ease, transform 0.25s ease;
     max-height: calc(2.5rem * 5);
     overflow-y: auto;
     border: 1px solid var(--sptgen_border_color);
@@ -206,15 +226,18 @@
     &.visible {
       visibility: visible;
       opacity: 1;
+      transform: translateY(0);
     }
 
     .dropdown-item {
       padding: 0.5rem;
       cursor: pointer;
-      transition: color 0.2s;
+      transition: background 0.2s, color 0.2s;
 
+      &:hover,
       &.selected {
         background: var(--sptgen_button_hover_bg);
+        color: var(--sptgen_highlight_color);
       }
 
       .highlight {
@@ -230,18 +253,14 @@
     margin-bottom: 1rem;
 
     .template-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.8rem;
       margin-right: 0.5rem;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      color: var(--sptgen_button_text);
-      background: var(--sptgen_button_bg);
-      transition: background-color 0.2s;
-
-      &:hover {
-        background: var(--sptgen_button_hover_bg);
-      }
+      @include button-states(var(--sptgen_button_bg), var(--sptgen_button_hover_bg),
+        var(--sptgen_button_active_bg), var(--sptgen_button_text),
+        var(--sptgen_button_hover_text), var(--sptgen_button_active_text));
 
       &#reset-btn {
         background: #ff4444;
@@ -253,7 +272,7 @@
     }
   }
 
-  /* Layout */
+  /* Display Blocks */
   .display-block {
     display: grid;
     gap: 2rem;
@@ -263,7 +282,6 @@
   /* Input Number Fix */
   input[type="number"] {
     -moz-appearance: textfield;
-
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
