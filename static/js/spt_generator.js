@@ -241,7 +241,7 @@ function handleTemplateAdd(e) {
  * @listens HTMLInputElement#input
  */
 function handleAllergenSearch(e) {
-  const query = e.target.value;
+  const query = escapeHtml(e.target.value); // sanitize query
   const dropdown = this.parentNode.querySelector('.dropdown');
   dropdown.innerHTML = '';
 
@@ -263,7 +263,12 @@ function handleAllergenSearch(e) {
       const option = document.createElement("div");
       option.className = "dropdown-item";
       // Always display the canonical name.
-      option.innerHTML = escapeHtml(result.obj.display);
+
+      // Use highlight() if available; otherwise, fall back to escaped plain text.
+      const highlighted = result.highlight('<span class="highlight">', '</span>');
+      option.innerHTML = highlighted || escapeHtml(result.obj.display);
+
+      // option.innerHTML = escapeHtml(result.obj.display);
       option.id = `option-${Math.random().toString(36).substr(2, 9)}`;
       option.setAttribute("role", "option");
       option.setAttribute("aria-selected", "false");
