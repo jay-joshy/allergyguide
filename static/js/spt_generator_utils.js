@@ -160,3 +160,13 @@ export function normalizeAllergenName(input) {
   return canonicalAllergensMap.get(input.toLowerCase()) || input;
 }
 
+
+/**
+ * Removes all <span> HTML tags from a given string while preserving the inner content.
+ * 
+ * @param {string} str - The input string containing <span> tags.
+ * @returns {string} - The string with <span> tags removed.
+ */
+export function removeSpan(str) {
+  return str.replace(/<\/?span[^>]*>/g, '');
+}

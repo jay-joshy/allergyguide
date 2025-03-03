@@ -1,5 +1,5 @@
 import { ALLERGENS, TEMPLATES } from "./spt_generator_constants.js";
-import { normalizeAllergenName, escapeHtml, flattenAllergens, copyToClipboard } from "./spt_generator_utils.js";
+import { removeSpan, normalizeAllergenName, escapeHtml, flattenAllergens, copyToClipboard } from "./spt_generator_utils.js";
 import { getSummary, getTable } from "./spt_generator_display.js";
 
 /**
@@ -266,7 +266,14 @@ function handleAllergenSearch(e) {
 
       // Use highlight() if available; otherwise, fall back to escaped plain text.
       const highlighted = result.highlight('<span class="highlight">', '</span>');
-      option.innerHTML = highlighted || escapeHtml(result.obj.display);
+
+      // this is slightly glitchy -- when synonyms are used (ie. dust mite) it will bring up two occurences of the actual D. etc.
+      // Other functionality is preserved however.
+      if (removeSpan(highlighted) != result.obj.display) {
+        option.innerHTML = escapeHtml(result.obj.display);
+      } else {
+        option.innerHTML = highlighted;
+      }
 
       // option.innerHTML = escapeHtml(result.obj.display);
       option.id = `option-${Math.random().toString(36).substr(2, 9)}`;
