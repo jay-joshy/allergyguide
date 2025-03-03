@@ -29,7 +29,31 @@ export const TEMPLATES = {
   commonFruits: ALLERGENS.foods.fruits,
 };
 
-// Utility to flatten allergens
+/**
+ * Copy text content to clipboard with visual feedback
+ * @param {HTMLButtonElement} button - Copy button element
+ * @returns {void} Modifies button text temporarily during copy operation
+ */
+export function copyToClipboard(button) {
+  const codeBlock = button.nextElementSibling; // Get the sibling `.txt` div
+  const text = codeBlock.textContent || codeBlock.innerText;
+
+  navigator.clipboard.writeText(text).then(() => {
+    button.textContent = "Copied!"; // Temporarily change button text
+    setTimeout(() => button.textContent = "Copy", 2000); // Revert after 2 seconds
+  }).catch(err => {
+    console.error("Failed to copy text: ", err);
+    button.textContent = "Error";
+    setTimeout(() => button.textContent = "Copy", 2000);
+  });
+}
+
+
+/**
+ * Recursively flatten hierarchical allergen structure into single array
+ * @param {Object} obj - Nested allergen structure
+ * @returns {string[]} Flattened array of all allergen strings
+ */
 export function flattenAllergens(obj) {
   let results = [];
   for (const key in obj) {
@@ -43,6 +67,13 @@ export function flattenAllergens(obj) {
   return results;
 }
 
+/**
+ * @private
+ * Wrap text to specified maximum width
+ * @param {string} text - Text to wrap
+ * @param {number} maxWidth - Maximum characters per line
+ * @returns {string[]} Array of wrapped lines
+ */
 function wrapText(text, maxWidth) {
   const words = text.split(" ");
   let lines = [];
@@ -61,6 +92,12 @@ function wrapText(text, maxWidth) {
   return lines;
 }
 
+/**
+ * @private
+ * Create hierarchical index map for sorting allergens
+ * @param {Object} allergens - ALLERGENS structure
+ * @returns {Map<string, number[]>} Map of allergens to their category indices
+ */
 function buildAllergenOrderMap(allergens) {
   const orderMap = new Map();
   const mainCategories = Object.keys(allergens);
@@ -87,6 +124,13 @@ function buildAllergenOrderMap(allergens) {
   return orderMap;
 }
 
+/**
+ * Generate formatted ASCII table from allergen entries
+ * @param {Object[]} entryList - Allergen entries ({ allergen, diameter, note })
+ * @param {boolean} useCol - Enable two-column format
+ * @param {boolean} sort - Sort by ALLERGENS hierarchy first, then alphabetically
+ * @returns {string} Formatted table with optional notes wrapping and column layout
+ */
 export function getTable(entryList, useCol, sort) {
   if (entryList.length === 0) return "";
 
@@ -191,17 +235,18 @@ export function getTable(entryList, useCol, sort) {
   return "-".repeat(horizontalTableLen - 10) + "\n" + roughTable + "\n" + "-".repeat(horizontalTableLen - 10);
 }
 
-export function copyToClipboard(button) {
-  const codeBlock = button.nextElementSibling; // Get the sibling `.txt` div
-  const text = codeBlock.textContent || codeBlock.innerText;
 
-  navigator.clipboard.writeText(text).then(() => {
-    button.textContent = "Copied!"; // Temporarily change button text
-    setTimeout(() => button.textContent = "Copy", 2000); // Revert after 2 seconds
-  }).catch(err => {
-    console.error("Failed to copy text: ", err);
-    button.textContent = "Error";
-    setTimeout(() => button.textContent = "Copy", 2000);
-  });
+/**
+ * Escape HTML special characters to prevent XSS
+ * @param {string} unsafe - Unsafe input string
+ * @returns {string} Sanitized HTML-safe string
+ */
+export function escapeHtml(unsafe) {
+  return unsafe.replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
+
 

@@ -1,4 +1,4 @@
-import { ALLERGENS, TEMPLATES, flattenAllergens, getTable, copyToClipboard } from "./spt_generator_utils.js";
+import { escapeHtml, ALLERGENS, TEMPLATES, flattenAllergens, getTable, copyToClipboard } from "./spt_generator_utils.js";
 /**
  * Allergy testing utilities module
  * 
@@ -41,19 +41,6 @@ let entries = [];
 
 /** @type {string[]} Flattened list of all allergens for search */
 const cachedFlattenedAllergens = flattenAllergens(ALLERGENS);
-
-/**
- * Escape HTML special characters to prevent XSS
- * @param {string} unsafe - Unsafe input string
- * @returns {string} Sanitized HTML-safe string
- */
-function escapeHtml(unsafe) {
-  return unsafe.replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 
 // DOM Content Loaded Handler
 document.addEventListener("DOMContentLoaded", function() {
