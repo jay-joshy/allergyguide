@@ -57,4 +57,23 @@
       text-align: left;
     }
   }
+
+  // Responsive: Stack image on top in portrait mode
+  @media (orientation: portrait) {
+    flex-direction: column;
+
+    .image-content {
+      order: 1;
+      align-items: center; // Center the image and caption
+    }
+
+    .text-content {
+      order: 2;
+
+    }
+
+    .caption p {
+      text-align: center;
+    }
+  }
 }

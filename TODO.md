@@ -1,7 +1,7 @@
 Content:
 
 - Make example articles for 1) a condition 2) macro 3) research landmark article
-  - Chronic rhinosinusitis, landmark trials (ie. Omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP) 
+  - Chronic rhinosinusitis, landmark trials (ie. Omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP)
   - done: medication example
 - Topics to add:
   - Pediatric medicine crash course
@@ -15,7 +15,7 @@ Content:
 Lower priority content:
 
 - port original pen-fast questions over with extra options; need to see if .PDF js packages are possible.
-- creation of video resources if time permits 
+- creation of video resources if time permits
 - Billing tips (would have to be province specific -- VERY fellow focused)
 
 Organizational:
@@ -32,7 +32,6 @@ Organizational:
 Shortcodes:
 
 - consolidate and make light/dark themes for original admonitions
-- for image next to text -- if orientation vertical, display on top or bottom instead of shrinking it all. In addition -- picture click should open into new tab
 
 Other stylistic:
 

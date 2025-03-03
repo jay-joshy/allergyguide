@@ -3,7 +3,9 @@
     {{ body | markdown | safe }}
   </div>
   <div class="image-content">
-    <img src="{{ src }}" alt="{{ alt }}">
+    <a href="{{ src }}" target="_blank">
+      <img src="{{ src }}" alt="{{ alt }}">
+    </a>
     {% if caption %}
     <div class="caption">{{ caption | markdown | safe }}</div>
     {% endif %}
