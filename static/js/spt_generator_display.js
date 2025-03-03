@@ -167,3 +167,107 @@ export function getTable(entryList, useCol, sort) {
 
   return "-".repeat(horizontalTableLen - 10) + "\n" + roughTable + "\n" + "-".repeat(horizontalTableLen - 10);
 }
+
+/**
+ * Generates a summary of allergen test results.
+ * 
+ * @param {Entry[]} entryList - List of allergen test entries.
+ * @returns {string} A formatted summary of positive, negative, and control test results.
+ */
+/**
+ * Generates a summary of allergen test results.
+ * 
+ * @param {Entry[]} entryList - List of allergen test entries.
+ * @returns {string} A formatted summary of positive, negative, and control test results.
+ */
+export function getSummary(entryList) {
+  const positiveAllergens = {}; // Stores allergens with positive reactions (diameter >= 3)
+  const negativeAllergens = new Set(); // Stores allergens with negative reactions (diameter < 3)
+  const positiveControls = []; // Stores positive control entries
+  const negativeControls = []; // Stores negative control entries
+
+  // Iterate through each allergen entry
+  for (const entry of entryList) {
+    const { allergen, diameter, note } = entry;
+
+    // Handle positive and negative controls separately
+    if (allergen === "(+) control") {
+      if (!isNaN(diameter) && diameter !== null) {
+        positiveControls.push({ diameter, note });
+      }
+      continue;
+    }
+    if (allergen === "(-) control") {
+      if (!isNaN(diameter) && diameter !== null) {
+        negativeControls.push({ diameter, note });
+      }
+      continue;
+    }
+
+    // Categorize allergens based on their diameter measurement
+    if (diameter >= 3) {
+      if (!positiveAllergens[allergen]) {
+        positiveAllergens[allergen] = [];
+      }
+      positiveAllergens[allergen].push({ diameter, note });
+    } else {
+      negativeAllergens.add(allergen);
+    }
+  }
+
+  /**
+   * Formats grouped allergen data into a readable string.
+   * @param {Object} entries - Grouped allergen entries.
+   * @returns {string} Formatted allergen summary.
+   */
+  const formatEntries = (entries) => {
+    return Object.entries(entries).map(([allergen, data]) => {
+      const diameters = data.map(d => d.diameter + "mm").join(", ");
+      const notes = data.map(d => d.note).filter(Boolean).join("; ");
+      return `${allergen} (${diameters}${notes ? " -- " + notes : ""})`;
+    }).join(", ");
+  };
+
+  let summary = "";
+
+  // Construct the positive results summary
+  if (Object.keys(positiveAllergens).length > 0) {
+    summary += `Skin testing was positive for ${formatEntries(positiveAllergens)}.`;
+  }
+
+  // Construct the negative results summary
+  if (negativeAllergens.size > 0) {
+    summary += ` Otherwise, ${Array.from(negativeAllergens).join(", ")} were negative.`;
+  }
+
+  const controls = [];
+
+  /**
+   * Formats control entries into a readable string.
+   * @param {string} label - Control type label (Positive/Negative control).
+   * @param {Array} controlsArray - Array of control entries.
+   * @returns {string} Formatted control summary.
+   */
+  const formatControls = (label, controlsArray) => {
+    if (controlsArray.length === 0) return "";
+    const diameters = controlsArray.map(c => `${c.diameter}mm${c.note ? " -- " + c.note : ""}`).join(", ");
+    return `${label} (${diameters})`;
+  };
+
+  // Append control results to the summary
+  if (positiveControls.length > 0) {
+    controls.push(formatControls("Positive control", positiveControls));
+  }
+  if (negativeControls.length > 0) {
+    controls.push(formatControls("Negative control", negativeControls));
+  }
+
+  if (controls.length > 0) {
+    summary += ` ${controls.join(", ")}.`;
+  }
+
+  return summary.trim();
+}
+
+
+

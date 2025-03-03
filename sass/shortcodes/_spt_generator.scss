@@ -213,7 +213,6 @@
       cursor: pointer;
       transition: color 0.2s;
 
-      &:hover,
       &.selected {
         background: var(--sptgen_button_hover_bg);
       }

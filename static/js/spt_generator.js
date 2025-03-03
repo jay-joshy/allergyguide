@@ -1,6 +1,6 @@
 import { ALLERGENS, TEMPLATES } from "./spt_generator_constants.js";
 import { escapeHtml, flattenAllergens, copyToClipboard } from "./spt_generator_utils.js";
-import { getTable } from "./spt_generator_getTable.js";
+import { getSummary, getTable } from "./spt_generator_display.js";
 
 /**
  * Allergy testing utilities module
@@ -533,12 +533,16 @@ function updateEntryIndices() {
 function updateDisplays() {
   const simpleList = document.getElementById("simpleList");
   const tableFormat = document.getElementById("tableFormat");
+  const paragraphDisplay = document.getElementById("paragraphDisplay");
 
   const simpleText = getTable(entries, false, true);
   const tableText = getTable(entries, true, true);
+  const summaryText = getSummary(entries);
+  console.log(summaryText);
 
   simpleList.textContent = simpleText;
   tableFormat.textContent = tableText;
+  paragraphDisplay.textContent = summaryText;
 
   // Hide copy button if the associated text is empty
   const simpleCopyBtn = simpleList.parentElement.querySelector('.copy-button');
@@ -553,6 +557,13 @@ function updateDisplays() {
     tableCopyBtn.style.display = 'none';
   } else {
     tableCopyBtn.style.display = '';
+  }
+
+  const summaryCopyBtn = paragraphDisplay.parentElement.querySelector('.copy-button');
+  if (tableText.trim() === "") {
+    summaryCopyBtn.style.display = 'none';
+  } else {
+    summaryCopyBtn.style.display = '';
   }
 }
 
