@@ -460,6 +460,7 @@ function renderEntries() {
         updateDisplays();
       }
     );
+    diameter.addEventListener('keydown', handleDiameterArrowNavigation);
 
     const note = createEditableInput(entry.note || '', 'text', (e) => {
       entry.note = e.target.value.trim() || null;
@@ -529,6 +530,32 @@ function handleEntryDeletion(e) {
     updateDisplays();
     // Update data-index for remaining entries.
     updateEntryIndices();
+  }
+}
+
+
+function handleDiameterArrowNavigation(e) {
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault(); // Prevent default number increment/decrement
+    const currentEntry = e.target.closest('.entry');
+    if (!currentEntry) return;
+
+    // Get all entries as an array
+    const entriesList = document.querySelector('.entries-list');
+    const entries = Array.from(entriesList.children);
+    const currentIndex = entries.indexOf(currentEntry);
+
+    // Determine target index based on key pressed
+    let targetIndex = e.key === 'ArrowUp' ? currentIndex - 1 : currentIndex + 1;
+
+    // Only focus if within bounds
+    if (targetIndex >= 0 && targetIndex < entries.length) {
+      const targetEntry = entries[targetIndex];
+      const targetDiameter = targetEntry.querySelector('input[type="number"]');
+      if (targetDiameter) {
+        targetDiameter.focus();
+      }
+    }
   }
 }
 

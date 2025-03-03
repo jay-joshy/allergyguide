@@ -120,12 +120,6 @@ export function getTable(entryList, useCol, sort) {
  * @param {Entry[]} entryList - List of allergen test entries.
  * @returns {string} A formatted summary of positive, negative, and control test results.
  */
-/**
- * Generates a summary of allergen test results.
- * 
- * @param {Entry[]} entryList - List of allergen test entries.
- * @returns {string} A formatted summary of positive, negative, and control test results.
- */
 export function getSummary(entryList) {
   // Group non-control entries by allergen
   const grouped = {};
@@ -176,13 +170,19 @@ export function getSummary(entryList) {
   const compareAllergens = (a, b) => {
     const orderA = orderMap.get(a);
     const orderB = orderMap.get(b);
-    if (orderA && orderB) {
-      for (let i = 0; i < Math.min(orderA.length, orderB.length); i++) {
-        if (orderA[i] !== orderB[i]) return orderA[i] - orderB[i];
-      }
-      return orderA.length - orderB.length;
+
+    // If one allergen is custom (not in the orderMap) and the other is not, list custom first.
+    if (!orderA && orderB) return -1;
+    if (orderA && !orderB) return 1;
+
+    // If both are custom, sort them alphabetically.
+    if (!orderA && !orderB) return a.localeCompare(b);
+
+    // If both are in the orderMap, sort them based on the hierarchical indices.
+    for (let i = 0; i < Math.min(orderA.length, orderB.length); i++) {
+      if (orderA[i] !== orderB[i]) return orderA[i] - orderB[i];
     }
-    return a.localeCompare(b);
+    return orderA.length - orderB.length;
   };
 
   // Sort the allergens using the order map
