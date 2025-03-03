@@ -9,7 +9,6 @@ tags = ["tools", "tests"]
 [extra]
 keywords = "SPT, Skin prick test, intradermal test"
 toc = true
-series = "tools"
 authors = ["Joshua Yu"]
 +++
 

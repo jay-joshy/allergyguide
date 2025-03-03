@@ -1,4 +1,7 @@
-import { escapeHtml, ALLERGENS, TEMPLATES, flattenAllergens, getTable, copyToClipboard } from "./spt_generator_utils.js";
+import { ALLERGENS, TEMPLATES } from "./spt_generator_constants.js";
+import { escapeHtml, flattenAllergens, copyToClipboard } from "./spt_generator_utils.js";
+import { getTable } from "./spt_generator_getTable.js";
+
 /**
  * Allergy testing utilities module
  * 
