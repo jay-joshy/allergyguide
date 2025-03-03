@@ -15,6 +15,37 @@
   --sptgen_scrollbar_thumb: #555;
   --sptgen_scrollbar_track: #1e1e1e;
   --sptgen_highlight_color: #f39c12;
+  /* Aeroallergens - Muted blue */
+  --aero_button_bg: #3b5b75;
+  --aero_button_hover_bg: #324a56;
+  --aero_button_active_bg: #2a3f49;
+  --aero_button_text: #d1d1d1;
+  --aero_button_hover_text: #d1d1d1;
+  --aero_button_active_text: #d1d1d1;
+
+  /* Foods - Muted green */
+  --foods_button_bg: #5a7d32;
+  --foods_button_hover_bg: #556d2e;
+  --foods_button_active_bg: #4b6225;
+  --foods_button_text: #d1d1d1;
+  --foods_button_hover_text: #d1d1d1;
+  --foods_button_active_text: #d1d1d1;
+
+  /* Misc - Muted purple */
+  --misc_button_bg: #6a3e6a;
+  --misc_button_hover_bg: #613360;
+  --misc_button_active_bg: #572d57;
+  --misc_button_text: #d1d1d1;
+  --misc_button_hover_text: #d1d1d1;
+  --misc_button_active_text: #d1d1d1;
+
+  /* Custom button colors for Dark Mode */
+  --custom_button_bg: #2c7873;
+  --custom_button_hover_bg: #256d69;
+  --custom_button_active_bg: #1f625f;
+  --custom_button_text: #d1d1d1;
+  --custom_button_hover_text: #d1d1d1;
+  --custom_button_active_text: #d1d1d1;
 }
 
 :root.switch {
@@ -32,6 +63,36 @@
   --sptgen_scrollbar_thumb: #ddd;
   --sptgen_scrollbar_track: #fafafa;
   --sptgen_highlight_color: #d35400;
+  /* Aeroallergens buttons */
+  --aero_button_bg: #cce4f7;
+  --aero_button_hover_bg: #b0d4ef;
+  --aero_button_active_bg: #94c4e7;
+  --aero_button_text: #333333;
+  --aero_button_hover_text: #333333;
+  --aero_button_active_text: #333333;
+
+  /* Foods buttons */
+  --foods_button_bg: #d8f3d8;
+  --foods_button_hover_bg: #c3eac3;
+  --foods_button_active_bg: #afd1af;
+  --foods_button_text: #333333;
+  --foods_button_hover_text: #333333;
+  --foods_button_active_text: #333333;
+
+  /* Misc buttons */
+  --misc_button_bg: #f3d8f3;
+  --misc_button_hover_bg: #eac3ea;
+  --misc_button_active_bg: #d1afd1;
+  --misc_button_text: #333333;
+  --misc_button_hover_text: #333333;
+  --misc_button_active_text: #333333;
+  /* Custom button colors for Light Theme */
+  --custom_button_bg: #b2dfdb;
+  --custom_button_hover_bg: #a1d9d4;
+  --custom_button_active_bg: #90d3cd;
+  --custom_button_text: #333333;
+  --custom_button_hover_text: #333333;
+  --custom_button_active_text: #333333;
 }
 
 /* Mixin for button states */
@@ -152,7 +213,7 @@
 
       .entry {
         display: grid;
-        grid-template-columns: 1fr 1fr 4fr 0.2fr;
+        grid-template-columns: 1.5fr 0.8fr 4fr 0.2fr;
         gap: 0.2rem;
         align-items: center;
         padding: 0rem 0;
@@ -249,6 +310,9 @@
 
   /* Template Panel */
   .template-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 
     .template-btn {
@@ -268,6 +332,42 @@
           background: #cc0000;
         }
       }
+    }
+
+    .template-btn.aeroallergens {
+      @include button-states(var(--aero_button_bg),
+        var(--aero_button_hover_bg),
+        var(--aero_button_active_bg),
+        var(--aero_button_text),
+        var(--aero_button_hover_text),
+        var(--aero_button_active_text));
+    }
+
+    .template-btn.foods {
+      @include button-states(var(--foods_button_bg),
+        var(--foods_button_hover_bg),
+        var(--foods_button_active_bg),
+        var(--foods_button_text),
+        var(--foods_button_hover_text),
+        var(--foods_button_active_text));
+    }
+
+    .template-btn.misc {
+      @include button-states(var(--misc_button_bg),
+        var(--misc_button_hover_bg),
+        var(--misc_button_active_bg),
+        var(--misc_button_text),
+        var(--misc_button_hover_text),
+        var(--misc_button_active_text));
+    }
+
+    .template-btn.custom {
+      @include button-states(var(--custom_button_bg),
+        var(--custom_button_hover_bg),
+        var(--custom_button_active_bg),
+        var(--custom_button_text),
+        var(--custom_button_hover_text),
+        var(--custom_button_active_text));
     }
   }
 

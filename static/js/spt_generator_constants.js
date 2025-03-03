@@ -12,7 +12,7 @@ export const ALLERGENS = {
       "tree mix", "western juniper", "white mulberry"
     ],
     grasses_weeds: [
-      "grass mix", "mugwort", "pigweed", "ragweed", "timothy grass", "bermuda grass"
+      "grass mix", "timothy grass", "bermuda grass", "mugwort", "pigweed", "ragweed",
     ],
     fungi: [
       "alternaria", "aspergillus", "cladosporium (hormodendrum)",
@@ -23,15 +23,15 @@ export const ALLERGENS = {
     ]
   },
   foods: {
-    seeds: [
-      "chia", "hemp seeds", "poppy", "sesame", "sunflower seed"
-    ],
     nuts: [
       "almond", "brazil nut", "cashew", "hazelnut", "macadamia",
       "peanut", "pecan", "pine nut", "pistachio"
     ],
     egg_dairy: [
       "cow's milk", "egg-white", "goat's milk"
+    ],
+    seeds: [
+      "chia", "hemp seeds", "poppy", "sesame", "sunflower seed"
     ],
     shellfish: {
       crustaceans: ["crab", "lobster", "shrimp"],
@@ -52,11 +52,37 @@ export const ALLERGENS = {
     ]
   },
   venoms: ["honeybee", "wasp", "white faced hornet", "yellow hornet", "yellow jacket"],
+  drugs: {
+    penicillins: ["amoxicillin", "pen G/V"]
+  }
 };
 
-
+// you have to edit the html as well to add the buttons :).
 export const TEMPLATES = {
   controls: ["(+) control", "(-) control"],
-  commonNuts: ALLERGENS.foods.nuts,
-  commonFruits: ALLERGENS.foods.fruits,
+  Insects: ALLERGENS.aeroallergens.insects.map(item =>
+    typeof item === 'object' ? item.name : item
+  ),
+  Plants: [
+    ...ALLERGENS.aeroallergens.trees,
+    ...ALLERGENS.aeroallergens.grasses_weeds,
+  ],
+  Fungi: ALLERGENS.aeroallergens.fungi,
+  Animals: ALLERGENS.aeroallergens.animals,
+  Nuts: ALLERGENS.foods.nuts,
+  EggDairy: ALLERGENS.foods.egg_dairy,
+  Seeds: ALLERGENS.foods.seeds,
+  Shellfish: [...ALLERGENS.foods.shellfish.crustaceans, ...ALLERGENS.foods.shellfish.molluscs],
+  Fish: ALLERGENS.foods.fish,
+  Meats: ALLERGENS.foods.meats,
+  Vegetables: ALLERGENS.foods.vegetables,
+  Fruits: ALLERGENS.foods.fruits,
+  Drugs: ALLERGENS.drugs.penicillins,
+  Venoms: ALLERGENS.venoms,
+  CustomA: [
+    "(+) control", "(-) control",
+    ...ALLERGENS.aeroallergens.animals,
+    ...ALLERGENS.foods.shellfish.crustaceans,
+  ]
 };
+
