@@ -234,7 +234,6 @@
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
 
-      &:hover,
       &.selected {
         background: var(--sptgen_button_hover_bg);
         color: var(--sptgen_highlight_color);
