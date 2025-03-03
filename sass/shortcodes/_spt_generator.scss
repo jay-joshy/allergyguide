@@ -3,7 +3,8 @@
 :root {
   /* Dark Theme (Default) */
   --sptgen_bg_color: #1e1e1e;
-  --sptgen_border_color: #333;
+  --sptgen_copycontext_color: #2d2d2d;
+  --sptgen_border_color: #444;
   --sptgen_text_color: #e0e0e0;
   --sptgen_button_bg: #3a3a3a;
   --sptgen_button_text: #e0e0e0;
@@ -20,6 +21,7 @@
 :root.switch {
   /* Light Theme */
   --sptgen_bg_color: #fafafa;
+  --sptgen_copycontext_color: #fafafa;
   --sptgen_border_color: #ccc;
   --sptgen_text_color: #333;
   --sptgen_button_bg: #e0e0e0;
@@ -60,7 +62,7 @@
     border: 1px solid var(--sptgen_border_color);
     border-radius: 4px;
     color: var(--sptgen_text_color);
-    background-color: var(--sptgen_bg_color);
+    background-color: var(--sptgen_copycontext_color);
     scrollbar-color: var(--sptgen_scrollbar_thumb) var(--sptgen_scrollbar_track);
   }
 
@@ -124,7 +126,7 @@
       input {
         width: 100%;
         padding: 0.6rem;
-        border: 1px solid var(--sptgen_border_color);
+        border: 0.2rem solid var(--sptgen_border_color);
         border-radius: 4px;
         color: var(--sptgen_text_color);
         background: var(--sptgen_bg_color);
@@ -140,14 +142,14 @@
     .entries-list {
       display: flex;
       flex-direction: column;
-      gap: 0rem;
+      gap: 0.5rem;
 
       .entry {
         display: flex;
         gap: 1rem;
         align-items: center;
         padding: 0rem;
-        background: rgba(255, 255, 255, 0.05);
+        /* background: rgba(255, 255, 255, 0.05); */
         border-radius: 4px;
 
         input {
@@ -157,6 +159,15 @@
           border-radius: 4px;
           color: var(--sptgen_text_color);
           background: var(--sptgen_bg_color);
+
+          &[type="number"] {
+            text-align: left;
+          }
+
+          /* Centered allergen text */
+          &.allergen-cell {
+            text-align: right;
+          }
         }
 
         .delete {
@@ -253,6 +264,7 @@
   /* Input Number Fix */
   input[type="number"] {
     -moz-appearance: textfield;
+
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {

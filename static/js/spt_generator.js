@@ -121,13 +121,16 @@ function createAllergenInput() {
  * @returns {HTMLInputElement} Configured number input element
  */
 function createNumberInput(placeholder, ariaLabel) {
-  const input = document.createElement("input");
-  input.type = "number";
+  const container = document.createElement('div');
+  container.className = 'input-container';
+  const input = document.createElement('input');
+  input.type = 'number';
   input.placeholder = placeholder;
   input.min = 0;
-  input.setAttribute("aria-label", ariaLabel);
+  input.setAttribute('aria-label', ariaLabel);
   input.addEventListener('input', validateNumberInput);
-  return input;
+  container.appendChild(input);
+  return container;
 }
 
 /**
@@ -137,11 +140,14 @@ function createNumberInput(placeholder, ariaLabel) {
  * @returns {HTMLInputElement} Configured text input element
  */
 function createTextInput(placeholder, ariaLabel) {
-  const input = document.createElement("input");
-  input.type = "text";
+  const container = document.createElement('div');
+  container.className = 'input-container';
+  const input = document.createElement('input');
+  input.type = 'text';
   input.placeholder = placeholder;
-  input.setAttribute("aria-label", ariaLabel);
-  return input;
+  input.setAttribute('aria-label', ariaLabel);
+  container.appendChild(input);
+  return container;
 }
 
 /**
@@ -425,10 +431,15 @@ function renderEntries() {
     entryDiv.setAttribute("data-index", index);
     entryDiv.setAttribute("role", "listitem");
 
-    const allergen = createEditableInput(entry.allergen, 'text', (e) => {
-      entry.allergen = e.target.value;
-      updateDisplays();
-    });
+    const allergen = createEditableInput(
+      entry.allergen,
+      'text',
+      (e) => {
+        entry.allergen = e.target.value;
+        updateDisplays();
+      },
+      'allergen-cell' // Add class here
+    );
 
     const diameter = createEditableInput(
       isNaN(entry.diameter) ? '' : entry.diameter,
@@ -461,10 +472,11 @@ function renderEntries() {
  * @param {function} handler - Input change handler
  * @returns {HTMLInputElement} Configured input element
  */
-function createEditableInput(value, type, handler) {
+function createEditableInput(value, type, handler, className) {
   const input = document.createElement("input");
   input.type = type;
   input.value = value;
+  if (className) input.className = className;
   input.addEventListener('input', handler);
   return input;
 }
