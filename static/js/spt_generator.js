@@ -1,5 +1,5 @@
 import { ALLERGENS, TEMPLATES } from "./spt_generator_constants.js";
-import { escapeHtml, flattenAllergens, copyToClipboard } from "./spt_generator_utils.js";
+import { normalizeAllergenName, escapeHtml, flattenAllergens, copyToClipboard } from "./spt_generator_utils.js";
 import { getSummary, getTable } from "./spt_generator_display.js";
 
 /**
@@ -404,7 +404,7 @@ function handleEntrySubmission(e) {
       return;
     }
 
-    entries.push(new Entry(allergen, diameter, note || null));
+    entries.push(new Entry(normalizeAllergenName(allergen), diameter, note || null));
     renderEntries();
     updateDisplays();
     inputs.forEach(input => {

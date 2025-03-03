@@ -1,3 +1,7 @@
+import { ALLERGENS } from "./spt_generator_constants.js";
+
+const canonicalAllergensMap = buildCanonicalMap(ALLERGENS);
+
 /**
  * Copy text content to clipboard with visual feedback
  * @param {HTMLButtonElement} button - Copy button element
@@ -122,4 +126,37 @@ export function buildAllergenOrderMap(allergens) {
 }
 
 
+/**
+ * Builds a lookup map of canonical allergen names keyed by lowercase.
+ * @param {Object} allergens - The ALLERGENS object.
+ * @returns {Map<string, string>} Map where keys are lowercase allergen names and values are canonical names.
+ */
+function buildCanonicalMap(allergens) {
+  const canonicalMap = new Map();
+
+  const processGroup = (group) => {
+    if (Array.isArray(group)) {
+      group.forEach(item => {
+        const name = typeof item === 'object' ? (item.display || item.name) : item;
+        canonicalMap.set(name.toLowerCase(), name);
+      });
+    } else if (typeof group === 'object') {
+      Object.values(group).forEach(subGroup => processGroup(subGroup));
+    }
+  };
+
+  processGroup(allergens);
+  return canonicalMap;
+}
+
+/**
+ * Normalize the allergen name.
+ * If the input matches a canonical allergen (case-insensitively), return the canonical name.
+ * Otherwise, return the input as is.
+ * @param {string} input - The user entered allergen.
+ * @returns {string} The normalized allergen name.
+ */
+export function normalizeAllergenName(input) {
+  return canonicalAllergensMap.get(input.toLowerCase()) || input;
+}
 
