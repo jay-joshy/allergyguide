@@ -1,9 +1,10 @@
+<!-- spt_generator.html -->
 <div class="spt_generator">
-  <div class="template-panel">
-    <button class="template-btn" id="reset-btn">Reset All</button>
-    <button class="template-btn" data-template="controls">Controls</button>
-    <button class="template-btn" data-template="commonNuts">Common Nuts</button>
-    <button class="template-btn" data-template="commonFruits">Common Fruits</button>
+  <div class="template-panel" role="toolbar">
+    <button class="template-btn" id="reset-btn" aria-label="Reset all entries">Reset All</button>
+    <button class="template-btn" data-template="controls" aria-label="Add controls template">Controls</button>
+    <button class="template-btn" data-template="commonNuts" aria-label="Add common nuts template">Common Nuts</button>
+    <button class="template-btn" data-template="commonFruits" aria-label="Add common fruits template">Common Fruits</button>
   </div>
   <div class="entry-creation">
     <!-- Inputs will be added dynamically by JavaScript -->
@@ -11,16 +12,20 @@
   <div class="display-block">
     <div class="column">
       <div class="code-block-container">
-        <button class="copy-button">Copy</button>
-        <div class="txt" id="simpleList"></div>
+        <button class="copy-button" aria-label="Copy simple list">Copy</button>
+        <div class="txt" id="simpleList" role="region" aria-live="polite"></div>
       </div>
     </div>
     <div class="column">
       <div class="code-block-container">
-        <button class="copy-button">Copy</button>
-        <div class="txt" id="tableFormat"></div>
+        <button class="copy-button" aria-label="Copy table format">Copy</button>
+        <div class="txt" id="tableFormat" role="region" aria-live="polite"></div>
       </div>
     </div>
   </div>
 </div>
+<br>
+<br>
+<br>
+<script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.1.0/fuzzysort.min.js"></script>
 <script type="module" src="/js/spt_generator.js"></script>
