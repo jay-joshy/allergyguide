@@ -1,6 +1,6 @@
 +++
-title = "Skin testing macro generator"
-description = "SPT / IDT macro generator to copy paste into notes."
+title = "Skin testing macro"
+description = "Quickly create SPT/IDT results to copy-paste with smart autosuggestion."
 date = 2025-03-01
 draft = false
 

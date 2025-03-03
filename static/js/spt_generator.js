@@ -69,7 +69,7 @@ function createInputComponents() {
   const [allergenContainer, allergenInput, dropdown] = createAllergenInput();
 
   // Diameter Input
-  const diameterInput = createNumberInput("Longest wheal dimension in mm", "Diameter in millimeters");
+  const diameterInput = createNumberInput("Biggest dimension in mm", "Diameter in millimeters");
 
   // Note Input
   const noteInput = createTextInput("Note (optional)", "Optional note");
