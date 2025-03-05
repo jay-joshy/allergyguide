@@ -94,7 +94,7 @@ function createAllergenInput() {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.placeholder = "Search allergen";
+  input.placeholder = "Search/input allergen";
   input.autofocus = true;
   input.setAttribute("aria-label", "Search allergen");
   input.setAttribute("role", "combobox");
