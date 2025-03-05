@@ -568,6 +568,30 @@ function handleDiameterArrowNavigation(e) {
       }
     }
   }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    e.preventDefault(); // Prevent default caret movement
+    let currentVal = parseFloat(e.target.value);
+    if (isNaN(currentVal)) {
+      currentVal = 0;
+    }
+    // Increment if right arrow, decrement if left arrow.
+    if (e.key === 'ArrowRight') {
+      currentVal++;
+    } else if (e.key === 'ArrowLeft' && currentVal != 0) {
+      currentVal--;
+    }
+    e.target.value = currentVal;
+
+    // Update the corresponding entry's diameter.
+    const entryDiv = e.target.closest('.entry');
+    if (entryDiv) {
+      const index = parseInt(entryDiv.getAttribute('data-index'), 10);
+      if (!isNaN(index)) {
+        entries[index].diameter = currentVal;
+      }
+    }
+    updateDisplays();
+  }
 }
 
 /**
