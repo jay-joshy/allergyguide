@@ -98,30 +98,48 @@ export function wrapText(text, maxWidth) {
  */
 export function buildAllergenOrderMap(allergens) {
   const orderMap = new Map();
-  const mainCategories = Object.keys(allergens);
-  for (let mainIndex = 0; mainIndex < mainCategories.length; mainIndex++) {
-    const mainKey = mainCategories[mainIndex];
-    const mainValue = allergens[mainKey];
-    if (typeof mainValue === 'object' && !Array.isArray(mainValue)) {
-      const subGroups = Object.keys(mainValue);
-      for (let subIndex = 0; subIndex < subGroups.length; subIndex++) {
-        const subKey = subGroups[subIndex];
-        const subValue = mainValue[subKey];
-        if (Array.isArray(subValue)) {
-          subValue.forEach((allergen, allergenIndex) => {
-            // Use the canonical name if allergen is an object
-            const key = typeof allergen === 'object' ? allergen.display || allergen.name : allergen;
-            orderMap.set(key, [mainIndex, subIndex, allergenIndex]);
-          });
+
+  /**
+   * Recursively traverse the allergen structure.
+   * @param {*} node - Current node in the structure.
+   * @param {number[]} path - Array representing the hierarchical path (indices).
+   */
+  function traverse(node, path) {
+    if (Array.isArray(node)) {
+      // Iterate over array elements
+      for (let i = 0; i < node.length; i++) {
+        const item = node[i];
+        // If item is an object and looks like an allergen (has a name or display), record it.
+        if (
+          item &&
+          typeof item === 'object' &&
+          !Array.isArray(item) &&
+          ('name' in item || 'display' in item)
+        ) {
+          const key = item.display || item.name;
+          orderMap.set(key, path.concat(i));
+        } else if (typeof item === 'string') {
+          // If it's a string, record it as a leaf allergen.
+          orderMap.set(item, path.concat(i));
+        } else if (item && typeof item === 'object') {
+          // If it's an object but not an allergen leaf, traverse it.
+          traverse(item, path.concat(i));
         }
       }
-    } else if (Array.isArray(mainValue)) {
-      mainValue.forEach((allergen, allergenIndex) => {
-        const key = typeof allergen === 'object' ? allergen.display || allergen.name : allergen;
-        orderMap.set(key, [mainIndex, allergenIndex]);
-      });
+    } else if (node && typeof node === 'object') {
+      // For a plain object, iterate over its keys in insertion order.
+      const keys = Object.keys(node);
+      for (let j = 0; j < keys.length; j++) {
+        const key = keys[j];
+        const child = node[key];
+        // Use the key's order (j) as the next index in the path.
+        traverse(child, path.concat(j));
+      }
     }
   }
+
+  // Start recursion at the top level with an empty path.
+  traverse(allergens, []);
   return orderMap;
 }
 
