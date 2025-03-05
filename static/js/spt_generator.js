@@ -307,9 +307,13 @@ function createCustomOption(query, inputElement) {
   const option = document.createElement("div");
   option.className = "dropdown-item";
   option.setAttribute("role", "option");
+  // Mark this as a custom option.
+  option.setAttribute("data-custom", "true");
   option.addEventListener("click", () => {
     inputElement.value = query;
     inputElement.parentNode.querySelector('.dropdown').classList.remove("visible");
+    // After selecting, move focus to the diameter input.
+    inputElement.closest('.input-row').querySelector('input[type="number"]').focus();
   });
   return option;
 }
@@ -324,6 +328,13 @@ function handleDropdownNavigation(e) {
   if (!dropdown.classList.contains('visible')) return;
 
   const items = dropdown.querySelectorAll('.dropdown-item');
+
+  // If TAB is pressed and the only option is the custom one, hide dropdown and let TAB work normally.
+  if (e.key === 'Tab' && items.length === 1 && items[0].getAttribute('data-custom') === 'true') {
+    dropdown.classList.remove('visible');
+    return; // do not preventDefault, allowing normal focus movement
+  }
+
   let selectedIndex = Array.from(items).findIndex(item => item.classList.contains('selected'));
 
   // Handle ArrowDown, ArrowUp, Tab, Shift+Tab
