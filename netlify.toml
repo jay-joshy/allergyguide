@@ -9,6 +9,13 @@ ZOLA_VERSION = "0.19.2"
 # [context.deploy-preview]
 # command = "npm run abridge -- '--drafts --base-url https://abridge.netlify.app'"
 
+
+[[redirects]]
+from = "https://allergyguidenetlify.netlify.app/*"
+to = "https://allergyguide.ca/:splat"
+status = 301
+force = true
+
 [[headers]]
 for = "/*"
 [headers.values]
