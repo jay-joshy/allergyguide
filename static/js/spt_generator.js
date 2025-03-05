@@ -129,6 +129,7 @@ function createNumberInput(placeholder, ariaLabel) {
   input.min = 0;
   input.setAttribute('aria-label', ariaLabel);
   input.addEventListener('input', validateNumberInput);
+  input.addEventListener('keydown', handleNewAllergenDiameterKey);
   container.appendChild(input);
   return container;
 }
@@ -653,3 +654,32 @@ function scrollItemIntoView(container, item) {
     container.scrollTop -= containerRect.top - itemRect.top;
   }
 }
+
+/**
+ * Handles keydown events for the new allergen diameter input.
+ *
+ * When the left or right arrow keys are pressed, this function increments or decrements
+ * the input value by 1. If the current value is not a number, it defaults to 0 before adjustment.
+ * No negative numbers.
+ * It prevents the default behavior (such as caret movement or the browser's default numeric step).
+ *
+ * @param {KeyboardEvent} e - The keydown event object.
+ */
+function handleNewAllergenDiameterKey(e) {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    e.preventDefault(); // Prevent default caret movement or numeric step behavior
+    let currentVal = parseFloat(e.target.value);
+    if (isNaN(currentVal)) {
+      currentVal = 0;
+    }
+    // Increment for right arrow, decrement for left arrow.
+    if (e.key === 'ArrowRight') {
+      currentVal = currentVal + 1;
+    } else if (currentVal != 0) {
+      currentVal = currentVal - 1;
+    }
+    e.target.value = currentVal;
+  }
+}
+
+
