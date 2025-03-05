@@ -1,6 +1,6 @@
 [build]
 publish = "public"
-command = "npm run allergyguidenetlify -- '--base-url https://allergyguidenetlify.netlify.app'"
+command = "npm run abridge -- '--base-url https://allergyguidenetlify.netlify.app'"
 # command = "zola build"
 
 [build.environment]
