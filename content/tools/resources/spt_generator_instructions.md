@@ -28,38 +28,89 @@ If you're only doing a few skin tests and not a panel, _it's probably faster to 
 NOTE: this tool assumes that wheal sizes >=3mm are positive.
 {% end %}
 
-#### Example output:
+#### Example outputs:
 
-{% custom_macro() %}
+```txt
 ---- Mar 3, 2025 ----
 Skin testing was positive for cashew (22mm), peanut (14mm -- podocyte), pistachio (21mm).
 Otherwise, almond, brazil nut, hazelnut, macadamia, pecan, pine nut, apple, apricot, banana, cherry, grape, grapefruit, kiwi, lemon, mango, orange, peach, pear, pineapple, plum, strawberry, watermelon were negative.
 Positive control (6mm), Negative control (2mm).
+```
+
+{% two_columns() %}
+
+```txt
+(-) control -- 1mm
+(+) control -- 6mm
+D. farinae -- 4mm [duplicate x2]
+D. pteronyssinus -- 6mm
+cockroach -- 1mm
+crab -- 6mm
+lobster -- 10mm
+shrimp -- 7mm
+```
+
+<!-- split -->
+
+```txt
+-------------------------------------------------------
+(-) control -- 2mm            ||   ragweed -- 2mm                
+(+) control -- 7mm            ||   cat -- 1mm                    
+cedar -- 2mm                  ||   dog -- 8mm                    
+                              ||     [x2]                        
+grass mix -- 5mm              ||                                 
+-------------------------------------------------------
+```
+
 {% end %}
 
 ## Instructions
 
-1. When the tool web-page is loaded, you are automatically focused on the allergen search bar
+### Adding New Entries
 
-2. As you type, a drop-down menu will appear with suggestions:
+1. **Initial Focus**\
+   When the page loads, the allergen search bar is automatically focused.
 
-   a) You can cycle through the suggestions with <kbd><kbd>TAB</kbd></kbd> and <kbd><kbd>SHIFT-TAB</kbd></kbd> (or the up and down arrow keys), and press <kbd><kbd>ENTER</kbd></kbd> to select that allergen
+2. **Typing & Autosuggestions**\
+   As you type, a drop-down menu with suggestions will appear:
 
-   b) Alternatively, **_you don't have to use the autosuggestions or dropdown menu at all_**. If you type something out in full (or type in a custom allergen) and press <kbd><kbd>ENTER</kbd></kbd>, that allergen will be selected as well
+   - **Cycling Through Suggestions:**\
+     You can navigate the suggestions using <kbd>TAB</kbd>, <kbd>SHIFT-TAB</kbd>, or the up/down arrow keys. Press <kbd>ENTER</kbd> to select the highlighted allergen.
 
-3. Once the allergen is selected, you will be automatically focused on the diameter input. From there:
+   - **Using a Custom Input:**\
+     If you type a custom allergen that doesn’t match any suggestions, you can simply press <kbd>ENTER</kbd> or <kbd>TAB</kbd> to select your custom allergen.
 
-   a) You can press <kbd><kbd>ENTER</kbd></kbd> and submit the entry without a diameter, OR
+3. **Diameter Input**\
+   Once an allergen is selected, the focus automatically moves to the diameter input. Here you have a couple of options:
 
-   b) Type in the diameter (only 1 number allowed) before submitting the entry with <kbd><kbd>ENTER</kbd></kbd>
+   - **Submit Without a Diameter:**\
+     Press <kbd>ENTER</kbd> to submit the entry without specifying a diameter.
 
-4. All submitted entries are available for either deletion with the Red X button, or manual modification.
+   - **Enter a Diameter:**\
+     Type in the diameter (enter a single numeric value) and then press <kbd>ENTER</kbd> to submit. You can also adjust the diameter by using the <kbd>←</kbd> (decrement) or <kbd>→</kbd> (increment) keys.
+
+4. **Editing Entries**\
+   All submitted entries can be deleted or modified. (See [Modifying Entries](#modifying-entries) below.)
 
 {% admonition(type="tip", icon="tip", title="Save time with templates") %}
-In addition to the above, you can insert templates using the buttons at the top; these enter in a panel of entries without any pre-populated diameters or notes.
+In addition to manually adding entries, you can insert templates using the buttons at the top. These templates add a panel of entries without pre-populated diameters or notes. Once added, you can quickly edit these entries. _**Templates can be mixed and matched in any order and used multiple times**_ (though duplicate allergens may occur).
 
-These can be mixed and matched, and used multiple times (though you risk duplication).
 <br>
-<br>
-Custom templates are not a feature at this time (? coming in the future).
+Note: Custom templates are not available at this time (but may be added in the future).
+
 {% end %}
+
+### Modifying Entries
+
+- **Editing:**\
+  Each entry’s allergen, diameter, and optional note can be manually edited.
+
+- **Adjusting the Diameter:**
+  - Use the <kbd>←</kbd> and <kbd>→</kbd> keys to decrement or increment the diameter.
+  - Use the up/down arrow keys to navigate to the previous or next entry's diameter input.
+
+- **Field Navigation:**\
+  You can use <kbd>TAB</kbd> and <kbd>SHIFT-TAB</kbd> to move between the allergen, diameter, and note fields within a single entry.
+
+- **Deleting Entries:**\
+  Click the red <kbd>X</kbd> button on the right side of an entry to delete it.
