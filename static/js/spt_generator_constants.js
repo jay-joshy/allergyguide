@@ -24,14 +24,14 @@ export const ALLERGENS = {
   },
   foods: {
     nuts: [
-      "almond", "brazil nut", "cashew", "hazelnut", "macadamia",
-      "peanut", "pecan", "pine nut", "pistachio"
+      "almond", "almond butter", "brazil nut", "cashew", "cashew butter", "hazelnut", "macadamia",
+      "peanut", "peanut butter", "pecan", "pine nut", "pistachio"
     ],
     egg_dairy: [
       "cow's milk", "egg-white", "goat's milk"
     ],
     seeds: [
-      "chia", "hemp seeds", "poppy", "sesame", "sunflower seed"
+      "chia", "hemp seeds", "poppy", "sesame", "tahini", "sunflower seed"
     ],
     shellfish: {
       crustaceans: ["crab", "lobster", "shrimp"],
