@@ -16,9 +16,10 @@ authors = ["Joshua Yu"]
 </br>
 
 {% admonition(type="info", icon="tip", title="Quick start") %}
-This tool works best on desktop, _**not mobile**_. See [**instructions**](@/tools/resources/spt_generator_instructions.md).
-
-Type an allergen, <kbd><kbd>TAB</kbd></kbd> and <kbd><kbd>SHIFT-TAB</kbd></kbd> to cycle through suggestions. You can also type a custom allergen. <kbd><kbd>ENTER</kbd></kbd> to move to diameter input. <kbd><kbd>ENTER</kbd></kbd> again to submit.
+This tool is intended for desktop with a keyboard, _**not mobile**_. See [**instructions**](@/tools/resources/spt_generator_instructions.md).
+<br>
+<br>
+Type an allergen, <kbd><kbd>TAB</kbd></kbd> and <kbd><kbd>SHIFT-TAB</kbd></kbd> to cycle through suggestions. You are able to type a custom allergen. <kbd><kbd>ENTER</kbd></kbd> to move to diameter input. <kbd><kbd>ENTER</kbd></kbd> again to submit.
 
 Mix and match the templates to save time.
 
