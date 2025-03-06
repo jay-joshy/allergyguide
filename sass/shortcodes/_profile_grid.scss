@@ -1,31 +1,64 @@
+/*--------------------------------------------------
+  Theme Variables for Profile Cards
+--------------------------------------------------*/
+
+/* Dark Theme (Default) */
+:root {
+  --profile-card-bg: #2d2d2d;
+  /* Dark background for profile card */
+  --profile-card-border: #555;
+  /* More contrasting border for dark mode */
+  --profile-card-name: #f0f0f0;
+  /* Bright text for profile name */
+  --profile-card-description: #cccccc;
+  /* Subdued text for description */
+  --profile-card-shadow: rgba(0, 0, 0, 0.5);
+  /* Stronger shadow */
+}
+
+/* Light Theme: */
+:root.switch {
+  --profile-card-bg: #f5f5f5;
+  /* Light background for profile card */
+  --profile-card-border: #ddd;
+  /* Lighter border */
+  --profile-card-name: #333;
+  /* Dark text for profile name */
+  --profile-card-description: #666;
+  /* Subdued dark text for description */
+  --profile-card-shadow: rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+}
+
+/*--------------------------------------------------
+  Profile Grid Styles
+--------------------------------------------------*/
 .profile_grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
 
-
   .profile-card {
-    background-color: #f5f5f5;
-    /* Light background */
+    background-color: var(--profile-card-bg);
+    border: 1px solid var(--profile-card-border);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 6px var(--profile-card-shadow); */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
-  }
 
-  .profile-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px var(--profile-card-shadow);
+    }
   }
 
   .profile-card-image {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    border-bottom: 2px solid #ddd;
-    /* Divider effect */
+    border-bottom: 2px solid var(--profile-card-border);
   }
 
   .profile-card-content {
@@ -35,14 +68,12 @@
   .profile-card-name {
     font-size: 1.4em;
     font-weight: bold;
-    color: #333;
-    /* Dark text */
+    color: var(--profile-card-name);
     margin: 10px 0;
   }
 
   .profile-card-description {
     font-size: 1em;
-    color: #666;
-    /* Subdued text color */
+    color: var(--profile-card-description);
   }
 }
