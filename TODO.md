@@ -29,6 +29,7 @@ Organizational:
   - main editor: josh
   - main staff: ?TBD
   - other editors: ? other fellows interested -- ~3-4? to coordinate the editing process and reaching out to staff
+    - Medications, Research, Topics (? editors mix and match categories or we assign from the start?)
   - editors who also can code / contribute: 1-2 but if needed Josh can do all of this (less sustainable however)
 
 Shortcodes:
