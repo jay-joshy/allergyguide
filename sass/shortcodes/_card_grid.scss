@@ -1,40 +1,73 @@
+/*--------------------------------------------------
+  Theme Variables
+--------------------------------------------------*/
+
+/* Dark Theme (Default) */
+:root {
+  --card-bg: #1e1e1e;
+  /* Card background */
+  --card-border: #555;
+  /* More contrasting border */
+  --card-title: #f0f0f0;
+  /* Brighter header text */
+  --card-text: #cccccc;
+  /* Body text */
+  --card-shadow: rgba(0, 0, 0, 0.5);
+  /* Stronger shadow */
+}
+
+/* Light Theme: Activate by adding the "switch" class to the root element */
+:root.switch {
+  --card-bg: #fff;
+  /* Card background */
+  --card-border: #ddd;
+  /* Divider & border color */
+  --card-title: #222;
+  /* Card title text */
+  --card-text: #333;
+  /* Card body text */
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+}
+
+/*--------------------------------------------------
+  Card Grid Styles
+--------------------------------------------------*/
 .card_grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
   justify-content: center;
-  /* Center the grid horizontally */
   align-content: start;
-  /* Align the rows to start neatly */
-
 
   .contact-card-link {
     text-decoration: none;
     color: inherit;
     display: block;
-    background-color: #1e1e1e;
-    /* Dark mode background */
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 4px 6px var(--card-shadow); */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    justify-items: center;
-  }
 
-  .contact-card-link:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px var(--card-shadow);
+    }
+
+    &:focus {
+      outline: 2px solid var(--card-border);
+      outline-offset: 4px;
+    }
   }
 
   .contact-card-image {
-    width: auto;
-    height: 100%;
-    /* height of image adjust here */
-    /* height: 300px; */
+    width: 100%;
+    height: auto;
     object-fit: cover;
-    border-bottom: 2px solid #333;
-    /* Divider effect */
+    border-bottom: 2px solid var(--card-border);
   }
 
   .contact-card-content {
@@ -45,14 +78,13 @@
   .contact-card-title {
     font-size: 1.2em;
     font-weight: bold;
-    color: #ffffff;
-    /* Light text for dark mode */
+    color: var(--card-title);
     margin: 10px 0;
   }
 
   .contact-card-body {
     font-size: 0.9em;
-    color: #cccccc;
-    /* Subdued text color */
+    color: var(--card-text);
+    margin: 0;
   }
 }
