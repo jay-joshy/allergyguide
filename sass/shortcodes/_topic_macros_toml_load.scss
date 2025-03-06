@@ -11,6 +11,8 @@
   --tmtl_button_hover_text: #fff;
   --tmtl_button_active_bg: #888;
   --tmtl_button_active_text: #fff;
+  --tmtl_input_outline: #ffa500;
+
 }
 
 :root.switch {
@@ -26,6 +28,8 @@
   --tmtl_button_hover_text: #000;
   --tmtl_button_active_bg: #bbb;
   --tmtl_button_active_text: #000;
+  --tmtl_input_outline: #ff4500;
+
 }
 
 .topic_macros_toml_load {
@@ -60,8 +64,8 @@
 
       &:focus {
         outline: none;
-        border-color: var(--tmtl_border_color);
-        box-shadow: 0 0 5px var(--tmtl_border_color);
+        border-color: var(--tmtl_input_outline);
+        box-shadow: 0 0 5px var(--tmtl_input_outline);
       }
     }
   }
