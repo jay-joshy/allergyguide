@@ -41,5 +41,5 @@
 # Other stylistic:
 
 - fix / make custom banner.png for the site
-- Decide on design of home page -- ? macros, spt generator, topics?
+- Decide on design of home page -- ? macros, spt generator, topics? Will add FOAMmed stuff
 - Add author pictures to about
