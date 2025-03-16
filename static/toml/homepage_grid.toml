@@ -9,13 +9,24 @@ text = "See index of conditions"
 
 [title2]
 url = "/macros/"
-src = "/images/example.jpg"
+src = "/images/macros.png"
 title = "Macros"
-text = "Quick, concise, high-yield macros for charting"
-
+text = "Quick, concise, high-yield templates and macros for charting"
 
 [title3]
+url = "/tools/spt-generator/"
+src = "/images/sptgen.png"
+title = "Skin test generator"
+text = "Make your skin testing documentation easy!"
+
+[title4]
+url = "/medications/"
+src = "/images/meds.png"
+title = "Medication reference"
+text = "High-yield, to-the-point information about common medications"
+
+[title5]
 url = "/research/"
-src = "/images/example.jpg"
-title = "Research in Allergy/Immunology"
-text = "A collection of critical appraisals"
+src = "/images/sptgen.png"
+title = "Research"
+text = "Critical appraisal of landmark allergy immunology research"
