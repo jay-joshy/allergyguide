@@ -1,56 +1,43 @@
-.question {
-  line-height: inherit;
-  margin-bottom: 20px;
-  border: 1.5px solid;
-  border-color: #449bff;
-  background-color: #101f32;
-  color: #f6e071;
-  padding: 10px;
+.qa-admonition {
+  border: 1px solid var(--qa-border, #ccc);
+  background-color: var(--qa-bg, #f9f9f9);
+  border-radius: 10px;
+  padding: 0.8rem;
+  font-family: var(--sans-serif-font);
 
-  .icon {
+  /* The <summary> element acting as the question */
+  summary {
     display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-
-  .icon span {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
-
-  .icon span svg {
-    width: 2em;
-    /* Adjust the width as needed */
-    height: 2em;
-    /* Adjust the height as needed */
-  }
-
-  .icon span strong {
-    margin-left: 15px;
-    /* Increase margin to accommodate larger icon */
-    flex: 1;
-  }
-
-  .content {
-    padding: 10px;
-  }
-
-  .content p {
+    list-style: none;
+    /* Remove default marker */
+    cursor: pointer;
+    font-weight: bold;
     margin: 0;
-    color: #fff9dc;
+    padding: 0;
+
+    /* Hide default disclosure triangle on WebKit browsers */
+    &::-webkit-details-marker {
+      display: none;
+    }
   }
 
-  .content p+p {
-    margin: 0.2em 0 0.5em;
+  .chevron {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out;
   }
 
-  .content ol,
-  ul {
-    color: #fff9dc;
+  /* Rotate the chevron when open */
+  &[open] .chevron {
+    transform: rotate(180deg);
   }
 
-  .content li {
-    color: #fff9dc;
+  .qa-answer {
+    margin-top: 0.5rem;
   }
-
 }

@@ -1,17 +1,14 @@
-<blockquote class="question">
-  {% set icon = load_data(path="static/icon/question.svg") %}
-  <div class="icon">
-    <span>
-      {{ icon | safe }}
-      <span><strong>
-          {{ question }}
-        </strong></span>
+{%- set question = question | default(value="Question") -%}
+{%- set answer = answer | default(value=body) -%}
+{% set chevron = load_data(path="static/icon/chevron.svg") %}
+<details class="qa-admonition">
+  <summary class="qa-question">
+    {{ question | safe }}
+    <span class="chevron">
+      {{ chevron | safe }}
     </span>
+  </summary>
+  <div class="qa-answer">
+    {{ answer | markdown | safe }}
   </div>
-  <details>
-    <summary>Answer:</summary>
-    <div class="content">
-      {{ body | markdown | safe }}
-    </div>
-  </details>
-</blockquote>
+</details>
