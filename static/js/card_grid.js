@@ -45,7 +45,9 @@ async function displayRandomCards() {
         cardElement.className = 'grid-item';
         cardElement.innerHTML = `
             <a href="${card.url}" class="contact-card-link">
-                <img src="${card.src}" alt="${card.title}" class="contact-card-image">
+                <div class="contact-card-image-container">
+                    <img src="${card.src}" alt="${card.title}" class="contact-card-image">
+                </div>
                 <div class="contact-card-content">
                     <h3 class="contact-card-title">${card.title}</h3>
                     <p class="contact-card-body">${card.text}</p>

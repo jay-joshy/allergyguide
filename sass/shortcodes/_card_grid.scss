@@ -64,11 +64,21 @@
   }
 
   .contact-card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-bottom: 2px solid var(--card-border);
+    height: 100%;
+    object-fit: cover; // This prevents stretching while filling the space
   }
+
+  .contact-card-image-container {
+    position: relative;
+    padding-top: 91%; // Creates a 1:1 aspect ratio
+    border-bottom: 2px solid var(--card-border);
+    overflow: hidden;
+  }
+
 
   .contact-card-content {
     padding: 15px;
