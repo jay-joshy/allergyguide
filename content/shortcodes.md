@@ -101,7 +101,7 @@ important bx only!!!
 
 ```md
 {% raw() %}
-{% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad") %}
+{% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad.<br><br>1) this or that<br>2)this") %}
 This is the question answer
 {% end %}
 {% end %}

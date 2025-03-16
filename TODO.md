@@ -36,10 +36,11 @@
 
 - popout icon (ie so you can show research supporting things)
 - consolidate and make light/dark themes for original admonitions
-- a better question and answer dropdown section
 
 # Other stylistic:
 
 - fix / make custom banner.png for the site
 - Decide on design of home page -- ? macros, spt generator, topics? Will add FOAMmed stuff
+  - Topics, macros, and SPT gen -- maybe a rotating section? refreshes every day?
+  - Allergy is a great specialty -- but there's not a lot of resident-fellow focused content. **We can fix that deficiency.**
 - Add author pictures to about
