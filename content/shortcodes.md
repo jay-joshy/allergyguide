@@ -279,7 +279,7 @@ Right column text goes here.
 
 ```md
 {% raw() %}
-this is a spoiler that you can click: {{ spoiler(text="text to hide", fixed_blur=false) }}
+this is a spoiler that you can click: {{ spoiler(body="text to hide", fixed_blur=false) }}
 {% end %}
 ```
 
