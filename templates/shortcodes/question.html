@@ -1,14 +1,21 @@
-{%- set question = question | default(value="Question") -%}
-{%- set answer = answer | default(value=body) -%}
-{% set chevron = load_data(path="static/icon/chevron.svg") %}
-<details class="qa-admonition">
-  <summary class="qa-question">
-    {{ question | safe }}
-    <span class="chevron">
-      {{ chevron | safe }}
-    </span>
-  </summary>
-  <div class="qa-answer">
-    {{ answer | markdown | safe }}
+{%- set question = question | default(value="Your question here?") -%}
+{%- set icon_data = load_data(path="static/icon/t_question.svg") -%}
+{%- set random_id = get_random(end=100000) -%} <!-- for the blur -->
+
+<div class="qa-admonition info">
+  <div class="qa-admonition-icon">
+    {{ icon_data | safe }}
   </div>
-</details>
+  <strong class="qa-admonition-title">QUESTION</strong>
+  <div class="qa-admonition-content">
+    {{ question | markdown | safe }}
+  </div>
+  <div class="qa-admonition-answer">
+    <label class="spoiler-container">
+      <input type="checkbox" id="spoiler-{{random_id}}" class="spoiler-toggle" role="button" aria-pressed="false" />
+      <span class="spoiler-content" title="reveal spoiler" tabindex="0">
+        <span class="spoiler-hidden">{{ body | markdown | safe }}</span>
+      </span>
+    </label>
+  </div>
+</div>

@@ -1,43 +1,89 @@
-.qa-admonition {
-  border: 1px solid var(--qa-border, #ccc);
-  background-color: var(--qa-bg, #f9f9f9);
-  border-radius: 10px;
-  padding: 0.8rem;
-  font-family: var(--sans-serif-font);
+// Reuse the existing mixin for the "info" type colours
+@mixin admonition-type($type) {
+  border-color: var(--admonition-#{$type}-border);
+  background-color: var(--admonition-#{$type}-bg);
 
-  /* The <summary> element acting as the question */
-  summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
-    /* Remove default marker */
-    cursor: pointer;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
+  >.qa-admonition-content>p>code {
+    background-color: var(--admonition-#{$type}-code);
+  }
 
-    /* Hide default disclosure triangle on WebKit browsers */
-    &::-webkit-details-marker {
-      display: none;
+  a {
+    border-bottom: 1px solid var(--admonition-#{$type}-border);
+    color: var(--admonition-#{$type}-border);
+
+    &:hover {
+      background-color: var(--admonition-#{$type}-border);
+      color: var(--hover-color);
     }
   }
 
-  .chevron {
-    width: 1.2rem;
-    height: 1.2rem;
-    display: inline-flex;
+  .qa-admonition-icon {
+    fill: var(--admonition-#{$type}-border);
+    color: var(--admonition-#{$type}-border);
+  }
+}
+
+:root:not(.switch) {
+  /* Dark mode for info type */
+  --admonition-info-border: #50a9d5;
+  --admonition-info-bg: #193C47;
+  --admonition-info-code: #245e70;
+}
+
+:root.switch {
+  /* Light mode for info type */
+  --admonition-info-border: #15a2b2;
+  --admonition-info-bg: #f5fbff;
+  --admonition-info-code: #d5e2f2;
+}
+
+.qa-admonition {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: start;
+  border-radius: 10px;
+  border-inline-start: 6px solid;
+  padding: 0.8rem;
+  color: var(--text-color-high-contrast);
+  font-family: var(--sans-serif-font);
+
+  .qa-admonition-icon {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    transition: transform 0.2s ease-in-out;
+    background-size: contain;
+    background-repeat: no-repeat;
+    aspect-ratio: 1/1;
+    width: 1.5rem;
   }
 
-  /* Rotate the chevron when open */
-  &[open] .chevron {
-    transform: rotate(180deg);
+  .qa-admonition-title {
+    display: inline-block;
+    opacity: 0.92;
+    font-weight: bold;
+    font-size: 1rem;
+    /* This title (always "QUESTION") will typically appear to the right of the icon */
   }
 
-  .qa-answer {
+  .qa-admonition-content {
+    grid-column: span 2;
+    padding-left: 0.2em;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .qa-admonition-answer {
+    grid-column: span 2;
+    padding-left: 0.2em;
     margin-top: 0.5rem;
+    border-top: 1px solid var(--admonition-info-border);
+    /* Additional styling for the answer section can be added here */
   }
+}
+
+// Apply the "info" colour scheme to qa-admonitions by including the mixin
+.qa-admonition.info {
+  @include admonition-type('info');
 }
