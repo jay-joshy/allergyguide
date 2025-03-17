@@ -6,15 +6,15 @@ draft = false
 in_search_index = true
 +++
 
+### Featured sections:
+
 {{ card_grid() }}
+
+### Clinical Allergy and Immunology is a great specialty, but there's not enough resident/fellow focused content. **We aim to fix that deficiency.**
+
+allergyguide.ca is a FOAMed resource that will cover high-yield topics in clinical allergy and immunology, as well as offer clinician and patient tools. Check out our [about](/about) section to learn more.
 
 {% wip() %}
 Format of the homepage is still WIP. </br>
 Check out the [About](/about) section </br>
-{% end %}
-
-{% important(header = "PLEASE NOTE:") %}
-**This information is for educational and informational purposes only and does not replace professional medical advice.** The content is not meant to be complete or exhaustive or to be applicable to any specific individual's medical condition. Always consult a licensed healthcare provider for concerns about your health -- the content of this website is not intended to be a substitute for professional medical advice, diagnosis, or treatment.
-
-We assume no legal duty to correct or update the website nor to resolve or clarify any inconsistent information that might be a part of the website.
 {% end %}
