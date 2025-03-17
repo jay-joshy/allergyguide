@@ -21,6 +21,14 @@ function parseTOML(text) {
     return data;
 }
 
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+}
+
 function seededRandom(seed) {
     let x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
@@ -28,8 +36,12 @@ function seededRandom(seed) {
 
 function getRandomEntries(data, count) {
     const keys = Object.keys(data);
-    const seed = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD as seed
-    keys.sort((a, b) => seededRandom(parseInt(seed + a, 10)) - seededRandom(parseInt(seed + b, 10)));
+    const seedDate = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
+    keys.sort((a, b) => {
+        const seedA = hashString(seedDate + a);
+        const seedB = hashString(seedDate + b);
+        return seededRandom(seedA) - seededRandom(seedB);
+    });
     return keys.slice(0, count).map(key => data[key]);
 }
 
