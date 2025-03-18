@@ -14,7 +14,7 @@ authors = ["Joshua Yu"]
 Critical appraisal of primary or secondary literature will have two major sections:
 
 1. A quick and concise need-to-know summary
-2. A more detailed breakdown of the paper
+2. A more detailed breakdown of the paper and assessment of quality of the evidence
 
 {% end %}
 
