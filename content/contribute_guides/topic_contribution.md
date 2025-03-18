@@ -8,7 +8,7 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-See here for an example of a finished topic page: Chronic rhinosinusitis.
+See here for an example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).
 
 Not all topics will fit this general structure, and it is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points.
 
@@ -16,7 +16,7 @@ Not all topics will fit this general structure, and it is meant as a general sca
 
 {% two_columns() %}
 
-- Macro to c/p
+- Macro to c/p (see [here](/contribute#macros) for guide on writing macros)
 - Summary:
   - Condition name, epidemiology, pathophysiology, manifestations, diagnosis, management.
 - Definitions:
