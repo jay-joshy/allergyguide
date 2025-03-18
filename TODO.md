@@ -17,13 +17,11 @@
 
 # Site:
 
-- Figure out how to make website more visible to web crawlers -- while it is indexed the homepage is not showing up on search?
 - Optimize .PNGS used (see https://github.com/shssoichiro/oxipng and https://abridge.pages.dev/overview-abridge/#optimize-png-ico-files
 
 # Organizational:
 
-- fully flesh out contribution process
-- set up example google drive
+- add pages for topics to drive
 - Reach out to staff re: supporting the project / funding?
 - team structure?
   - main editor: josh
@@ -35,12 +33,3 @@
 # Shortcodes:
 
 - popout icon (ie so you can show research supporting things)
-- consolidate and make light/dark themes for original admonitions
-
-# Other stylistic:
-
-- fix / make custom banner.png for the site
-- Decide on design of home page -- ? macros, spt generator, topics? Will add FOAMmed stuff
-  - Topics, macros, and SPT gen -- maybe a rotating section? refreshes every day?
-  - Allergy is a great specialty -- but there's not a lot of resident-fellow focused content. **We can fix that deficiency.**
-- Add author pictures to about
