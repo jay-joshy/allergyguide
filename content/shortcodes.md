@@ -603,3 +603,13 @@ Here is another sentence with one reference <span class="references">2</span>
 ## mobile_warning
 
 {{ mobile_warning() }}
+
+## json_to_table
+
+{% json_to_table()%}
+[
+{ "name": "Bob", "age": 21, "isCool": false },
+{ "name": "Sarah", "age": 22, "isCool": true },
+{ "name": "Lee", "age": 23, "isCool": true }
+]
+{% end %}

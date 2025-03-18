@@ -1,0 +1,92 @@
+{# Set default for output type (markdown vs. HTML) #}
+{% set output_md = output_md | default(value=false) %}
+{% set show_headers = show_headers | default(value=true) %}
+
+{# We assume json_data is passed into the shortcode as a string #}
+<div class="json_to_table" data-json='{{ body | safe }}'></div>
+
+{# Optional inline CSS styling for the HTML table #}
+<style>
+  .json-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .json-table th,
+  .json-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  .json-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+</style>
+
+{# Inline JavaScript to parse the JSON and build the table #}
+<script>
+  const output_md = {{output_md | safe}};
+  const show_headers = {{show_headers}};
+  document.addEventListener('DOMContentLoaded', function () {
+    var container = document.querySelector('.json_to_table');
+    if (!container) return;
+
+    // Get the JSON string from the data attribute
+    var jsonStr = container.getAttribute('data-json');
+    var data;
+    try {
+      data = JSON.parse(jsonStr);
+    } catch (e) {
+      console.error("Invalid JSON data provided", e);
+      container.innerHTML = "<p>Invalid JSON</p>";
+      return;
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
+      container.innerHTML = "<p>No data available</p>";
+      return;
+    }
+
+    // Use keys of the first object as table headers
+    var headers = Object.keys(data[0]);
+
+    // Choose output type based on the 'output_md' variable
+    if (output_md) {
+      // Build Markdown table as a string
+      var mdTable = '';
+      mdTable += '| ' + headers.join(' | ') + ' |\n';
+      mdTable += '| ' + headers.map(() => '---').join(' | ') + ' |\n';
+      data.forEach(function (row) {
+        var rowData = headers.map(function (key) {
+          return row[key];
+        });
+        mdTable += '| ' + rowData.join(' | ') + ' |\n';
+      });
+      container.innerHTML = '<pre>' + mdTable + '</pre>';
+    } else {
+      // Build an HTML table
+      var htmlTable = '<table class="json-table">';
+
+      // Conditionally include headers based on show_headers
+      if (show_headers) {
+        htmlTable += '<thead><tr>';
+        headers.forEach(function (header) {
+          htmlTable += '<th>' + header + '</th>';
+        });
+        htmlTable += '</tr></thead>';
+      }
+
+      htmlTable += '<tbody>';
+      data.forEach(function (row) {
+        htmlTable += '<tr>';
+        headers.forEach(function (header) {
+          htmlTable += '<td>' + row[header] + '</td>';
+        });
+        htmlTable += '</tr>';
+      });
+      htmlTable += '</tbody></table>';
+      container.innerHTML = htmlTable;
+    }
+  });
+</script>
