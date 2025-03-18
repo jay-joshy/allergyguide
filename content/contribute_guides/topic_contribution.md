@@ -12,6 +12,8 @@ See here for an example of a semi-finished topic page: [Chronic rhinosinusitis](
 
 Not all topics will fit this general structure, and it is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points.
 
+Where possible, especially for more recent changes to guidelines, please include references. In general, if a fact is self-evident (ie. INCS are used to treat allergic rhinitis), it does not need a citation.
+
 ## Topic structure
 
 {% two_columns() %}

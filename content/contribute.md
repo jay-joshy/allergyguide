@@ -28,7 +28,7 @@ A contributor will follow this rough timeline:
 },
 {
 "title":"Drafting",
-"body":"Create draft in this Google Drive folder. Timeline 2 weeks for initial draft.",
+"body":"Timeline 2 weeks for initial draft.",
 "date":"Step 2"
 },
 {
