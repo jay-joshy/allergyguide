@@ -599,3 +599,7 @@ Here is another sentence with one reference <span class="references">2</span>
 "notes": ""
 }]
 {% end %}
+
+## mobile_warning
+
+{{ mobile_warning() }}
