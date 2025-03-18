@@ -97,4 +97,4 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
 
 ### GRADE -- for secondary evidence
 
-[link](https://gdt.gradepro.org/app/handbook/handbook.html)
+[link](https://book.gradepro.org/)
