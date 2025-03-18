@@ -4,7 +4,7 @@
     {% for d in dt %}
     <li class="event" data-date="{{ d.date |safe }}">
       <h3>{{ d.title | markdown | safe}}</h3>
-      <p>{{ d.body | safe }}</p>
+      <p>{{ d.body | markdown | safe }}</p>
     </li>
     {% endfor %}
   </ul>
