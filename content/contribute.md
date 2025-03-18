@@ -4,7 +4,7 @@ description = "How the sausage is made"
 draft = false
 date = "2025-01-31"
 in_search_index = false
-
+updated = "2025-03-17"
 [extra]
 toc = true
 authors = ["Joshua Yu"]
@@ -12,32 +12,36 @@ authors = ["Joshua Yu"]
 
 Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out, connect with us (see the mail button at the bottom of the page).
 
-## TODO:
-
-```md
-{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
-```
-
 ## Contribution process
 
-### Content
+After exploring what options exist on the contribution hub:
 
-Prerequisites: A) there are staff available to proofread drafts for topic sections B) there is an editor who can take charge over the 'section' C) We have a google drive "Resident Contributor Dashboard" (i.e. showing available topics and who’s working on what) to organize our efforts
+{{ img(src="/images/hub.png" class="ci" alt="Picture of the google sheets hub for topic/medication/research availability" link="https://docs.google.com/spreadsheets/d/1tm2AntOqbr0d6mDEJ-A_TqVjwmLKI67KboSagkZ9Au0/edit?usp=sharing") }}
+<br>
+A contributor will follow this rough timeline:
 
-1. Resident or fellow picks a topic they wish to do, and connect with editor for that 'section' (to be defined later)
-2. Timeline is set for 1st rough draft (~ 2 weeks?)
-
-- These drafts can be done through Google Docs drive somewhere for ease of use. While technically it can be done through markdown and version controlled through git, this lowers to barrier to entry.
-
-3. Editor and contributor back and forth initial edits
-4. Edited draft is sent to staff, necessary edits are made
-5. Editor / Josh / someone with some coding knowledge will add content into website
-
-### Website / coding
-
-Prerequisites: you are reasonably comfortable with markdown, html, js, scss/css, and git. To learn the structure of the website, please refer to the [Zola documentation](https://www.getzola.org/). Pages are written in markdown with [Tera templating](https://keats.github.io/tera/).
-Josh will be the main person approving pull requests for the time being.
-Re: adding content to website -- there are some formatting nuances, and a myriad of [shortcodes](/shortcodes) that can be used.
+{% timeline() %}
+[{
+"title":"Prerequisites",
+"body":"Pick a new or available topic [from the list](https://docs.google.com/spreadsheets/d/1tm2AntOqbr0d6mDEJ-A_TqVjwmLKI67KboSagkZ9Au0/edit?usp=sharing). Connect with an editor. Determine potential staff reviewer(s).",
+"date":"Step 1"
+},
+{
+"title":"Drafting",
+"body":"Create draft in this Google Drive folder. Timeline 2 weeks for initial draft.",
+"date":"Step 2"
+},
+{
+"title":"Review and edits",
+"body":"Editor and Contributor collaborate on initial edits -- it is **not** expected that by the first draft all the sections are accounted for. Once the editor and contributor are happy, the edited draft is sent for staff review.",
+"date":"Step 3"
+},
+{
+"title":"Publish",
+"body":"An editor with coding know-how will create the final formatted page for final review by the primary author(s) and staff.",
+"date":"Step 4"
+}]
+{% end %}
 
 ## Stylistic Principles
 
@@ -63,64 +67,37 @@ Re: adding content to website -- there are some formatting nuances, and a myriad
 
 #### Macros
 
-- Contains family doctor focused blurb about the condition (ie. pathophys, prognosis)
-- Investigations
-- Recommendations: non-pharmacologic, pharmacologic
+2 sections:
+
+- relevant HPI
+- Family doctor focused blurb about the condition (ie. pathophys, prognosis), investigations, management recommendations
 
 Example:
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
 
 #### Topics
 
-See [dedicated contribution page here](@/contribute_guides/topic_contribution.md)
+See [dedicated topic contribution page here](@/contribute_guides/topic_contribution.md)
 
 #### Medications
 
-- categories include: antihistamines, inhalers, nasal sprays, topicals, steroids, DMARDs, biologics, eye-drops
-- monographs will be statically hosted and linked. Filenames formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug
-- see the medications.toml file for more detail
-
-Example:
-
-```toml
-[bilastine]
-categories = ["2G antihistamine"]
-brand_names = ["Blexten"]
-cost = [{ province = "ON", price = "~$1 CAD / 20mg tab" }]
-moa = "2nd generation H1 antagonist."
-half_life = "~15 hours"
-routes = "PO tab, liquid (uncommon)"
-doses = [
-  { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "adult dosing" },
-  { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "pediatric dosing" },
-]
-pearls = ["Theoretically does not cross BBB"]
-age_group = ">=12 years of age; has been used off-label in younger children"
-pregnancy = "Avoid (not enough data)"
-contraindications = "Hypersensitivity, QT prolongation or history of torsades"
-side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
-side_effects.severe = "Torsades (very rare)"
-monograph_links = ["../monographs/bilastine_2021_1.pdf"]
-```
-
-How it'll actually look:
-{{ medications_toml_load(meds=["bilastine"])}}
+See [dedicated medication contribution page here](@/contribute_guides/medication_contribution.md)
 
 #### Research appraisals
 
-Systematic review vs primary evidence
+See [dedicated research appraisal contribution page here](@/contribute_guides/research_contribution.md)
 
-- Metadata
-  - Title
-  - Year
-  - Journal
-  - Trial name
-- PICO + Conclusion
-- Figures -- will be hosted statically
-- Description
-  - Background
-  - Objective
-  - Methods
-  - Results
-  - Limitations
-  - Conclusion
+## EXTRA:
+
+### Current TODO! (mainly for Josh to worry about)
+
+```md
+{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
+```
+
+### Website / coding
+
+If you have experience with programming (reasonably comfortable with markdown, html, js, scss/css, and git) and want to contribute, very happy to have you on board! To learn the structure of the website, please refer to the [Zola documentation](https://www.getzola.org/). Pages are written in markdown with [Tera templating](https://keats.github.io/tera/).
+
+Josh will be the main person approving pull requests for the time being.
+Re: adding content to website -- there are some formatting nuances, and a myriad of [shortcodes](/shortcodes) that can be used.
