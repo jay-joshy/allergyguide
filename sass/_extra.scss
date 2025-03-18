@@ -25,6 +25,7 @@
 @use "shortcodes/timeline";
 @use "shortcodes/references";
 @use "shortcodes/spt_generator";
+@use "shortcodes/json_to_table";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {

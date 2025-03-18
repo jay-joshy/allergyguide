@@ -5,25 +5,6 @@
 {# We assume json_data is passed into the shortcode as a string #}
 <div class="json_to_table" data-json='{{ body | safe }}'></div>
 
-{# Optional inline CSS styling for the HTML table #}
-<style>
-  .json-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  .json-table th,
-  .json-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-
-  .json-table th {
-    background-color: #f2f2f2;
-    text-align: left;
-  }
-</style>
-
 {# Inline JavaScript to parse the JSON and build the table #}
 <script>
   const output_md = {{output_md | safe}};
