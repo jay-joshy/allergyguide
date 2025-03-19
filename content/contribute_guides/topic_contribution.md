@@ -50,12 +50,24 @@ Where possible, especially for more recent changes to guidelines, please include
 
 {% end %}
 
+## Macros
+
+Macros exist at the top of the topic page. While not all topics need a macro, most will. It has 2 sections:
+
+- relevant HPI
+- Family doctor focused blurb about the condition (ie. pathophys, prognosis), investigations, management recommendations
+
+Example:
+{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
+
+## Styling of topic pages
+
 {% admonition(type="danger", icon="info", title="Don't just use plain-text") %}
 Within a topic page, there are many ways to customize the text: in particular, **Markdown** and **Shortcodes**.
 
 {% end %}
 
-## Markdown
+### Markdown
 
 - See [this link](https://www.writethedocs.org/guide/writing/markdown/) for a great introduction to the Markdown format
 - For your purposes, **you do not have to know Markdown itself very well** -- it is more important you know that the website renders Markdown. This means that you are able to use _italics_, **bolded words**, ~~strike-through-text~~, and links such as the one before. Lists and bullet points will also render as you expect. Different title headers can be achieved with [# signs](https://www.writethedocs.org/guide/writing/markdown/#headers)
@@ -67,7 +79,7 @@ Within a topic page, there are many ways to customize the text: in particular, *
   | Bob    | A good guy, who likes to communicate with Alice                         |
   | Malroy | Not so nice guy. Tries to mess with the communication of Alice and Bob. |
 
-## Shortcodes
+### Shortcodes
 
 - Shortcodes are custom pieces of styled HTML (and sometimes javascript). You can use any of the shortcodes below as you like for a topic
 - Each can serve a different purpose, and helps break up plain-text into more manageable sections

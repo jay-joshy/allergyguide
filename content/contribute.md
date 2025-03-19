@@ -28,12 +28,12 @@ A contributor will follow this rough timeline:
 },
 {
 "title":"Drafting",
-"body":"Timeline 2 weeks for initial draft.",
+"body":"Timeline 2 weeks for initial draft. See the contribution guides for [macros and topics](@/contribute_guides/topic_contribution.md), [medications](@/contribute_guides/medication_contribution.md), and [critical appraisal of research](@/contribute_guides/research_contribution.md).",
 "date":"Step 2"
 },
 {
 "title":"Review and edits",
-"body":"Editor and Contributor collaborate on initial edits -- it is **not** expected that by the first draft all the sections are accounted for. Once the editor and contributor are happy, the edited draft is sent for staff review.",
+"body":"Editor and Contributor collaborate on initial edits. Once the editor and contributor are happy, the edited draft is sent for staff review.",
 "date":"Step 3"
 },
 {
@@ -62,30 +62,6 @@ A contributor will follow this rough timeline:
 - Tables/Figures: Only if they enhance understanding (e.g., decision algorithms)
 
 {% end %}
-
-## Content guidelines
-
-#### Macros
-
-2 sections:
-
-- relevant HPI
-- Family doctor focused blurb about the condition (ie. pathophys, prognosis), investigations, management recommendations
-
-Example:
-{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
-
-#### Topics
-
-See [dedicated topic contribution page here](@/contribute_guides/topic_contribution.md)
-
-#### Medications
-
-See [dedicated medication contribution page here](@/contribute_guides/medication_contribution.md)
-
-#### Research appraisals
-
-See [dedicated research appraisal contribution page here](@/contribute_guides/research_contribution.md)
 
 ## EXTRA:
 
