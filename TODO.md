@@ -8,6 +8,9 @@
   - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - guideline compilation section (not sure if there's a way to automate this unfortunately)
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
+- Tools:
+  - something to help with research appraisal?
+  - Allergic rhinitis seasonal calendar for allergens?
 
 # Lower priority content:
 
