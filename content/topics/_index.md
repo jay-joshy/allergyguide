@@ -16,8 +16,9 @@ in_search_index = false
   - [Immunotherapy](/topics/hypersensitivity/foods/immunotherapy)
 - <kbd><kbd>Drugs</kbd></kbd>
   - [Approach](/topics/hypersensitivity/drugs/approach)
-  - [Desensitization](/topics/hypersensitivity/drugs/desensitization)
+  - Non-IgE mediated mast-cell degranulation
   - [SCAR](/topics/hypersensitivity/drugs/scar)
+  - [Desensitization](/topics/hypersensitivity/drugs/desensitization)
   - Specific drug classes:
     - [Vaccines](/topics/hypersensitivity/drugs/vaccines)
     - [Penicillin allergy](/topics/hypersensitivity/drugs/penicillin)
