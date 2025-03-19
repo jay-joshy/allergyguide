@@ -4,9 +4,8 @@
   - Chronic rhinosinusitis, landmark trials (ie. omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP)
   - done: medication example
 - Topics to add:
-  - Pediatric medicine crash course
-  - add non-ige mediated mast cell degranulation section (with specific sections with things like IV iron, NAC, alcohol, opioids, etc)
 - guideline compilation section (not sure if there's a way to automate this unfortunately)
+  - insert this after the topics column somehow
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
 - Tools:
   - something to help with research appraisal?
