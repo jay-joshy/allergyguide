@@ -590,5 +590,18 @@ This will display a warning admonition if viewed from Mobile.
 
 # research_card
 
+```md
+{% raw() %}
 {{ research_card(paper="sygma2") }}
+{% end %}
+```
+
+{{ research_card(paper="sygma2") }}
+
+```md
+{% raw() %}
+{{ research_card(paper="sygma2", show_title=false) }}
+{% end %}
+```
+
 {{ research_card(paper="sygma2", show_title=false) }}
