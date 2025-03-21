@@ -7,6 +7,7 @@ draft = false
 toc = true
 authors = ["Joshua Yu"]
 +++
+
 <br>
 <br>
 
@@ -35,42 +36,7 @@ This section should not be longer than half a page at most. It is meant as a qui
 
 From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (primary evidence):
 
-{% json_to_table(show_headers=false) %}
-[
-{
-"Category": "Main Clinical Question",
-"Details": "Is PRN budesonide–formoterol noninferior to daily maintenance budesonide therapy in reducing severe asthma exacerbations for mild asthma?"
-},
-{
-"Category": "Study type",
-"Details": "52 week double-blind, randomized, multi-center, phase 3, non-inferiority trial"
-},
-{
-"Category": "Population",
-"Details": "Patients with mild persistent asthma (≥12 years), including those with previously controlled and uncontrolled symptoms on minimal therapy."
-},
-{
-"Category": "Intervention",
-"Details": "Twice-daily placebo + PRN budesonide–formoterol (200μg/6μg)."
-},
-{
-"Category": "Comparison/Control",
-"Details": "Regular BID budesonide (200μg) + as-needed terbutaline (0.5mg)."
-},
-{
-"Category": "Outcome",
-"Details": "At 52 weeks, the PRN budesonide–formoterol group had an annualized rate of severe exacerbations of 0.11 events per patient-year compared to 0.12 events per patient-year in the maintenance budesonide group (rate ratio, 0.97; upper one-sided 95% CI, 1.16; noninferiority met). ACQ-5 score improved by 0.35 in the as-needed group versus 0.46 in the maintenance group (difference, 0.11 units; 95% CI, 0.07 to 0.15; p<0.001). Median daily inhaled glucocorticoid exposure in the as-needed group was 66μg vs. 267μg in the maintenance group."
-},
-{
-"Category": "Bottom Line",
-"Details": "For mild asthma, PRN budesonide–formoterol was noninferior to daily budesonide in preventing severe exacerbations, with a non-clinically relevant difference in ACQ-5 and less overall steroid exposure."
-},
-{
-"Category": "Study quality",
-"Details": "To be done"
-}
-]
-{%end%}
+{{ research_card(paper="sygma2", show_title=false) }}
 
 # The more detailed review
 
