@@ -1,0 +1,59 @@
+{% set data = load_data(path="static/toml/research.toml") %}
+<!-- Build a list of valid paper keys -->
+{% set all_papers = [] %}
+{% for p, _ in data %}
+  {% set_global all_papers = all_papers | concat(with=[p]) %}
+{% endfor %}
+<!-- Validate paper name -->
+{% if paper not in all_papers %}
+  {{ throw(message=paper ~ " is not a valid paper name. Please refer to research.toml for the correct possible names.") }}
+{% endif %}
+
+{% set show_title = show_title | default(value=true) %}
+{% set paper_data = data[paper] %}
+<div class="research_card">
+  <table class="paper-table">
+    {% if show_title %}
+    <thead>
+      <tr>
+        <th>{{ paper_data.title }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    {% endif %}
+    <tbody>
+      <tr>
+        <td>Clinical Question</td>
+        <td>{{ paper_data.clinical_question }}</td>
+      </tr>
+      <tr>
+        <td>Study Type</td>
+        <td>{{ paper_data.study_type }}</td>
+      </tr>
+      <tr>
+        <td>Population</td>
+        <td>{{ paper_data.population }}</td>
+      </tr>
+      <tr>
+        <td>Intervention</td>
+        <td>{{ paper_data.intervention }}</td>
+      </tr>
+      <tr>
+        <td>Comparison</td>
+        <td>{{ paper_data.comparison }}</td>
+      </tr>
+      <tr>
+        <td>Outcomes</td>
+        <td>{{ paper_data.outcomes }}</td>
+      </tr>
+      <tr>
+        <td>Bottom Line</td>
+        <td>{{ paper_data.bottom_line }}</td>
+      </tr>
+      <tr>
+        <td>Study Quality</td>
+        <td>{{ paper_data.study_quality }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

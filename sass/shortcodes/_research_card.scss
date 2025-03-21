@@ -1,0 +1,45 @@
+/*--------------------------------------------------
+  Theme Variables
+--------------------------------------------------*/
+
+/* Dark Theme (Default) */
+:root {
+  --rc-bold_border: #f90;
+}
+
+/* Light Theme: Activate by adding the "switch" class to the root element */
+:root.switch {
+  --rc-bold_border: #c40;
+}
+
+.research_card {
+  .paper-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .paper-table th,
+  .paper-table td {
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .paper-table thead th {
+    border-top: 2px solid #ddd;
+    border-color: var(--rc-bold_border);
+    text-align: left;
+  }
+
+  .paper-table tbody tr:first-child td {
+    border-bottom: none;
+    border-top: 2px solid #ddd;
+    border-color: var(--rc-bold_border);
+  }
+
+  .paper-table tr:last-child td {
+    border-bottom: 2px solid #ddd;
+    border-color: var(--rc-bold_border);
+
+  }
+}

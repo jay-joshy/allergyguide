@@ -587,3 +587,7 @@ This will display a warning admonition if viewed from Mobile.
 { "name": "Lee", "age": 23, "isCool": true }
 ]
 {% end %}
+
+# research_card
+
+{{ research_card(paper="sygma2") }}
