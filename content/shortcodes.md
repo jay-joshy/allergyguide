@@ -10,7 +10,7 @@ in_search_index = false
 toc = true
 +++
 
-See below for markdown syntax used for the custom shortcodes used in this website.
+See below for Markdown syntax used for the custom shortcodes used in this website.
 
 ## Re: nesting shortcodes
 
@@ -242,8 +242,6 @@ Right column text goes here.
 {% two_columns() %}
 Left column text goes here.
 
-### Markdown should be supported
-
 <!-- split -->
 
 Right column text goes here.
@@ -256,8 +254,6 @@ Right column text goes here.
 {% two_columns_fancy() %}
 Left column text goes here.
 
-### Markdown should be supported
-
 <!-- split -->
 
 Right column text goes here.
@@ -267,8 +263,6 @@ Right column text goes here.
 
 {% two_columns_fancy() %}
 Left column text goes here.
-
-### Markdown should be supported
 
 <!-- split -->
 
@@ -431,26 +425,6 @@ excludes weekends
 
 {{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
 
-## contact_card_gallery
-
-```md
-{% raw() %}
-{{ card_grid() }}
-{% end %}
-```
-
-{{ card_grid() }}
-
-## profile_grid
-
-```md
-{% raw() %}
-{{profile_grid()}}
-{% end %}
-```
-
-{{profile_grid()}}
-
 ## custom_macro
 
 ```md
@@ -487,30 +461,6 @@ if not provided default will show all medications from the toml
 ```
 
 {{ medications_toml_load(meds=["bilastine"])}}
-
-## example_colormode
-
-{% example_colormode() %}
-This is a test
-{% end %}
-
-## kbd
-
-```md
-<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
-```
-
-<kbd><kbd><kbd>This is a demonstration of the possible shortcodes that can be used. Review shortcodes.md to see how each shortcode is used within the .md documents.</kbd></kbd></kbd>
-
-## test_toml_load
-
-```md
-{% raw() %}
-{{ test_toml_load(section_name = "label_1") }}
-{% end %}
-```
-
-{{ test_toml_load(section_name = "label_1") }}
 
 ## wip
 
@@ -602,6 +552,8 @@ Here is another sentence with one reference <span class="references">2</span>
 
 # mobile_warning
 
+This will display a warning admonition if viewed from Mobile.
+
 ```md
 {% raw() %}
 {{ mobile_warning() }}
@@ -611,6 +563,10 @@ Here is another sentence with one reference <span class="references">2</span>
 {{ mobile_warning() }}
 
 # json_to_table
+
+- body -- the JSON
+- show_headers: bool, default true
+- output_md: bool, default false (when true it outputs in a ```md block)
 
 ```md
 {% raw() %}
