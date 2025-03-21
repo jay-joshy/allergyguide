@@ -32,9 +32,9 @@
   }
 
   .paper-table tbody tr:first-child td {
-    border-bottom: none;
-    border-top: 2px solid #ddd;
-    border-color: var(--rc-bold_border);
+    border-bottom: 1px solid #ddd;
+    border-top: 2px solid;
+    border-top-color: var(--rc-bold_border);
   }
 
   .paper-table tr:last-child td {

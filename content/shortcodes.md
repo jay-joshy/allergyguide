@@ -591,3 +591,4 @@ This will display a warning admonition if viewed from Mobile.
 # research_card
 
 {{ research_card(paper="sygma2") }}
+{{ research_card(paper="sygma2", show_title=false) }}
