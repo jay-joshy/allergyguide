@@ -8,7 +8,7 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-Medications can be found in this [page here](/medications/). The goal is to provide cards that are succinct and relevant, not a deep dive -- the user can look at the monograph if they want for more detail.
+Medications can be found in this [page here](/medications/). The goal is to provide cards that are succinct and relevant, not a deep dive -- the user can look at the monograph if needed for more detail.
 
 As such, there's a relatively standardized format for medications. See this example:
 
@@ -33,8 +33,35 @@ side_effects.severe = "Torsades (very rare)"
 monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 ```
 
-- Categories include: antihistamines, inhalers, nasal sprays, topicals, steroids, DMARDs, biologics, eye-drops ... and probably more in the future
+Here is an example template:
+
+```toml
+[template_med]
+categories = ["testcategory", "testA", "testB"]
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$ CAD / mg tab" },
+  { province = "BC", price = "~$ CAD / mg tab" },
+]
+moa = "Insert MoA"
+half_life = "~X hours"
+routes = ""
+doses = [
+  { indication = "diseaseA", dose = "", notes = "" },
+  { indication = "diseaseB", dose = "", notes = "" },
+]
+pearls = ["Insert pearl here"]
+age_group = "insert age group"
+pregnancy = "insert information, can link to data"
+contraindications = "insert"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["/monographs/example_2025_1.pdf"]
+```
+
+- The editors will deal with the categories section.
 - Monographs will be statically hosted and linked. Include a link for the monograph in your draft file so it can be uploaded to the site. Filenames should be formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug
 
 How it'll actually look:
+
 {{ medications_toml_load(meds=["bilastine"])}}

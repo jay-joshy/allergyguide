@@ -21,16 +21,23 @@ Critical appraisal of primary or secondary literature will have two major sectio
 
 # Quick facts
 
-This section should not be longer than half a page at most. It is meant as a quick glance-over refresher about what the take-home points were.
+This section should not be longer than half a page at most. It is meant as a **quick glance-over refresher** about what the take-home points were.
+
+{% two_columns() %}
 
 - What is the main clinical question?
 - What is the study type?
 - What is the population?
 - What was the intervention? The therapeutic, diagnostic, or other intervention under investigation (e.g. the experimental intervention, or in observational studies the exposure factor)
+
+<!-- split -->
+
 - What was the comparison/control (if available)?
 - What was the outcome?
 - What is the bottom line?
 - Study quality (GRADE for reviews, ROB/Newcastle-Ottawa Scale)
+
+{% end %}
 
 ### Example
 
@@ -40,20 +47,31 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
 
 # The more detailed review
 
+{% two_columns() %}
+
 - Metadata
   - Title
   - Year
   - Journal
   - Trial name
+- Background
+- Objective
+- Methods
+
+<!-- split -->
+
+- Results
 - Figures -- will be hosted statically
-- Description
-  - Background
-  - Objective
-  - Methods
-  - Results
-  - Limitations
-  - Conclusion
+- Limitations
+- Conclusion
 - Study quality
+
+- Authors:
+  - Primary: list
+  - Reviewers: list
+  - Editor: list
+
+{% end %}
 
 # Study quality
 
