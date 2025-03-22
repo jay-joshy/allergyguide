@@ -16,7 +16,7 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 2. Sections for therapies and medications
 3. Clinical decision tools, Clinical quality-of-life tools, consent forms
 4. Patient resources (a one stop shop for handouts!)
-5. Critical appraisal of new research
+5. Critical appraisal of research
 
 {% end %}
 
