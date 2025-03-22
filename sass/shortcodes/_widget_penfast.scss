@@ -1,153 +1,153 @@
-    .cleandarkBox {
-      /* From https://css.glass */
-      background: #3a3a3a;
-      border-radius: 15px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      /* border: 1px solid rgba(0, 0, 0, 0.055); */
-      border: 5px solid #a67c52;
+.penfast {
+  /* From https://css.glass */
+  background: #3a3a3a;
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* border: 1px solid rgba(0, 0, 0, 0.055); */
+  border: 5px solid #a67c52;
 
-      padding: 1rem;
-      padding-top: 1px;
-      padding-bottom: 1px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
+  padding: 1rem;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 
-    .questionTable {
-      border: none;
-      color: #cbd3b2;
-      /* color is text color */
-    }
+  .questionTable {
+    border: none;
+    color: #cbd3b2;
+    /* color is text color */
+  }
 
-    .questionTableRow {
-      height: 50px;
-      border: none;
-      background-color: #3a3a3a !important;
+  .questionTableRow {
+    height: 50px;
+    border: none;
+    background-color: #3a3a3a !important;
 
-    }
+  }
 
-    /* Box around switch */
-    .qswitch {
-      position: relative;
-      display: inline-block;
-      width: 120px;
-      height: 34px;
-    }
+  /* Box around switch */
+  .qswitch {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 34px;
+  }
 
-    /* Hide default HTML checkbox */
-    .qswitch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+  /* Hide default HTML checkbox */
+  .qswitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 
-    /* The slider */
-    .qslider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(107, 107, 107, 0.507);
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
+  /* The slider */
+  .qslider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(107, 107, 107, 0.507);
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
 
-    .qslider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: rgba(255, 255, 255, 0.733);
-      -webkit-transition: .4s;
-      transition: .4s;
-      /*  */
-    }
+  .qslider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: rgba(255, 255, 255, 0.733);
+    -webkit-transition: .4s;
+    transition: .4s;
+    /*  */
+  }
 
-    input:checked+.qslider {
-      background-color: #409c5fc2;
-    }
+  input:checked+.qslider {
+    background-color: #409c5fc2;
+  }
 
-    input:focus+.qslider {
-      box-shadow: 0 0 1px #409c5fc2;
-    }
+  input:focus+.qslider {
+    box-shadow: 0 0 1px #409c5fc2;
+  }
 
-    input:checked+.qslider:before {
-      -webkit-transform: translateX(86px);
-      -ms-transform: translateX(86px);
-      transform: translateX(86px);
-    }
+  input:checked+.qslider:before {
+    -webkit-transform: translateX(86px);
+    -ms-transform: translateX(86px);
+    transform: translateX(86px);
+  }
 
-    /* Rounded sliders */
-    .qslider.round {
-      border-radius: 34px;
-    }
+  /* Rounded sliders */
+  .qslider.round {
+    border-radius: 34px;
+  }
 
-    .qslider.round:before {
-      border-radius: 50%;
-    }
+  .qslider.round:before {
+    border-radius: 50%;
+  }
 
-    /* FOR THE TEXT ON SLIDER */
-    .qslider:after {
-      content: 'No';
-      color: white;
-      display: block;
-      position: absolute;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
-      font-size: 15px;
-      font-weight: bold;
-      /* font-family: Verdana, sans-serif; */
-    }
+  /* FOR THE TEXT ON SLIDER */
+  .qslider:after {
+    content: 'No';
+    color: white;
+    display: block;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    font-size: 15px;
+    font-weight: bold;
+    /* font-family: Verdana, sans-serif; */
+  }
 
-    input:checked+.qslider:after {
-      content: 'Yes';
-    }
+  input:checked+.qslider:after {
+    content: 'Yes';
+  }
 
-    .whitebox {
-      background-color: rgba(255, 255, 255, 0.80);
-      margin-right: 0px;
-      margin-left: 0px;
-      margin-top: 0px;
-      margin-bottom: 1px;
-      border-radius: 10px;
-      padding: 20px;
-      padding-top: 1px;
-      padding-bottom: 1px;
+  .whitebox {
+    background-color: rgba(255, 255, 255, 0.80);
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 1px;
+    border-radius: 10px;
+    padding: 20px;
+    padding-top: 1px;
+    padding-bottom: 1px;
 
-    }
+  }
 
-    .whitebox p {
-      color: black;
-    }
+  .whitebox p {
+    color: black;
+  }
 
-    .whitebox .feature-subtitle {
-      color: black;
-    }
+  .whitebox .feature-subtitle {
+    color: black;
+  }
 
-    .whitebox .feature-subsubtitle {
-      color: black;
-    }
+  .whitebox .feature-subsubtitle {
+    color: black;
+  }
 
-    .feature-subtitle {
-      color: rgb(255, 255, 255);
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 2px;
-      margin-top: 20px;
-      text-transform: uppercase;
-    }
+  .feature-subtitle {
+    color: rgb(255, 255, 255);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
 
-    .feature-title {
-      color: rgb(255, 255, 255);
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-    }
+  .feature-title {
+    color: rgb(255, 255, 255);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+}
