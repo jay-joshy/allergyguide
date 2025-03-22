@@ -1,14 +1,14 @@
 # Used for the editor bios in the about section
 
 [title1]
-src = "/images/profile_jy.jpg"
+src = "/images/profile_jy.png"
 name = "Joshua Yu, MD BSc"
 text = "IM resident trained at McMaster, fellow-to-be at UBC."
 [title2]
-src = "/images/example.jpg"
+src = "/images/example.png"
 name = "Editor 2"
 text = "Could be you!"
 [title3]
-src = "/images/example.jpg"
+src = "/images/example.png"
 name = "Editor 3"
 text = "Could also be you!"
