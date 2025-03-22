@@ -14,6 +14,7 @@
   /* Subdued text for description */
   --profile-card-shadow: rgba(0, 0, 0, 0.5);
   /* Stronger shadow */
+  --profile-card-image-brightness: 0.8; // Slightly darker images in dark mode
 }
 
 /* Light Theme: */
@@ -28,6 +29,8 @@
   /* Subdued dark text for description */
   --profile-card-shadow: rgba(0, 0, 0, 0.1);
   /* Subtle shadow */
+  --profile-card-image-brightness: 0.9; // Slightly darker images in dark mode
+
 }
 
 /*--------------------------------------------------
@@ -60,6 +63,7 @@
     /* Portrait: width is 3, height is 4 */
     object-fit: cover;
     border-bottom: 2px solid var(--profile-card-border);
+    filter: brightness(var(--profile-card-image-brightness));
   }
 
   .profile-card-content {
