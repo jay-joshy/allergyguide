@@ -37,12 +37,13 @@ in_search_index = false
 <!-- split -->
 
 ## Hypersensitivity disorders continued
-
+- <kbd><kbd>Anaphylaxis</kbd></kbd>
+  - [Approach](@/topics/hypersensitivity/anaphylaxis/anaphylaxis.md)
+  - [Idiopathic/recurrent anaphylaxis](@/topics/hypersensitivity/anaphylaxis/idiopathic_anaphylaxis.md)
+  - [Mast cell disorders](@/topics/hypersensitivity/anaphylaxis/mast_cell_disorders.md)
 - <kbd><kbd>Misc</kbd></kbd>
-  - [Anaphylaxis](@/topics/hypersensitivity/misc/anaphylaxis.md)
-  - [Idiopathic/recurrent anaphylaxis](@/topics/hypersensitivity/misc/idiopathic_anaphylaxis.md)
-  - [Mast cell disorders](@/topics/hypersensitivity/misc/mast_cell_disorders.md)
   - [Venom hypersensitivity](/topics/hypersensitivity/misc/venom)
+  - [Eosinophilic esophagitis](@/topics/hypersensitivity/misc/eosinophilic_esophagitis.md)
 
 ## Basic physiology
 
