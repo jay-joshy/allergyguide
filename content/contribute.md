@@ -63,17 +63,15 @@ Contribution follows this rough timeline:
 
 {% end %}
 
-## EXTRA:
-
-### Current TODO! (mainly for Josh to worry about)
-
-```md
-{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
-```
-
-### Website / coding
+## Website / coding
 
 If you have experience with programming (reasonably comfortable with Markdown, html, js, scss/css, and git) and want to contribute, very happy to have you on board! To learn the structure of the website, please refer to the [Zola documentation](https://www.getzola.org/). Pages are written in Markdown with [Tera templating](https://keats.github.io/tera/).
 
 Josh will be the main person approving pull requests for the time being.
 Re: adding content to website -- there are some formatting nuances, and a myriad of [shortcodes](/shortcodes) that can be used.
+
+## ROADMAP and TODO!:
+
+```md
+{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
+```
