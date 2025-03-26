@@ -1,0 +1,119 @@
+:root:not(.switch) {
+  /* Dark mode */
+  --radio-bg: #2D3748; // Dark container background
+  --radio-border: rgba(255, 255, 255, 0.12); // Subtle light border for dark mode
+  --radio-text: rgba(255, 255, 255, 0.8); // Lighter text for contrast
+  --radio-active-text: #f90; // Lighter text for contrast
+  --radio-active-bg: #1A202C; // Active element background in dark mode
+}
+
+:root.switch {
+  /* Light mode */
+  --radio-bg: #EEE; // Light container background
+  --radio-border: rgba(0, 0, 0, 0.06); // Subtle dark border for light mode
+  --radio-text: rgba(51, 65, 85, 1); // Dark text for readability
+  --radio-active-text: #f90; // Lighter text for contrast
+  --radio-active-bg: #fff; // Active element background in light mode (or adjust as needed)
+}
+
+.rob_2 {
+  h2 {
+    /* margin-bottom: 1em; */
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed; // forces equal width distribution among columns
+    border-collapse: collapse;
+
+    tr {
+      background-color: transparent;
+
+    }
+
+    thead th {
+      border-top: 0.2rem solid #ddd;
+      border-color: var(--rc-bold_border);
+      text-align: left;
+    }
+
+    tr:last-child td {
+      border-bottom: 0.2rem solid #ddd;
+      border-color: var(--rc-bold_border);
+
+    }
+
+    th,
+    td {
+      border: none;
+      border-bottom: 0.05rem solid #ddd;
+      padding: 0.5rem;
+      vertical-align: top;
+    }
+
+    th {
+      text-align: left;
+    }
+  }
+
+  textarea.question-details {
+    display: block;
+    width: 100%;
+    height: 5rem;
+    box-sizing: border-box;
+    font-family: inherit; // Ensures the textarea font matches the rest of your design
+    resize: none; // Optional: disable manual resizing if desired
+  }
+
+
+  .summary {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    background-color: #fafafa;
+  }
+}
+
+.radio-inputs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: var(--radio-bg);
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px var(--radio-border);
+  padding: 0.25rem;
+  width: 100%;
+  /* font-size: ; */
+
+  .radio {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .radio input {
+    display: none;
+  }
+
+  .radio .name {
+    display: flex;
+    align-items: center;
+    /* Ensures text is vertically centered */
+    justify-content: center;
+    text-align: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.5rem 0;
+    color: var(--radio-text);
+    transition: all 0.15s ease-in-out;
+    min-height: 4rem;
+    /* Adjust as needed to match tallest option */
+  }
+
+  .radio input:checked+.name {
+    background-color: var(--radio-active-bg);
+    font-weight: 600;
+    height: 100%;
+    color: var(--radio-active-text);
+  }
+
+}

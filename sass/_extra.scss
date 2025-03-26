@@ -24,7 +24,8 @@
 @use "shortcodes/references";
 @use "shortcodes/spt_generator";
 @use "shortcodes/json_to_table";
-@use "shortcodes/_research_card";
+@use "shortcodes/research_card";
+@use "shortcodes/rob_2";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
