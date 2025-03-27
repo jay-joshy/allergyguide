@@ -2,10 +2,10 @@
 class Answer {
   // Private Fields
   static #_YES = "Yes";
-  static #_PYES = "Prob Yes";
-  static #_PNO = "Prob No";
+  static #_PYES = "Probably Yes";
+  static #_PNO = "Probably No";
   static #_NO = "No";
-  static #_NOINFO = "No info";
+  static #_NOINFO = "No information";
 
   // Accessors for "get" functions only (no "set" functions)
   static get YES() { return this.#_YES; }
@@ -13,6 +13,18 @@ class Answer {
   static get PNO() { return this.#_PNO; }
   static get NO() { return this.#_NO; }
   static get NOINFO() { return this.#_NOINFO; }
+}
+
+class DomainRisk {
+  // Private Fields
+  static #_Low = "Low risk";
+  static #_Concerns = "Some concerns";
+  static #_High = "High risk";
+
+  // Accessors for "get" functions only (no "set" functions)
+  static get Low() { return this.#_Low; }
+  static get Concerns() { return this.#_Concerns; }
+  static get High() { return this.#_High; }
 }
 
 function d_one_rob() {
