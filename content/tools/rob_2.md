@@ -19,7 +19,7 @@ authors = ["Joshua Yu"]
 Tool is derived directly from the [Cochrane Risk of Bias assessment tool](https://methods.cochrane.org/risk-bias-2), licensed under CC BY-NC-ND 4.0. Higgins (2019).
 
 <br>
-<button onclick="clearAllState()">Click Me to clear all choices/text</button>
+<button class="rob2-clear-button" onclick="clearAllState()">Click Me to clear all choices/text</button>
 
 {% end %}
 

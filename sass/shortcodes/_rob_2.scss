@@ -5,6 +5,13 @@
   --radio-text: rgba(255, 255, 255, 0.8); // Lighter text for contrast
   --radio-active-text: #f90; // Lighter text for contrast
   --radio-active-bg: #1A202C; // Active element background in dark mode
+  --custom_button_bg: #2c7873;
+  --custom_button_hover_bg: #256d69;
+  --custom_button_active_bg: #1f625f;
+  --custom_button_text: #d1d1d1;
+  --custom_button_hover_text: #d1d1d1;
+  --custom_button_active_text: #d1d1d1;
+
 }
 
 :root.switch {
@@ -14,7 +21,40 @@
   --radio-text: rgba(51, 65, 85, 1); // Dark text for readability
   --radio-active-text: #f90; // Lighter text for contrast
   --radio-active-bg: #fff; // Active element background in light mode (or adjust as needed)
+  --custom_button_bg: #b2dfdb;
+  --custom_button_hover_bg: #a1d9d4;
+  --custom_button_active_bg: #90d3cd;
+  --custom_button_text: #333333;
+  --custom_button_hover_text: #333333;
+  --custom_button_active_text: #333333;
+
 }
+
+@mixin button-states($bg, $hover-bg, $active-bg, $text, $hover-text, $active-text) {
+  background: $bg;
+  color: $text;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background: $hover-bg;
+    color: $hover-text;
+  }
+
+  &:active {
+    background: $active-bg;
+    color: $active-text;
+  }
+}
+
+.rob2-clear-button {
+  @include button-states(var(--custom_button_bg),
+    var(--custom_button_hover_bg),
+    var(--custom_button_active_bg),
+    var(--custom_button_text),
+    var(--custom_button_hover_text),
+    var(--custom_button_active_text));
+}
+
 
 .rob_2 {
   h2 {
@@ -106,6 +146,7 @@
     color: var(--radio-text);
     transition: all 0.15s ease-in-out;
     min-height: 4rem;
+    min-width: 4rem;
     /* Adjust as needed to match tallest option */
   }
 
