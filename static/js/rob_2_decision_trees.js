@@ -1,0 +1,228 @@
+export class Answer {
+  // Private Fields
+  static #_YES = "Yes";
+  static #_PYES = "Prob Yes";
+  static #_PNO = "Prob No";
+  static #_NO = "No";
+  static #_NOINFO = "No info";
+
+  // Accessors for "get" functions only (no "set" functions)
+  static get YES() { return this.#_YES; }
+  static get PYES() { return this.#_PYES; }
+  static get PNO() { return this.#_PNO; }
+  static get NO() { return this.#_NO; }
+  static get NOINFO() { return this.#_NOINFO; }
+}
+
+export class DomainRisk {
+  // Private Fields
+  static #_Low = "Low risk";
+  static #_Concerns = "Some concerns";
+  static #_High = "High risk";
+
+  // Accessors for "get" functions only (no "set" functions)
+  static get Low() { return this.#_Low; }
+  static get Concerns() { return this.#_Concerns; }
+  static get High() { return this.#_High; }
+}
+
+
+export function traverseTree(node, answers) {
+  // Terminal node with an outcome.
+  if (node.outcome) {
+    return node.outcome;
+  }
+
+  // Determine the user's answer for this node.
+  let userAnswer;
+  // If node.id is an array and a custom evaluate function is provided, use it.
+  if (Array.isArray(node.id) && typeof node.evaluate === "function") {
+    userAnswer = node.evaluate(answers);
+  } else {
+    // Otherwise, use the answer keyed by the node's id.
+    userAnswer = answers[node.id];
+  }
+
+  // Find the branch that accepts this answer.
+  const branch = node.answers.find(branch => branch.accepted.includes(userAnswer));
+  if (!branch) {
+    return "null"
+  }
+
+  // Recursively traverse to the next node (if it exists).
+  return traverseTree(branch.next || branch, answers);
+}
+
+export function getDomainAnswers(domain, num_q) {
+  // Mapping from normalized inner text to the enum value.
+  const answerMapping = {
+    "Yes": Answer.YES,
+    "Prob Yes": Answer.PYES,
+    "Prob No": Answer.PNO,
+    "No": Answer.NO,
+    "No info": Answer.NOINFO
+  };
+
+  // Helper to normalize text (replaces whitespace/newlines and trims)
+  const normalize = (text) => text && text.replace(/\s+/g, " ").trim();
+
+  const answers = {};
+
+  // Loop through each question number for this domain.
+  for (let i = 1; i <= num_q; i++) {
+    const questionId = `q${domain}_${i}`;
+    const radioSelector = `input[name="${questionId}"]:checked`;
+    const rawText = document.querySelector(radioSelector)?.nextElementSibling.innerText;
+
+    // Assign the mapped answer to the key. If no answer is found, assign null.
+    answers[questionId] = answerMapping[normalize(rawText)] || "null";
+  }
+
+  return answers;
+}
+
+
+export const D1_DT = {
+  id: "q1_2",
+  answers: [
+    {
+      accepted: [Answer.YES, Answer.PYES],
+      next: {
+        id: "q1_1",
+        answers: [
+          {
+            accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+            next: {
+              id: "q1_3",
+              answers: [
+                {
+                  accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+                  outcome: DomainRisk.Low
+                },
+                {
+                  accepted: [Answer.YES, Answer.PYES],
+                  outcome: DomainRisk.Concerns
+                },
+              ]
+            }
+          },
+          {
+            accepted: [Answer.NO, Answer.PNO],
+            outcome: DomainRisk.Concerns
+          },
+        ]
+      }
+    },
+    {
+      accepted: [Answer.NOINFO],
+      next: {
+        id: "q1_3",
+        answers: [
+          {
+            accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+            outcome: DomainRisk.Concerns
+          },
+          {
+            accepted: [Answer.YES, Answer.PYES],
+            outcome: DomainRisk.High
+          },
+        ]
+      }
+    },
+    {
+      accepted: [Answer.NO, Answer.PNO],
+      outcome: DomainRisk.High
+    }
+  ]
+};
+
+export const D2_P1_DT = {
+  // Instead of a single question id, provide an array of IDs.
+  id: ["q2_1", "q2_2"],
+  // A custom function to compute a composite answer based on the user's answers.
+  evaluate: (answers) => {
+    const goodpath = [Answer.NO, Answer.PNO];
+    // If both q11 and q12 are low answers, return a canonical composite key.
+    if (goodpath.includes(answers.q2_1) && goodpath.includes(answers.q2_2)) {
+      return "good";
+    }
+    // Otherwise, if either is not in lowAnswers, treat it as "anyHigh".
+    return "bad";
+  },
+  answers: [
+    {
+      accepted: ["good"],
+      outcome: DomainRisk.Low
+    },
+    {
+      accepted: ["bad"],
+      next: {
+        id: "q2_3",
+        answers: [
+          {
+            accepted: [Answer.NO, Answer.PNO],
+            outcome: DomainRisk.Low
+          },
+          {
+            accepted: [Answer.NOINFO],
+            outcome: DomainRisk.Concerns
+          },
+          {
+            accepted: [Answer.YES, Answer.PYES],
+            next: {
+              id: "q2_4",
+              answers: [
+                {
+                  accepted: [Answer.NO, Answer.PNO],
+                  outcome: DomainRisk.Concerns
+                },
+                {
+                  accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                  next: {
+                    id: "q2_5",
+                    answers: [
+                      {
+                        accepted: [Answer.YES, Answer.PYES],
+                        outcome: DomainRisk.Concerns
+                      },
+                      {
+                        accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+                        outcome: DomainRisk.High
+                      },
+                    ]
+                  }
+                },
+              ]
+            }
+          },
+        ]
+      }
+    }
+  ]
+};
+
+export const D2_P2_DT = {
+  id: "q2_6",
+  answers: [
+    {
+      accepted: [Answer.YES, Answer.PYES],
+      outcome: DomainRisk.Low
+    },
+    {
+      accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+      next: {
+        id: "q2_7",
+        answers: [
+          {
+            accepted: [Answer.NO, Answer.PNO],
+            outcome: DomainRisk.Concerns
+          },
+          {
+            accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+            outcome: DomainRisk.High
+          },
+        ]
+      }
+    },
+  ]
+}
