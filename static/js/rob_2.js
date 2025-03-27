@@ -1,3 +1,30 @@
+
+class Answer {
+  // Private Fields
+  static #_YES = "Yes";
+  static #_PYES = "Prob Yes";
+  static #_PNO = "Prob No";
+  static #_NO = "No";
+  static #_NOINFO = "No info";
+
+  // Accessors for "get" functions only (no "set" functions)
+  static get YES() { return this.#_YES; }
+  static get PYES() { return this.#_PYES; }
+  static get PNO() { return this.#_PNO; }
+  static get NO() { return this.#_NO; }
+  static get NOINFO() { return this.#_NOINFO; }
+}
+
+function d_one_rob() {
+  return {
+    judgement: "high",
+    message: "msg"
+  };
+}
+
+
+
+// CLEAR STATE IN LOCAL STORAGE
 function clearAllState() {
   // Clear all stored radio button and textarea values from localStorage
   localStorage.clear();
@@ -12,6 +39,7 @@ function clearAllState() {
   });
 }
 
+// SAVE STATE IN LOCAL STORAGE
 document.addEventListener("DOMContentLoaded", function() {
   function saveState() {
     document.querySelectorAll("input[type='radio']").forEach(input => {
