@@ -94,7 +94,6 @@ function add_radio_text_listeners(domain, num_q, tree) {
   });
 }
 
-// Attach a click event listener to domain 1 radio buttons.
 document.addEventListener("DOMContentLoaded", () => {
   add_radio_text_listeners(1, 3, D1_DT);
   add_radio_text_listeners("2b", 6, D2B_DT);
