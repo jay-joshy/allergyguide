@@ -5,11 +5,9 @@ import { getAnswer, setup_save_state, DomainRisk, Answer, getDomainAnswerDetails
 setup_save_state()
 
 // Function to process and update the decision tree outcome
-const process_dt1 = () => {
-  const domain = 1;
-  const num_q = 3;
+const process_dt = (domain, num_q, tree) => {
   const userAnswers = getDomainAnswers(domain, num_q);
-  const outcome = traverseTree(D1_DT, userAnswers);
+  const outcome = traverseTree(tree, userAnswers);
   const outcomeClass = outcome.toLowerCase().replace(/\s+/g, "-");
   const userDetails = getDomainAnswerDetails(domain, num_q);
   let md_summary = getMarkdownSummary(userAnswers, userDetails);
@@ -27,6 +25,7 @@ const process_dt1 = () => {
     document.getElementById(`domain-${domain}-answers`).innerHTML = ``;
   }
 };
+
 const process_dt2 = () => {
   const domain = 2;
   const userAnswers = getDomainAnswers(domain, 7);
@@ -67,134 +66,41 @@ const process_dt2 = () => {
 
   };
 };
-const process_dt2b = () => {
-  const domain = "2b";
-  const num_q = 6;
-  const tree = D2B_DT;
-
-  const userAnswers = getDomainAnswers(domain, num_q);
-  const outcome = traverseTree(tree, userAnswers);
-  const outcomeClass = outcome.toLowerCase().replace(/\s+/g, "-");
-  const userDetails = getDomainAnswerDetails(domain, num_q);
-  let md_summary = getMarkdownSummary(userAnswers, userDetails);
-
-  if (outcome != "null") {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome ${outcomeClass}">${outcome}</div>
-    `;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
-  }
-  else {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `<div class="outcome ${outcomeClass}">Fill out questions.</div>`;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = ``;
-  }
-};
-
-const process_dt3 = () => {
-  const domain = 3;
-  const num_q = 4;
-  const tree = D3_DT;
-
-  const userAnswers = getDomainAnswers(domain, num_q);
-  const outcome = traverseTree(tree, userAnswers);
-  const outcomeClass = outcome.toLowerCase().replace(/\s+/g, "-");
-  const userDetails = getDomainAnswerDetails(domain, num_q);
-  let md_summary = getMarkdownSummary(userAnswers, userDetails);
-
-  if (outcome != "null") {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome ${outcomeClass}">${outcome}</div>
-    `;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
-  }
-  else {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `<div class="outcome ${outcomeClass}">Fill out questions.</div>`;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = ``;
-  }
-
-};
-const process_dt4 = () => {
-  const domain = 4;
-  const num_q = 5;
-  const tree = D4_DT;
-
-  const userAnswers = getDomainAnswers(domain, num_q);
-  const outcome = traverseTree(tree, userAnswers);
-  const outcomeClass = outcome.toLowerCase().replace(/\s+/g, "-");
-  const userDetails = getDomainAnswerDetails(domain, num_q);
-  let md_summary = getMarkdownSummary(userAnswers, userDetails);
-
-  if (outcome != "null") {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome ${outcomeClass}">${outcome}</div>
-    `;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
-  }
-  else {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `<div class="outcome ${outcomeClass}">Fill out questions.</div>`;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = ``;
-  }
-
-
-};
-const process_dt5 = () => {
-  const domain = 5;
-  const num_q = 3;
-  const tree = D5_DT;
-
-  const userAnswers = getDomainAnswers(domain, num_q);
-  const outcome = traverseTree(tree, userAnswers);
-  const outcomeClass = outcome.toLowerCase().replace(/\s+/g, "-");
-  const userDetails = getDomainAnswerDetails(domain, num_q);
-  let md_summary = getMarkdownSummary(userAnswers, userDetails);
-
-  if (outcome != "null") {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome ${outcomeClass}">${outcome}</div>
-    `;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
-  }
-  else {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `<div class="outcome ${outcomeClass}">Fill out questions.</div>`;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = ``;
-  }
-
-
-};
-
 
 function runAll() {
-  process_dt1();
+  process_dt(1, 3, D1_DT);
+  process_dt("2b", 6, D2B_DT);
+  process_dt(3, 4, D3_DT);
+  process_dt(4, 5, D4_DT);
+  process_dt(5, 3, D5_DT);
   process_dt2();
-  process_dt2b();
-  process_dt3();
-  process_dt4();
-  process_dt5();
   d2b_updateQuestionVisibility();
   d2_updateQuestionVisibility();
   d3_updateQuestionVisibility();
   d4_updateQuestionVisibility();
 }
 
-// Attach a click event listener to domain 1 radio buttons.
-document.addEventListener("DOMContentLoaded", () => {
-  // Attach event listeners to radio buttons in domain 1
-  document.querySelectorAll('input[type="radio"][name^="q1_"]').forEach(radio => {
-    radio.addEventListener("click", process_dt1);
-  });
-  document.querySelectorAll("textarea.question-details.q1").forEach(textarea => {
-    textarea.addEventListener("input", (event) => {
-      process_dt1();
+function add_radio_text_listeners(domain, num_q, tree) {
+  document.querySelectorAll(`input[type="radio"][name^="q${domain}_"]`).forEach(radio => {
+    radio.addEventListener("click", () => {
+      process_dt(domain, num_q, tree);
     });
   });
+  document.querySelectorAll(`textarea.question-details.q${domain}`).forEach(textarea => {
+    textarea.addEventListener("input", (event) => {
+      process_dt(domain, num_q, tree);
+    });
+  });
+}
+
+// Attach a click event listener to domain 1 radio buttons.
+document.addEventListener("DOMContentLoaded", () => {
+  add_radio_text_listeners(1, 3, D1_DT);
+  add_radio_text_listeners("2b", 6, D2B_DT);
+  add_radio_text_listeners(3, 4, D3_DT);
+  add_radio_text_listeners(4, 5, D4_DT);
+  add_radio_text_listeners(5, 3, D5_DT);
+
 
   document.querySelectorAll('input[type="radio"][name^="q2_"]').forEach(radio => {
     radio.addEventListener("click", process_dt2);
@@ -207,42 +113,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll('input[type="radio"][name^="q2b_"]').forEach(radio => {
-    radio.addEventListener("click", process_dt2b);
     radio.addEventListener("click", d2b_updateQuestionVisibility);
-  });
-  document.querySelectorAll("textarea.question-details.q2b").forEach(textarea => {
-    textarea.addEventListener("input", (event) => {
-      process_dt2b();
-    });
   });
 
   document.querySelectorAll('input[type="radio"][name^="q3_"]').forEach(radio => {
-    radio.addEventListener("click", process_dt3);
     radio.addEventListener("click", d3_updateQuestionVisibility);
-  });
-  document.querySelectorAll("textarea.question-details.q3").forEach(textarea => {
-    textarea.addEventListener("input", (event) => {
-      process_dt3();
-    });
   });
 
   document.querySelectorAll('input[type="radio"][name^="q4_"]').forEach(radio => {
-    radio.addEventListener("click", process_dt4);
     radio.addEventListener("click", d4_updateQuestionVisibility);
-  });
-  document.querySelectorAll("textarea.question-details.q4").forEach(textarea => {
-    textarea.addEventListener("input", (event) => {
-      process_dt4();
-    });
-  });
-
-  document.querySelectorAll('input[type="radio"][name^="q5_"]').forEach(radio => {
-    radio.addEventListener("click", process_dt5);
-  });
-  document.querySelectorAll("textarea.question-details.q5").forEach(textarea => {
-    textarea.addEventListener("input", (event) => {
-      process_dt5();
-    });
   });
 
   runAll();
