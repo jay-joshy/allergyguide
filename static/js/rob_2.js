@@ -1,5 +1,6 @@
 import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT, D4_DT, D5_DT } from "./rob_2_decision_trees.js";
 import { getAnswer, setup_save_state, DomainRisk, Answer, getDomainAnswerDetails, getMarkdownSummary, get_admon_class } from "./rob_2_utils.js"
+import { runTests } from "./rob_2_test.js";
 
 // SAVE STATE IN LOCAL STORAGE
 setup_save_state()
@@ -250,3 +251,6 @@ function d4_updateQuestionVisibility() {
     q45Row.style.display = showQ45 ? "" : "none";
   }
 }
+
+
+runTests();

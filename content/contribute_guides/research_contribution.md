@@ -77,9 +77,7 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
 
 ### ROB-2 -- for primary evidence
 
-[link](https://methods.cochrane.org/risk-bias-2)
-
-Excerpts from the Cochrane RoB-2 assessment tool, licensed under CC BY-NC-ND 4.0. © Cochrane.
+See [here](https://methods.cochrane.org/risk-bias-2) for the original tool, and [here](/tools/rob-2/) for easier to navigate tool that we built.
 
 ### GRADE -- for secondary evidence
 
