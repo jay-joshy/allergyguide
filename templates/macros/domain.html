@@ -43,14 +43,17 @@
         </div>
       </td>
       <td>
-        <textarea class="question-details" id="q{{ domain }}_{{ loop.index }}_details" placeholder="Enter optional details..."></textarea>
+        <textarea class="question-details q{{ domain }}" id="q{{ domain }}_{{ loop.index }}_details" placeholder="Enter optional details..."></textarea>
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 <div class="summary">
-  <strong>Risk of bias judgement:</strong>
-  <div id="domain-{{ domain }}-judgement"></div>
+  <div class="judgement-header">
+    <strong>Risk of bias judgement:</strong>
+    <div id="domain-{{ domain }}-judgement"></div>
+  </div>
+  <div id="domain-{{ domain }}-answers"></div>
 </div>
 {% endmacro domain %}
