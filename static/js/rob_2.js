@@ -1,4 +1,4 @@
-import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT } from "./rob_2_decision_trees.js";
+import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT } from "./rob_2_decision_trees.js";
 import { getAnswer, setup_save_state, DomainRisk, Answer } from "./rob_2_utils.js"
 
 // SAVE STATE IN LOCAL STORAGE
@@ -42,7 +42,13 @@ const process_dt2b = () => {
 };
 
 const process_dt3 = () => {
-
+  const userAnswers = getDomainAnswers("3", 4);
+  // console.log(userAnswers);
+  const outcome = traverseTree(D3_DT, userAnswers);
+  if (outcome != "null") { document.getElementById("domain-3-judgement").innerHTML = outcome; }
+  else {
+    document.getElementById("domain-3-judgement").innerHTML = "Fill out questions.";
+  }
 };
 const process_dt4 = () => {
 
@@ -78,6 +84,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('input[type="radio"][name^="q2b_"]').forEach(radio => {
     radio.addEventListener("click", process_dt2b);
     radio.addEventListener("click", d2b_updateQuestionVisibility);
+  });
+  document.querySelectorAll('input[type="radio"][name^="q3_"]').forEach(radio => {
+    radio.addEventListener("click", process_dt3);
+    radio.addEventListener("click", d3_updateQuestionVisibility);
+  });
+  document.querySelectorAll('input[type="radio"][name^="q4_"]').forEach(radio => {
+    radio.addEventListener("click", process_dt4);
+    radio.addEventListener("click", d4_updateQuestionVisibility);
+  });
+  document.querySelectorAll('input[type="radio"][name^="q5_"]').forEach(radio => {
+    radio.addEventListener("click", process_dt5);
   });
 
   runAll();
@@ -159,6 +176,27 @@ function d2b_updateQuestionVisibility() {
 }
 
 function d3_updateQuestionVisibility() {
+  const answerQ31 = getAnswer("q3_1");
+  const answerQ32 = getAnswer("q3_2");
+  const answerQ33 = getAnswer("q3_3");
+
+  // Determine if q2_3 should be shown:
+  const showQ32 = [Answer.NO, Answer.PNO, Answer.NOINFO].includes(answerQ31);
+  const showQ33 = [Answer.NO, Answer.PNO].includes(answerQ32);
+  const showQ34 = [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ33);
+
+  const q32Row = document.getElementById("q3_2_row");
+  if (q32Row) {
+    q32Row.style.display = showQ32 ? "" : "none";
+  }
+  const q33Row = document.getElementById("q3_3_row");
+  if (q33Row) {
+    q33Row.style.display = showQ33 ? "" : "none";
+  }
+  const q34Row = document.getElementById("q3_4_row");
+  if (q34Row) {
+    q34Row.style.display = showQ34 ? "" : "none";
+  }
 
 }
 function d4_updateQuestionVisibility() {
