@@ -44,7 +44,7 @@
   }
 }
 
-.rob2-clear-button {
+#rob2-clear-button {
   @include button-states(var(--custom_button_bg),
     var(--custom_button_hover_bg),
     var(--custom_button_active_bg),
