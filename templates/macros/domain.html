@@ -1,3 +1,5 @@
+{% import "macros/admonition_macro.html" as admon_macros %}
+
 {% macro domain(domain, questions, links) %}
 {# {{ macros::domain(domain=1, questions = ["Test one"], links=["first"]) }} #}
 <table>
@@ -49,11 +51,7 @@
     {% endfor %}
   </tbody>
 </table>
-<div class="summary">
-  <div class="judgement-header">
-    <strong>Risk of bias judgement:</strong>
-    <div id="domain-{{ domain }}-judgement"></div>
-  </div>
-  <div id="domain-{{ domain }}-answers"></div>
+<div class="admon_macro-{{ domain }}">
+  {{ admon_macros::admonition_macro(type="info", title="Risk of bias judgement", icon="tip", text="Fill out more of the questions.") }}
 </div>
 {% endmacro domain %}

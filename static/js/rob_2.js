@@ -1,5 +1,5 @@
 import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT, D4_DT, D5_DT } from "./rob_2_decision_trees.js";
-import { getAnswer, setup_save_state, DomainRisk, Answer, getDomainAnswerDetails, getMarkdownSummary } from "./rob_2_utils.js"
+import { getAnswer, setup_save_state, DomainRisk, Answer, getDomainAnswerDetails, getMarkdownSummary, get_admon_class } from "./rob_2_utils.js"
 
 // SAVE STATE IN LOCAL STORAGE
 setup_save_state()
@@ -8,21 +8,24 @@ setup_save_state()
 const process_dt = (domain, num_q, tree) => {
   const userAnswers = getDomainAnswers(domain, num_q);
   const outcome = traverseTree(tree, userAnswers);
-  const outcomeClass = outcome.toLowerCase().replace(/\s+/g, "-");
   const userDetails = getDomainAnswerDetails(domain, num_q);
   let md_summary = getMarkdownSummary(userAnswers, userDetails);
 
+  var admon_text = document.querySelectorAll(`.admon_macro-${domain} .admonition-content`)[0];
+  var admon_title = document.querySelectorAll(`.admon_macro-${domain} .admonition-title`)[0];
+  var admon = document.querySelectorAll(`.admon_macro-${domain} .admonition`)[0];
+
   if (outcome != "null") {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome ${outcomeClass}">${outcome}</div>
-    `;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
+    admon_title.innerText = "Risk of bias outcome: " + outcome;
+    admon_text.innerText = md_summary;
+    admon.className = `admonition ${get_admon_class(outcome)}`
+
   }
   else {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `<div class="outcome ${outcomeClass}">Fill out questions.</div>`;
-    document.getElementById(`domain-${domain}-answers`).innerHTML = ``;
+    admon_title.innerText = "Risk of bias judgement";
+    admon_text.innerText = "Fill out the questions";
+    admon.className = `admonition info`
+
   }
 };
 
@@ -35,34 +38,32 @@ const process_dt2 = () => {
   const userDetails = getDomainAnswerDetails(domain, 7);
   let md_summary = getMarkdownSummary(userAnswers, userDetails);
 
+  var admon_text = document.querySelectorAll(`.admon_macro-${domain} .admonition-content`)[0];
+  var admon_title = document.querySelectorAll(`.admon_macro-${domain} .admonition-title`)[0];
+  var admon = document.querySelectorAll(`.admon_macro-${domain} .admonition`)[0];
 
   if (outcome_p1 == DomainRisk.Low && outcome_p2 == DomainRisk.Low) {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome low-risk">${DomainRisk.Low}</div>
-    `;
-    document.getElementById("domain-2-answers").innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
+    admon_title.innerText = "Risk of bias outcome: " + DomainRisk.Low;
+    admon_text.innerText = md_summary;
+    admon.className = `admonition ${get_admon_class(DomainRisk.Low)}`
+
   }
   else if (outcome_p1 == DomainRisk.High || outcome_p2 == DomainRisk.High) {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome high-risk">${DomainRisk.High}</div>
-    `;
-    document.getElementById("domain-2-answers").innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
+    admon_title.innerText = "Risk of bias outcome: " + DomainRisk.High;
+    admon_text.innerText = md_summary;
+    admon.className = `admonition ${get_admon_class(DomainRisk.High)}`
+
   }
   else if (outcome_p1 == DomainRisk.Concerns || outcome_p2 == DomainRisk.Concerns) {
-    document.getElementById(`domain-${domain}-judgement`).innerHTML = `
-      <div class="outcome some-concerns">${DomainRisk.Concerns}</div>
-    `;
-    document.getElementById("domain-2-answers").innerHTML = `
-      <div class="md">${md_summary}</div>
-    `;
+    admon_title.innerText = "Risk of bias outcome: " + DomainRisk.Concerns;
+    admon_text.innerText = md_summary;
+    admon.className = `admonition ${get_admon_class(DomainRisk.Concerns)}`
+
   }
   else {
-    document.getElementById("domain-2-judgement").innerHTML = `<div class="outcome">Fill out questions.</div>`;
-    document.getElementById("domain-2-answers").innerHTML = ``;
+    admon_title.innerText = "Risk of bias judgement";
+    admon_text.innerText = "Fill out the questions";
+    admon.className = `admonition info`
 
   };
 };

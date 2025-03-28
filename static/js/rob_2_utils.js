@@ -126,7 +126,7 @@ export function getMarkdownSummary(userAnswers, userDetails) {
       // Build the summary line
       let line = `${questionNumber}: ${answer}`;
       if (detail !== "null") {
-        line += ` -> Details: ${detail}`;
+        line += ` -> ${detail}`;
       }
       markdownSummary += line + "\n";
     }
@@ -134,3 +134,13 @@ export function getMarkdownSummary(userAnswers, userDetails) {
   return markdownSummary;
 }
 
+export function get_admon_class(domain_risk) {
+  if (domain_risk == DomainRisk.High) {
+    return "danger"
+  }
+  else if (domain_risk == DomainRisk.Concerns) {
+    return "warning"
+  } else {
+    return "tip"
+  }
+}

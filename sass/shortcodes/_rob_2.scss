@@ -11,10 +11,6 @@
   --custom_button_text: #d1d1d1;
   --custom_button_hover_text: #d1d1d1;
   --custom_button_active_text: #d1d1d1;
-  --rob2-high-risk-color: #ff4d4d; // Red for high risk
-  --rob2-concerns-color: #ffcc00; // Yellow for some concerns
-  --rob2-low-risk-color: #33cc33; // Green for low risk
-  --rob2-text-color: #f0f0f0;
 }
 
 :root.switch {
@@ -30,10 +26,6 @@
   --custom_button_text: #333333;
   --custom_button_hover_text: #333333;
   --custom_button_active_text: #333333;
-  --rob2-high-risk-color: #ff6666; // A lighter red
-  --rob2-concerns-color: #ffd633; // A lighter yellow
-  --rob2-low-risk-color: #66ff66; // A lighter green
-  --rob2-text-color: #333333;
 }
 
 @mixin button-states($bg, $hover-bg, $active-bg, $text, $hover-text, $active-text) {
@@ -110,52 +102,6 @@
     resize: none; // Optional: disable manual resizing if desired
   }
 
-
-  .summary {
-    padding: 1rem;
-    border: 1px solid #ddd;
-
-    .judgement-header {
-      display: flex;
-
-      .outcome {
-        font-size: 1rem;
-        margin-left: 0.5em;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-      }
-
-      // Outcome color styles
-      .outcome.high-risk {
-        color: var(--rob2-high-risk-color);
-      }
-
-      .outcome.some-concerns {
-        color: var(--rob2-concerns-color);
-      }
-
-      .outcome.low-risk {
-        color: var(--rob2-low-risk-color);
-      }
-    }
-
-    .md {
-      white-space: pre-wrap;
-      margin: 0;
-      padding: 12px;
-      font-family: monospace;
-      background-color: var(--tmtl_bg_color);
-      border: 1px solid var(--tmtl_border_color);
-      border-radius: 4px;
-      color: var(--tmtl_text_color);
-      font-size: 0.8rem;
-      max-height: 500px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--tmtl_scrollbar_thumb) var(--tmtl_scrollbar_track);
-    }
-
-  }
 }
 
 .radio-inputs {
