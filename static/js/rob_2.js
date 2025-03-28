@@ -1,5 +1,5 @@
-import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, DomainRisk, Answer } from "./rob_2_decision_trees.js";
-import { getAnswer, setup_save_state } from "./rob_2_utils.js"
+import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT } from "./rob_2_decision_trees.js";
+import { getAnswer, setup_save_state, DomainRisk, Answer } from "./rob_2_utils.js"
 
 // SAVE STATE IN LOCAL STORAGE
 setup_save_state()
@@ -31,12 +31,38 @@ const process_dt2 = () => {
     document.getElementById("domain-2-judgement").innerHTML = "Fill out questions.";
   };
 };
+const process_dt2b = () => {
+  const userAnswers = getDomainAnswers("2b", 6);
+  // console.log(userAnswers);
+  const outcome = traverseTree(D2B_DT, userAnswers);
+  if (outcome != "null") { document.getElementById("domain-2b-judgement").innerHTML = outcome; }
+  else {
+    document.getElementById("domain-2b-judgement").innerHTML = "Fill out questions.";
+  }
+};
+
+const process_dt3 = () => {
+
+};
+const process_dt4 = () => {
+
+};
+const process_dt5 = () => {
+
+};
+
 
 function runAll() {
   process_dt1();
   process_dt2();
-
+  process_dt2b();
+  process_dt3();
+  process_dt4();
+  process_dt5();
+  d2b_updateQuestionVisibility();
   d2_updateQuestionVisibility();
+  d3_updateQuestionVisibility();
+  d4_updateQuestionVisibility();
 }
 
 // Attach a click event listener to domain 1 radio buttons.
@@ -49,6 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
     radio.addEventListener("click", process_dt2);
     radio.addEventListener("click", d2_updateQuestionVisibility);
   });
+  document.querySelectorAll('input[type="radio"][name^="q2b_"]').forEach(radio => {
+    radio.addEventListener("click", process_dt2b);
+    radio.addEventListener("click", d2b_updateQuestionVisibility);
+  });
+
   runAll();
 
 });
@@ -103,4 +134,33 @@ function d2_updateQuestionVisibility() {
   if (q27Row) {
     q27Row.style.display = showQ27 ? "" : "none";
   }
+}
+
+function d2b_updateQuestionVisibility() {
+  const answerQ21b = getAnswer("q2b_1");
+  const answerQ22b = getAnswer("q2b_2");
+  const answerQ23b = getAnswer("q2b_3");
+  const answerQ24b = getAnswer("q2b_4");
+  const answerQ25b = getAnswer("q2b_5");
+
+  // Determine if q2_3 should be shown:
+  const showQ23b = [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ21b) || [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ22b);
+  const showQ26b = [Answer.NO, Answer.PNO, Answer.NOINFO].includes(answerQ23b) || [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ24b) || [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ25b);
+
+  const q23Row_b = document.getElementById("q2b_3_row");
+  if (q23Row_b) {
+    q23Row_b.style.display = showQ23b ? "" : "none";
+  }
+  const q26Row_b = document.getElementById("q2b_6_row");
+  if (q26Row_b) {
+    q26Row_b.style.display = showQ26b ? "" : "none";
+  }
+
+}
+
+function d3_updateQuestionVisibility() {
+
+}
+function d4_updateQuestionVisibility() {
+
 }

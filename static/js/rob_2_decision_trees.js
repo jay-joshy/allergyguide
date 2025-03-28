@@ -1,31 +1,4 @@
-export class Answer {
-  // Private Fields
-  static #_YES = "Yes";
-  static #_PYES = "Prob Yes";
-  static #_PNO = "Prob No";
-  static #_NO = "No";
-  static #_NOINFO = "No info";
-
-  // Accessors for "get" functions only (no "set" functions)
-  static get YES() { return this.#_YES; }
-  static get PYES() { return this.#_PYES; }
-  static get PNO() { return this.#_PNO; }
-  static get NO() { return this.#_NO; }
-  static get NOINFO() { return this.#_NOINFO; }
-}
-
-export class DomainRisk {
-  // Private Fields
-  static #_Low = "Low risk";
-  static #_Concerns = "Some concerns";
-  static #_High = "High risk";
-
-  // Accessors for "get" functions only (no "set" functions)
-  static get Low() { return this.#_Low; }
-  static get Concerns() { return this.#_Concerns; }
-  static get High() { return this.#_High; }
-}
-
+import { Answer, DomainRisk } from "./rob_2_utils.js"
 
 export function traverseTree(node, answers) {
   // Terminal node with an outcome.
@@ -226,3 +199,163 @@ export const D2_P2_DT = {
     },
   ]
 }
+
+export const D2B_DT = {
+  id: ["q2b_1", "q2b_2"],
+  evaluate: (answers) => {
+    const goodpath = [Answer.NO, Answer.PNO];
+    if (goodpath.includes(answers.q2b_1) && goodpath.includes(answers.q2b_2)) {
+      return "good";
+    }
+    return "bad";
+  },
+  answers: [
+    {
+      accepted: ["good"],
+      next: {
+        id: ["q2b_4", "q2b_5"],
+        evaluate: (answers) => {
+          const goodpath = [Answer.NO, Answer.PNO];
+          if (goodpath.includes(answers.q2b_4) && goodpath.includes(answers.q2b_5)) {
+            return "good";
+          }
+          return "bad";
+        },
+        answers: [
+          {
+            accepted: ["good"],
+            outcome: DomainRisk.Low
+          },
+          {
+            accepted: ["bad"],
+            next: {
+              id: "q2b_6",
+              answers: [
+                {
+                  accepted: [Answer.YES, Answer.PYES],
+                  outcome: DomainRisk.Concerns
+                },
+                {
+                  accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+                  outcome: DomainRisk.High
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      accepted: ["bad"],
+      next: {
+        id: "q2b_3",
+        answers: [
+          {
+            accepted: [Answer.YES, Answer.PYES],
+            next: {
+
+              id: ["q2b_4", "q2b_5"],
+              evaluate: (answers) => {
+                const goodpath = [Answer.NO, Answer.PNO];
+                if (goodpath.includes(answers.q2b_4) && goodpath.includes(answers.q2b_5)) {
+                  return "good";
+                }
+                return "bad";
+              },
+              answers: [
+                {
+                  accepted: ["good"],
+                  outcome: DomainRisk.Low
+                },
+                {
+                  accepted: ["bad"],
+                  next: {
+                    id: "q2b_6",
+                    answers: [
+                      {
+                        accepted: [Answer.YES, Answer.PYES],
+                        outcome: DomainRisk.Concerns
+                      },
+                      {
+                        accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+                        outcome: DomainRisk.High
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+            next: {
+              id: "q2b_6",
+              answers: [
+                {
+                  accepted: [Answer.YES, Answer.PYES],
+                  outcome: DomainRisk.Concerns
+                },
+                {
+                  accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+                  outcome: DomainRisk.High
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+
+
+export const D3_DT = {
+  id: "q3_1",
+  answers: [
+    {
+      accepted: [Answer.YES, Answer.PYES],
+      outcome: DomainRisk.Low
+    },
+    {
+      accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+      next: {
+        id: "q3_2",
+        answers: [
+          {
+            accepted: [Answer.YES, Answer.PYES],
+            outcome: DomainRisk.Low
+          },
+          {
+            accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+            next: {
+              id: "q3_3",
+              answers: [
+                {
+                  accepted: [Answer.NO, Answer.PNO],
+                  outcome: DomainRisk.Low
+                },
+                {
+                  accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                  next: {
+                    id: "q3_4",
+                    answers: [
+                      {
+                        accepted: [Answer.NO, Answer.PNO],
+                        outcome: DomainRisk.Concerns
+                      },
+                      {
+                        accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                        outcome: DomainRisk.High
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+
