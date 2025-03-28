@@ -326,7 +326,7 @@ export const D3_DT = {
             outcome: DomainRisk.Low
           },
           {
-            accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+            accepted: [Answer.NO, Answer.PNO],
             next: {
               id: "q3_3",
               answers: [
