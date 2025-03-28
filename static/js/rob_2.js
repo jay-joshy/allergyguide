@@ -1,4 +1,4 @@
-import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT, D4_DT } from "./rob_2_decision_trees.js";
+import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT, D4_DT, D5_DT } from "./rob_2_decision_trees.js";
 import { getAnswer, setup_save_state, DomainRisk, Answer } from "./rob_2_utils.js"
 
 // SAVE STATE IN LOCAL STORAGE
@@ -61,6 +61,13 @@ const process_dt4 = () => {
 
 };
 const process_dt5 = () => {
+  const userAnswers = getDomainAnswers("5", 3);
+  // console.log(userAnswers);
+  const outcome = traverseTree(D5_DT, userAnswers);
+  if (outcome != "null") { document.getElementById("domain-5-judgement").innerHTML = outcome; }
+  else {
+    document.getElementById("domain-5-judgement").innerHTML = "Fill out questions.";
+  }
 
 };
 

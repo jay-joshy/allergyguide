@@ -469,3 +469,47 @@ export const D4_DT = {
   ]
 }
 
+
+export const D5_DT = {
+  id: ["q5_2", "q5_3"],
+  evaluate: (answers) => {
+    if ([Answer.YES, Answer.PYES].includes(answers.q5_2) || [Answer.YES, Answer.PYES].includes(answers.q5_3)) {
+      return "high";
+    } else if ([Answer.NO, Answer.PNO].includes(answers.q5_2) && [Answer.NO, Answer.PNO].includes(answers.q5_3)) {
+      return "low"
+    } else if (answers.q5_2 == "null" || answers.q5_3 == "null") {
+      return "null"
+    } else {
+      return "mid";
+    }
+  },
+  answers: [
+    {
+      accepted: ["high"],
+      outcome: DomainRisk.High
+    },
+    {
+      accepted: ["mid"],
+      outcome: DomainRisk.Concerns
+    },
+    {
+      accepted: ["low"],
+      next: {
+        id: "q5_1",
+        answers: [
+          {
+            accepted: [Answer.YES, Answer.PYES],
+            outcome: DomainRisk.Low
+          },
+          {
+            accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+            outcome: DomainRisk.Concerns
+
+          },
+        ]
+      }
+
+    },
+  ]
+}
+
