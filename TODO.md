@@ -35,6 +35,8 @@
 
 - ROB-2 tool with yes/probably yes/probably no/no/no information that then spits out => ROB assessment
   - see [here](https://drive.google.com/file/d/19R9savfPdCHC8XLz2iiMvL_71lPJERWK/view)
+  - still need to add final judgement before its done
+  - and unit testing for domains 2a/2b
 
 ## Misc
 
