@@ -1,4 +1,4 @@
-import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT } from "./rob_2_decision_trees.js";
+import { getDomainAnswers, traverseTree, D1_DT, D2_P1_DT, D2_P2_DT, D2B_DT, D3_DT, D4_DT } from "./rob_2_decision_trees.js";
 import { getAnswer, setup_save_state, DomainRisk, Answer } from "./rob_2_utils.js"
 
 // SAVE STATE IN LOCAL STORAGE
@@ -51,6 +51,13 @@ const process_dt3 = () => {
   }
 };
 const process_dt4 = () => {
+  const userAnswers = getDomainAnswers("4", 5);
+  // console.log(userAnswers);
+  const outcome = traverseTree(D4_DT, userAnswers);
+  if (outcome != "null") { document.getElementById("domain-4-judgement").innerHTML = outcome; }
+  else {
+    document.getElementById("domain-4-judgement").innerHTML = "Fill out questions.";
+  }
 
 };
 const process_dt5 = () => {
@@ -200,5 +207,26 @@ function d3_updateQuestionVisibility() {
 
 }
 function d4_updateQuestionVisibility() {
+  const answerQ41 = getAnswer("q4_1");
+  const answerQ42 = getAnswer("q4_2");
+  const answerQ43 = getAnswer("q4_3");
+  const answerQ44 = getAnswer("q4_4");
 
+  // Determine if q2_3 should be shown:
+  const showQ43 = [Answer.NO, Answer.PNO, Answer.NOINFO].includes(answerQ41) && [Answer.NO, Answer.PNO, Answer.NOINFO].includes(answerQ42);
+  const showQ44 = [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ43);
+  const showQ45 = [Answer.YES, Answer.PYES, Answer.NOINFO].includes(answerQ44);
+
+  const q43Row = document.getElementById("q4_3_row");
+  if (q43Row) {
+    q43Row.style.display = showQ43 ? "" : "none";
+  }
+  const q44Row = document.getElementById("q4_4_row");
+  if (q44Row) {
+    q44Row.style.display = showQ44 ? "" : "none";
+  }
+  const q45Row = document.getElementById("q4_5_row");
+  if (q45Row) {
+    q45Row.style.display = showQ45 ? "" : "none";
+  }
 }

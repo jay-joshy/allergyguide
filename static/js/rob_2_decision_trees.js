@@ -359,3 +359,113 @@ export const D3_DT = {
   ]
 };
 
+
+export const D4_DT = {
+  id: "q4_1",
+  answers: [
+    {
+      accepted: [Answer.YES, Answer.PYES],
+      outcome: DomainRisk.High
+    },
+    {
+      accepted: [Answer.NO, Answer.PNO, Answer.NOINFO],
+      next: {
+        id: "q4_2",
+        answers: [
+          {
+            accepted: [Answer.YES, Answer.PYES],
+            outcome: DomainRisk.High
+          },
+          {
+            accepted: [Answer.NOINFO],
+            next: {
+              id: "q4_3",
+              answers: [
+                {
+                  accepted: [Answer.NO, Answer.PNO],
+                  outcome: DomainRisk.Concerns
+                },
+                {
+                  accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                  next: {
+                    id: "q4_4",
+                    answers: [
+                      {
+                        accepted: [Answer.NO, Answer.PNO],
+                        outcome: DomainRisk.Concerns
+
+                      },
+                      {
+                        accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                        next: {
+                          id: "q4_5",
+                          answers: [
+                            {
+                              accepted: [Answer.NO, Answer.PNO],
+                              outcome: DomainRisk.Concerns
+
+                            },
+                            {
+                              accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                              outcome: DomainRisk.High
+                            },
+                          ]
+                        }
+                      },
+                    ]
+                  }
+                }
+              ]
+            }
+
+          },
+          {
+            accepted: [Answer.NO, Answer.PNO],
+            next: {
+              id: "q4_3",
+              answers: [
+                {
+                  accepted: [Answer.NO, Answer.PNO],
+                  outcome: DomainRisk.Low
+                },
+                {
+                  accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                  next: {
+                    id: "q4_4",
+                    answers: [
+                      {
+                        accepted: [Answer.NO, Answer.PNO],
+                        outcome: DomainRisk.Low
+
+                      },
+                      {
+                        accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                        next: {
+                          id: "q4_5",
+                          answers: [
+                            {
+                              accepted: [Answer.NO, Answer.PNO],
+                              outcome: DomainRisk.Concerns
+
+                            },
+                            {
+                              accepted: [Answer.YES, Answer.PYES, Answer.NOINFO],
+                              outcome: DomainRisk.High
+                            },
+                          ]
+                        }
+                      },
+                    ]
+
+                  }
+
+                },
+              ]
+            }
+          },
+        ]
+      }
+    }
+  ]
+}
+
