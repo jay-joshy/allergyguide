@@ -16,7 +16,7 @@ authors = ["Joshua Yu"]
 </div>
 
 {% admonition(type="note", icon="note", title="Quick start") %}
-Go through the RoB-2 tool and add optional details! Unless you click the below button or clear your cache, your selections/text will be saved.
+Go through the RoB-2 tool for randomized trials and add optional details! Unless you click the below button or clear your cache, your selections/text will be saved.
 
 <br>
 <button id="rob2-clear-button">Click Me to clear all choices/text</button>
