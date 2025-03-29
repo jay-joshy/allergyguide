@@ -1,3 +1,8 @@
+$green: #4caf50;
+$yellow: #ffeb3b;
+$red: #f44336;
+$blue: #2196f3;
+
 :root:not(.switch) {
   /* Dark mode */
   --radio-bg: #2D3748; // Dark container background
@@ -149,4 +154,57 @@
     color: var(--radio-active-text);
   }
 
+}
+
+
+
+.table-container {
+  margin-bottom: 2rem;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: none;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle; // Ensure vertical centering
+  }
+
+  th {
+    /* background-color: #f2f2f2; */
+    font-weight: 500;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    margin: 0 auto; // Center the icon within the cell
+
+    &.green {
+      background-color: $green;
+    }
+
+    &.yellow {
+      background-color: $yellow;
+    }
+
+    &.red {
+      background-color: $red;
+    }
+
+    &.blue {
+      background-color: $blue;
+    }
+  }
 }

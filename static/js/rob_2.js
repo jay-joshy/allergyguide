@@ -16,16 +16,23 @@ const process_dt = (domain, num_q, tree) => {
   var admon_title = document.querySelectorAll(`.admon_macro-${domain} .admonition-title`)[0];
   var admon = document.querySelectorAll(`.admon_macro-${domain} .admonition`)[0];
 
+  var rob_table = document.querySelectorAll(`.q${domain}.icon`)[0];
+  const outcomeMap = { "High risk": "red", "null": "blue", "Some concerns": "yellow", "Low risk": "green" };
+  const symbolMap = { "High risk": "X", "null": "?", "Some concerns": "-", "Low risk": "+" };
+
   if (outcome != "null") {
     admon_title.innerText = "Risk of bias outcome: " + outcome;
     admon_text.innerText = md_summary;
     admon.className = `admonition ${get_admon_class(outcome)}`
-
+    rob_table.className = `q${domain} icon ${outcomeMap[outcome]}`
+    rob_table.innerText = symbolMap[outcome];
   }
   else {
     admon_title.innerText = "Risk of bias judgement";
     admon_text.innerText = "Fill out the questions";
     admon.className = `admonition info`
+    rob_table.className = `q${domain} icon blue`
+    rob_table.innerText = "?";
 
   }
 };
@@ -93,6 +100,7 @@ function add_radio_text_listeners(domain, num_q, tree) {
       process_dt(domain, num_q, tree);
     });
   });
+  //TODO! Plug in thing for table with final verdicts, or just shove that in the actual process dt itself
 }
 
 document.addEventListener("DOMContentLoaded", () => {
