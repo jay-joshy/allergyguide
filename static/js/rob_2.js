@@ -5,6 +5,34 @@ import { runTests } from "./rob_2_test.js";
 // SAVE STATE IN LOCAL STORAGE
 setup_save_state()
 
+function updateOverallJudgement() {
+  var q1 = document.querySelectorAll(`.q1.icon`)[0];
+  var q2 = document.querySelectorAll(`.q2.icon`)[0];
+  var q2b = document.querySelectorAll(`.q2b.icon`)[0];
+  var q3 = document.querySelectorAll(`.q3.icon`)[0];
+  var q4 = document.querySelectorAll(`.q4.icon`)[0];
+  var q5 = document.querySelectorAll(`.q5.icon`)[0];
+  var overall = document.querySelectorAll(`.overall.icon`)[0];
+  const outcomeMap = { "X": "red", "-": "yellow", "+": "green", "?": "blue" };
+
+  var elements = [q1, q2, q2b, q3, q4, q5];
+  var statuses = elements.map(el => el ? el.innerText.trim() : "");
+
+  if (statuses.includes("X")) {
+    overall.className = `overall icon ${outcomeMap["X"]}`;
+    overall.innerText = "X";
+  } else if (statuses.every(status => status === "+")) {
+    overall.className = `overall icon ${outcomeMap["+"]}`;
+    overall.innerText = "+";
+  } else if (statuses.includes("-")) {
+    overall.className = `overall icon ${outcomeMap["-"]}`;
+    overall.innerText = "-";
+  } else {
+    overall.className = `overall icon ${outcomeMap["?"]}`;
+    overall.innerText = "?";
+  }
+}
+
 // Function to process and update the decision tree outcome
 const process_dt = (domain, num_q, tree) => {
   const userAnswers = getDomainAnswers(domain, num_q);
@@ -33,8 +61,8 @@ const process_dt = (domain, num_q, tree) => {
     admon.className = `admonition info`
     rob_table.className = `q${domain} icon blue`
     rob_table.innerText = "?";
-
   }
+  updateOverallJudgement();
 };
 
 const process_dt2 = () => {
@@ -49,31 +77,45 @@ const process_dt2 = () => {
   var admon_text = document.querySelectorAll(`.admon_macro-${domain} .admonition-content`)[0];
   var admon_title = document.querySelectorAll(`.admon_macro-${domain} .admonition-title`)[0];
   var admon = document.querySelectorAll(`.admon_macro-${domain} .admonition`)[0];
+  var rob_table = document.querySelectorAll(`.q${domain}.icon`)[0];
+  const outcomeMap = { "High risk": "red", "null": "blue", "Some concerns": "yellow", "Low risk": "green" };
+  const symbolMap = { "High risk": "X", "null": "?", "Some concerns": "-", "Low risk": "+" };
+
 
   if (outcome_p1 == DomainRisk.Low && outcome_p2 == DomainRisk.Low) {
     admon_title.innerText = "Risk of bias outcome: " + DomainRisk.Low;
     admon_text.innerText = md_summary;
     admon.className = `admonition ${get_admon_class(DomainRisk.Low)}`
+    rob_table.className = `q${domain} icon ${outcomeMap[DomainRisk.Low]}`
+    rob_table.innerText = symbolMap[DomainRisk.Low];
 
   }
   else if (outcome_p1 == DomainRisk.High || outcome_p2 == DomainRisk.High) {
     admon_title.innerText = "Risk of bias outcome: " + DomainRisk.High;
     admon_text.innerText = md_summary;
     admon.className = `admonition ${get_admon_class(DomainRisk.High)}`
+    rob_table.className = `q${domain} icon ${outcomeMap[DomainRisk.High]}`
+    rob_table.innerText = symbolMap[DomainRisk.High];
 
   }
   else if (outcome_p1 == DomainRisk.Concerns || outcome_p2 == DomainRisk.Concerns) {
     admon_title.innerText = "Risk of bias outcome: " + DomainRisk.Concerns;
     admon_text.innerText = md_summary;
     admon.className = `admonition ${get_admon_class(DomainRisk.Concerns)}`
+    rob_table.className = `q${domain} icon ${outcomeMap[DomainRisk.Concerns]}`
+    rob_table.innerText = symbolMap[DomainRisk.Concerns];
 
   }
   else {
     admon_title.innerText = "Risk of bias judgement";
     admon_text.innerText = "Fill out the questions";
     admon.className = `admonition info`
+    rob_table.className = `q${domain} icon blue`
+    rob_table.innerText = "?";
 
   };
+  updateOverallJudgement();
+
 };
 
 function runAll() {
