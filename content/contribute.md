@@ -18,7 +18,7 @@ After exploring what options exist on the [contribution hub](https://docs.google
 
 {{ img(src="/images/hub.png" class="ci" alt="Picture of the google sheets hub for topic/medication/research availability" link="https://docs.google.com/spreadsheets/d/1tm2AntOqbr0d6mDEJ-A_TqVjwmLKI67KboSagkZ9Au0/edit?usp=sharing") }}
 <br>
-Contribution follows this rough timeline:
+The contribution process follows this rough timeline:
 
 {% timeline() %}
 [{
@@ -51,7 +51,7 @@ Contribution follows this rough timeline:
 - Use clear, structured formatting (headings, bullet points, tables) for readability
 - Avoid passive voice where possible
 - Abbreviations are fine but must be defined
-- While a single topic might be quite complex (i.e. asthma), each page is still meant to be relatively simple -- the goal is **not** to be a comprehensive textbook. Link to a resource that goes more in depth at that juncture, or to another subpage.
+- While a single topic might be quite complex (i.e. asthma), each page is still meant to be relatively simple -- the goal is **not** to be a comprehensive textbook. Link to a resource that goes more in depth at that juncture, or to another subpage
 
 {% end %}
 
