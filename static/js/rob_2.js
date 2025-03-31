@@ -13,11 +13,45 @@ function updateOverallJudgement() {
   var q4 = document.querySelectorAll(`.q4.icon`)[0];
   var q5 = document.querySelectorAll(`.q5.icon`)[0];
   var overall = document.querySelectorAll(`.overall.icon`)[0];
+
   const outcomeMap = { "X": "red", "-": "yellow", "+": "green", "?": "blue" };
 
-  var elements = [q1, q2, q2b, q3, q4, q5];
-  var statuses = elements.map(el => el ? el.innerText.trim() : "");
+  // Compute domain2 outcome from q2 and q2b.
+  let val2 = q2 ? q2.innerText.trim() : "";
+  let val2b = q2b ? q2b.innerText.trim() : "";
+  let domain2 = "";
 
+  // If one is '?' and the other is not, use the non-'?' value.
+  if (val2 === "?" && val2b && val2b !== "?") {
+    domain2 = val2b;
+  } else if (val2b === "?" && val2 && val2 !== "?") {
+    domain2 = val2;
+  } else if (val2 && val2b && val2 !== "?" && val2b !== "?") {
+    // If both are present and non-'?', you might decide to pick the worse outcome.
+    // For example, if either is "X", choose "X"; else if either is "-", choose "-"; else use "+".
+    if (val2 === "X" || val2b === "X") {
+      domain2 = "X";
+    } else if (val2 === "-" || val2b === "-") {
+      domain2 = "-";
+    } else if (val2 === "+" && val2b === "+") {
+      domain2 = "+";
+    } else {
+      // If the two values differ in an unexpected way, default to the first.
+      domain2 = val2;
+    }
+  } else {
+    // Otherwise, if one value exists, use it.
+    domain2 = val2 || val2b;
+  }
+
+  // Build an array of statuses, replacing q2 and q2b with the computed domain2.
+  // For q1, q3, q4, and q5 we extract the text if the element exists.
+  var elements = [q1, domain2, q3, q4, q5];
+  var statuses = elements.map(el => {
+    return (typeof el === "string") ? el : (el ? el.innerText.trim() : "");
+  });
+
+  // Apply the overall judgement rules.
   if (statuses.includes("X")) {
     overall.className = `overall icon ${outcomeMap["X"]}`;
     overall.innerText = "X";
