@@ -1,0 +1,62 @@
+.mini-rob-2-summary-table {
+  margin: 0rem;
+
+  table {
+    width: 100%;
+    border: none !important;
+    border-collapse: collapse;
+    table-layout: fixed; // forces equal width distribution among columns
+    text-align: center !important;
+  }
+
+  th,
+  td {
+    border: none !important;
+    padding: 0.5rem;
+    text-align: center !important;
+    vertical-align: middle; // Ensure vertical centering
+  }
+
+  td:first-child {
+    font-style: italic;
+    font-size: 0.9rem;
+    /* make the outcomes italic */
+  }
+
+  th {
+    /* background-color: #f2f2f2; */
+    font-weight: 500;
+    border: none !important;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 700;
+    color: black;
+    margin: 0 auto; // Center the icon within the cell
+    background-color: var(--icon-bg);
+    box-shadow: var(--icon-shadow);
+
+    &.green {
+      background-color: var(--green);
+    }
+
+    &.yellow {
+      background-color: var(--yellow);
+    }
+
+    &.red {
+      background-color: var(--red);
+    }
+
+    &.blue {
+      background-color: var(--blue);
+    }
+  }
+}
