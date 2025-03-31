@@ -9,8 +9,7 @@
 <!-- check if any invalid meds were provided -->
 {% for med in meds %}
 {% if med not in all_drugs %}
-{{ throw(message=med ~ " is not a valid medication name. Please refer to medications.toml for the correct possible
-names.") }}
+{{ throw(message=med ~ " is not a valid medication name. Please refer to medications.toml for the correct possible names.") }}
 {% endif %}
 {% endfor %}
 <!-- Set up filter: -->
