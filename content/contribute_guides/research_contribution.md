@@ -79,6 +79,6 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
 
 See [here](https://methods.cochrane.org/risk-bias-2) for the original tool, and [here](/tools/rob-2/) for easier to navigate tool that Josh built.
 
-### GRADE -- for secondary evidence
+### AMSTAR 2 -- for systematic reviews / meta-analysis
 
-[link](https://book.gradepro.org/)
+[link](https://amstar.ca/Amstar_Checklist.php)
