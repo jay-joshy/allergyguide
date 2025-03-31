@@ -46,6 +46,10 @@
   --custom_button_text: #d1d1d1;
   --custom_button_hover_text: #d1d1d1;
   --custom_button_active_text: #d1d1d1;
+
+  /* reset button */
+  --reset-btn-bg: #4c1012;
+
 }
 
 :root.switch {
@@ -93,6 +97,9 @@
   --custom_button_text: #333333;
   --custom_button_hover_text: #333333;
   --custom_button_active_text: #333333;
+
+  --reset-btn-bg: #ffebed;
+
 }
 
 /* Mixin for button states */
@@ -326,7 +333,7 @@
         var(--sptgen_button_hover_text), var(--sptgen_button_active_text));
 
       &#reset-btn {
-        background: #ff4444;
+        background: var(--reset-btn-bg);
 
         &:hover {
           background: #cc0000;
