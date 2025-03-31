@@ -220,8 +220,8 @@ A small cut-out for contributors. This may be removed in the future.
 mermaid diagrams are interesting to use but not mandatory. If you want to explore and use these, check out their [documentation](https://mermaid.js.org/intro/).
 
 ```md
-{% raw() %}
-{% mermaid() %}
+{%/* mermaid() */%}
+
 sequenceDiagram
 Alice ->> Bob: Hello Bob, how are you?
 Bob-->>John: How about you John?
@@ -232,8 +232,7 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
     Bob-->Alice: Checking with John...
     Alice->John: Yes... John, how are you?
 
-{% end %}
-{% end %}
+{%/* end */%}
 ```
 
 {% mermaid() %}
