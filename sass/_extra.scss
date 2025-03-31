@@ -26,12 +26,20 @@
 @use "shortcodes/json_to_table";
 @use "shortcodes/research_card";
 @use "shortcodes/rob_2";
+@use "shortcodes/mini_rob_summary";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: anywhere;
+}
+
+.hl {
+  background-color: yellow;
+  color: black;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.1rem;
 }
 
 .blur-container {
