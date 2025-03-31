@@ -8,7 +8,7 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-See here for an example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).
+Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).
 
 Not all topics will fit this general structure, and it is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points.
 
@@ -39,6 +39,7 @@ Where possible, especially for more recent changes to guidelines, please include
   - Special circumstances:
 - Natural history / prognosis:
 - Patient resources:
+- Factoids:
 - Quiz yourself:
 - Further Reading:
   - clinical guidelines
@@ -71,6 +72,7 @@ Within a topic page, there are many ways to customize the text: in particular, *
 
 - See [this link](https://www.writethedocs.org/guide/writing/markdown/) for a great introduction to the Markdown format
 - For your purposes, **you do not have to know Markdown itself very well** -- it is more important you know that the website renders Markdown. This means that you are able to use _italics_, **bolded words**, ~~strike-through-text~~, and links such as the one before. Lists and bullet points will also render as you expect. Different title headers can be achieved with [# signs](https://www.writethedocs.org/guide/writing/markdown/#headers)
+- Make good use of <span class='hl'>highlights as well</span>
 - You can also make tables in Markdown, though they do not look the best and cannot be too complicated:
 
   | Name   | Comment                                                                 |
@@ -78,6 +80,8 @@ Within a topic page, there are many ways to customize the text: in particular, *
   | Alice  | Always involved in various communications                               |
   | Bob    | A good guy, who likes to communicate with Alice                         |
   | Malroy | Not so nice guy. Tries to mess with the communication of Alice and Bob. |
+
+  - This doesn't mean we can't accomodate more complex tables (ie with nesting), but it does mean Josh/editors need to manually code it in
 
 ### Shortcodes
 
@@ -133,12 +137,21 @@ Serum immunoglobulins is the correct answer. CVID is the most likely diagnosis f
 
 Sometimes you want to show an image and text to one side of it. You have two options:
 
-{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{% text_image(src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the left.
+
+{% question(question="**Can you also add questions on the side?**") %}
+Yes!
 {% end %}
 
-{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{% end %}
+
+{% text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the right.
+
+{% admonition(type="tip", icon="tip", title="You can add admonitions here too!") %}
+This is helpful if there's something you really want to call someone's attention too!
+{% end %}
 {% end %}
 
 #### two_columns
@@ -150,7 +163,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 <!-- split -->
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+{% admonition(type="tip", icon="tip", title="You can add admonitions here too!") %}
+This is helpful if there's something you really want to call someone's attention too!
+{% end %}
+
+<br>
+
+{% admonition(type="pearl", icon="pearl", title="A rare clinical pearl") %}
+Benadryl is not a fantastic antihistamine to use :)
+{% end %}
+
 {% end %}
 
 #### references
@@ -245,41 +267,5 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
 
     Bob-->Alice: Checking with John...
     Alice->John: Yes... John, how are you?
-
-{% end %}
-
-Other examples of mermaid charts (taken from their docs):
-
-{% mermaid() %}
-gantt
-dateFormat YYYY-MM-DD
-title Adding GANTT diagram functionality to mermaid
-excludes weekends
-%% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
-
-    section A section
-    Completed task            :done,    des1, 2014-01-06,2014-01-08
-    Active task               :active,  des2, 2014-01-09, 3d
-    Future task               :         des3, after des2, 5d
-    Future task2              :         des4, after des3, 5d
-
-    section Critical tasks
-    Completed task in the critical line :crit, done, 2014-01-06,24h
-    Implement parser and jison          :crit, done, after des1, 2d
-    Create tests for parser             :crit, active, 3d
-    Future task in critical line        :crit, 5d
-    Create tests for renderer           :2d
-    Add to mermaid                      :until isadded
-    Functionality added                 :milestone, isadded, 2014-01-25, 0d
-
-    section Documentation
-    Describe gantt syntax               :active, a1, after des1, 3d
-    Add gantt diagram to demo page      :after a1  , 20h
-    Add another diagram to demo page    :doc1, after a1  , 48h
-
-    section Last section
-    Describe gantt syntax               :after doc1, 3d
-    Add gantt diagram to demo page      :20h
-    Add another diagram to demo page    :48h
 
 {% end %}
