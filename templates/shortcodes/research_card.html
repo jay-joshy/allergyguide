@@ -1,4 +1,5 @@
 {% import "macros/mini_rob_summary.html" as macros %}
+{% import "macros/mini_grade_summary.html" as grademacros %}
 {% set data = load_data(path="static/toml/research.toml") %}
 <!-- Build a list of valid paper keys -->
 {% set all_papers = [] %}
@@ -60,8 +61,10 @@
         <td>
           {% if paper_data.study_quality.type == "rob" %}
           {{ macros::mini_rob_summary(headers = paper_data.study_quality.args.headers, rows = paper_data.study_quality.args.rows, outcomes = paper_data.study_quality.args.outcomes) }}
+          {% elif paper_data.study_quality.type == "grade" %}
+          {{ grademacros::mini_grade_summary(score = paper_data.study_quality.args.score) }}
           {% else %}
-          {# insert the GRADE #}
+          {{ throw(message=paper_data.study_quality.type ~ " is not a valid option. Must be 'rob' or 'grade'.") }}
           {% endif %}
         </td>
       </tr>
