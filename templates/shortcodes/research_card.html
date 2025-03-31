@@ -1,3 +1,4 @@
+{% import "macros/mini_rob_summary.html" as macros %}
 {% set data = load_data(path="static/toml/research.toml") %}
 <!-- Build a list of valid paper keys -->
 {% set all_papers = [] %}
@@ -24,35 +25,45 @@
     <tbody>
       <tr>
         <td>Clinical Question</td>
-        <td>{{ paper_data.clinical_question }}</td>
+        <td>{{ paper_data.clinical_question | safe }}</td>
       </tr>
       <tr>
         <td>Study Type</td>
-        <td>{{ paper_data.study_type }}</td>
+        <td>{{ paper_data.study_type | safe  }}</td>
       </tr>
       <tr>
         <td>Population</td>
-        <td>{{ paper_data.population }}</td>
+        <td>{{ paper_data.population | safe  }}</td>
       </tr>
       <tr>
         <td>Intervention</td>
-        <td>{{ paper_data.intervention }}</td>
+        <td>{{ paper_data.intervention | safe }}</td>
       </tr>
       <tr>
         <td>Comparison</td>
-        <td>{{ paper_data.comparison }}</td>
+        <td>{{ paper_data.comparison | safe  }}</td>
       </tr>
       <tr>
         <td>Outcomes</td>
-        <td>{{ paper_data.outcomes }}</td>
+        <td>{{ paper_data.outcomes | safe  }}</td>
       </tr>
       <tr>
         <td>Bottom Line</td>
-        <td>{{ paper_data.bottom_line }}</td>
+        <td>{{ paper_data.bottom_line | safe  }}</td>
       </tr>
       <tr>
-        <td>Study Quality</td>
-        <td>{{ paper_data.study_quality }}</td>
+        <td>Quality of Evidence
+        {% if paper_data.study_quality.type == "rob" %}(RoB-2)
+        {% else %}
+        (GRADE)
+        {% endif %}</td>
+        <td>
+          {% if paper_data.study_quality.type == "rob" %}
+          {{ macros::mini_rob_summary(headers = paper_data.study_quality.args.headers, rows = paper_data.study_quality.args.rows, outcomes = paper_data.study_quality.args.outcomes) }}
+          {% else %}
+          {# insert the GRADE #}
+          {% endif %}
+        </td>
       </tr>
     </tbody>
   </table>
