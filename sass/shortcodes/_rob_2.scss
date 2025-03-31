@@ -22,6 +22,14 @@ $blue: #2196f3;
   --overall-btn_text: #d1d1d1;
   --overall-btn_hover_text: #d1d1d1;
   --overall-btn_active_text: #d1d1d1;
+
+  /* for rob2 summary */
+  --green: #28a745;
+  --yellow: #ffc107;
+  --red: #dc3545;
+  --blue: #007bff;
+  --icon-bg: #343a40; // fallback or neutral background if needed
+  --icon-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 :root.switch {
@@ -44,6 +52,13 @@ $blue: #2196f3;
   --overall-btn_hover_text: #d1d1d1;
   --overall-btn_active_text: #d1d1d1;
 
+  /* for rob2 summary */
+  --green: #2ecc71;
+  --yellow: #f1c40f;
+  --red: #e74c3c;
+  --blue: #3498db;
+  --icon-bg: #ffffff; // fallback or neutral background if needed
+  --icon-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 @mixin button-states($bg, $hover-bg, $active-bg, $text, $hover-text, $active-text) {
@@ -181,11 +196,13 @@ $blue: #2196f3;
 
 
 
-.table-container {
+.rob-2-summary-table {
   margin-bottom: 2rem;
 
   table {
     width: 100%;
+    table-layout: fixed; // forces equal width distribution among columns
+
     border-collapse: collapse;
   }
 
@@ -213,21 +230,23 @@ $blue: #2196f3;
     font-weight: 700;
     color: black;
     margin: 0 auto; // Center the icon within the cell
+    background-color: var(--icon-bg);
+    box-shadow: var(--icon-shadow);
 
     &.green {
-      background-color: $green;
+      background-color: var(--green);
     }
 
     &.yellow {
-      background-color: $yellow;
+      background-color: var(--yellow);
     }
 
     &.red {
-      background-color: $red;
+      background-color: var(--red);
     }
 
     &.blue {
-      background-color: $blue;
+      background-color: var(--blue);
     }
   }
 }
