@@ -17,11 +17,11 @@ See below for Markdown syntax used for the custom shortcodes used in this websit
 The below code does not work:
 
 ```md
-{% raw() %}
-{% warning(header = "warning header") %}
+{%/* warning(header = "warning header") */%}
+
 {{ warning_box_only(body="# nested warning!") }}
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 It will instead throw this error:
@@ -53,15 +53,13 @@ it is expecting the body to be MARKDOWN, not HTML. If you remove the markdown fi
 ### important
 
 ```md
-{% raw() %}
-{% important(header = "important header") %}
+{%/* important(header = "important header") */%}
 test
 Press <kbd>CTRL+ALT+Delete</kbd> to end the
 
 So it turns out you CAN put shortcodes inside other shortcodes, but it cannot be the % % with a body type.
 {{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
-{% end %}
-{% end %}
+{%/* end */%}
 ```
 
 {% important(header = "important header") %}
@@ -70,22 +68,20 @@ Press <kbd>CTRL+ALT+Delete</kbd> to end the
 
 So it turns out you CAN put shortcodes inside other shortcodes, but it cannot be the % % with a body type.
 {{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
+
 {% end %}
 
 ### warning
 
 ```md
-{% raw() %}
-{% warning(header = "warning header") %}
+{%/* warning(header = "warning header") */%}
 This is a warning section.
 
 Here is an attempt at the % % nested shortcode.
 {% important_box_only() %}
 important bx only!!!
 {% end %}
-{% end %}
-
-{% end %}
+{%/* end */%}
 ```
 
 {% warning(header = "warning header") %}
@@ -100,11 +96,11 @@ important bx only!!!
 ### question
 
 ```md
-{% raw() %}
-{% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad.<br><br>1) this or that<br>2)this") %}
+{%/* question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad.<br><br>1) this or that<br>2)this") */%}
+
 This is the question answer
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% question(question= "this is the question. now lets make it very long to the point where it probably needs to wrap around because its so large and fat and i hope this doesn't look bad.<br><br>1) this or that<br>2)this") %}
@@ -114,11 +110,11 @@ This is the question answer
 ### important_box_only
 
 ```md
-{% raw() %}
-{% important_box_only() %}
+{%/* important_box_only() */%}
+
 important bx only!!!
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% important_box_only() %}
@@ -128,11 +124,11 @@ important bx only!!!
 ### warning_box_only
 
 ```md
-{% raw() %}
-{% warning_box_only() %}
+{%/* warning_box_only() */%}
+
 warning box only content
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% warning_box_only() %}
@@ -147,13 +143,11 @@ Options for type/icon: note, tip, info, warning, danger, pearl, question (only t
 These can be mixed and matched.
 
 ```md
-{% raw() %}
-{% admonition(type="danger", icon="danger", title="Warning DANGER") %}
+{%/* admonition(type="danger", icon="danger", title="Warning DANGER") */%}
 This is a danger admonition with a danger icon.
 
 **Markdown can be used here :)**
-{% end %}
-{% end %}
+{%/* end */%}
 ```
 
 {% admonition(type="danger", icon="danger", title="DANGER") %}
@@ -184,11 +178,11 @@ blah blah
 We also have the elusive pearl mode:
 
 ```md
-{% raw() %}
-{% admonition(type="pearl", icon="pearl", title="PEARL") %}
+{%/* admonition(type="pearl", icon="pearl", title="PEARL") */%}
+
 Insert sage clinical pearl
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% admonition(type="pearl", icon="pearl", title="PEARL") %}
@@ -200,11 +194,11 @@ Insert sage clinical pearl
 Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
 
 ```md
-{% raw() %}
-{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{%/* text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
+
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
@@ -212,11 +206,11 @@ _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
 ```md
-{% raw() %}
-{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{%/* text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
+
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
@@ -226,8 +220,7 @@ _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 ## two_columns
 
 ```md
-{% raw() %}
-{% two_columns() %}
+{%/* two_columns() */%}
 Left column text goes here.
 
 ### Markdown should be supported
@@ -235,8 +228,7 @@ Left column text goes here.
 <!-- split -->
 
 Right column text goes here.
-{% end %}
-{% end %}
+{%/* end */%}
 ```
 
 {% two_columns() %}
@@ -250,15 +242,13 @@ Right column text goes here.
 ## two_columns_fancy
 
 ```md
-{% raw() %}
-{% two_columns_fancy() %}
+{%/* two_columns_fancy() */%}
 Left column text goes here.
 
 <!-- split -->
 
 Right column text goes here.
-{% end %}
-{% end %}
+{%/* end */%}
 ```
 
 {% two_columns_fancy() %}
@@ -272,9 +262,7 @@ Right column text goes here.
 ## spoiler
 
 ```md
-{% raw() %}
-this is a spoiler that you can click: {{ spoiler(body="text to hide", fixed_blur=false) }}
-{% end %}
+this is a spoiler that you can click: {{/* spoiler(body="text to hide", fixed_blur=false) */}}
 ```
 
 this is a spoiler that you can click: {{ spoiler(body="text to hide", fixed_blur=false) }}
@@ -282,11 +270,11 @@ this is a spoiler that you can click: {{ spoiler(body="text to hide", fixed_blur
 You can also use it like so (fixed_blur = true means you can't see it ever):
 
 ```md
-{% raw() %}
-{% spoiler(fixed_blur = true) %}
+{%/* spoiler(fixed_blur = true) */%}
+
 testing this
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% spoiler(fixed_blur = true) %}
@@ -296,9 +284,7 @@ testing this
 ## contributors
 
 ```md
-{% raw() %}
-{{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
-{% end %}
+{{/* contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) */}}
 ```
 
 {{ contributors(authors=["Alice Smith", "Bob Johnson"], editors=["Charlie Brown"], staff_reviewers=["David Lee"]) }}
@@ -308,8 +294,8 @@ testing this
 Adapted from the excellent pico theme.
 
 ```md
-{% raw() %}
-{% timeline() %}
+{%/* timeline() */%}
+
 [{
 "title":"Lorem Ipsum Event",
 "body":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -320,8 +306,8 @@ Adapted from the excellent pico theme.
 "body":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
 "date":"Jun-2022"
 }]
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% timeline() %}
@@ -340,8 +326,7 @@ Adapted from the excellent pico theme.
 ## mermaid
 
 ```md
-{% raw() %}
-{% mermaid() %}
+{%/* mermaid() */%}
 sequenceDiagram
 Alice ->> Bob: Hello Bob, how are you?
 Bob-->>John: How about you John?
@@ -352,8 +337,7 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
     Bob-->Alice: Checking with John...
     Alice->John: Yes... John, how are you?
 
-{% end %}
-{% end %}
+{%/* end */%}
 ```
 
 {% mermaid() %}
@@ -408,9 +392,7 @@ excludes weekends
 ## widget_penfast
 
 ```md
-{% raw() %}
-{{ widget_penfast() }}
-{% end %}
+{{/* widget_penfast() */}}
 ```
 
 {{ widget_penfast() }}
@@ -418,9 +400,7 @@ excludes weekends
 ## wide_contact_card
 
 ```md
-{% raw() %}
-{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
-{% end %}
+{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") */}}
 ```
 
 {{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
@@ -428,11 +408,11 @@ excludes weekends
 ## custom_macro
 
 ```md
-{% raw() %}
-{% custom_macro() %}
+{%/* custom_macro() */%}
+
 Here is a custom macro copy paste section
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% custom_macro() %}
@@ -442,9 +422,7 @@ Here is a custom macro copy paste section
 ## load_macro
 
 ```md
-{% raw() %}
-{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
-{% end %}
+{{/* load_macro(topic_name = "chronic_rhinosinusitis") */}}
 ```
 
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
@@ -455,9 +433,7 @@ param: meds (list of str)
 if not provided default will show all medications from the toml
 
 ```md
-{% raw() %}
-{{ medications_toml_load(meds=["bilastine"])}}
-{% end %}
+{{/* medications_toml_load(meds=["bilastine"]) */}}
 ```
 
 {{ medications_toml_load(meds=["bilastine"])}}
@@ -465,9 +441,7 @@ if not provided default will show all medications from the toml
 ## wip
 
 ```md
-{% raw() %}
-{{ wip() }}
-{% end %}
+{{/* wip() */}}
 ```
 
 {{ wip() }}
@@ -475,9 +449,7 @@ if not provided default will show all medications from the toml
 ## remote_text
 
 ```md
-{% raw() %}
-{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
-{% end %}
+{{/* remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") */}}
 ```
 
 ```md
@@ -497,14 +469,13 @@ proof of concept that 1) you can load in simple arrays and 2) use tera macros
 # references
 
 ```md
-{% raw() %}
 This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
 
 Here is another sentence with one reference <span class="references">2</span>
 
 ... rest of the document content
 
-{% references(showBib = true) %}
+{%/* references(showBib = true) */%}
 [{
 "id": "1",
 "aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
@@ -521,8 +492,8 @@ Here is another sentence with one reference <span class="references">2</span>
 "url": "https://example.com",
 "notes": ""
 }]
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
@@ -555,9 +526,7 @@ Here is another sentence with one reference <span class="references">2</span>
 This will display a warning admonition if viewed from Mobile.
 
 ```md
-{% raw() %}
-{{ mobile_warning() }}
-{% end %}
+{{/* mobile_warning() */}}
 ```
 
 {{ mobile_warning() }}
@@ -569,15 +538,15 @@ This will display a warning admonition if viewed from Mobile.
 - output_md: bool, default false (when true it outputs in a ```md block)
 
 ```md
-{% raw() %}
-{% json_to_table() %}
+{%/* json_to_table() */%}
+
 [
 { "name": "Bob", "age": 21, "isCool": false },
 { "name": "Sarah", "age": 22, "isCool": true },
 { "name": "Lee", "age": 23, "isCool": true }
 ]
-{% end %}
-{% end %}
+
+{%/* end */%}
 ```
 
 {% json_to_table()%}
@@ -591,17 +560,13 @@ This will display a warning admonition if viewed from Mobile.
 # research_card
 
 ```md
-{% raw() %}
-{{ research_card(paper="sygma2") }}
-{% end %}
+{{/* research_card(paper="sygma2") */}}
 ```
 
 {{ research_card(paper="sygma2") }}
 
 ```md
-{% raw() %}
-{{ research_card(paper="sygma2", show_title=false) }}
-{% end %}
+{{/* research_card(paper="sygma2", show_title=false) */}}
 ```
 
 {{ research_card(paper="sygma2", show_title=false) }}
