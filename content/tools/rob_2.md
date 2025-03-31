@@ -16,13 +16,17 @@ authors = ["Joshua Yu"]
 </div>
 
 {% admonition(type="note", icon="note", title="Quick start") %}
-Go through the RoB-2 tool for randomized trials and add optional details! Unless you click the below button or clear your cache, your selections/text will be saved.
-
-<br>
-<button id="rob2-clear-button">Click Me to clear all choices/text</button>
-<br>
-
 Tool is derived directly from the [Cochrane Risk of Bias assessment tool](https://methods.cochrane.org/risk-bias-2), licensed under CC BY-NC-ND 4.0. Higgins (2019).
+
+<br>
+
+<button id="rob2-clear-button">Click Me to clear all choices/text</button>
+
+<br>
+
+See [here](@/contribute_guides/rob_2_guide.md) for an abridged guide to the tool. Chose domain 2a or 2b, but not both.
+
+Click the overall button to copy a summary of the results. Unless you click the above button or clear your cache, your selections/text will be saved.
 
 {% end %}
 
