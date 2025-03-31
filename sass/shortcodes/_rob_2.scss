@@ -16,6 +16,12 @@ $blue: #2196f3;
   --custom_button_text: #d1d1d1;
   --custom_button_hover_text: #d1d1d1;
   --custom_button_active_text: #d1d1d1;
+  --overall-btn_bg: #a2362a;
+  --overall-btn_hover_bg: #256d69;
+  --overall-btn_active_bg: #1f625f;
+  --overall-btn_text: #d1d1d1;
+  --overall-btn_hover_text: #d1d1d1;
+  --overall-btn_active_text: #d1d1d1;
 }
 
 :root.switch {
@@ -31,6 +37,13 @@ $blue: #2196f3;
   --custom_button_text: #333333;
   --custom_button_hover_text: #333333;
   --custom_button_active_text: #333333;
+  --overall-btn_bg: #e396a9;
+  --overall-btn_hover_bg: #256d69;
+  --overall-btn_active_bg: #1f625f;
+  --overall-btn_text: #black;
+  --overall-btn_hover_text: #d1d1d1;
+  --overall-btn_active_text: #d1d1d1;
+
 }
 
 @mixin button-states($bg, $hover-bg, $active-bg, $text, $hover-text, $active-text) {
@@ -56,6 +69,16 @@ $blue: #2196f3;
     var(--custom_button_text),
     var(--custom_button_hover_text),
     var(--custom_button_active_text));
+}
+
+#overall-btn {
+  height: 2rem;
+  @include button-states(var(--overall-btn_bg),
+    var(--overall-btn_hover_bg),
+    var(--overall-btn_active_bg),
+    var(--overall-btn_text),
+    var(--overall-btn_hover_text),
+    var(--overall-btn_active_text));
 }
 
 .rob_2 {

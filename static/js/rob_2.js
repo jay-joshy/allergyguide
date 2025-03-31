@@ -33,6 +33,48 @@ function updateOverallJudgement() {
   }
 }
 
+function getOverallSummary(button) {
+  var text = "";
+  const domains = [1, 2, "2b", 3, 4, 5];
+  for (let domain of domains) {
+    try {
+      var admonTextElement = document.querySelector(`.admon_macro-${domain} .admonition-content`);
+      var admonTitleElement = document.querySelector(`.admon_macro-${domain} .admonition-title`);
+
+      if (!admonTextElement || !admonTitleElement) {
+        throw new Error(`Required elements not found - ${domain}`);
+      }
+
+      var admon_text = admonTextElement.innerText;
+      var admon_title = admonTitleElement.innerText;
+
+      if (admon_text == "Fill out the questions") {
+        throw new Error(`Incomplete answers - ${domain}`);
+      }
+
+      text += `Domain ${domain}:
+${admon_text.trim()}
+${admon_title}
+
+`;
+    } catch (error) {
+      console.log("An error occurred:", error);
+    }
+  }
+
+  navigator.clipboard.writeText(text).then(() => {
+    button.textContent = "Copied!"; // Temporarily change button text
+    setTimeout(() => button.innerText = "Overall", 2000); // Revert after 2 seconds
+  }).catch(err => {
+    console.error("Failed to copy text: ", err);
+    button.textContent = "Error";
+    setTimeout(() => button.textContent = "Overall", 2000);
+  });
+
+
+};
+
+
 // Function to process and update the decision tree outcome
 const process_dt = (domain, num_q, tree) => {
   const userAnswers = getDomainAnswers(domain, num_q);
@@ -174,6 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('input[type="radio"][name^="q4_"]').forEach(radio => {
     radio.addEventListener("click", d4_updateQuestionVisibility);
   });
+
+  var overall_btn = document.getElementById("overall-btn");
+  overall_btn.addEventListener("click", () => getOverallSummary(overall_btn));
 
   runAll();
 
