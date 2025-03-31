@@ -1,0 +1,44 @@
+.mini-grade-summary-table {
+  margin: 0rem;
+
+  table {
+    width: 100%;
+    border: none !important;
+    border-collapse: collapse;
+    table-layout: fixed; // forces equal width distribution among columns
+    text-align: center !important;
+  }
+
+  td {
+    border: none !important;
+    padding: 0.2rem;
+    text-align: center !important;
+    vertical-align: middle; // Ensure vertical centering
+  }
+
+  tr {
+    border: none !important;
+  }
+
+  // Styles for the circles
+  .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem; // Adjust the size as needed
+    height: 3rem;
+    border-radius: 50%;
+    border: 0.2rem solid red; // Default border for empty circles
+    font-size: 2.4rem; // Reduced so the plus nearly fills the circle
+    line-height: 1; // Prevent extra vertical spacing
+    margin: 0;
+    padding: 0;
+  }
+
+  // For filled circles: green border and plus sign (assumes plus sign is placed in the markup)
+  .circle.filled {
+    border-color: green;
+    font-weight: 500;
+    color: green;
+  }
+}
