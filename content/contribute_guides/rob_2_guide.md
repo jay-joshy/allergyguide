@@ -10,9 +10,20 @@ authors = ["Joshua Yu"]
 
 <br>
 <br>
+
 {% admonition(type="note", icon="note", title="RoB-2 Credit") %}
-Excerpts are directly from the [Cochrane Risk of Bias assessment tool](https://methods.cochrane.org/risk-bias-2), licensed under CC BY-NC-ND 4.0. Higgins (2019).
+Information and excerpts are directly from the [Cochrane Risk of Bias assessment tool](https://methods.cochrane.org/risk-bias-2), licensed under CC BY-NC-ND 4.0. Higgins (2019).
 {% end %}
+
+## Why and when to use:
+
+Use to assess the "risk of bias in a _single result_ (an estimate of the effect of an experimental intervention compared with a comparator intervention on a _particular outcome_) from **any type of randomized trial**."
+
+"_Because trials usually contribute multiple results to a systematic review, several risk-of-bias assessments may be needed for each trial, although it is unlikely to be feasible to assess every result for every trial in the review._"
+
+Do note: there are two versions of domain 2 (Bias due to deviations from intended interventions) -- only one should be used for a particular result. See [here](#domain-2-risk-of-bias-due-to-deviations-from-the-intended-interventions-effect-of-assignment-to-intervention) for intention-to-treat analysis and [here](#domain-2-risk-of-bias-due-to-deviations-from-the-intended-interventions-effect-of-adhering-to-intervention) for per-protocol analysis.
+
+---
 
 ## Domain 1: Risk of bias arising from the randomization process
 
@@ -49,7 +60,13 @@ Excerpts are directly from the [Cochrane Risk of Bias assessment tool](https://m
 - The answer to this question should not influence answers to questions 1.1 or 1.2. For example, if the trial has large baseline imbalances, but authors report adequate randomization methods, questions 1.1 and 1.2 should still be answered on the basis of the reported adequate methods, and any concerns about the imbalance should be raised in the answer to the question 1.3 and reflected in the domain-level risk-of-bias judgement.
 - Trialists may undertake analyses that attempt to deal with flawed randomization by controlling for imbalances in prognostic factors at baseline. To remove the risk of bias caused by problems in the randomization process, it would be necessary to know, and measure, all the prognostic factors that were imbalanced at baseline. It is unlikely that all important prognostic factors are known and measured, so such analyses will at best reduce the risk of bias. If review authors wish to assess the risk of bias in a trial that controlled for baseline imbalances in order to mitigate failures of randomization, the study should be assessed using the ROBINS-I tool.
 
-## Domain 2: Risk of bias due to deviations from the intended interventions (_effect of assignment to intervention_)
+## Domain 2: Risk of bias due to deviations from the intended interventions (**_effect of assignment to intervention_**)
+
+{% admonition(type="warning", icon="warning", title="WARNING") %}
+
+This variant of domain 2 should be used if: you want to assess the effect of assignment to the interventions at baseline, regardless of whether the interventions are received as intended (**the ‘intention-to-treat effect’**)
+
+{% end %}
 
 ### 2.1 Were participants aware of their assigned intervention during the trial?
 
@@ -97,7 +114,13 @@ excluded from the analysis, was sufficient that there could have been a substant
 to specify a precise rule: there may be potential for substantial impact even if fewer than 5% of participants were analysed
 in the wrong group or excluded, if the outcome is rare or if exclusions are strongly related to prognostic factors.
 
-## Domain 2: Risk of bias due to deviations from the intended interventions (_effect of adhering to intervention_)
+## Domain 2: Risk of bias due to deviations from the intended interventions (**_effect of adhering to intervention_**)
+
+{% admonition(type="warning", icon="warning", title="WARNING") %}
+
+This variant of domain 2 should be used if: you want to assess the effect of adhering to the interventions as specified in the trial protocol (**the ‘per-protocol effect’**)
+
+{% end %}
 
 ### 2.1. Were participants aware of their assigned intervention during the trial?
 
