@@ -21,7 +21,7 @@ Critical appraisal of primary or secondary literature will have two major sectio
 
 # Quick facts
 
-This section should not be longer than half a page at most. It is meant as a **quick glance-over refresher** about what the take-home points were.
+This section should not be longer than half a page at most. It is meant as a **quick glance-over refresher** about what the take-home points were. Use highlights to emphasize the key information (ie. the primary outcomes of interest, key exclusions, etc.).
 
 {% two_columns() %}
 
@@ -33,9 +33,9 @@ This section should not be longer than half a page at most. It is meant as a **q
 <!-- split -->
 
 - What was the comparison/control (if available)?
-- What was the outcome?
+- What was the outcome(s)?
 - What is the bottom line?
-- Study quality (GRADE for reviews, ROB/Newcastle-Ottawa Scale)
+- Quality of evidence (GRADE for reviews, RoB-2 for randomized trials)
 
 {% end %}
 
@@ -75,9 +75,9 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
 
 # Study quality
 
-### ROB-2 -- for primary evidence
+### ROB-2 -- for randomized trials
 
-See [here](https://methods.cochrane.org/risk-bias-2) for the original tool, and [here](/tools/rob-2/) for easier to navigate tool that we built.
+See [here](https://methods.cochrane.org/risk-bias-2) for the original tool, and [here](/tools/rob-2/) for easier to navigate tool that Josh built.
 
 ### GRADE -- for secondary evidence
 
