@@ -32,7 +32,8 @@
             {% elif v == "blue" %}?
             {% elif v == "yellow" %}-
             {% elif v == "green" %}+
-            {% else %}?
+            {% else %}
+            {{ throw(message=v ~ " is not a valid option. Must be one of red, blue, yellow, or green.") }}
             {% endif %}
           </div>
         </td>
