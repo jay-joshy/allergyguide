@@ -5,8 +5,8 @@
     width: 100%;
     border: none !important;
     border-collapse: collapse;
-    table-layout: fixed; // forces equal width distribution among columns
     text-align: center !important;
+    table-layout: fixed; // forces equal width distribution among columns
   }
 
   th,
@@ -16,6 +16,11 @@
     text-align: center !important;
     vertical-align: middle; // Ensure vertical centering
   }
+
+  tr {
+    border: none !important;
+  }
+
 
   td:first-child {
     font-style: italic;
