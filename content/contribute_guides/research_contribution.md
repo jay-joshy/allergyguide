@@ -54,6 +54,7 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
   - Year
   - Journal
   - Trial name
+  - Funded by
 - Background
 - Objective
 - Methods
