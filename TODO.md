@@ -29,6 +29,7 @@
 
 - Make example articles for 1) a condition 2) macro 3) research landmark article
   - Chronic rhinosinusitis, landmark trials (ie. omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP)
+  - A systematic review (ie. [this one](https://pubmed.ncbi.nlm.nih.gov/36563746/))
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
 
 ## Shortcodes

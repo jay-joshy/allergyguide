@@ -35,11 +35,11 @@ This section should not be longer than half a page at most. It is meant as a **q
 - What was the comparison/control (if available)?
 - What was the outcome(s)?
 - What is the bottom line?
-- Quality of evidence (GRADE for reviews, RoB-2 for randomized trials)
+- Quality of evidence (AMSTAR 2 for reviews, RoB-2 for randomized trials primary outcomes)
 
 {% end %}
 
-### Example
+### Examples
 
 From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (primary evidence):
 

@@ -1,5 +1,5 @@
 +++
-title = "Skin testing macro"
+title = "Skin testing generator"
 description = "Quickly create SPT/IDT results to copy-paste with smart autosuggestion."
 date = 2025-03-01
 draft = false

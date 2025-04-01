@@ -1,6 +1,6 @@
 +++
 title = "Risk of Bias 2 assessment tool"
-description = "Quickly determine risk of bias using the RoB-2 tool."
+description = "Determine risk of bias in randomized trials using the RoB-2 tool."
 date = 2025-03-26
 draft = false
 
