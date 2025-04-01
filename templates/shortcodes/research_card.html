@@ -53,12 +53,12 @@
         <td>{{ paper_data.bottom_line | safe  }}</td>
       </tr>
       <tr>
-        <td>Quality of Evidence
-        {% if paper_data.study_quality.type == "rob" %}(RoB-2)
-        {% else %}
-        (GRADE)
-        {% endif %}</td>
-        <td>
+        <!-- <td>Quality of Evidence -->
+        <!-- {% if paper_data.study_quality.type == "rob" %}(RoB-2) -->
+        <!-- {% else %} -->
+        <!-- (GRADE) -->
+        <!-- {% endif %}</td> -->
+        <td colspan="2">
           {% if paper_data.study_quality.type == "rob" %}
           {{ macros::mini_rob_summary(headers = paper_data.study_quality.args.headers, rows = paper_data.study_quality.args.rows, outcomes = paper_data.study_quality.args.outcomes) }}
           {% elif paper_data.study_quality.type == "grade" %}

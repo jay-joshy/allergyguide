@@ -16,7 +16,7 @@ study_quality.args = { headers = [
   "D3",
   "D4",
   "D5",
-  "Overall",
+  "Overall RoB",
 ], rows = [
   [
     "green",
