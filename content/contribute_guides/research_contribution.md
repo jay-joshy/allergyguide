@@ -23,6 +23,11 @@ Critical appraisal of primary or secondary literature will have two major sectio
 
 This section should not be longer than half a page at most. It is meant as a **quick glance-over refresher** about what the take-home points were. Use highlights to emphasize the key information (ie. the primary outcomes of interest, key exclusions, etc.).
 
+**Highlighting**:
+
+- important population details and the interventions should be in yellow
+- important results should be in green
+
 {% two_columns() %}
 
 - What is the main clinical question?
