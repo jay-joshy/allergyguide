@@ -10,6 +10,14 @@ in_search_index = false
 toc = true
 +++
 
+## Highlights
+
+Not a shortcode but still useful. You have several colours to choose from:
+
+- This shows off the <span class="hl-yellow">yellow and</span> <span class="hl-green">green ones</span>
+- This is for the <span class="hl-pink">pink and</span> <span class="hl-red">red ones</span>
+- This is for the <span class="hl-blue">blue ones</span>
+
 See below for Markdown syntax used for the custom shortcodes used in this website.
 
 ## Re: nesting shortcodes
