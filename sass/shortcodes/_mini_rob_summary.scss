@@ -46,7 +46,7 @@
     color: black;
     margin: 0 auto; // Center the icon within the cell
     background-color: var(--icon-bg);
-    box-shadow: var(--icon-shadow);
+    /* box-shadow: var(--icon-shadow); */
 
     &.green {
       background-color: var(--green);
