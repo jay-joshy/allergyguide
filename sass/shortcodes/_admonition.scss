@@ -22,7 +22,7 @@
   }
 }
 
-:root:not(.switch) {
+:root {
   /* Dark mode */
   --admonition-note-border: #d0d1d4;
   --admonition-note-bg: #3d3e40;
@@ -106,44 +106,47 @@
       color: inherit;
     }
   }
-}
 
-.admonition-content {
-  grid-column: span 2;
-  padding-left: 0.2em;
+  .admonition-content {
+    grid-column: span 2;
+    padding-left: 0.2em;
 
-  strong {
-    font-weight: 580;
+    strong {
+      font-weight: 580;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    ul,
+    li,
+    ol {
+      margin: 0;
+      margin-left: 0.2rem;
+      color: var(--text-color-high-contrast);
+    }
   }
 
-  p {
-    margin: 0;
+  .admonition-icon {
+    display: flex;
+    align-items: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    aspect-ratio: 1/1;
+    width: 1.5rem;
+
   }
 
-  ul,
-  li,
-  ol {
-    margin: 0;
-    margin-left: 0.2rem;
+  .admonition-title {
+    display: inline-block;
+    opacity: 0.92;
+    font-weight: bold;
+    font-size: 1rem;
   }
-}
-
-.admonition-icon {
-  display: flex;
-  align-items: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  aspect-ratio: 1/1;
-  width: 1.5rem;
 
 }
 
-.admonition-title {
-  display: inline-block;
-  opacity: 0.92;
-  font-weight: bold;
-  font-size: 1rem;
-}
 
 .admonition.note {
   @include admonition-type('note');
