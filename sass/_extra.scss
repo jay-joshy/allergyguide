@@ -28,6 +28,7 @@
 @use "shortcodes/rob_2";
 @use "shortcodes/mini_rob_summary";
 @use "shortcodes/mini_grade_summary";
+@use "shortcodes/hl";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
