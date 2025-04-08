@@ -177,15 +177,16 @@ However, the actual magnitude of change for both scores was relatively small:
 
 {% two_columns() %}
 
-<!-- split -->
-
-{% end %}
-
 #### Spirometry (FEV1)
 
 #### Steroid use
 
 Patients in the budesonide-formoterol group had a significantly lower median daily dose of inhaled glucocorticoid (66 µg) compared to the budesonide maintenance group (267 µg).
+
+<!-- split -->
+
+{{ img(src="/research/sygma2/fev1.png" alt="FEV1 over 52 weeks", class="c1", caption = "Trend of FEV1 over 52 weeks.") }}
+{% end %}
 
 #### Adherence
 
@@ -196,3 +197,10 @@ Patients in the budesonide-formoterol group had a significantly lower median dai
 Adverse events were similar between groups, with one death in each group—one deemed asthma-related in the budesonide maintenance group and the other not related to asthma in the budesonide-formoterol group.
 
 ## Limitations
+
+- Majority of the population was caucasian
+- Adherence rates are likely higher here than in real life
+- 52 weeks may not be enough for assessment of long-term outcomes
+- No adjustments for multiple comparisons in secondary efficacy analyses, giving less confidence in the ACQ-5/AQLQ results
+
+## Risk of bias assessment
