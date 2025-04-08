@@ -72,7 +72,7 @@ This study was a **double-blind, multicenter, parallel-group randomized controll
 
 {% text_image(src="/research/sygma2/study_design.png", alt="Figure S1, showing the study design", caption = "Figure S1 from the supplementary appendix.") %}
 
-There was a **2 to 4 week run-in period** where patients used PRN terbutaline alone for symptom relief, before randomization. Randomization was stratified by study site, and computer generated.
+There was a **2 to 4 week run-in period** where patients used PRN terbutaline alone for symptom relief, before randomization. Randomization was stratified by study site, and computer generated. During the 52-week period there was no regular medication reminders.
 
 Follow-up over 52 weeks was done through both scheduled in-person vists and phone contact.
 
@@ -98,7 +98,7 @@ Time to the first severe exacerbation was analyzed using a **Cox proportional-ha
 
 ## Results
 
-### Table 1
+### Table 1: patients
 
 4215 patients were randomized, with 4176 included in the full analysis set (2089 in the budesonide-formoterol group and 2087 in the budesonide maintenance group). Overall the groups were well balanced, in particular with age, sex, region, and smoking status (mean age 41 years, ~60% female). Asthma characteristics were also well balanced (see below table). Notably, roughly half of the patients had a baseline ACQ-5 score of ≥1.5.
 
@@ -114,6 +114,8 @@ Time to the first severe exacerbation was analyzed using a **Cox proportional-ha
 |                                                                     0 |           1630 (78.0)            |          1627 (78.0)          |
 |                                                                     1 |            365 (17.5)            |          362 (17.3)           |
 |                                                                    ≥2 |             94 (4.5)             |           98 (4.7)            |
+
+From each group, only about 1% of patients were lost to follow-up.
 
 ### Primary Outcome
 
@@ -165,7 +167,7 @@ In both groups, the ACQ-5 and AQLQ score trended towards better control; while b
 
 However, the actual magnitude of change for both scores was relatively small:
 
-- ACQ-5: the mean difference between budesonide maintenance and PRN Symbicort scores was 0.11 (95% CI, 0.07 to 0.15); at the end of 52 weeks, 40.3% vs. 44.3% had a decrease of ≥0.5 (OR 0.86; 95% CI, 0.75 to 0.99). If you took that 4% difference at face-value, the NNT to decrease the ACQ-5 score by 52 weeks would be 25
+- ACQ-5: the mean difference between budesonide maintenance and PRN Symbicort scores was 0.11 (95% CI, 0.07 to 0.15); at the end of 52 weeks, 40.3% vs. 44.3% had a decrease of ≥0.5 (OR 0.86; 95% CI, 0.75 to 0.99, p=0.036). If you took that 4% difference at face-value, the NNT to decrease the ACQ-5 score by 52 weeks would be 25
 - AQLQ: the mean difference between budesonide maintenance and PRN Symbicort scores was -0.096 (95% CI, -0.137 to -0.054)
 
 <!-- split -->
@@ -179,27 +181,29 @@ However, the actual magnitude of change for both scores was relatively small:
 
 #### Spirometry (FEV1)
 
-#### Steroid use
+Baseline pre-bronchodilator FEV1 increased in both groups, but moreso the budesonide maintenance group; mean difference between groups was −32.6 ml (95% CI, −53.7 to −11.4), though across the 52 weeks the greatest difference was at the first 16 weeks before the groups converged.
 
-Patients in the budesonide-formoterol group had a significantly lower median daily dose of inhaled glucocorticoid (66 µg) compared to the budesonide maintenance group (267 µg).
+#### Puffer and steroid use
+
+Adherence to the blinded maintenance regimen was the same between groups: around 60%±30%; there was no data on adherence over time.
+
+- For PRN doses: 0.52 inhalations ± 0.55/day of Symbicort on average, vs 0.49±0.70/day of terbutaline
+- Less patients required high PRN puffer use at least once in a day for the Budesonide-Formoterol group: 10% vs 15% for >8 inhalations, 4.1% vs 7.4% for >12 inhalations
+- Budesonide-formoterol patients had a 75% lower median daily dose of inhaled glucocorticoid: 66 µg compared to 267 µg. Median days with systemic steroids was 6 days in both groups.
 
 <!-- split -->
 
 {{ img(src="/research/sygma2/fev1.png" alt="FEV1 over 52 weeks", class="c1", caption = "Trend of FEV1 over 52 weeks.") }}
 {% end %}
 
-#### Adherence
-
-#### Use of PRN medications
-
 #### Adverse Events
 
-Adverse events were similar between groups, with one death in each group—one deemed asthma-related in the budesonide maintenance group and the other not related to asthma in the budesonide-formoterol group.
+Adverse events were similar between groups. One asthma-related death in budesonide maintenance group, and one non-asthma death in the budesonide-formoterol group.
 
 ## Limitations
 
-- Majority of the population was caucasian
-- Adherence rates are likely higher here than in real life
+- Majority of the population was Caucasian
+- Adherence rates of 60% are much higher than real life, favouring the maintenance budesonide group
 - 52 weeks may not be enough for assessment of long-term outcomes
 - No adjustments for multiple comparisons in secondary efficacy analyses, giving less confidence in the ACQ-5/AQLQ results
 
