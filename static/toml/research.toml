@@ -7,8 +7,8 @@ study_type = "52 week double-blind, randomized, multi-center, phase 3, non-infer
 population = "4176 patients with <span class='hl'>mild persistent asthma (≥12 years)</span> were analyzed, including those with previously controlled and uncontrolled symptoms on minimal therapy."
 intervention = "<span class='hl'>Twice-daily placebo + PRN budesonide–formoterol (200μg/6μg).</span>"
 comparison = "<span class='hl'>Regular BID budesonide (200μg) + as-needed terbutaline (0.5mg).</span>"
-outcomes = "At 52 weeks, the PRN budesonide–formoterol group had an <span class='hl'>annualized rate of severe exacerbations</span> of 0.11 events/patient-year compared to 0.12 events/patient-year in the budesonide group (RR 0.97; upper one-sided 95% CI, 1.16). <span class='hl'>ACQ-5 score</span> improved by 0.35 in the as-needed group versus 0.46 in the maintenance group (diff 0.11 units; 95% CI, 0.07 to 0.15; p<0.001). Median daily inhaled glucocorticoid exposure in the as-needed group was 66μg vs 267μg in the maintenance group."
-bottom_line = "For mild asthma, PRN budesonide–formoterol was noninferior to daily budesonide in preventing severe exacerbations, with a non-clinically relevant difference in ACQ-5 and less overall steroid exposure."
+outcomes = "At 52 weeks, the PRN budesonide–formoterol group had an <span class='hl'>annualized rate of severe exacerbations</span> of <span class='hl-green'>0.11 events/patient-year compared to 0.12 events/patient-year</span> in the budesonide group (RR 0.97; upper one-sided 95% CI, 1.16). <span class='hl'>ACQ-5 score</span> <span class='hl-green'>improved by 0.35 in the as-needed group versus 0.46 in the maintenance group</span> (Δ0.11 units; 95% CI, 0.07 to 0.15; p<0.001). Median daily inhaled glucocorticoid exposure in the as-needed group was 66μg vs 267μg in the maintenance group."
+bottom_line = "For mild asthma, PRN budesonide–formoterol was noninferior to daily budesonide in preventing severe exacerbations, with a relatively smaller improvement in ACQ-5 and less overall steroid exposure."
 study_quality.type = "rob"
 study_quality.args = { headers = [
   "D1",
