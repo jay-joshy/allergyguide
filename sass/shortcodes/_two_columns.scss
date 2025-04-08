@@ -1,11 +1,15 @@
-    .two_columns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      font-size: 20px;
-    }
+.two_columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 1rem;
 
-    .two_columns .column {
-      flex: 1;
-      min-width: 200px;
-    }
+  .column {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  @media (orientation: portrait) {
+    flex-direction: column;
+  }
+}

@@ -19,10 +19,9 @@
 .two_columns_fancy {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
   justify-content: space-between;
-  margin: 0rem auto;
-  /* max-width: 1200px; */
+  margin: 0rem;
   padding: 1rem;
   color: var(--tcf_text-color);
 
@@ -30,31 +29,39 @@
   .column {
     flex: 1 1 48%;
     box-sizing: border-box;
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 8px;
     overflow: hidden;
     position: relative;
     background-color: var(--tcf_column-bg);
     border: 1px solid var(--tcf_column-border);
+
+    h2,
+    ul,
+    li,
+    ol,
+    p {
+      margin: 0 0 1rem 0;
+      font-family: "Roboto", sans-serif;
+      line-height: 1.6;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    ul,
+    li,
+    ol,
+    p {
+      font-size: 1rem;
+      color: inherit;
+    }
+
   }
 
   /* Typography */
-  h2,
-  p {
-    margin: 0 0 1rem 0;
-    font-family: "Roboto", sans-serif;
-    line-height: 1.6;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-
-  p {
-    font-size: 1rem;
-    color: inherit;
-  }
 
   /* Ensures text inside the column adjusts based on theme */
   .column h2,
@@ -66,10 +73,8 @@
   }
 
   /* Responsive behavior */
-  @media (max-width: 768px) {
-    .two_columns_fancy {
-      flex-direction: column;
-    }
+  @media (orientation: portrait) {
+    flex-direction: column;
 
     .column {
       width: 100%;
