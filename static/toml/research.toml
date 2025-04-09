@@ -26,15 +26,6 @@ study_quality.args = { headers = [
     "green",
     "green",
   ],
-  [
-    "green",
-    "green",
-    "green",
-    "green",
-    "green",
-    "green",
-  ],
 ], outcomes = [
   "Severe ex. rate",
-  "ACQ-5 score",
 ] }

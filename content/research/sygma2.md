@@ -308,6 +308,8 @@ Outcome: low risk
 
 ### Domain 5: Risk of bias in selection of the reported result
 
+Outcome: low risk
+
 | Question                                                                                                            | Author Judgement | Justification                                                                                                                                                                                                                                                                           |
 | :------------------------------------------------------------------------------------------------------------------ | :--------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 5.1 Was the data analysed according to a pre-specified plan finalized before unblinded outcome data were available? |   Probably Yes   | A pre-specified analysis plan was followed. The protocol was amended after randomization to a non-inferiority design instead of superiority, but this change occurred while investigators were still blinded to outcome data.                                                           |
