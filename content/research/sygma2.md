@@ -14,8 +14,9 @@ authors = ["Joshua Yu"]
 
 {{wip(body="WIP. Pending: staff review.")}}
 
-{% two_columns() %}
-
+<table style="margin:0rem">
+  <tr>
+    <td>
 {% admonition(type="info", icon="info", title="Trial metadata") %}
 
 - Published: 2018
@@ -24,11 +25,26 @@ authors = ["Joshua Yu"]
 
 {% end %}
 
-<!-- split -->
+</td>
+<td>
 
-{{ contributors(authors=["Joshua Yu"], editors=["Adhora Mir"], staff_reviewers=["TBD"]) }}
+{% admonition(type="note", icon="info", title="Contributors") %}
+
+<div class="contributor-group">
+<i class="fas fa-pen-nib"></i>  Primary Author: Joshua Yu</div>
+  <div class="contributor-group">
+</div>
+<i class="fas fa-user-edit"></i> Editor: Adhora Mir
+  <div class="contributor-group">
+<i class="fas fa-star"></i>  Staff Reviewer: TBD
+</div>
 
 {% end %}
+
+</td>
+
+</tr>
+</table>
 
 {{ research_card(paper="sygma2", show_title=true) }}
 
