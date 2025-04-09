@@ -12,8 +12,6 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-{{wip(body="WIP. Pending: staff review.")}}
-
 <table style="margin:0rem">
   <tr>
     <td>
@@ -267,6 +265,8 @@ Adverse events were similar between groups. One asthma-related death in budesoni
 - No adjustments for multiple comparisons in secondary efficacy analyses, giving less confidence in the ACQ-5/AQLQ results
 
 ## Risk of Bias 2 for primary outcome
+
+Outcome: low risk
 
 ### Domain 1: Risk of Bias from the Randomization Process
 
