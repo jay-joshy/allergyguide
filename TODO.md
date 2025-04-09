@@ -15,9 +15,9 @@
 ## Misc
 
 - Optimize .PNGS used (see https://github.com/shssoichiro/oxipng and https://abridge.pages.dev/overview-abridge/#optimize-png-ico-files
-- Reach out to staff re: supporting the project / funding?
+- Reach out to staff re: supporting the project / funding -- once example pages completed and overall structure of site more solidified
 - team structure?
-  - main editor: josh
+  - main editors: josh, adhora, more...?
   - main staff: ?TBD
   - other editors: ? other fellows interested -- ~3-4? to coordinate the editing process and reaching out to staff
     - Medications, Research, Topics (? editors mix and match categories or we assign from the start?)
@@ -28,8 +28,8 @@
 ## Content
 
 - Make example articles for 1) a condition 2) macro 3) research landmark article
-  - Chronic rhinosinusitis, landmark trials (ie. omalizumab and CSU, SYGMA, peanut immunotherapy, Xolair/Dupi for CSU, LEAP)
-  - A systematic review (ie. [this one](https://pubmed.ncbi.nlm.nih.gov/36563746/))
+  - SYGMA2 trial DONE => pending review now. Hold off systematic review article for now (TODO! later, ie [this one](https://pubmed.ncbi.nlm.nih.gov/36563746/))
+  - Chronic rhinosinusitis
 - sections for pdfs for not only patient handouts but how to use inhalers, etc.
 
 ## Shortcodes
