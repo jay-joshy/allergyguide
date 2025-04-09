@@ -13,8 +13,8 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 {% admonition(type="danger", icon="tip", title="MAIN GOALS") %}
 
 1. Guides for major conditions, including copy-pasteable macros, practical pearls, dealing with common/uncommon scenarios
-2. Sections for therapies and medications
-3. Clinical decision tools, Clinical quality-of-life tools, consent forms
+2. Guides for therapies and quick common medication references
+3. Clinical decision tools, clinical quality-of-life tools (ie. [skin testing generator](/tools/spt-generator/)), consent forms
 4. Patient resources (a one stop shop for handouts!)
 5. Critical appraisal of research
 
@@ -26,7 +26,7 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 - Informal case reports with well-defined learning points
 - Patient resources translated into different languages -- also with specific geographics (ie. BC, ON, etc.)
 - Sets of questions for RC studying (and maybe an Anki deck)
-- How to bill (for fellows)
+- Setting up practice; how to bill (for fellows)
 
 # The editors
 
