@@ -14,7 +14,7 @@ authors = ["Joshua Yu"]
 
 {{wip(body="WIP. Pending: staff review.")}}
 
-{{ research_card(paper="sygma2", show_title=true) }}
+{% two_columns() %}
 
 {% admonition(type="info", icon="info", title="Trial metadata") %}
 
@@ -24,9 +24,17 @@ authors = ["Joshua Yu"]
 
 {% end %}
 
+<!-- split -->
+
+{{ contributors(authors=["Joshua Yu"], editors=["Adhora Mir"], staff_reviewers=["TBD"]) }}
+
+{% end %}
+
+{{ research_card(paper="sygma2", show_title=true) }}
+
 ## What's the clinical question?
 
-<span class='hl'>In patients with mild asthma, is PRN budesonide-formoterol non-inferior to budesonide maintenance therapy in preventing severe asthma exacerbations?</span>
+<span class="hl-yellow">In patients with mild asthma, is PRN budesonide-formoterol non-inferior to budesonide maintenance therapy in preventing severe asthma exacerbations?</span>
 
 {% admonition(type="tip", icon="question", title="Why should we care?") %}
 Adherence to regular controller steroid puffer therapy in mild asthma is poor, with underuse associated with severe asthma exacerbations. An alternative non-inferior PRN strategy would be a valuable option.
@@ -38,7 +46,7 @@ Adherence to regular controller steroid puffer therapy in mild asthma is poor, w
 
 **Population**:
 
-- **Inclusion Criteria**: Patients aged 12 years and older with a clinical diagnosis of <span class='hl'>mild asthma _requiring_ GINA step 2 treatment</span> (2018 GINA report: step 2 => low dose ICS or LTRA as controller + PRN SABA). Their asthma must have been present for at least 6 months, and be either _uncontrolled on PRN SABA_ or _controlled on mono-maintenance low dose ICS or LTRA_
+- **Inclusion Criteria**: Patients aged 12 years and older with a clinical diagnosis of <span class="hl-yellow">mild asthma _requiring_ GINA step 2 treatment</span> (2018 GINA report: step 2 => low dose ICS or LTRA as controller + PRN SABA). Their asthma must have been present for at least 6 months, and be either _uncontrolled on PRN SABA_ or _controlled on mono-maintenance low dose ICS or LTRA_
 
   - For PRN SABA: required pre-bronchodilator FEV1>=60% predicted with FEV1>=80% post-bronchodilator
   - For low dose ICS or LTRA: required FEV1>=80% pre-bronchodilator
@@ -68,7 +76,7 @@ Adherence to regular controller steroid puffer therapy in mild asthma is poor, w
 
 ## Study Design
 
-This study was a <span class='hl'>**double-blind, multicenter, parallel-group randomized controlled trial**</span> conducted over <span class='hl'>**52 weeks**</span> across **354 sites in 25 countries**.
+This study was a <span class="hl-yellow">**double-blind, multicenter, parallel-group randomized controlled trial**</span> conducted over <span class="hl-yellow">**52 weeks**</span> across **354 sites in 25 countries**.
 
 {% text_image(src="/research/sygma2/study_design.png", alt="Figure S1, showing the study design", caption = "Figure S1 from the supplementary appendix.") %}
 
@@ -78,7 +86,7 @@ Follow-up over 52 weeks was done through both scheduled in-person vists and phon
 
 {% end %}
 
-### Outcome Assessment
+### How were outcomes assessed?
 
 #### Primary
 
@@ -94,13 +102,13 @@ Follow-up over 52 weeks was done through both scheduled in-person vists and phon
 
 A negative binomial regression model was used for the rate of severe exacerbations, adjusting for treatment group, pretrial treatment, geographic region.
 
-Time to the first severe exacerbation was analyzed using a Cox proportional-hazards model with the same adjustment factors. Changes in ACQ-5/AQLQ scores and FEV1 were analyzed using a mixed model for repeated measures. <span class="hl">"_No adjustments for multiple comparisons for secondary efficacy variables were made._"</span>
+Time to the first severe exacerbation was analyzed using a Cox proportional-hazards model with the same adjustment factors. Changes in ACQ-5/AQLQ scores and FEV1 were analyzed using a mixed model for repeated measures. <span class="hl-yellow">"_No adjustments for multiple comparisons for secondary efficacy variables were made._"</span>
 
 ## Results
 
 ### Table 1: patients
 
-4215 patients were randomized, with 4176 included in the full analysis set (2089 in the budesonide-formoterol group and 2087 in the budesonide maintenance group). Overall the groups were well balanced, in particular with age, sex, region, and smoking status (mean age 41 years, ~60% female). Asthma characteristics were also well balanced (see below table). Notably, roughly half of the patients had a baseline ACQ-5 score of ≥1.5.
+4215 patients were randomized, with 4176 included in the full analysis set (2089 in the budesonide-formoterol group and 2087 in the budesonide maintenance group). Overall the groups were well balanced, in particular with age, sex, region, and smoking status (mean age 41 years, ~60% female). <span class="hl-yellow">Asthma characteristics were also well balanced (see below table)</span>. Notably, roughly half of the patients had a baseline ACQ-5 score of ≥1.5.
 
 |                                                                          | PRN Budesonide-Formoterol (2089) | Budesonide Maintenance (2087) |
 | -----------------------------------------------------------------------: | :------------------------------: | :---------------------------: |
@@ -115,13 +123,13 @@ Time to the first severe exacerbation was analyzed using a Cox proportional-haza
 |                                                                        1 |            365 (17.5)            |          362 (17.3)           |
 |                                                                       ≥2 |             94 (4.5)             |           98 (4.7)            |
 
-<span class="hl">From each group, only about 1% of patients were lost to follow-up</span>.
+<span class="hl-yellow">From each group, only about 1% of patients were lost to follow-up</span>.
 
 ### Primary Outcome
 
 {{ img(src="/research/sygma2/primary.png" alt="Primary outcome results", class="c1", caption = "Rate ratios for the annualized rate of severe asthma exacerbations. Solid line: non-inferiority margin; dashed line: superiority margin.") }}
 
-<span class="hl">PRN budesonide-formoterol was non-inferior to budesonide maintenance therapy for the annualized rate of severe asthma exacerbations</span>, with rates of 0.11 (95% CI, 0.10 to 0.13) and 0.12 (95% CI, 0.10 to 0.14), respectively (RR 0.97; upper one-sided 95% confidence limit, 1.16).
+<span class="hl-yellow">PRN budesonide-formoterol was non-inferior to budesonide maintenance therapy for the annualized rate of severe asthma exacerbations</span>, with rates of 0.11 (95% CI, 0.10 to 0.13) and 0.12 (95% CI, 0.10 to 0.14), respectively (RR 0.97; upper one-sided 95% confidence limit, 1.16).
 
 ### Secondary Outcomes
 
@@ -199,7 +207,7 @@ In total, 8.5% of the budesonide-formoterol group compared to 8.8% in the budeso
 
 In both groups, the ACQ-5 and AQLQ score trended towards better control; while both analyses were not controlled for multiple comparisons, they both favoured the budesonide maintenance group.
 
-However, the <span class="hl">actual magnitude of change for both scores was relatively small</span>:
+However, the <span class="hl-yellow">actual magnitude of change for both scores was relatively small</span>:
 
 - ACQ-5: the mean difference between budesonide maintenance and PRN Symbicort scores was 0.11 (95% CI, 0.07 to 0.15); at the end of 52 weeks, 40.3% vs. 44.3% had a decrease of ≥0.5 (OR 0.86; 95% CI, 0.75 to 0.99, p=0.036). If you took that 4% difference at face-value, the NNT to decrease the ACQ-5 score by 52 weeks would be 25
 - AQLQ: the mean difference between budesonide maintenance and PRN Symbicort scores was -0.096 (95% CI, -0.137 to -0.054)
@@ -225,11 +233,11 @@ However, the <span class="hl">actual magnitude of change for both scores was rel
 
 #### Puffer and steroid use
 
-Adherence to the blinded maintenance regimen was the same between groups: around 60%±30%; there was no data on adherence over time.
+Adherence to the blinded maintenance regimen was the same between groups: <span class="hl-yellow">around 60%±30%; there was no data on adherence over time</span>.
 
 - For PRN doses: 0.52 inhalations ± 0.55/day of Symbicort on average, vs 0.49±0.70/day of terbutaline
 - Less patients required high PRN puffer use at least once in a day for the Budesonide-Formoterol group: 10% vs 15% for >8 inhalations, 4.1% vs 7.4% for >12 inhalations
-- Budesonide-formoterol patients had a 75% lower median daily dose of inhaled glucocorticoid: 66 µg compared to 267 µg. Median days with systemic steroids was 6 days in both groups.
+- <span class="hl-yellow">Budesonide-formoterol patients had a 75% lower median daily dose of inhaled glucocorticoid: 66 µg compared to 267 µg</span>. Median days with systemic steroids was 6 days in both groups.
 
 #### Adverse Events
 
