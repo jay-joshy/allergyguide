@@ -94,7 +94,7 @@ Adherence to regular controller steroid puffer therapy in mild asthma is poor, w
 
 This study was a <span class="hl-yellow">double-blind, multicenter, parallel-group randomized controlled trial</span> conducted over <span class="hl-yellow">52 weeks</span> across 354 sites in 25 countries.
 
-{% text_image(src="/research/sygma2/study_design.png", alt="Figure S1, showing the study design", caption = "Figure S1 from the supplementary appendix.") %}
+{% text_image(src="/research/sygma2/study_design.png", alt="Figure S1, showing the study design", caption = "Study design. Figure S1 from the supplementary appendix.") %}
 
 There was a **2 to 4 week run-in period** where patients used PRN terbutaline alone for symptom relief, before randomization. Randomization was stratified by study site, and computer generated. During the 52-week period there was no regular medication reminders.
 
