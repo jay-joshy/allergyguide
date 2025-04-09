@@ -2,8 +2,8 @@
 
 :root {
   /* Dark mode */
-  --hl-yellow-bg: #665e00;
-  --hl-yellow-text: #fff2a8;
+  --hl-yellow-bg: #4f3a01;
+  --hl-yellow-text: --text-color-high-contrast;
 
   --hl-red-bg: #6e1212;
   --hl-red-text: #ffb6b6;
@@ -38,7 +38,7 @@
 
 /* Base highlight class with shared styles */
 @mixin hl-padding {
-  padding: 0.1rem 0.2rem;
+  padding: 0.1rem 0.3rem;
   border-radius: 0.1rem;
 }
 
