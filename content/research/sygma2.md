@@ -92,7 +92,7 @@ Adherence to regular controller steroid puffer therapy in mild asthma is poor, w
 
 ## Study Design
 
-This study was a <span class="hl-yellow">**double-blind, multicenter, parallel-group randomized controlled trial**</span> conducted over <span class="hl-yellow">**52 weeks**</span> across **354 sites in 25 countries**.
+This study was a <span class="hl-yellow">double-blind, multicenter, parallel-group randomized controlled trial</span> conducted over <span class="hl-yellow">52 weeks</span> across 354 sites in 25 countries.
 
 {% text_image(src="/research/sygma2/study_design.png", alt="Figure S1, showing the study design", caption = "Figure S1 from the supplementary appendix.") %}
 
