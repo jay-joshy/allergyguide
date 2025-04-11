@@ -2,7 +2,6 @@
 title = "Topic contribution guide"
 date = 2025-03-17
 draft = false
-
 [extra]
 toc = true
 authors = ["Joshua Yu"]
@@ -27,6 +26,7 @@ Where possible, especially for more recent changes to guidelines, please include
 - Presentation
   - Clinical: (history and exam)
   - Lab/imaging findings:
+- Pathophysiology
 - Diagnosis:
   - Criteria / approach
   - Differentials
@@ -59,6 +59,7 @@ Macros exist at the top of the topic page. While not all topics need a macro, mo
 - Family doctor focused blurb about the condition (ie. pathophys, prognosis), investigations, management recommendations
 
 Example:
+
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
 
 ## Styling of topic pages
