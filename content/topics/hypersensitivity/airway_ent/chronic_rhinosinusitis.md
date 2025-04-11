@@ -28,7 +28,7 @@ CRS is a complex inflammatory syndrome with two subtypes: CRSwNP and CRSsNP. Dia
 
 ## Definitions
 
-Meant to be purely acronyms, not classifcations I think.
+Meant to be purely acronyms, not classifications I think.
 
 ## Classification
 
@@ -54,22 +54,30 @@ Approach
 
 ## Natural history / prognosis
 
+## Factoids
+
+-
+
 ## Quiz yourself:
 
 ## Further reading:
 
 {% references() %}
-[{
+[
+{
 "id": "1",
 "aha_bib": "",
 "notes": ""
-}, {
+},
+{
 "id": "2",
-"aha_bib": ""
-}, {
-"id": "3",
-"aha_bib": "Another reference here with its own details.",
-"url": "https://example.com",
+"aha_bib": "",
 "notes": ""
-}]
+},
+{
+"id": "3",
+"aha_bib": "",
+"notes": ""
+}
+]
 {% end %}
