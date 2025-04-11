@@ -23,11 +23,6 @@ Critical appraisal of primary or secondary literature will have two major sectio
 
 This section should not be longer than half a page at most. It is meant as a **quick glance-over refresher** about what the take-home points were. Use highlights to emphasize the key information (ie. the primary outcomes of interest, key exclusions, etc.).
 
-**Highlighting**:
-
-- important population details and the interventions should be in yellow
-- important results should be in green
-
 {% two_columns() %}
 
 - What is the main clinical question?
@@ -52,30 +47,29 @@ From the [SYGMA2 trial](https://www.nejm.org/doi/full/10.1056/NEJMoa1715275) (pr
 
 # The more detailed review
 
+See the page for the [SYGMA2 trial](/research/sygma2) for an example:
+
 {% two_columns() %}
 
 - Metadata
-  - Title
-  - Year
+  - Publish year
   - Journal
-  - Trial name
   - Funded by
-- Background
-- Objective
-- Methods
-
-<!-- split -->
-
-- Results
-- Figures -- will be hosted statically
-- Limitations
-- Conclusion
-- Study quality
-
 - Authors:
   - Primary: list
   - Reviewers: list
   - Editor: list
+ 
+<!-- split -->
+
+- What's the clinical question?
+- PICO (in more depth)
+- Study design (will depend on if primary vs secondary evidence)
+- Results 
+- Limitations
+- Conclusion
+- Study quality
+
 
 {% end %}
 
