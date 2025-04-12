@@ -2,19 +2,17 @@
 {% set output_md = output_md | default(value=false) %}
 {% set show_headers = show_headers | default(value=true) %}
 
-{# We assume json_data is passed into the shortcode as a string #}
-<div class="json_to_table" data-json='{{ body | safe }}'></div>
-
-{# Inline JavaScript to parse the JSON and build the table #}
+{# Generate a unique id for this instance #}
+{% set unique_id = "json_table_" ~ get_random(end=100000) %}
+<div id="{{ unique_id }}" class="json_to_table" data-json='{{ body | safe }}'></div>
 <script>
-  const output_md = {{output_md | safe}};
-  const show_headers = {{show_headers}};
-  document.addEventListener('DOMContentLoaded', function () {
-    var container = document.querySelector('.json_to_table');
+  (function() {
+    const output_md = {{ output_md | safe }};
+    const show_headers = {{ show_headers }};
+    const container = document.getElementById('{{ unique_id }}');
     if (!container) return;
 
-    // Get the JSON string from the data attribute
-    var jsonStr = container.getAttribute('data-json');
+    var jsonStr = container.getAttribute('data-json').replace(/[\r\n]+/g, '');
     var data;
     try {
       data = JSON.parse(jsonStr);
@@ -29,12 +27,8 @@
       return;
     }
 
-    // Use keys of the first object as table headers
     var headers = Object.keys(data[0]);
-
-    // Choose output type based on the 'output_md' variable
     if (output_md) {
-      // Build Markdown table as a string
       var mdTable = '';
       mdTable += '| ' + headers.join(' | ') + ' |\n';
       mdTable += '| ' + headers.map(() => '---').join(' | ') + ' |\n';
@@ -46,10 +40,7 @@
       });
       container.innerHTML = '<pre>' + mdTable + '</pre>';
     } else {
-      // Build an HTML table
       var htmlTable = '<table class="json-table">';
-
-      // Conditionally include headers based on show_headers
       if (show_headers) {
         htmlTable += '<thead><tr>';
         headers.forEach(function (header) {
@@ -57,7 +48,6 @@
         });
         htmlTable += '</tr></thead>';
       }
-
       htmlTable += '<tbody>';
       data.forEach(function (row) {
         htmlTable += '<tr>';
@@ -69,5 +59,5 @@
       htmlTable += '</tbody></table>';
       container.innerHTML = htmlTable;
     }
-  });
+  })();
 </script>
