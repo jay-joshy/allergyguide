@@ -26,6 +26,8 @@ CRS is a complex inflammatory syndrome with two subtypes: CRSwNP and CRSsNP. Dia
 
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
 
+## Summary diagram
+
 ## Definitions
 
 Meant to be purely acronyms, not classifications I think.
