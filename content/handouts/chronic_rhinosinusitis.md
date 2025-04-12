@@ -55,7 +55,7 @@ If you have any of the following, you should let your doctor know: these may sug
 
 - new numbness or tingling
 - nasal dripping that only occurs from one side
-- recurrent nose bleeds
+- recurrent nosebleeds
 - double vision
 - unexplained weight loss, recurrent fevers, night sweats
 
@@ -94,19 +94,19 @@ There is evidence that repeated viral infections (for example, the common cold) 
 Though rare, if someone has certain problems with their immune system they are at higher risk of recurrent sinus infection and eventually CRS.
 
 **Pre-existing structural problems**:
-Variations in the structure of your nasal passages and sinuses can make you more vulnerable to developing CRS. However, _by themselves, these are very uncommon causes of CRS_. For example, a deviated septum.
+Variations in the structure of your nasal passages and sinuses may make you more vulnerable to developing CRS. However, _by themselves, these are very uncommon causes of CRS_. For example, a deviated septum.
 
 {% end %}
 
-## What further investigations are usually done once CRS is diagnosed?
+## What further investigations can be done once CRS is diagnosed?
 
-- **Allergy testing** – to check for allergic triggers
-- Asthma if suspected
-- immune system stuff etc
+There is no standard panel of testing for CRS. However, depending on your symptoms and triggers, the following tests may be considered:
+
+- Skin prick testing for common allergens such as dust and moulds
+- Testing for certain immune deficiencies if specific criteria are met
+- Testing for other conditions related to CRS, including asthma and NSAID sensitivity
 
 ## What are the available treatments?
-
-CRS is often a **long-term condition**. While it might not be fully “curable,” **most people can manage symptoms well** with the right treatments. Your doctor will suggest likely a combination of the following to start:
 
 {% admonition(type="danger", icon="danger", title="CONSISTENCY IS KEY") %}
 
@@ -114,27 +114,76 @@ Many of the treatments **do not work right away**, and need time with regular us
 
 {% end %}
 
-### First line treatments
+CRS is often a **long-term condition**. While it might not be fully “curable,” **most people can manage symptoms well** with the right treatments. Your doctor will suggest likely a combination of the following to start:
 
-### Lifestyle
+### First-line / Cornerstone treatments
 
-- Regular nasal and sinus rinses – washes out extra mucus and irritants/allergens. Cleaning the nose before other medications (for example, a nasal spray) can often help them get more effectively get into the sinuses. This should be done with **sterile** saline. These are usually non-prescription, and may be in the form of squeeze bottles or pots
-- Stop smoking cigarettes, vaping
-- Avoidance of known triggers and/or allergens
+{% json_to_table()%}
+[
+{
+"Treatment": "Lifestyle",
+"Details": "
+Avoid cigarettes and smoke<br>Avoidance of known triggers, irritants, and/or allergens
+",
+"Examples": "
+Getting dust-mite covers;<br>keeping the cat out of the bedroom
+"
+},
+{
+"Treatment": "Nasal saline rinses",
+"Details": "Washes out extra mucus and irritants/allergens. Cleaning the nose before other medications (for example, a steroid nasal spray) can help get them more effectively to the sinuses.",
+"Examples": "This should be done with <b>sterile</b> saline. These are usually non-prescription, and may be in the form of squeeze bottles or pots. We recommend these more than the saline sprays if possible."
+},
+{
+"Treatment": "Corticosteroid nasal sprays or rinses",
+"Details": "Corticosteroids are potent anti-inflammatories, but take time to work. With <i>consistent daily use over weeks</i>, they reduce swelling and inflammation. Most commonly, a nasal spray is used. Sometimes, a sinus rinse with steroids is used instead to better reach the sinuses.<br><br>Because these are only applied to the surface of your tissues and are not swallowed, extremely little steroid makes in into your blood. This is <b>not</b> the same steroid that bodybuilders would use!",
+"Examples": "Omnaris, Nasonex"
+},
+{ "Treatment": "Antibiotics", "Details": "Used if there is an acute flare with suspected infection.", "Examples": "Clavulin for 10 days"}
+]
+{% end %}
 
-### Medications:
+### Further specialized therapies for CRS with nasal polyps
 
-- Regular nasal steroids – first-line therapy is usually a daily spray; with consistent use over weeks it can reduce swelling and inflammation. Sometimes, a sinus rinse with steroids is used instead to get deeper into the sinuses. Because these are only applied to the surface of your tissues and are not swallowed, very little steroid makes in into your blood. This is not the same steroid that bodybuilders would use!
-- **Antibiotics** – if a bacterial infection is suspected for an acute flare
-- **Allergy medicines** – if allergies are a trigger
-- **Oral steroids** – for severe swelling or polyps
-- Biologics
+{% json_to_table()%}
+[
+{ "Treatment": "
+Biologic therapies
+",
+"Details": "
+Biologics are medications that target specific steps in the inflammatory process in CRS. When used in conjunction with first-line therapy they can offer significant relief, and often can help with other related conditions, like asthma.
+",
+"Examples": "
+Dupilumab (brand-name Dupixent), omalizumab (brand-name Xolair), mepolizumab (brand-name Nucala)
+"
+},
+{ "Treatment": "
+Oral corticosteroids
+",
+"Details": "
+Short courses of oral steroids can be used for rapid temporary symptomatic relief (~ a few weeks); they will shrink polyps and improve smell. However, oral steroids are absorbed all across the body and chronic use is associated with significant side effects.
+",
+"Examples": "
+Prednisone, 30mg per day for 7 days
+"
+},
+{ "Treatment": "
+Leukotriene blockers
+",
+"Details": "
+These medications are most effective if there is also asthma. They also reduce inflammation through a different mechanism than steroids.
+",
+"Examples": "
+Montelukast (brand-name Singulair)
+"}
+]
+{% end %}
 
-### Procedures:
+### The role of surgery
 
-## What is my long term outcome? Is it curable?
+For CRS with or without polyps, endoscopic (with a small camera) minimally invasive surgery is considered when medical therapy has failed. Inflamed areas and blockages are removed and reduces the burden of inflammation in the sinuses, while also allowing improved penetration of first-line medications such as nasal steroids to reach the sinuses.
 
-CRS is commonly a **long-term condition**. It might not be fully “curable,” but **most people can manage symptoms well** with the right treatments:
+By itself, surgery does not cure CRS; unless other underlying risk factors are also being addressed, recurrence and worsening of CRS may occur. Revisions or repeat surgery may be required after a few years. The details of the surgery itself would be discussed with an Ear Nose and Throat (ENT) specialist.
 
 ## FAQs
 
