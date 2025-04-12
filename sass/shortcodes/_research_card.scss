@@ -20,25 +20,25 @@
 
   .paper-table th,
   .paper-table td {
-    padding: 8px;
+    padding: 0.3rem;
     border: none;
-    border-bottom: 0.8px solid #ddd;
+    border-bottom: 0.01rem solid #ddd;
   }
 
   .paper-table thead th {
-    border-top: 2px solid #ddd;
+    border-top: 0.1rem solid #ddd;
     border-color: var(--rc-bold_border);
     text-align: left;
   }
 
   .paper-table tbody tr:first-child td {
-    border-bottom: 0.8px solid #ddd;
+    border-bottom: 0.01rem solid #ddd;
     border-top: 2px solid;
     border-top-color: var(--rc-bold_border);
   }
 
   .paper-table tr:last-child td {
-    border-bottom: 2px solid #ddd;
+    border-bottom: 0.1rem solid #ddd;
     border-color: var(--rc-bold_border);
 
   }
