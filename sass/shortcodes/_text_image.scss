@@ -10,6 +10,7 @@
   .image-content {
     display: flex;
     flex-direction: column; // Stack image and caption vertically
+    align-items: center;
 
     img {
       max-width: 100%;
