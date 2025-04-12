@@ -108,12 +108,6 @@ There is no standard panel of testing for CRS. However, depending on your sympto
 
 ## What are the available treatments?
 
-{% admonition(type="danger", icon="danger", title="CONSISTENCY IS KEY") %}
-
-Many of the treatments **do not work right away**, and need time with regular use before there is significant improvement in your symptoms.
-
-{% end %}
-
 CRS is often a **long-term condition**. While it might not be fully “curable,” **most people can manage symptoms well** with the right treatments. Your doctor will suggest likely a combination of the following to start:
 
 ### First-line / Cornerstone treatments
@@ -141,6 +135,12 @@ Getting dust-mite covers;<br>keeping the cat out of the bedroom
 },
 { "Treatment": "Antibiotics", "Details": "Used if there is an acute flare with suspected infection.", "Examples": "Clavulin for 10 days"}
 ]
+{% end %}
+
+{% admonition(type="danger", icon="danger", title="CONSISTENCY IS KEY") %}
+
+The above treatments **do not work right away**, and need time with regular use before you expect significant improvement in symptoms.
+
 {% end %}
 
 ### Further specialized therapies for CRS with nasal polyps
