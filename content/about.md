@@ -24,7 +24,7 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 
 - Deep-dives in separate subpages for more fellow-focused content for each topic
 - Informal case reports with well-defined learning points
-- Patient resources translated into different languages -- also with specific geographics (ie. BC, ON, etc.)
+- Patient resources translated into different languages -- also with specific geographies (ie. BC, ON, etc.)
 - Sets of questions for RC studying (and maybe an Anki deck)
 - Setting up practice; how to bill (for fellows)
 
