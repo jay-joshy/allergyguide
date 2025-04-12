@@ -12,11 +12,13 @@ toc = true
 authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
 +++
 
+{% text_image(src="/images/topics/chronic_rhinosinusitis/normal_sinus.png", alt="Picture of a normal sinus from the front", caption = "Normal sinus structure. Image adapted from Servier Medical Art, https://smart.servier.com, licensed under CC BY 4.0.", height="15rem") %}
+
 ## What are the sinuses?
 
 We all have pockets of air behind our face, called the sinuses, that are connected with our nostrils. Each pocket is normally lined with a small amount of tissue that produces mucous to keep the area moist and healthy.
 
-[insert figure -- normal healthy sinus]
+{% end %}
 
 ## What is chronic rhinosinusitis (CRS), and how is it diagnosed?
 
@@ -45,8 +47,6 @@ This is done through either:
 {% end %}
 
 {% end %}
-
-[insert two column two figures -- a) inflamed sinus, b) CT images + endoscopy]
 
 Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _those these are not always present and are non-specific_.
 
