@@ -1,0 +1,145 @@
++++
+title = "Chronic rhinosinusitis"
+description = "Patient handout for chronic rhinosinusitis"
+date = 2025-04-12
+draft = false
+
+[taxonomies]
+tags = ["handout"]
+
+[extra]
+toc = true
+authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
++++
+
+## What are the sinuses?
+
+We all have pockets of air behind our face, called the sinuses, that are connected with our nostrils. Each pocket is normally lined with a small amount of tissue that produces mucous to keep the area moist and healthy.
+
+[insert figure -- normal healthy sinus]
+
+## What is chronic rhinosinusitis (CRS), and how is it diagnosed?
+
+When this lining becomes chronically (>3 months) irritated and inflamed, it becomes swollen and produces too much mucous. This can lead to blockages and poor clearance of mucous, reduced airflow, and poor drainage: **this is known as chronic rhinosinusitis**. To have CRS therefore, <span class="hl-yellow">you need **both** key symptoms and imaging evidence of sinus inflammation</span>:
+
+{% two_columns() %}
+
+{% admonition(type="info", icon="info", title="Key symptoms - at least 2 for at least 3 months") %}
+
+- nasal congestion/fullness,
+- facial pain, pressure, or fullness
+- liquid dripping from the nostrils or the back of the throat
+- decreased sense of smell
+
+{% end %}
+
+<!-- split -->
+
+{% admonition(type="info", icon="info", title="Imaging confirming sinus inflammation") %}
+
+This is done through either:
+
+1. A _computed tomography_ (CT) scan of the sinuses, OR
+2. _Nasal endoscopy_: an office procedure where a thin camera is used to directly see the sinuses
+
+{% end %}
+
+{% end %}
+
+[insert two column two figures -- a) inflamed sinus, b) CT images + endoscopy]
+
+Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _those these are not always present and are non-specific_.
+
+{% admonition(type="warning", icon="warning", title="Atypical symptoms you should watch watch out for?") %}
+If you have any of the following, you should let your doctor know: these may suggest there is something else going on aside from CRS.
+
+- new numbness or tingling
+- nasal dripping that only occurs from one side
+- recurrent nose bleeds
+- double vision
+- unexplained weight loss, recurrent fevers, night sweats
+
+{% end %}
+
+## There are two main types of CRS: with and without nasal polyps
+
+**CRS without nasal polyps:**
+
+This is the most common type. It may be linked to allergies, infections, irritants, or other factors.
+
+**CRS with nasal polyps:**
+
+Sometimes, CRS is caused by soft, non-cancerous growths called polyps that grow in the sinuses. If large enough, they can cause blockage of the nasal passages and sinuses. Often, there is also associated asthma; there may also be sensitivity to medications known as NSAIDs (for example, aspirin, ibuprofen, naproxen). Polyps are usually found using nasal endoscopy or CT scan. It is unclear what exactly can cause these polyps to form.
+
+[include image of sinuses with nasal polyps -- likely image to the right of the above text]
+
+## What are risk factors for developing CRS?
+
+There are a variety of possible risk factors for CRS; often, more than one may be involved. These include:
+
+{% two_columns() %}
+
+**Allergies**:
+If you are chronically exposed to particles in the air you are allergic to (for example, dust mites, cat/dog danger, molds), the resulting inflammation can drive and worsen CRS.
+
+**Irritants in the air**:
+Chronic exposure to irritants such as smoke and other irritants can increase your risk of CRS.
+
+**Repeated viral infections**:
+There is evidence that repeated viral infections (for example, the common cold) can lead to CRS, even though the virus itself goes away.
+
+<!-- split -->
+
+**Immune system problems**:
+Though rare, if someone has certain problems with their immune system they are at higher risk of recurrent sinus infection and eventually CRS.
+
+**Pre-existing structural problems**:
+Variations in the structure of your nasal passages and sinuses can make you more vulnerable to developing CRS. However, _by themselves, these are very uncommon causes of CRS_. For example, a deviated septum.
+
+{% end %}
+
+## What further investigations are usually done once CRS is diagnosed?
+
+- **Allergy testing** – to check for allergic triggers
+- Asthma if suspected
+- immune system stuff etc
+
+## What are the available treatments?
+
+CRS is often a **long-term condition**. While it might not be fully “curable,” **most people can manage symptoms well** with the right treatments. Your doctor will suggest likely a combination of the following to start:
+
+{% admonition(type="danger", icon="danger", title="CONSISTENCY IS KEY") %}
+
+Many of the treatments **do not work right away**, and need time with regular use before there is significant improvement in your symptoms.
+
+{% end %}
+
+### First line treatments
+
+### Lifestyle
+
+- Regular nasal and sinus rinses – washes out extra mucus and irritants/allergens. Cleaning the nose before other medications (for example, a nasal spray) can often help them get more effectively get into the sinuses. This should be done with **sterile** saline. These are usually non-prescription, and may be in the form of squeeze bottles or pots
+- Stop smoking cigarettes, vaping
+- Avoidance of known triggers and/or allergens
+
+### Medications:
+
+- Regular nasal steroids – first-line therapy is usually a daily spray; with consistent use over weeks it can reduce swelling and inflammation. Sometimes, a sinus rinse with steroids is used instead to get deeper into the sinuses. Because these are only applied to the surface of your tissues and are not swallowed, very little steroid makes in into your blood. This is not the same steroid that bodybuilders would use!
+- **Antibiotics** – if a bacterial infection is suspected for an acute flare
+- **Allergy medicines** – if allergies are a trigger
+- **Oral steroids** – for severe swelling or polyps
+- Biologics
+
+### Procedures:
+
+## What is my long term outcome? Is it curable?
+
+CRS is commonly a **long-term condition**. It might not be fully “curable,” but **most people can manage symptoms well** with the right treatments:
+
+## FAQs
+
+**Is deviated septum a common cause of CRS?**
+By itself, it is **not** a common cause of CRS, though can contribute to nasal blockage.
+
+**Is CRS contagious?**
+No, CRS itself is not contagious. However, infections that can worsen it (like colds) can be.
