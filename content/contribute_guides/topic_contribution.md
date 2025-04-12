@@ -48,6 +48,7 @@ Where possible, especially for more recent changes to guidelines, please include
   - Primary: list
   - Reviewers: list
   - Editor: list
+- Conflicts of interest
 
 {% end %}
 
