@@ -7,5 +7,3 @@ description = "description"
 +++
 
 {{ wip() }}
-
-This will be a paginated display of critical appraisal of research!

@@ -96,7 +96,7 @@ This study was a <span class="hl-yellow">double-blind, multicenter, parallel-gro
 
 There was a **2 to 4 week run-in period** where patients used PRN terbutaline alone for symptom relief, before randomization. Randomization was stratified by study site, and computer generated. During the 52-week period there was no regular medication reminders.
 
-Follow-up over 52 weeks was done through both scheduled in-person vists and phone contact.
+Follow-up over 52 weeks was done through both scheduled in-person visits and phone contact.
 
 {% end %}
 

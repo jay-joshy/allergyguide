@@ -107,7 +107,7 @@ intervention that they received, rather than according to their assigned interve
 Analyses excluding eligible trial participants post-randomization should also be considered inappropriate, but post-
 randomization exclusions of ineligible participants (when eligibility was not confirmed until after randomization, and could not have been influenced by intervention group assignment) can be considered appropriate.
 
-### 2.7 If N/PN/NI to 2.6: Was there potential for a substantial impact (on the result) of the failure to analyse participants in the group to which they were randomized?
+### 2.7 If N/PN/NI to 2.6: Was there potential for a substantial impact (on the result) of the failure to analyze participants in the group to which they were randomized?
 
 This question addresses whether the number of participants who were analysed in the wrong intervention group, or
 excluded from the analysis, was sufficient that there could have been a substantial impact on the result. It is not possible
