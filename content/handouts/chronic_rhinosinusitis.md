@@ -61,7 +61,9 @@ If you have any of the following, you should let your doctor know: these may sug
 
 {% end %}
 
-## There are two main types of CRS: with and without nasal polyps
+## There are 3 main types of CRS: with and without nasal polyps
+
+{% two_columns() %}
 
 **CRS without nasal polyps:**
 
@@ -70,6 +72,14 @@ This is the most common type. It may be linked to allergies, infections, irritan
 **CRS with nasal polyps:**
 
 Sometimes, CRS is caused by soft, non-cancerous growths called polyps that grow in the sinuses. If large enough, they can cause blockage of the nasal passages and sinuses. Often, there is also associated asthma; there may also be sensitivity to medications known as NSAIDs (for example, aspirin, ibuprofen, naproxen). Polyps are usually found using nasal endoscopy or CT scan. It is unclear what exactly can cause these polyps to form.
+
+<!-- split -->
+
+**CRS with fungal allergy (Allergic fungal rhinosinusitis):**
+
+It is normal for there to be a small amount of fungi spores in the air we breathe. Normally, we breathe them in and out without issue. However, when our body develops an allergy to these fungi it causes a distinct inflammatory response and very thick mucous. There is specific diagnostic criteria for this condition involving allergy testing, mucous analysis, and evidence on imaging.
+
+{% end %}
 
 [include image of sinuses with nasal polyps -- likely image to the right of the above text]
 
@@ -133,7 +143,8 @@ Getting dust-mite covers;<br>keeping the cat out of the bedroom
 "Details": "Corticosteroids are potent anti-inflammatories, but take time to work. With <i>consistent daily use over weeks</i>, they reduce swelling and inflammation. Most commonly, a nasal spray is used. Sometimes, a sinus rinse with steroids is used instead to better reach the sinuses.<br><br>Because these are only applied to the surface of your tissues and are not swallowed, extremely little steroid makes in into your blood. This is <b>not</b> the same steroid that bodybuilders would use!",
 "Examples": "Omnaris, Nasonex"
 },
-{ "Treatment": "Antibiotics", "Details": "Used if there is an acute flare with suspected infection.", "Examples": "Clavulin for 10 days"}
+{ "Treatment": "Antibiotics", "Details": "Used if there is an acute flare with suspected infection.",
+"Examples": "Amoxicillin-clavulanate for 10 days. Moxifloxacin is an alternative for those with true penicillin allergies."}
 ]
 {% end %}
 
@@ -161,7 +172,7 @@ Dupilumab (brand-name Dupixent), omalizumab (brand-name Xolair), mepolizumab (br
 Oral corticosteroids
 ",
 "Details": "
-Short courses of oral steroids can be used for rapid temporary symptomatic relief (~ a few weeks); they will shrink polyps and improve smell. However, oral steroids are absorbed all across the body and chronic use is associated with significant side effects.
+Short courses of oral steroids can be used for rapid temporary symptomatic relief (~ a few weeks); they will shrink polyps and improve smell. However, oral steroids are absorbed all across the body and chronic use is associated with significant side effects, and should be used sparingly.
 ",
 "Examples": "
 Prednisone, 30mg per day for 7 days
@@ -181,7 +192,7 @@ Montelukast (brand-name Singulair)
 
 ### The role of surgery
 
-For CRS with or without polyps, endoscopic (with a small camera) minimally invasive surgery is considered when medical therapy has failed. Inflamed areas and blockages are removed and reduces the burden of inflammation in the sinuses, while also allowing improved penetration of first-line medications such as nasal steroids to reach the sinuses.
+For CRS with or without polyps, endoscopic (with a small camera) minimally invasive surgery is considered **_when medical therapy has failed_**. Inflamed areas and blockages are removed and reduces the burden of inflammation in the sinuses, while also allowing improved penetration of first-line medications such as nasal steroids to reach the sinuses.
 
 By itself, surgery does not cure CRS; unless other underlying risk factors are also being addressed, recurrence and worsening of CRS may occur. Revisions or repeat surgery may be required after a few years. The details of the surgery itself would be discussed with an Ear Nose and Throat (ENT) specialist.
 
@@ -192,3 +203,5 @@ By itself, it is **not** a common cause of CRS, though can contribute to nasal b
 
 **Is CRS contagious?**
 No, CRS itself is not contagious. However, infections that can worsen it (like colds) can be.
+
+**Are oral decongestants like pseudoephedrine helpful?** No. In fact, chronic use can be quite harmful and lead to increased blood pressure.
