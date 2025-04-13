@@ -289,6 +289,38 @@ testing this
 testing this
 {% end %}
 
+## dropdown
+
+```md
+{%/* dropdown(header="this is what the user will click on to get more info") */%}
+
+This text will appear in the dropdown
+
+And it will **LOOK GOOD** with markdown!
+
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a danger admonition with a danger icon.
+
+**Markdown can be used here :)**
+
+{% end %}
+
+{%/* end */%}
+```
+
+{% dropdown(header="this is what the user will click on to get more info") %}
+This text will appear in the dropdown
+
+And it will **LOOK GOOD** with markdown!
+
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a danger admonition with a danger icon.
+
+**Markdown can be used here :)**
+{% end %}
+
+{% end %}
+
 ## contributors
 
 ```md
@@ -464,7 +496,7 @@ if not provided default will show all medications from the toml
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
 ```
 
-# example
+## example
 
 proof of concept that 1) you can load in simple arrays and 2) use tera macros
 
@@ -474,7 +506,7 @@ proof of concept that 1) you can load in simple arrays and 2) use tera macros
 
 {{ example(a = ["test1", "test2"], n = 10) }}
 
-# references
+## references
 
 ```md
 This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
@@ -529,7 +561,7 @@ Here is another sentence with one reference <span class="references">2</span>
 }]
 {% end %}
 
-# mobile_warning
+## mobile_warning
 
 This will display a warning admonition if viewed from Mobile.
 
@@ -539,7 +571,7 @@ This will display a warning admonition if viewed from Mobile.
 
 {{ mobile_warning() }}
 
-# json_to_table
+## json_to_table
 
 - body -- the JSON
 - show_headers: bool, default true
@@ -565,7 +597,7 @@ This will display a warning admonition if viewed from Mobile.
 ]
 {% end %}
 
-# research_card
+## research_card
 
 ```md
 {{/* research_card(paper="sygma2") */}}
