@@ -20,15 +20,15 @@
     <div id="ref-popup-inner"></div>
   </div>
 </div>
-
 {# For biblography #}
 {% set showBib = showBib | default(value=false) %}
 {% if showBib %}
 <div class="ref-bib">
   {% for ref in references %}
-    <div class = "item">
-      {{ ref.id }}. {{ ref.aha_bib }}. <a class="ref-link" href="{{ref.url}}" target="_blank">Link.</a>
-    </div>
+  <div class="item">
+    {{ ref.id }}. {{ ref.bib }}.
+    <a class="ref-link" href="{{ref.url}}" target="_blank">Link.</a>
+  </div>
   {% endfor %}
 </div>
 {% endif %}
@@ -65,8 +65,8 @@
         const ref = references.find(function (r) {return r.id === id;});
         if (ref) {
           popupContent += '<div class="ref-entry">';
-          // Show the AHA style bibliography.
-          popupContent += '<p class="ref-text"><a class="ref-link" href="' + ref.url + '" target="_blank">' + ref.id + ".  " + ref.aha_bib + '</a></p>';
+          // Show the bibliography.
+          popupContent += '<p class="ref-text"><a class="ref-link" href="' + ref.url + '" target="_blank">' + ref.id + ".  " + ref.bib + '</a></p>';
           // If there are any extra notes, show them.
           if (ref.notes && ref.notes.trim() !== "") {
             popupContent += '<p class="ref-notes">' + ref.notes + '</p>';

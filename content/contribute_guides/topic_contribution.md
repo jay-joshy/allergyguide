@@ -179,7 +179,7 @@ Benadryl is not a fantastic antihistamine to use :)
 
 #### references
 
-References are embeddable! All you need to do it prepare references like you normally do with a bibliography in AHA style, and the editor will implement the rest. For example:
+References are embeddable! All you need to do it prepare references like you normally do with a bibliography in Vancouver style, and the editor will implement the rest. For example:
 
 This sentence needs two references <span class="references">1,2</span>. Here is another sentence with one reference <span class="references">3</span>.
 
@@ -188,17 +188,17 @@ This sentence needs two references <span class="references">1,2</span>. Here is 
 {% references(showBib = true) %}
 [{
 "id": "1",
-"aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
+"bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
 "url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
 "notes": ""
 }, {
 "id": "2",
-"aha_bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
+"bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
 "url": "https://www.jacionline.org/article/S0091-6749(22)01186-1/fulltext",
 "notes": "This study was good!"
 }, {
 "id": "3",
-"aha_bib": "Another reference here with its own details.",
+"bib": "Another reference here with its own details.",
 "url": "https://example.com",
 "notes": ""
 }]
