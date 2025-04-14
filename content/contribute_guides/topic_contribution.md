@@ -17,7 +17,7 @@ Where possible, especially for more recent changes to guidelines, please include
 
 {% two_columns() %}
 
-- Macro to c/p (see [here](/contribute#macros) for guide on writing macros)
+- Macro to c/p
 - Summary:
   - Condition name, epidemiology, pathophysiology, manifestations, diagnosis, management.
 - Definitions:
