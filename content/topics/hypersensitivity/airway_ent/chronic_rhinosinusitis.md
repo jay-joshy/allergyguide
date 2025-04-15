@@ -51,6 +51,9 @@ Approach
 
 ## Management
 
+{{ topics_crswnp_incs() }}
+{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
+
 - Usual:
 - Special circumstances:
 
