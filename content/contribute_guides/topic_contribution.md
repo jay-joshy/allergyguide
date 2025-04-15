@@ -16,6 +16,7 @@ Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersen
 - Macro to c/p
 - Summary:
   - Condition name, epidemiology, pathophysiology, manifestations, diagnosis, management.
+- Summary diagram
 - Definitions:
   - Things to know up front before reading the article
   - Abbreviations
