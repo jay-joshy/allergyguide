@@ -1,0 +1,114 @@
+:root {
+  /* Dark mode */
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --border-color: #444;
+  --header-bg: #1e1e1e;
+  --row-hover: #2a2a2a;
+  --beneficial-color: rgba(50, 205, 50, 0.3);
+  --intermediate-beneficial-color: rgba(144, 238, 144, 0.2);
+  --harmful-color: rgba(255, 105, 97, 0.3);
+  --intermediate-harmful-color: rgba(255, 165, 0, 0.2);
+  --neutral-color: rgba(173, 216, 230, 0.2);
+  --low-coe-pattern: rgba(255, 255, 255, 0.1);
+  --legend-border: #333;
+  --no-data-bg: #222;
+}
+
+:root.switch {
+  /* Light mode */
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #dddddd;
+  --header-bg: #f2f2f2;
+  --row-hover: #f8f8f8;
+  --beneficial-color: rgba(50, 205, 50, 0.2);
+  --intermediate-beneficial-color: rgba(144, 238, 144, 0.15);
+  --harmful-color: rgba(255, 105, 97, 0.2);
+  --intermediate-harmful-color: rgba(255, 165, 0, 0.15);
+  --neutral-color: rgba(173, 216, 230, 0.15);
+  --low-coe-pattern: rgba(0, 0, 0, 0.1);
+  --legend-border: #ddd;
+  --no-data-bg: #f8f8f8;
+}
+
+
+.topics_crswnp_biologics {
+  width: 100%;
+
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 0.7rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+
+  th,
+  td {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: var(--header-bg);
+    font-weight: bold;
+  }
+
+  tr:hover {
+    background-color: var(--row-hover);
+  }
+
+  .most-beneficial {
+    background-color: var(--beneficial-color);
+  }
+
+  .intermediate-beneficial {
+    background-color: var(--intermediate-beneficial-color);
+  }
+
+  .most-harmful {
+    background-color: var(--harmful-color);
+  }
+
+  .intermediate-harmful {
+    background-color: var(--intermediate-harmful-color);
+  }
+
+  .neutral {
+    background-color: var(--neutral-color);
+  }
+
+  .no-data {
+    background-color: var(--no-data-bg);
+  }
+
+  .low-coe {
+    background-image: linear-gradient(45deg,
+        var(--low-coe-pattern) 25%,
+        transparent 25%,
+        transparent 50%,
+        var(--low-coe-pattern) 50%,
+        var(--low-coe-pattern) 75%,
+        transparent 75%,
+        transparent);
+    background-size: 10px 10px;
+  }
+
+  .legend {
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid var(--legend-border);
+  }
+
+  .legend td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+  }
+}
