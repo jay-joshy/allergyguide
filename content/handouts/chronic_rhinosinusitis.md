@@ -1,5 +1,5 @@
 +++
-title = "Chronic rhinosinusitis"
+title = "Chronic rhinosinusitis: patient resource"
 description = "Patient handout for chronic rhinosinusitis"
 date = 2025-04-12
 draft = false
@@ -22,7 +22,7 @@ We all have pockets of air behind our face, called the sinuses, that are connect
 
 ## What is chronic rhinosinusitis (CRS), and how is it diagnosed?
 
-When this lining becomes chronically (>3 months) irritated and inflamed, it becomes swollen and produces too much mucous. This can lead to blockages and poor clearance of mucous, reduced airflow, and poor drainage: **this is known as chronic rhinosinusitis**. To have CRS therefore, <span class="hl-yellow">you need **both** key symptoms and imaging evidence of sinus inflammation</span>:
+When this lining becomes chronically (>3 months) irritated and inflamed, it becomes swollen and produces too much mucous. This can lead to blockages and poor clearance of mucous, reduced airflow, and poor drainage: **this is known as chronic rhinosinusitis**. To have CRS therefore, <span class="hl-yellow">you need **both** key symptoms and direct evidence of sinus inflammation</span>:
 
 {% two_columns() %}
 
@@ -37,7 +37,7 @@ When this lining becomes chronically (>3 months) irritated and inflamed, it beco
 
 <!-- split -->
 
-{% admonition(type="info", icon="info", title="Imaging confirming sinus inflammation") %}
+{% admonition(type="info", icon="info", title="Objective sinus inflammation") %}
 
 This is done through either:
 
@@ -50,8 +50,8 @@ This is done through either:
 
 Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _those these are not always present and are non-specific_.
 
-{% admonition(type="warning", icon="warning", title="Atypical symptoms you should watch watch out for?") %}
-If you have any of the following, you should let your doctor know: these may suggest there is something else going on aside from CRS.
+{% admonition(type="warning", icon="warning", title="Atypical symptoms you should watch out for?") %}
+If you have any of the following, you should let your doctor know: these may suggest something else going on aside from CRS.
 
 - new numbness or tingling
 - nasal dripping that only occurs from one side
@@ -77,7 +77,7 @@ Sometimes, CRS is caused by soft, non-cancerous growths called polyps that grow 
 
 **CRS with fungal allergy (Allergic fungal rhinosinusitis):**
 
-It is normal for there to be a small amount of fungi spores in the air we breathe. Normally, we breathe them in and out without issue. However, when our body develops an allergy to these fungi it causes a distinct inflammatory response and very thick mucous. There is specific diagnostic criteria for this condition involving allergy testing, mucous analysis, and evidence on imaging.
+There is normally a small amount of fungi spores in the air we breathe; normally, they cause no issues. However, **in rare cases**, our body develops an allergy to these fungi it causes a distinct inflammatory response and very thick mucous. There is specific diagnostic criteria for this condition involving allergy testing, mucous analysis, and evidence on imaging. It is NOT common and more often occurs in the US.
 
 {% end %}
 
@@ -136,21 +136,21 @@ Getting dust-mite covers;<br>keeping the cat out of the bedroom
 {
 "Treatment": "Nasal saline rinses",
 "Details": "Washes out extra mucus and irritants/allergens. Cleaning the nose before other medications (for example, a steroid nasal spray) can help get them more effectively to the sinuses.",
-"Examples": "This should be done with <b>sterile</b> saline. These are usually non-prescription, and may be in the form of squeeze bottles or pots. We recommend these more than the saline sprays if possible."
+"Examples": "This should be done with <b>sterile</b> saline. These are usually non-prescription, and may be in the form of squeeze bottles or pots. Saline sprays are less effective than rinses."
 },
 {
 "Treatment": "Corticosteroid nasal sprays or rinses",
-"Details": "Corticosteroids are potent anti-inflammatories, but take time to work. With <i>consistent daily use over weeks</i>, they reduce swelling and inflammation. Most commonly, a nasal spray is used. Sometimes, a sinus rinse with steroids is used instead to better reach the sinuses.<br><br>Because these are only applied to the surface of your tissues and are not swallowed, extremely little steroid makes in into your blood. This is <b>not</b> the same steroid that bodybuilders would use!",
+"Details": "Corticosteroids are potent anti-inflammatories, but take time to work. With <i>consistent daily use over weeks</i> (<b>at least 8-12 weeks!</b>), they reduce swelling and inflammation. Most commonly, a nasal spray is used. Sometimes, a sinus rinse with steroids is used instead to better reach the sinuses.<br><br>Because these are only applied to the surface of your tissues and are not swallowed, extremely little steroid makes in into your blood. This is <b>not</b> the same steroid that bodybuilders would use!",
 "Examples": "Omnaris, Nasonex"
 },
-{ "Treatment": "Antibiotics", "Details": "Used if there is an acute flare with suspected infection.",
+{ "Treatment": "Antibiotics", "Details": "Sometimes used if there is an acute flare with suspected infection.",
 "Examples": "Amoxicillin-clavulanate for 10 days. Moxifloxacin is an alternative for those with true penicillin allergies."}
 ]
 {% end %}
 
 {% admonition(type="danger", icon="danger", title="CONSISTENCY IS KEY") %}
 
-The above treatments **do not work right away**, and need time with regular use before you expect significant improvement in symptoms.
+Most of the above treatments **do not work right away**, and need weeks with regular use before we expect significant improvement in symptoms.
 
 {% end %}
 
@@ -162,7 +162,7 @@ The above treatments **do not work right away**, and need time with regular use 
 Biologic therapies
 ",
 "Details": "
-Biologics are medications that target specific steps in the inflammatory process in CRS. When used in conjunction with first-line therapy they can offer significant relief, and often can help with other related conditions, like asthma.
+Biologics are medications that target specific steps in the inflammatory process in CRS. When used in conjunction with first-line therapy they can offer significant relief, and often can help with other related conditions, like asthma. They have essentially minimal side effects compared to placebo in several trials.
 ",
 "Examples": "
 Dupilumab (brand-name Dupixent), omalizumab (brand-name Xolair), mepolizumab (brand-name Nucala)
@@ -177,24 +177,15 @@ Short courses of oral steroids can be used for rapid temporary symptomatic relie
 "Examples": "
 Prednisone, 30mg per day for 7 days
 "
-},
-{ "Treatment": "
-Leukotriene blockers
-",
-"Details": "
-These medications are most effective if there is also asthma. They also reduce inflammation through a different mechanism than steroids.
-",
-"Examples": "
-Montelukast (brand-name Singulair)
-"}
+}
 ]
 {% end %}
 
 ### The role of surgery
 
-For CRS with or without polyps, endoscopic (with a small camera) minimally invasive surgery is considered **_when medical therapy has failed_**. Inflamed areas and blockages are removed and reduces the burden of inflammation in the sinuses, while also allowing improved penetration of first-line medications such as nasal steroids to reach the sinuses.
+For CRS with or without polyps, endoscopic (with a small camera) minimally invasive surgery is considered **when trials of medical therapy have not worked**. Inflamed areas and blockages are removed, which also allows improved penetration of first-line medications such as nasal steroids to reach the sinuses.
 
-By itself, surgery does not cure CRS; unless other underlying risk factors are also being addressed, recurrence and worsening of CRS may occur. Revisions or repeat surgery may be required after a few years. The details of the surgery itself would be discussed with an Ear Nose and Throat (ENT) specialist.
+**By itself, surgery does not cure CRS**; unless other underlying risk factors are also being addressed, recurrence and worsening of CRS may occur. Revisions or repeat surgery may be required after a few years. The details of the surgery itself would be discussed with an Ear Nose and Throat (ENT) specialist.
 
 ## FAQs
 
