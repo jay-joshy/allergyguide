@@ -51,12 +51,17 @@ Approach
 
 ## Management
 
+{{ topics_crswnp_incs() }}
+
 {{ topics_crswnp_biologics() }}
 
 {% dropdown(header="this is what the user will click on to get more info") %}
 This text will appear in the dropdown
 
 {{ topics_crswnp_incs() }}
+
+{{ topics_crswnp_biologics() }}
+
 {% end %}
 
 - Usual:
