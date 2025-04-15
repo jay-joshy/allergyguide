@@ -52,7 +52,11 @@ Approach
 ## Management
 
 {{ topics_crswnp_incs() }}
-{{ load_macro(topic_name = "chronic_rhinosinusitis") }}
+
+{% dropdown(header="this is what the user will click on to get more info") %}
+This text will appear in the dropdown
+
+{% end %}
 
 - Usual:
 - Special circumstances:
