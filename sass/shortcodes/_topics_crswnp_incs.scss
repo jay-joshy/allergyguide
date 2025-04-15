@@ -29,6 +29,8 @@
 }
 
 .topics_crs_table-incs-crswnp {
+  overflow-x: auto;
+
   table {
     border-collapse: collapse;
     width: 100%;
@@ -75,15 +77,16 @@
 
   .low-coe {
     background-image: linear-gradient(45deg,
-        var(--low-coe-pattern) 45%,
+        var(--low-coe-pattern) 25%,
         transparent 25%,
         transparent 50%,
-        var(--low-coe-pattern) 70%,
-        var(--low-coe-pattern) 95%,
+        var(--low-coe-pattern) 50%,
+        var(--low-coe-pattern) 75%,
         transparent 75%,
         transparent);
-    background-size: 0.3em 0.3rem;
+    background-size: 0.4rem 0.4rem;
   }
+
 
   .header-row {
     background-color: var(--header-bg);
@@ -105,4 +108,11 @@
     text-align: center;
     border: 0.01rem solid var(--border-color);
   }
+
+  table tr:nth-child(odd),
+  table tr:nth-child(even) {
+    background-color: var(--bg-color) !important;
+    /* Force all rows to use the same background color */
+  }
+
 }

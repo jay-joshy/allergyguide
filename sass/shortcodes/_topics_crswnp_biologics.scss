@@ -35,7 +35,7 @@
 
 .topics_crswnp_biologics {
   width: 100%;
-
+  overflow-x: auto;
 
   table {
     border-collapse: collapse;
@@ -110,5 +110,11 @@
     padding: 0.3rem;
     text-align: center;
     border: 0.01rem solid var(--border-color);
+  }
+
+  table tr:nth-child(odd),
+  table tr:nth-child(even) {
+    background-color: var(--bg-color) !important;
+    /* Force all rows to use the same background color */
   }
 }
