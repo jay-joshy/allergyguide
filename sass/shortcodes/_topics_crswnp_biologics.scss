@@ -44,13 +44,13 @@
     font-size: 0.7rem;
     background-color: var(--bg-color);
     color: var(--text-color);
-    margin-bottom: 10px;
+    margin-bottom: 0rem;
   }
 
   th,
   td {
-    border: 1px solid var(--border-color);
-    padding: 8px;
+    border: 0.01rem solid var(--border-color);
+    padding: 0.4rem;
     text-align: center;
     vertical-align: middle;
   }
@@ -97,18 +97,18 @@
         var(--low-coe-pattern) 75%,
         transparent 75%,
         transparent);
-    background-size: 10px 10px;
+    background-size: 0.4rem 0.4rem;
   }
 
   .legend {
-    margin-top: 10px;
+    margin-top: 0rem;
     width: 100%;
-    border: 1px solid var(--legend-border);
+    border: 0.01rem solid var(--legend-border);
   }
 
   .legend td {
-    padding: 5px;
+    padding: 0.3rem;
     text-align: center;
-    border: 1px solid var(--border-color);
+    border: 0.01rem solid var(--border-color);
   }
 }
