@@ -106,6 +106,7 @@ Getting viral infections often, like the common cold, can damage the sinuses ove
 
 **Immune system problems**:
 People with very weak immune systems are more likely to get repeated sinus infections, which can lead to CRS. This is relatively rare.
+
 **Pre-existing structural problems**:
 Some people are born with narrow or blocked sinus passages. For example, a deviated septum. By themselves, these issues don’t usually cause CRS but may make it more likely if other factors are present.
 
