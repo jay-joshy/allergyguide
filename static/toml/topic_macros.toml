@@ -156,20 +156,24 @@ Placeholder macro
 topic = "Chronic rhinosinusitis"
 keywords = ["CRS", "sinusitis", "polyp"]
 content = '''
-Contrib factors -- asthma, AR, CF, ASA sensitivity, reucrrent infx
-purulent drainage, facial pain/pressure/fullness, nasal obstruction, hyposmia
+nasal congestion/fullness
+facial pain/pressure/fullness
+anterior or posterior nasal drainage
+hypo/anosmia
+change in voice
 duration
-triggers
 CT/ENT before
-treatment tried
+? asthma, AR, CF, ASA sensitivity, recurrent infect
+Treatment trials
 
-# Chronic rhinosinusitis (CRS) wNP sNP
-Their clinical picture is consistent with CRS, an inflammatory syndrome of >8-12 weeks with structural evidence of sinus inflammation + 2 or more of purulent drainge, facial and/or dental pain, nasal obstruction, or hyposmia. 
+# Chronic rhinosinusitis (CRS) wNP sNP AFRS
+Their clinical picture is suggestive of CRS, an inflammatory syndrome defined by objective structural evidence of sinus inflammation and ≥2 cardinal symptoms (nasal congestion, facial pain/pressure, anterior/posterior nasal drainage, absent/reduced smell) over >12 weeks. While this condition is typically long-term, regular pharmacotherapy can usually control symptoms well.
 
 Recommendations:
-- SPT for common aeroallergens
-- CT head non-constrast for ostiomeatal complex vs ENT referral
-- B-cell immunodeficiency workup in setting of suspicious symptoms / acute recurrent sinusitis
-- Non-Rx: Nasal saline rinses, avoidance of triggers 
-- Rx: INCS, LTRA if ASA sensitive, dupilimab for CRSwNP, tx for AR if present
+- CT sinuses (non contrast) vs ENT referral
+- SPT common aeroallergens
+- Ad-hoc testing: ie. B-cell immunodeficiency workup in setting of suspicious symptoms / acute recurrent sinusitis
+- High volume nasal saline rinses, avoidance of triggers
+- INCS + treatment of any underlying causes; consider biologics for CRSwNP if severe/failed first-line therapy
+- Follow-up: ~3-4 months
 '''
