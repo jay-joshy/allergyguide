@@ -194,3 +194,13 @@ By itself, it is **not** a common cause of CRS, though can contribute to nasal b
 No, CRS itself is not contagious. However, infections that can worsen it (like colds) can be.
 
 **Are oral decongestants like pseudoephedrine helpful?** No. In fact, chronic use can be quite harmful and lead to increased blood pressure.
+
+<style>
+@media print {
+  /* Hide navigation, footers, and other unnecessary elements */
+  header, nav, footer, .sidebar { display: none; }
+
+  /* Ensure proper page breaks */
+  h2, h3, h4 { page-break-after: avoid; }
+}
+</style>
