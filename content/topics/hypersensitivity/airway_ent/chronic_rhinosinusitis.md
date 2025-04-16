@@ -16,62 +16,83 @@ authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
 
 {% admonition(type="info", icon="info", title="THE BOTTOM LINE") %}
 
-CRS is a complex inflammatory syndrome with two subtypes: CRSwNP and CRSsNP. Diagnosis requires both structural evidence of sinus inflammation and some cardinal symptoms (congestion/fullness, facial pain/pressure, nasal obstruction/blockage, and purulent drainage). Preliminary workup involves CT sinus and/or nasal endoscopy and aeroallergen testing. Management includes trigger avoidance and saline rinses; INCS, consideration of dupilumab for CRSwNP, and treatment of underlying causes.
+Text
+
+[Insert patient resource sheet here](/README.md)
 
 {% end %}
 
 <br>
 
-[Insert patient resource sheet here]
-
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
-
-## Summary diagram
 
 ## Definitions
 
+## Summary diagram
+
 Meant to be purely acronyms, not classifications I think.
-
-## Classification
-
-## Presentation
-
-#### Clinical
-
-#### Labwork
-
-## Pathophysiology
 
 ## Diagnosis
 
-Criteria
-Approach
+## Classifications and epidemiology
+
+## Clinical presentation (beyond the cardinal symptoms)
+
+## Differential diagnosis
+
+{% admonition(type="danger", icon="danger", title="RED FLAGS ON HISTORY") %}
+
+Text
+
+{% end %}
+
+## Pathophysiology and risk factors
+
+#### The normal sinuses
+
+#### The chronically inflamed sinuses
+
+#### Risk factors to assess for all CRS
 
 ## Investigations
 
 ## Management
 
-{{ topics_crswnp_incs() }}
-
-{{ topics_crswnp_biologics() }}
-
-{% dropdown(header="this is what the user will click on to get more info") %}
-This text will appear in the dropdown
-
-{{ topics_crswnp_incs() }}
-
-{{ topics_crswnp_biologics() }}
-
+{% admonition(type="tip", icon="tip", title="Goal of treatment is usually NOT curative") %}
+text
 {% end %}
 
-- Usual:
-- Special circumstances:
+{% admonition(type="danger", icon="info", title="THE BRASS TACKS") %}
+text
+{% end %}
 
-## Natural history / prognosis
+#### First line treatment
+
+#### CRSsNP specific treatment
+
+{% dropdown(header="DEEP-DIVE: INCS sprays in CRSsNP") %}
+Text
+{% end %}
+
+#### CRSwNP specific treatment
+
+{% dropdown(header="DEEP-DIVE: INCS in CRSwNP") %}
+Text
+
+{{ topics_crswnp_incs() }}
+{% end %}
+
+{% dropdown(header="DEEP-DIVE: Biologics in CRSwNP") %}
+Text
+
+{{ topics_crswnp_biologics() }}
+{% end %}
+
+#### AFRS specific treatment
+
+#### Surgery / FESS
 
 ## Factoids
-
--
 
 ## Quiz yourself:
 
