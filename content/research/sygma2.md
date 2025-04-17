@@ -228,8 +228,8 @@ However, the <span class="hl-yellow">actual magnitude of change for both scores 
 
 <!-- split -->
 
-{{ img(src="/research/sygma2/acq5.png" alt="ACQ-5 trend over time", class="c1", caption = "Trend of ACQ-5 over 52 weeks from baseline. Minimal clinically important difference is 0.5.") }}
-{{ img(src="/research/sygma2/aqlq.png" alt="AQLQ trend over time", class="c1", caption = "Trend of AQLQ over 52 weeks. Overall score is 1-7 inclusive; higher scores => better QOL.") }}
+{{ img(src="research/sygma2/acq5.png" alt="ACQ-5 trend over time", class="c1", caption = "Trend of ACQ-5 over 52 weeks from baseline. Minimal clinically important difference is 0.5.") }}
+{{ img(src="research/sygma2/aqlq.png" alt="AQLQ trend over time", class="c1", caption = "Trend of AQLQ over 52 weeks. Overall score is 1-7 inclusive; higher scores => better QOL.") }}
 
 {% end %}
 
