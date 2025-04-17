@@ -297,6 +297,7 @@ testing this
 This text will appear in the dropdown
 
 And it will **LOOK GOOD** with markdown!
+<a href="allergyguide.ca">link</a>
 
 {% admonition(type="danger", icon="danger", title="DANGER") %}
 This is a danger admonition with a danger icon.
@@ -312,6 +313,7 @@ This is a danger admonition with a danger icon.
 This text will appear in the dropdown
 
 And it will **LOOK GOOD** with markdown!
+<a href="allergyguide.ca">link</a>
 
 {% admonition(type="danger", icon="danger", title="DANGER") %}
 This is a danger admonition with a danger icon.
