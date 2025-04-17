@@ -10,6 +10,10 @@ in_search_index = false
 toc = true
 +++
 
+Here is an example thing {% example() %}
+holy moly
+{% end %}
+
 ## Highlights
 
 Not a shortcode but still useful. You have several colours to choose from:
@@ -480,6 +484,15 @@ if not provided default will show all medications from the toml
 
 {{ medications_toml_load(meds=["bilastine"])}}
 
+## popup
+
+And we would recommend this product X {% popup() %}
+{{ medications_toml_load(meds=["bilastine"])}}
+
+{% end %}
+
+<script src="/js/popup.js"></script>
+
 ## wip
 
 ```md
@@ -497,16 +510,6 @@ if not provided default will show all medications from the toml
 ```md
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
 ```
-
-## example
-
-proof of concept that 1) you can load in simple arrays and 2) use tera macros
-
-```md
-{{/* example(a = ["test1", "test2"], n = 10) */}}
-```
-
-{{ example(a = ["test1", "test2"], n = 10) }}
 
 ## references
 
