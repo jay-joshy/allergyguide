@@ -71,7 +71,32 @@ text
 #### CRSsNP specific treatment
 
 {% dropdown(header="DEEP-DIVE: INCS sprays in CRSsNP") %}
-Text
+
+{% mermaid() %}
+flowchart LR
+A["Primary CRS"] --> B["`Localized
+(unilateral)`"]
+A --> C["`Diffuse
+(bilateral)`"]
+B --> D["Type 2"]
+B --> E["Non-type 2"]
+
+C --> F["Type 2"]
+C --> G["Non-type 2"]
+
+D --> H["AFRS"]
+E --> I["`OMC
+Isolated frontal
+Isolated sphenoid`"]
+
+F --> J["`CCAD
+eCRS
+AFRS`"]
+G --> K["`Non-eCRS
+Poor corticosteroid response
+Older or smoker`"]
+
+{% end %}
 {% end %}
 
 #### CRSwNP specific treatment
