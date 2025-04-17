@@ -202,26 +202,26 @@ Insert sage clinical pearl
 Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
 
 ```md
-{%/* text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
+{%/* text_image(src="/images/example.png", alt="An image description", caption = "test caption") */%}
 
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {%/* end */%}
 ```
 
-{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{% text_image(src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
 ```md
-{%/* text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
+{%/* text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") */%}
 
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {%/* end */%}
 ```
 
-{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{% text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
@@ -440,10 +440,10 @@ excludes weekends
 ## wide_contact_card
 
 ```md
-{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") */}}
+{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.png", url="/research/") */}}
 ```
 
-{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.png", url="/research/") }}
 
 ## custom_macro
 
@@ -610,3 +610,45 @@ This will display a warning admonition if viewed from Mobile.
 ```
 
 {{ research_card(paper="sygma2", show_title=false) }}
+
+## tabs
+
+```md
+{%/* tabs() */%}
+
+[
+{
+"title": "Overview",
+"content": "<p>This is an <strong>overview</strong> of the feature.</p>"
+},
+{
+"title": "Details",
+"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
+},
+{
+"title": "Pricing",
+"content": "<p>Starting at <em>$9.99/month</em>.</p>"
+}
+]
+
+{%/* end */%}
+```
+
+{% tabs() %}
+[
+{
+"title": "Overview",
+"content": "<p>This is an <strong>overview</strong> of the feature.</p>"
+},
+{
+"title": "Details",
+"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
+},
+{
+"title": "Pricing",
+"content": "<p>Starting at <em>$9.99/month</em>.</p>"
+}
+]
+{% end %}
+
+<script src="/js/tabs.js"></script>
