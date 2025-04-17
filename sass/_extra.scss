@@ -30,6 +30,7 @@
 @use "shortcodes/mini_grade_summary";
 @use "shortcodes/hl";
 @use "shortcodes/dropdown";
+@use "shortcodes/tabs";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {

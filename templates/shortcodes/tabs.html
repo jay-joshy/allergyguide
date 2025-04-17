@@ -1,0 +1,19 @@
+{# Load the JSON data passed into the shortcode body #}
+{% set json_data = load_data(literal=body, format="json") %}
+{% set random_id = get_random(end=100000) %}
+<div class="tabs-container" id="tabs-container-{{ random_id }}">
+  <div class="tabs-header">
+    {% for tab in json_data %}
+    <button class="tab-button{% if loop.first %} active{% endif %}" data-tab="tab-{{ random_id }}-{{ loop.index }}">
+      {{ tab.title }}
+    </button>
+    {% endfor %}
+  </div>
+  <div class="tabs-content">
+    {% for tab in json_data %}
+    <div class="tab-pane{% if loop.first %} active{% endif %}" id="tab-{{ random_id }}-{{ loop.index }}">
+      {{ tab.content | safe }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
