@@ -31,6 +31,7 @@
 @use "shortcodes/hl";
 @use "shortcodes/dropdown";
 @use "shortcodes/tabs";
+@use "shortcodes/popup";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
