@@ -16,7 +16,7 @@ authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
 
 ## What are the sinuses?
 
-Sinuses are small air-filled spaces behind your cheeks, forehead, and eyes. They connect to your nose through tiny openings. Each sinus has a thin lining that makes mucus. This mucus helps keep the sinuses moist and clean.
+Sinuses are small air-filled spaces behind your cheeks, forehead, and eyes. They connect to your nose through tiny openings. Each sinus has a thin lining that makes mucus. This mucus helps keep the sinuses moist and clean. Your sinuses remain healthy when the openings stay open, which allows the mucus to drain.
 
 {% end %}
 
