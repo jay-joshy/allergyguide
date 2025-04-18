@@ -168,6 +168,10 @@ This is a danger admonition with a danger icon.
 **Markdown can be used here :)**
 {% end %}
 
+{% admonition(type="danger", icon="flag", title="DANGER") %}
+There's also a FLAG icon you can add as well!
+{% end %}
+
 {% admonition(type="warning", icon="warning", title="WARNING") %}
 Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text
 {% end %}
@@ -486,7 +490,22 @@ if not provided default will show all medications from the toml
 
 ## popup
 
-And we would recommend this product X {% popup() %}
+```md
+ExRx: Blexten 10mg OD to QID {%/* popup() */%}
+
+{{ medications_toml_load(meds=["bilastine"])}}
+
+{%/* end */%}
+```
+
+Requires one script tag to be placed at the bottom of the page:
+
+```html
+<script src="/js/popup.js"></script>
+```
+
+ExRx: Blexten 10mg OD to QID {% popup() %}
+
 {{ medications_toml_load(meds=["bilastine"])}}
 
 {% end %}
@@ -637,6 +656,12 @@ This will display a warning admonition if viewed from Mobile.
 ]
 
 {%/* end */%}
+```
+
+Requires a script to be placed in the bottom of the page:
+
+```html
+<script src="/js/tabs.js"></script>
 ```
 
 {% tabs() %}
