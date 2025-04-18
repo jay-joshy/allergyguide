@@ -47,7 +47,9 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 
 # Summary diagram
 
-{{ img(src ="/topic_assets/chronic_rhinosinusitis/summary.png") }}
+<div style="display: flex;justify-content: center;">
+<img src="/topic_assets/chronic_rhinosinusitis/summary.png" style="max-height:60vh">
+</div>
 
 # Diagnostic criteria (multiple exist)
 
@@ -282,9 +284,9 @@ Diabetes`"]
 
 # Pathophysiology and risk factors
 
-### The normal sinuses
+{% text_image(src="/topic_assets/chronic_rhinosinusitis/sinus.png", alt="Image of the sinuses", caption = "Red = inflamed sinuses, green is happy :)", height="40vh") %}
 
-{{ img(src="/images/example.png")}}
+### The sinuses
 
 - Sinuses lined by thin mucosal layer with cilia and goblet cells
 - A key ostium (a connection from sinus into the nose) is the OMC
@@ -295,6 +297,8 @@ Diabetes`"]
 - Likely combination of physical/environmental insults, hypersensitivity, microbial pathogens, and structural abnormalities that ultimately lead to sinus mucosal dysfunction/inflammation, poor drainage/aeration, and resultant symptoms
   - For AFRS, common organisms: Bipolaris, Curvularia, Alternaria, Rhizopus, Drechslera, Helminthosporium, Fusarium, and Aspergillus <span class="references">7</span>
   - Exaggerated TH2 response and very thick mucous forms
+
+{% end %}
 
 ### PREDISPOSING CONDITIONS/RISK FACTORS TO ASSESS FOR ALL CRS
 
@@ -587,14 +591,11 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 {% end %}
 
 - **At any point biologics can <em>technically</em> be considered**, especially if high baseline severity or refractory to other medical therapy; greatest positive effect on QoL outcomes <span class="references">13</span>
-  - Indications:
-    - Status post endoscopic sinus surgery when evidence of bilateral nasal polyps
-    - PLUS ≥3 of evidence of type 2 inflammation (eosinophilia or high IgE), long term requirement for or contraindication to corticosteroids, significantly impaired quality of life, significant loss of smell, comorbid asthma
-  - Three options: dupilumab (2024 monograph states adults, but studied in ≥12 yo for other indications), omalizumab (adults), mepolizumab (adults) (***<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>)
-    - All overall have excellent side effect profile
-    - Cost/insurance prohibitive
-    - Unclear on: long-term side effects, duration of treatment, predictive patient factors for most benefit
-    - <em>ExRx: Dupilumab 300mg SC q2w {% popup() %}
+- Three options: <span class="hl-yellow">dupilumab</span> (2024 monograph states adults, but studied in ≥12 yo for other indications), <span class="hl-yellow">omalizumab</span> (adults), <span class="hl-yellow">mepolizumab</span> (adults) (***<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>)
+  - All overall have excellent side effect profile
+  - Cost/insurance prohibitive
+  - Unclear on: long-term side effects, duration of treatment, predictive patient factors for most benefit
+  - <em>ExRx: Dupilumab 300mg SC q2w {% popup() %}
 
 {{ medications_toml_load(meds=["template_med"])}}
 
