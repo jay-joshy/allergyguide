@@ -1,5 +1,5 @@
 // Use your theme variables for dark/light mode
-:root:not(.switch) {
+:root {
   /* Dark mode */
   --ref_background: #1e1e1e;
   --ref_text: #ffffff;
@@ -152,11 +152,14 @@ a {
 }
 
 .ref-bib {
-  padding-left: 2rem; /* Adjusts the amount of space for the hanging indent */
+  padding-left: 2rem;
+  /* Adjusts the amount of space for the hanging indent */
 
   .item {
-  text-indent: -2rem; /* Moves the first line back */
-  padding-left: 0rem; /* Creates space for the remaining lines */
-    
+    text-indent: -2rem;
+    /* Moves the first line back */
+    padding-left: 0rem;
+    /* Creates space for the remaining lines */
+
   }
 }

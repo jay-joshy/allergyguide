@@ -92,7 +92,7 @@ footer_credit_override = '<p class = "s90"><br>A project by residents, for resid
 ### Uncomment one of the below lines, or neither, depending on which type of logo you want to use:
 # logo = { file = "logo.svg", width = "32", height = "32", alt = "Abridge", text = "bridge" }
 # textlogo = '<font color="#f90">A</font>bridge'
-textlogo = '<img src="/icon/immunoglobulin.svg" alt="A">llergyguide'
+textlogo = '<img src="/icon/immunoglobulin.svg" alt="A" style="width: 2rem; height: 2rem;">llergyguide'
 
 sitedesc = false # enables or disables the display of the site description below the logo.
 headhr = true    # show or hide horizontal rule below header

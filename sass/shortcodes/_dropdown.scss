@@ -49,7 +49,6 @@
       align-items: center;
       transition: background-color 0.2s ease;
       text-align: left;
-      /* Ensure left alignment */
 
       &::before {
         content: "▼";
@@ -87,6 +86,36 @@
     /* Ensure content pushes down */
     position: relative;
     z-index: 1;
+    cursor: default;
+
+
+    /* Fix for inline elements */
+    span {
+      display: inline;
+      vertical-align: baseline;
+      text-align: left !important;
+    }
+
+    /* Specific fix for reference spans */
+    span.references {
+      display: inline;
+      vertical-align: baseline;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    /* Ensure inline elements stay inline */
+    b,
+    strong,
+    i,
+    em,
+    a,
+    code,
+    span {
+      display: inline;
+      vertical-align: baseline;
+    }
+
   }
 }
 

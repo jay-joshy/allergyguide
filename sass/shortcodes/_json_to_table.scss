@@ -9,6 +9,8 @@
 }
 
 .json_to_table {
+  overflow-x: auto;
+
   .json-table {
     border-collapse: collapse;
     width: 100%;

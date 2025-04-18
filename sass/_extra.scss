@@ -32,6 +32,8 @@
 @use "shortcodes/dropdown";
 @use "shortcodes/topics_crswnp_incs";
 @use "shortcodes/topics_crswnp_biologics";
+@use "shortcodes/tabs";
+@use "shortcodes/popup";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {

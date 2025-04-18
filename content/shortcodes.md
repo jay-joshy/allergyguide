@@ -10,6 +10,10 @@ in_search_index = false
 toc = true
 +++
 
+Here is an example thing {% example() %}
+holy moly
+{% end %}
+
 ## Highlights
 
 Not a shortcode but still useful. You have several colours to choose from:
@@ -202,26 +206,26 @@ Insert sage clinical pearl
 Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
 
 ```md
-{%/* text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
+{%/* text_image(src="/images/example.png", alt="An image description", caption = "test caption") */%}
 
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {%/* end */%}
 ```
 
-{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{% text_image(src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
 ```md
-{%/* text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
+{%/* text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") */%}
 
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {%/* end */%}
 ```
 
-{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
+{% text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
@@ -297,6 +301,7 @@ testing this
 This text will appear in the dropdown
 
 And it will **LOOK GOOD** with markdown!
+<a href="allergyguide.ca">link</a>
 
 {% admonition(type="danger", icon="danger", title="DANGER") %}
 This is a danger admonition with a danger icon.
@@ -312,6 +317,7 @@ This is a danger admonition with a danger icon.
 This text will appear in the dropdown
 
 And it will **LOOK GOOD** with markdown!
+<a href="allergyguide.ca">link</a>
 
 {% admonition(type="danger", icon="danger", title="DANGER") %}
 This is a danger admonition with a danger icon.
@@ -440,10 +446,10 @@ excludes weekends
 ## wide_contact_card
 
 ```md
-{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") */}}
+{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.png", url="/research/") */}}
 ```
 
-{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.png", url="/research/") }}
 
 ## custom_macro
 
@@ -478,6 +484,15 @@ if not provided default will show all medications from the toml
 
 {{ medications_toml_load(meds=["bilastine"])}}
 
+## popup
+
+And we would recommend this product X {% popup() %}
+{{ medications_toml_load(meds=["bilastine"])}}
+
+{% end %}
+
+<script src="/js/popup.js"></script>
+
 ## wip
 
 ```md
@@ -495,16 +510,6 @@ if not provided default will show all medications from the toml
 ```md
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
 ```
-
-## example
-
-proof of concept that 1) you can load in simple arrays and 2) use tera macros
-
-```md
-{{/* example(a = ["test1", "test2"], n = 10) */}}
-```
-
-{{ example(a = ["test1", "test2"], n = 10) }}
 
 ## references
 
@@ -610,3 +615,45 @@ This will display a warning admonition if viewed from Mobile.
 ```
 
 {{ research_card(paper="sygma2", show_title=false) }}
+
+## tabs
+
+```md
+{%/* tabs() */%}
+
+[
+{
+"title": "Overview",
+"content": "<p>This is an <strong>overview</strong> of the feature.</p>"
+},
+{
+"title": "Details",
+"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
+},
+{
+"title": "Pricing",
+"content": "<p>Starting at <em>$9.99/month</em>.</p>"
+}
+]
+
+{%/* end */%}
+```
+
+{% tabs() %}
+[
+{
+"title": "Overview",
+"content": "<p>This is an <strong>overview</strong> of the feature.</p>"
+},
+{
+"title": "Details",
+"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
+},
+{
+"title": "Pricing",
+"content": "<p>Starting at <em>$9.99/month</em>.</p>"
+}
+]
+{% end %}
+
+<script src="/js/tabs.js"></script>

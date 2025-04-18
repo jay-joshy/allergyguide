@@ -60,7 +60,7 @@ Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersen
 
 {% dropdown(header="DEEP-DIVE: Efficacy of INCS in CRSwNP") %}
 
-Here you would put the evidence behind a study (ideally a systematic review or meta-analysis) that contains <b>data relevant to patients</b>.
+Here you would put the evidence behind a study (ideally a systematic review or meta-analysis) that contains <b>data relevant to patients</b><span class='references'>2</span>
 <br>
 
 <ul>
