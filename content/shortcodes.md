@@ -168,6 +168,10 @@ This is a danger admonition with a danger icon.
 **Markdown can be used here :)**
 {% end %}
 
+{% admonition(type="danger", icon="flag", title="DANGER") %}
+There's also a FLAG icon you can add as well!
+{% end %}
+
 {% admonition(type="warning", icon="warning", title="WARNING") %}
 Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text
 {% end %}
