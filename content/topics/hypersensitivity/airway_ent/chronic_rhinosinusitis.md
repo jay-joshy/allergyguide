@@ -47,7 +47,7 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 
 ## Summary diagram
 
-{{ img(src ="/images/example.png") }}
+{{ img(src ="/topic_assets/chronic_rhinosinusitis/summary.png") }}
 
 ## Diagnostic criteria (multiple exist)
 
