@@ -28,7 +28,7 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
 
-## Definitions
+# Definitions
 
 {% two_columns() %}
 
@@ -45,11 +45,11 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 
 {% end %}
 
-## Summary diagram
+# Summary diagram
 
 {{ img(src ="/topic_assets/chronic_rhinosinusitis/summary.png") }}
 
-## Diagnostic criteria (multiple exist)
+# Diagnostic criteria (multiple exist)
 
 {% tabs() %}
 
@@ -151,7 +151,7 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 
 {% end %}
 
-## Epidemiology and classifications
+# Epidemiology and classifications
 
 - Overall epidemiology
   - Canadian prevalence ~2-15% <span class="references">6</span>; CRSsNP > CRSwNP >> AFRS
@@ -160,20 +160,21 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 - Often symptoms are long-standing before presenting to medical attention, given low-grade severity
 - Other non-specific symptoms include ear fullness, headache, fatigue, altered taste, cough
 
-#### CRSsNP
+### CRSsNP
 
+- <span class="hl-yellow">Most common (~⅔ of cases)</span>
 - Most common (~⅔ of cases)
 - Likely link to allergies, infections, irritants, etc.
-- Classically thick and mucopurulent anterior/posterior nasal discharge predominant, less hypo/anosmia than CRSwNP
+- **Classically thick and mucopurulent** anterior/posterior nasal discharge predominant, less hypo/anosmia than CRSwNP
 - May have persistent symptoms with occasional flares
 
-#### CRSwNP
+### CRSwNP
 
 - Polyps are soft, usually bilateral avascular eosinophil-rich growths that most commonly grow from the ethmoid sinuses
 - Compared with CRSsNP, stronger association with asthma (~25% of patients), AFRS, NERD <span class="references">6</span>
 - Often stuffy nasal quality to voice
 
-#### AFRS
+### AFRS
 
 - Inflammation from hypersensitivity to usually commensal fungi
 - More often in younger immunocompetent individuals in hot/humid climates (moreso in the US) and low SES; associated with polyposis <span class="references">2,7</span>
@@ -252,7 +253,7 @@ Diabetes`"]
 
 {% end %}
 
-## Differential diagnosis
+# Differential diagnosis
 
 {% two_columns() %}
 
@@ -279,23 +280,23 @@ Diabetes`"]
 
 {% end %}
 
-## Pathophysiology and risk factors
+# Pathophysiology and risk factors
 
-#### The normal sinuses
+### The normal sinuses
 
 {{ img(src="/images/example.png")}}
 
 - Sinuses lined by thin mucosal layer with cilia and goblet cells
 - A key ostium (a connection from sinus into the nose) is the OMC
 
-#### The chronically inflamed sinuses
+### The chronically inflamed sinuses
 
 - Exact cause not understood for any subtype of CRS, but overall CRS is more inflammatory > infectious
 - Likely combination of physical/environmental insults, hypersensitivity, microbial pathogens, and structural abnormalities that ultimately lead to sinus mucosal dysfunction/inflammation, poor drainage/aeration, and resultant symptoms
   - For AFRS, common organisms: Bipolaris, Curvularia, Alternaria, Rhizopus, Drechslera, Helminthosporium, Fusarium, and Aspergillus <span class="references">7</span>
   - Exaggerated TH2 response and very thick mucous forms
 
-#### PREDISPOSING CONDITIONS/RISK FACTORS TO ASSESS FOR ALL CRS
+### PREDISPOSING CONDITIONS/RISK FACTORS TO ASSESS FOR ALL CRS
 
 {% two_columns() %}
 
@@ -315,7 +316,7 @@ Diabetes`"]
 
 {% end %}
 
-## Investigations
+# Investigations
 
 No standard panel of tests. However, consider ad-hoc testing such as:
 
@@ -326,7 +327,7 @@ No standard panel of tests. However, consider ad-hoc testing such as:
 - NERD testing
 - Asthma testing
 
-## Management
+# Management
 
 {% admonition(type="tip", icon="tip", title="Goal of treatment is usually NOT curative") %}
 Goals are symptom control through reduction of inflammation and improvement of sinus patency.
@@ -345,7 +346,7 @@ Goals are symptom control through reduction of inflammation and improvement of s
 
 {% end %}
 
-#### First line treatment
+### First line treatment
 
 - **Treat any underlying risk factors (who knew?)**
 - **Lifestyle**
@@ -534,7 +535,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 {% end %}
 
-#### CRSsNP specific treatment
+### CRSsNP specific treatment
 
 - Trial first-line treatment. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
 - Look for risk factors (ie immunodeficiency, CF) if refractory to treatment
@@ -561,7 +562,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 {% end %}
 
-#### CRSwNP specific treatment
+### CRSwNP specific treatment
 
 <ul>
   <li>Trial first-line treatment + often a short course of oral steroids
@@ -666,7 +667,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
   </li>
 </ul>
 
-#### AFRS specific treatment
+### AFRS specific treatment
 
 - Initial treatment is usually a combination of first-line therapy, early diagnostic/therapeutic FESS, and course of oral steroids
   - Oral steroid course is longer than CRSwNP; reduces risk of recurrence but must balance with S/E profile of long term systemic steroids
@@ -674,7 +675,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 - Limited evidence for allergen/fungi immunotherapy (no RCTs), may be started a few weeks postoperatively
 - Antifungals have NOT been shown to significantly modify clinical course / symptoms <span class="references">14</span>
 
-#### Surgery / FESS
+### Surgery / FESS
 
 For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excellent symptomatic relief but with surgical risks.
 
@@ -682,15 +683,15 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 - Post-surgery, it is important to maintain remission with ongoing medical therapy
 - Revisions may be required after a few years; rates ~10-30% <span class="references">6</span>
 
-## Factoids
+# Factoids
 
 - Oral decongestants with chronic use can lead to rhinitis medicamentosa and rebound nasal obstruction when stopped
 
-## Quiz yourself:
+# Quiz yourself:
 
 {{ wip(body="This section remains a work in progress. If you want to help contribute, see below :)") }}
 
-## Further reading:
+# Further reading:
 
 {% references(showBib=true) %}
 [
