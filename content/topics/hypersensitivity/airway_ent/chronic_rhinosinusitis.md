@@ -178,7 +178,7 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 
 - Inflammation from hypersensitivity to usually commensal fungi
 - More often in younger immunocompetent individuals in hot/humid climates (moreso in the US) and low SES; associated with polyposis <span class="references">2,7</span>
-- Classically peanut-butter like mucus, very thick and tenacious
+- **Classically peanut-butter like mucus**, very thick and tenacious
 - Specific criteria: ALL of
   - CRS symptoms, Type 1 hypersensitivity to fungi confirmed by history, skin test, or serology, typical CT findings, Eosinophilic mucin with non-invasive fungal hyphae, absence of immunodeficiency, uncontrolled diabetes <span class="references">7</span>
 
@@ -291,7 +291,7 @@ Diabetes`"]
 
 ### The chronically inflamed sinuses
 
-- Exact cause not understood for any subtype of CRS, but overall CRS is more inflammatory > infectious
+- Exact cause not understood for any subtype of CRS, but **overall CRS is more inflammatory > infectious**
 - Likely combination of physical/environmental insults, hypersensitivity, microbial pathogens, and structural abnormalities that ultimately lead to sinus mucosal dysfunction/inflammation, poor drainage/aeration, and resultant symptoms
   - For AFRS, common organisms: Bipolaris, Curvularia, Alternaria, Rhizopus, Drechslera, Helminthosporium, Fusarium, and Aspergillus <span class="references">7</span>
   - Exaggerated TH2 response and very thick mucous forms
@@ -318,7 +318,7 @@ Diabetes`"]
 
 # Investigations
 
-No standard panel of tests. However, consider ad-hoc testing such as:
+<span class="hl-yellow">No standard panel of tests</span>. However, consider ad-hoc testing such as:
 
 - SPT / sIgE (most likely you will do this consistently)
 - Quantitative immunoglobulins and other humoral deficiency workup
@@ -339,7 +339,7 @@ Goals are symptom control through reduction of inflammation and improvement of s
 {% admonition(type="danger", icon="info", title="THE BRASS TACKS") %}
 
 - Determine subtype of CRS, consider CT sinus and involvement of ENT colleagues for endoscopic assessment & consideration of early management
-- First-line treatment trial (unless AFRS => likely early FESS + altered first-line) for at least 2-3 months, + treatment of any underlying risk factors (ie. AR, GERD, CF, immunodeficiency)
+- First-line treatment trial (unless AFRS => likely early FESS + altered first-line) <b>for at least 2-3 months</b>, + treatment of any underlying risk factors (ie. AR, GERD, CF, immunodeficiency)
 - Monitor treatment either through scores (SNOT-22) vs gestalt clinical judgement
 - Specific subtype treatment (ie. biologics for CRSwNP if patient qualifies)
 - FESS if medically refractory
@@ -351,11 +351,11 @@ Goals are symptom control through reduction of inflammation and improvement of s
 - **Treat any underlying risk factors (who knew?)**
 - **Lifestyle**
   - Avoidance of environmental triggers/insults/allergens
-  - High volume nasal saline rinses/irrigation (OTC, rinses > sprays), at least 200 mL per side <span class="references">9</span>. Can improve penetration/efficacy of other topicals if used beforehand.
-    - Examples: neti pot, squeeze bottles, etc. Must be STERILE saline (boiled/distilled water)
+  - _High volume_ nasal saline rinses/irrigation (OTC, rinses > sprays), at least 200 mL per side <span class="references">9</span>. Can improve penetration/efficacy of other topicals if used beforehand
+    - _Examples: neti pot, squeeze bottles, etc. Must be STERILE saline (boiled/distilled water)_
 - **INCS**
-  - Multiple delivery methods, most common in Canada are spray and rinses; widely available but high chance of operator misuse with sprays
-  - Takes 8-12 weeks to have maximal effect
+  - Multiple delivery methods, most common in Canada are spray and rinses; widely available <span class="hl-yellow">but high chance of operator misuse with sprays</span>
+  - Takes **8-12 weeks** to have maximal effect
   - Minimal concern for long-term side effects, ie. adrenal insufficiency
   - _ExRx: Nasonex 2 sprays BID_ {% popup() %}
 
@@ -504,7 +504,7 @@ Dymista 1 spray EN BID {% popup() %}
 - **Consider involving ENT** for endoscopic assessment and consideration of early surgical management
 - **Antibiotics**
   - May consider for acute flares. Most common organism is _S. aureus_
-  - **CAUTION**: _this is not a routine treatment_ and there is poor quality evidence it has benefit <span class="references">4</span> - exercise antibiotic stewardship. If requiring multiple courses or known resistant bugs => CULTURE first
+  - **CAUTION**: <span class="hl-yellow">_this is not a routine treatment_</span> and there is poor quality evidence it has benefit <span class="references">4</span> - exercise antibiotic stewardship :). If requiring multiple courses or known resistant bugs => CULTURE first
   - _ExRx: clavulin 875 mg twice daily for 10 d, moxifloxacin 400 mg PO x10 if penicillin allergic_
 
 {% admonition(type="pearl", icon="pearl", title="PEARLS") %}
@@ -537,16 +537,16 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 ### CRSsNP specific treatment
 
-- Trial first-line treatment. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
-- Look for risk factors (ie immunodeficiency, CF) if refractory to treatment
-- Surgery last line
+- **Trial first-line treatment**. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
+- **Look for risk factors** (ie immunodeficiency, CF) especially if refractory to treatment
+- **Surgery** last line
 - No biologics yet
 
 {% dropdown(header="DEEP-DIVE: INCS sprays in CRSsNP") %}
 
 <ul>
   <li>
-    Bottom line: while recommended and common, evidence of benefit for INCS sprays in CRSsNP is actually unclear/sparse, though low-harm
+    <b>Bottom line</b>: while recommended and common, evidence of benefit for INCS sprays in CRSsNP is actually unclear/sparse, though low-harm
   </li>
   <li>
     EPOS 2020 – symptom score benefit in CRS was lower than CRSwNP; only 5 RCTs with CRSsNP <span class="references">4</span>
@@ -564,16 +564,9 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 ### CRSwNP specific treatment
 
-<ul>
-  <li>Trial first-line treatment + often a short course of oral steroids
-    <ul>
-      <li>Oral steroids = <strong>rapid temporary</strong> relief that fades by a few months <span class="references">12</span>; <strong>must consider significant S/E profile</strong>
-        <ul>
-          <li><em>ExRx: prednisone 30 mg OD x7d <span class="references">6</span>; note that there is no consensus/consistent dose between trials</em></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
+- **Trial first-line treatment** + often a short course of oral steroids
+  - Oral steroids = <strong>rapid temporary</strong> relief that fades by a few months <span class="references">12</span>; <strong>must consider significant S/E profile</strong>
+    - _ExRx: prednisone 30 mg OD x7d <span class="references">6</span>; note that there is no consensus/consistent dose between trials_
 
 {% dropdown(header="DEEP-DIVE: INCS in CRSwNP") %}
 
@@ -590,42 +583,23 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 </ul>
 
 {{ topics_crswnp_incs() }}
+
 {% end %}
 
-<li>At any point biologics can <em>technically</em> be considered, especially if high baseline severity or refractory to other medical therapy; greatest positive effect on QoL outcomes <span class="references">13</span>
-    <ul>
-      <li>Indications:
-        <ul>
-          <li>Status post endoscopic sinus surgery when evidence of bilateral nasal polyps</li>
-          <li>PLUS ≥3 of:
-            <ul>
-              <li>Evidence of type 2 inflammation (eosinophilia or high IgE)</li>
-              <li>Long term requirement for or contraindication to corticosteroids</li>
-              <li>Significantly impaired quality of life</li>
-              <li>Significant loss of smell</li>
-              <li>Comorbid asthma</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-
-<li>Three options: dupilumab (≥12 yo), omalizumab (adults), mepolizumab (adults) [<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>]
-    <ul>
-      <li>All overall have excellent side effect profile</li>
-      <li>Cost/insurance prohibitive</li>
-      <li>Unclear on: long-term side effects, duration of treatment, predictive patient factors for most benefit</li>
-      <li><em>ExRx: Dupilumab 300mg SC q2w {% popup() %}
+- **At any point biologics can <em>technically</em> be considered**, especially if high baseline severity or refractory to other medical therapy; greatest positive effect on QoL outcomes <span class="references">13</span>
+  - Indications:
+    - Status post endoscopic sinus surgery when evidence of bilateral nasal polyps
+    - PLUS ≥3 of evidence of type 2 inflammation (eosinophilia or high IgE), long term requirement for or contraindication to corticosteroids, significantly impaired quality of life, significant loss of smell, comorbid asthma
+  - Three options: dupilumab (2024 monograph states adults, but studied in ≥12 yo for other indications), omalizumab (adults), mepolizumab (adults) (***<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>)
+    - All overall have excellent side effect profile
+    - Cost/insurance prohibitive
+    - Unclear on: long-term side effects, duration of treatment, predictive patient factors for most benefit
+    - <em>ExRx: Dupilumab 300mg SC q2w {% popup() %}
 
 {{ medications_toml_load(meds=["template_med"])}}
 
 {% end %}
-. S/E profile similar to placebo but classically conjunctivitis, eosinophilia, injection site reactions</em></li>
-
-</ul>
-
-</li>
+. S/E profile similar to placebo but classically conjunctivitis, eosinophilia, injection site reactions</em>
 
 {% dropdown(header="DEEP-DIVE: Biologics in CRSwNP") %}
 
@@ -643,33 +617,24 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 </ul>
 
 {{ topics_crswnp_biologics() }}
+
 {% end %}
 
-<li>ASA desensitization for coexisting NERD
-    <ul>
-      <li>Anecdotally, less commonly used with biologics available; logistically also difficult</li>
-      <li>Involves surprisingly high doses of ASA (i.e. 325 mg BID is maintenance!)</li>
-      <li>Reference this practice parameter <span class="references">13</span> if you want to deep dive</li>
-    </ul>
-  </li>
-
-<li>Leukotriene receptor antagonists (LTRA) in the setting of NERD
-    <ul>
-      <li>Note: generally <strong>recommended against</strong> for CRSwNP in EPOS 2020, noting poor quality evidence of benefit <span class="references">4</span></li>
-      <li><em>ExRx: Montelukast 10mg PO OD (adult dose)</em>{% popup() %}
+- **ASA desensitization** for coexisting NERD
+  - Anecdotally, less commonly used with biologics available; logistically also difficult
+  - Involves surprisingly high doses of ASA (ie. 325 mg BID is maintenance\!\!)
+  - Reference [this practice parameter](https://www.jacionline.org/article/S0091-6749(22)01484-1/fulltext#app-1) if you want to deep dive
+- **Leukotriene receptor antagonists** (LTRA) in the setting of NERD
+  - Note: generally **recommended against** for CRSwNP in EPOS 2020, noting poor quality evidence of benefit <span class="references">4</span>
+  - _ExRx: Montelukast 10mg PO OD (adult dose)_{% popup() %}
 
 {{ medications_toml_load(meds=["template_med"])}}
 
 {% end %}
 
-</li>
-    </ul>
-  </li>
-</ul>
-
 ### AFRS specific treatment
 
-- Initial treatment is usually a combination of first-line therapy, early diagnostic/therapeutic FESS, and course of oral steroids
+- Initial treatment is usually a combination of **first-line therapy**, **early diagnostic/therapeutic FESS**, and course of **oral steroids**
   - Oral steroid course is longer than CRSwNP; reduces risk of recurrence but must balance with S/E profile of long term systemic steroids
   - _ExRx: prednisone 0.5mg/kg OD tapered over weeks to 10 mg OD, then slowly reduced to minimum effective dose_ <span class="references">2,7</span>
 - Limited evidence for allergen/fungi immunotherapy (no RCTs), may be started a few weeks postoperatively
@@ -679,7 +644,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excellent symptomatic relief but with surgical risks.
 
-- By itself, surgery does not cure CRS; recurrence can occur
+- <span class="hl-yellow">By itself, surgery does not cure CRS; recurrence can occur</span>
 - Post-surgery, it is important to maintain remission with ongoing medical therapy
 - Revisions may be required after a few years; rates ~10-30% <span class="references">6</span>
 
