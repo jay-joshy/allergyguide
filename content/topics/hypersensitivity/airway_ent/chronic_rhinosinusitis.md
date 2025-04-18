@@ -16,7 +16,7 @@ authors = ["Author: JY", "Editor: AR", "Staff: TBD"]
 
 {% admonition(type="info", icon="info", title="THE BOTTOM LINE") %}
 
-CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. **Diagnosis requires both objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell). Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may require ENT surgery**. Biologics such as dupilumab are highly effective for CRSwNP, and are indicated for refractory or severe presentations.
+CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. <span class="hl-yellow">**Diagnosis requires both objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell)</span>. Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may require ENT surgery**. Biologics such as dupilumab are highly effective for CRSwNP, and are indicated for refractory or severe presentations.
 
 <br>
 
