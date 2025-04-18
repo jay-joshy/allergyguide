@@ -158,22 +158,31 @@ keywords = ["CRS", "sinusitis", "polyp"]
 content = '''
 nasal congestion/fullness
 facial pain/pressure/fullness
-anterior or posterior nasal drainage
+anterior or posterior nasal drainage (?purulent)
 hypo/anosmia
 change in voice
+cough
+headache
+fatigue/disruption of sleep
+halitosis/dental pain
+ear pain/fullness
 duration
-CT/ENT before
-? asthma, AR, CF, ASA sensitivity, recurrent infect
+CT/ENT before? Known nasal polyps?
+? asthma/COPD, AR, CF, NERD/ASA sensitivity, recurrent infect, EtOH induced worsening of upper airway disease, impaired cilia(CF, PCD), smoking, pollution, occupational exposure, nasal anatomic variations, vasculitis
 Treatment trials
+SNOT-22 Score
 
 # Chronic rhinosinusitis (CRS) wNP sNP AFRS
-Their clinical picture is suggestive of CRS, an inflammatory syndrome defined by objective structural evidence of sinus inflammation and ≥2 cardinal symptoms (nasal congestion, facial pain/pressure, anterior/posterior nasal drainage, absent/reduced smell) over >12 weeks. While this condition is typically long-term, regular pharmacotherapy can usually control symptoms well.
+Their clinical picture is suggestive of CRS, an inflammatory syndrome defined by objective structural evidence of sinus inflammation and ≥2 cardinal symptoms (nasal congestion, facial pain/pressure, anterior/posterior nasal drainage, absent/reduced smell) ≥12 weeks. While chronic, regular pharmacotherapy can usually control symptoms well.
 
 Recommendations:
-- CT sinuses (non contrast) vs ENT referral
-- SPT common aeroallergens
+- CT sinuses (non-contrast) vs ENT referral
+- SPT for common aeroallergens
 - Ad-hoc testing: ie. B-cell immunodeficiency workup in setting of suspicious symptoms / acute recurrent sinusitis
 - High volume nasal saline rinses, avoidance of triggers
-- INCS + treatment of any underlying causes; consider biologics for CRSwNP if severe/failed first-line therapy
+- INCS + treatment of any underlying causes
+- Consider short course prednisone for symptom management (most evidence for CRSwNP or AFRS)
+- Consider oral antibiotics for acute exacerbations (controversial)
+- Consider biologics for CRSwNP if severe/failed first-line therapy
 - Follow-up: ~3-4 months
 '''
