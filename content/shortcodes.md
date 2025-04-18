@@ -560,7 +560,7 @@ Here is another sentence with one reference <span class="references">2</span>
 {%/* end */%}
 ```
 
-This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
+This sentence needs two references <span class="references">the world,2,3,1,1,1</span> and some of this
 
 Here is another sentence with one reference <span class="references">2</span>
 
@@ -568,7 +568,7 @@ Here is another sentence with one reference <span class="references">2</span>
 
 {% references(showBib = true) %}
 [{
-"id": "1",
+"id": "the world",
 "bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
 "url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
 "notes": ""
