@@ -58,6 +58,8 @@
   }
 
   .tabs-content {
+    border-bottom: 0.0625rem solid var(--tabs-highlight);
+
     .tab-pane {
       display: none;
       padding: 0rem 0;
