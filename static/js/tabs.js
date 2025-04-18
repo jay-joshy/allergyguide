@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize all tab containers
   document.querySelectorAll('.tabs-container').forEach(container => {
     const tabButtons = container.querySelectorAll('.tab-button');
+    const tabPanes = container.querySelectorAll('.tab-pane');
+
+    // Check if there's any active tab
+    const hasActiveTab = container.querySelector('.tab-button.active');
+
+    // If no active tab, activate the first one
+    if (!hasActiveTab && tabButtons.length > 0 && tabPanes.length > 0) {
+      tabButtons[0].classList.add('active');
+      tabPanes[0].classList.add('active');
+    }
+
+
 
     tabButtons.forEach(button => {
       button.addEventListener('click', function() {
