@@ -10,6 +10,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -32,6 +36,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -51,6 +59,10 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 categories = ["2G antihistamine"]
 brand_names = ["Blexten"]
 cost = [{ province = "ON", price = "~$1.1 CAD / 20mg tab" }]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "2nd generation H1 receptor antagonist."
 half_life = "~15 hours"
 routes = "PO tab, liquid (uncommon)"
@@ -69,8 +81,10 @@ monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 [loratadine]
 categories = ["2G antihistamine"]
 brand_names = ["Claritin", "Alavert"]
-cost = [
-  { province = "ON", price = "~$0.6 CAD / 10mg tab" }
+cost = [{ province = "ON", price = "~$0.6 CAD / 10mg tab" }]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
 ]
 moa = "2nd generation H1 receptor antagonist"
 half_life = "8.4 hours (half life of active metabolite--desloratadine--is 28h)"
@@ -80,7 +94,9 @@ doses = [
   { indication = "CSU, AR", dose = "10mg q48h", notes = "CrCl <30ml/min" },
   { indication = "CSU, AR", dose = "5mg OD to QID", notes = "ages [2,6)" },
 ]
-pearls = ["No QTc prolongation noted in monographs or UpToDate. Mostly hepatically cleared, but in adults still renally adjust."]
+pearls = [
+  "No QTc prolongation noted in monographs or UpToDate. Mostly hepatically cleared, but in adults still renally adjust.",
+]
 age_group = "[2, adults) with dosing adjustments"
 pregnancy = "Safe as per [ACOG](https://www.acog.org/womens-health/experts-and-stories/ask-acog/what-medicine-can-i-take-for-allergies-while-im-pregnant) and [firstexposure](https://firstexposure.ca/seasonal-allergies-and-allergic-rhinitis-in-pregnancy-and-lactation/)"
 contraindications = "Hypersensitivity"
@@ -94,6 +110,10 @@ brand_names = ["Reactine", "Allacan"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
 ]
 moa = "Insert MoA"
 half_life = "~X hours"
@@ -117,6 +137,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -138,6 +162,10 @@ brand_names = ["Aerius", "Clarinex"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
 ]
 moa = "Insert MoA"
 half_life = "~X hours"
@@ -161,6 +189,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -183,6 +215,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -204,6 +240,10 @@ brand_names = ["Pulmicort Turbuhaler"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
 ]
 moa = "Insert MoA"
 half_life = "~X hours"
@@ -228,6 +268,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -250,6 +294,10 @@ brand_names = ["brandnameA", "brandnameB"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
 ]
 moa = "Insert MoA"
 half_life = "~X hours"
@@ -274,6 +322,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -296,6 +348,10 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
+]
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -317,6 +373,10 @@ brand_names = ["brandnameA", "brandnameB"]
 cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
+]
+coverage = [
+  { province = "ON", details = "enter details" },
+  { province = "BC", details = "enter details" },
 ]
 moa = "Insert MoA"
 half_life = "~X hours"
