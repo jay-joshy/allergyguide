@@ -50,7 +50,7 @@ This is done through either:
 
 {% end %}
 
-Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _those these are not always present and are non-specific_.
+Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _though these are not always present and are non-specific_.
 
 {% admonition(type="warning", icon="warning", title="Atypical symptoms you should watch out for?") %}
 If you have any of the following, you should let your doctor know: these may suggest something else going on aside from CRS.
