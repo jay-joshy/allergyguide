@@ -18,7 +18,7 @@ authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
 
 Text
 
-[Insert patient resource sheet here](/README.md)
+[Patient Resource](/handouts/chronic-rhinosinusitis/)
 
 {% end %}
 
@@ -35,6 +35,64 @@ Meant to be purely acronyms, not classifications I think.
 ## Diagnosis
 
 ## Classifications and epidemiology
+
+{% mermaid() %}
+flowchart LR
+A["Primary CRS"] --> B["Localized
+(unilateral)"]
+A --> C["Diffuse
+(bilateral)"]
+B --> D["Type 2"]
+B --> E["Non-type 2"]
+
+C --> F["Type 2"]
+C --> G["Non-type 2"]
+
+D --> H["AFRS"]
+E --> I["OMC
+Isolated frontal
+Isolated sphenoid"]
+
+F --> J["CCAD
+eCRS
+AFRS"]
+G --> K["Non-eCRS
+Poor corticosteroid response
+Older or smoker"]
+{% end %}
+
+{% mermaid() %}
+flowchart LR
+A["Secondary CRS"] --> B["`Localized
+(unilateral)`"]
+A --> C["`Diffuse
+(bilateral)`"]
+
+B --> D["`Local
+pathology`"]
+
+C --> E["`Mechanical
+(mucociliary)`"]
+C --> F["`Inflammatory
+(autoimmune)`"]
+C --> G["`Immunity
+(immunodeficiency)`"]
+
+D --> H["`Odontogenic
+Fungal ball
+Tumor`"]
+
+E --> I["`PCD
+CF`"]
+
+F --> J["`GPA
+EGPA`"]
+
+G --> K["`Selective IgA
+deficiency
+CVID
+Diabetes`"]
+{% end %}
 
 ## Clinical presentation (beyond the cardinal symptoms)
 
@@ -140,32 +198,7 @@ _Table adapted from Fowler and Sowerby (2021)_
 #### CRSsNP specific treatment
 
 {% dropdown(header="DEEP-DIVE: INCS sprays in CRSsNP") %}
-
-{% mermaid() %}
-flowchart LR
-A["Primary CRS"] --> B["`Localized
-(unilateral)`"]
-A --> C["`Diffuse
-(bilateral)`"]
-B --> D["Type 2"]
-B --> E["Non-type 2"]
-
-C --> F["Type 2"]
-C --> G["Non-type 2"]
-
-D --> H["AFRS"]
-E --> I["`OMC
-Isolated frontal
-Isolated sphenoid`"]
-
-F --> J["`CCAD
-eCRS
-AFRS`"]
-G --> K["`Non-eCRS
-Poor corticosteroid response
-Older or smoker`"]
-
-{% end %}
+text
 {% end %}
 
 #### CRSwNP specific treatment
