@@ -1,14 +1,14 @@
 +++
 title = "Chronic rhinosinusitis"
 description = "An approach to chronic rhinosinusitis"
-date = 2025-01-01
+date = 2025-04-18
 draft = false
 [taxonomies]
 tags = ["hypersensitivity","airway and ent"]
 [extra]
 toc = true
 series = "airway and ent"
-authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
+authors = ["Author: JY", "Editor: AR", "Staff: TBD"]
 +++
 
 <div style="padding-top:1rem;">

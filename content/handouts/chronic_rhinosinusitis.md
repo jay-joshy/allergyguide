@@ -12,7 +12,7 @@ toc = true
 authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
 +++
 
-{% text_image(src="/images/topics/chronic_rhinosinusitis/normal_sinus.png", alt="Picture of a normal sinus from the front", caption = "Normal sinus structure. Image adapted from Servier Medical Art, https://smart.servier.com, licensed under CC BY 4.0.", height="15rem") %}
+{% text_image(src="/topic_assets/chronic_rhinosinusitis/normal_sinus.png", alt="Picture of a normal sinus from the front", caption = "Normal sinus structure. Image adapted from Servier Medical Art, https://smart.servier.com, licensed under CC BY 4.0.", height="15rem") %}
 
 ## What are the sinuses?
 
