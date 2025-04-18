@@ -16,7 +16,9 @@ authors = ["Author: JY", "Editor: AR", "Staff: TBD"]
 
 {% admonition(type="info", icon="info", title="THE BOTTOM LINE") %}
 
-Text
+CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. **Diagnosis requires both objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell). Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may require ENT surgery**. Biologics such as dupilumab are highly effective for CRSwNP, and are indicated for refractory or severe presentations.
+
+<br>
 
 [Patient Resource](/handouts/chronic-rhinosinusitis/)
 
@@ -28,11 +30,43 @@ Text
 
 ## Definitions
 
+{% two_columns() %}
+
+- AFRS: allergic fungal rhinosinusitis
+- CRS: chronic rhinosinusitis
+- CRSsNP: chronic rhinosinusitis without nasal polyps
+- CRSwNP: chronic rhinosinusitis with nasal polyps
+
+<!-- split -->
+
+- FESS: functional endoscopic sinus surgery
+- NERD: NSAID exacerbated respiratory disease
+- OMC: Ostiomeatal complex
+
+{% end %}
+
 ## Summary diagram
 
-Meant to be purely acronyms, not classifications I think.
+{{ img(src ="/images/example.png") }}
 
-## Diagnosis
+## Diagnostic criteria (multiple exist)
+
+{% tabs() %}
+[
+{
+"title": "International: 2021",
+"content": {{ admonition(type='danger', icon='danger', title='DANGER', text='test') }}
+},
+{
+"title": "Details",
+"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
+},
+{
+"title": "Pricing",
+"content": "<p>Starting at <em>$9.99/month</em>.</p>"
+}
+]
+{% end %}
 
 ## Classifications and epidemiology
 
@@ -244,3 +278,5 @@ Text
 }
 ]
 {% end %}
+
+<script src="/js/tabs.js"></script>
