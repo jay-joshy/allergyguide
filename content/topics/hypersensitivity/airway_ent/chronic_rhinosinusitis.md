@@ -691,85 +691,85 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 {
 "id": "1",
 "bib": "Orlandi RR, Kingdom TT, Smith TL, Bleier B, DeConde A, Luong AU, et al. International consensus statement on allergy and rhinology: rhinosinusitis 2021. Int Forum Allergy Rhinol. 2021 Mar;11(3):213–739",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/33236525/",
 "notes": ""
 },
 {
 "id": "2",
 "bib": "Hamilos DL. Chronic rhinosinusitis: Epidemiology and medical management. J Allergy Clin Immunol. 2011 Oct 1;128(4):693–707",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/21890184/",
 "notes": ""
 },
 {
 "id": "3",
 "bib": "Desrosiers M, Evans GA, Keith PK, Wright ED, Kaplan A, Bouchard J, et al. Canadian clinical practice guidelines for acute and chronic rhinosinusitis. Allergy Asthma Clin Immunol. 2011 Feb 10;7(1):2",
-"url": "https://example.com",
+"url": "https://aacijournal.biomedcentral.com/articles/10.1186/1710-1492-7-2",
 "notes": ""
 },
 {
 "id": "4",
 "bib": "Fokkens WJ, Lund VJ, Hopkins C, Hellings PW, Kern R, Reitsma S, et al. European Position Paper on Rhinosinusitis and Nasal Polyps 2020. Rhinology. 2020 Feb 20;58(Suppl S29):1–464",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/32077450/",
 "notes": ""
 },
 {
 "id": "5",
 "bib": "Rosenfeld RM, Piccirillo JF, Chandrasekhar SS, Brook I, Ashok Kumar K, Kramper M, et al. Clinical practice guideline (update): adult sinusitis. Otolaryngol--Head Neck Surg Off J Am Acad Otolaryngol-Head Neck Surg. 2015 Apr;152(2 Suppl):S1–39",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/25832968/",
 "notes": ""
 },
 {
 "id": "6",
 "bib": "Chin CJ, Scott JR, Lee JM. Diagnosis and management of chronic rhinosinusitis. CMAJ. 2025 Feb 18;197(6):E148–54",
-"url": "https://example.com",
+"url": "https://www.cmaj.ca/content/197/6/E148",
 "notes": ""
 },
 {
 "id": "7",
 "bib": "Lee G, Benjamin Prince, Yu J. ACAAI Review for the Allergy and Immunology Boards. 5th Edition. American College of Allergy, Asthma & Immunology; 2024",
-"url": "https://example.com",
+"url": "https://education.acaai.org/brbook5",
 "notes": ""
 },
 {
 "id": "8",
 "bib": "Grayson JW, Hopkins C, Mori E, Senior B, Harvey RJ. Contemporary Classification of Chronic Rhinosinusitis Beyond Polyps vs No Polyps: A Review. JAMA Otolaryngol Neck Surg. 2020 Sep 1;146(9):831–8",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/32644117/",
 "notes": ""
 },
 {
 "id": "9",
 "bib": "Chong LY, Head K, Hopkins C, Philpott C, Glew S, Scadding G, et al. Saline irrigation for chronic rhinosinusitis. Cochrane Database Syst Rev. 2016 Apr 26;2016(4):CD011995",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/27115216/",
 "notes": ""
 },
 {
 "id": "10",
 "bib": "Fowler J, Sowerby LJ. Using intranasal corticosteroids. CMAJ. 2021 Jan 11;193(2):E47–E47",
-"url": "https://example.com",
+"url": "https://www.cmaj.ca/content/193/2/E47",
 "notes": ""
 },
 {
 "id": "11",
 "bib": "Bhat AM, Heiland LD, Nguyen SA, Rathi VK, Schlosser RJ, Soler ZM. Topical steroids for chronic rhinosinusitis without nasal polyps: A systematic review and meta-analysis. Int Forum Allergy Rhinol. 2024;14(9):1477–87",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/38787291/",
 "notes": ""
 },
 {
 "id": "12",
 "bib": "Head K, Chong LY, Hopkins C, Philpott C, Burton MJ, Schilder AG. Short‐course oral steroids alone for chronic rhinosinusitis. Cochrane Database Syst Rev. 2016 Apr 26;2016(4):CD011991",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/27113367/",
 "notes": ""
 },
 {
 "id": "13",
 "bib": "Rank MA, Chu DK, Bognanni A, Oykhman P, Bernstein JA, Ellis AK, et al. The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis. J Allergy Clin Immunol. 2023 Feb 1;151(2):386–98",
-"url": "https://example.com",
+"url": "https://www.jacionline.org/article/S0091-6749(22)01484-1/fulltext",
 "notes": ""
 },
 {
 "id": "14",
 "bib": "Head K, Sharp S, Chong L, Hopkins C, Philpott C. Topical and systemic antifungal therapy for chronic rhinosinusitis. Cochrane Database Syst Rev. 2018 Sep 10;2018(9):CD012453",
-"url": "https://example.com",
+"url": "https://pubmed.ncbi.nlm.nih.gov/30199594/",
 "notes": ""
 }
 ]
