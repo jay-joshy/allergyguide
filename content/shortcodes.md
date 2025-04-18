@@ -640,20 +640,26 @@ This will display a warning admonition if viewed from Mobile.
 ```md
 {%/* tabs() */%}
 
-[
-{
-"title": "Overview",
-"content": "<p>This is an <strong>overview</strong> of the feature.</p>"
-},
-{
-"title": "Details",
-"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
-},
-{
-"title": "Pricing",
-"content": "<p>Starting at <em>$9.99/month</em>.</p>"
-}
-]
+<!-- TAB -->Overview
+<!-- CONTENT -->
+<p>This is an <strong>overview</strong> of the feature.</p>
+
+<!-- TAB -->Details
+<!-- CONTENT -->
+<ul>
+  <li>Fast</li>
+  <li>Secure</li>
+  <li>Reliable</li>
+</ul>
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a danger admonition with a danger icon.
+
+**Markdown can be used here :)**
+{% end %}
+
+<!-- TAB -->Pricing
+<!-- CONTENT -->
+<p>Starting at <em>$9.99/month</em>.</p>
 
 {%/* end */%}
 ```
@@ -665,20 +671,28 @@ Requires a script to be placed in the bottom of the page:
 ```
 
 {% tabs() %}
-[
-{
-"title": "Overview",
-"content": "<p>This is an <strong>overview</strong> of the feature.</p>"
-},
-{
-"title": "Details",
-"content": "<ul><li>Fast</li><li>Secure</li><li>Reliable</li></ul>"
-},
-{
-"title": "Pricing",
-"content": "<p>Starting at <em>$9.99/month</em>.</p>"
-}
-]
+
+<!-- TAB -->Overview
+<!-- CONTENT -->
+<p>This is an <strong>overview</strong> of the feature.</p>
+
+<!-- TAB -->Details
+<!-- CONTENT -->
+<ul>
+  <li>Fast</li>
+  <li>Secure</li>
+  <li>Reliable</li>
+</ul>
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a danger admonition with a danger icon.
+
+**Markdown can be used here :)**
+{% end %}
+
+<!-- TAB -->Pricing
+<!-- CONTENT -->
+<p>Starting at <em>$9.99/month</em>.</p>
+
 {% end %}
 
 <script src="/js/tabs.js"></script>
