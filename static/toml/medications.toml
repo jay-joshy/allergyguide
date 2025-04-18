@@ -29,6 +29,10 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 
+###############################
+# ANTIHISTAMINES
+###############################
+
 [rupatadine]
 categories = ["2G antihistamine"]
 brand_names = ["Rupall", "Rupafin", "Rupita"]
@@ -207,6 +211,10 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+
+###############################
+# PUFFERS
+###############################
 
 [salbutamol]
 categories = ["inhaler", "SABA"]
@@ -392,3 +400,31 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+
+###############################
+# INCS
+###############################
+
+###############################
+# TOPICAL STEROIDS
+###############################
+
+###############################
+# EYE DROPS
+###############################
+
+###############################
+# LTRAs
+###############################
+
+###############################
+# EPINEPHRINE
+###############################
+
+###############################
+# ANGIOEDEMA MEDS
+###############################
+
+###############################
+# BIOLOGICS
+###############################
