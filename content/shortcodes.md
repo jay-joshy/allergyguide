@@ -490,7 +490,22 @@ if not provided default will show all medications from the toml
 
 ## popup
 
-And we would recommend this product X {% popup() %}
+```md
+ExRx: Blexten 10mg OD to QID {%/* popup() */%}
+
+{{ medications_toml_load(meds=["bilastine"])}}
+
+{%/* end */%}
+```
+
+Requires one script tag to be placed at the bottom of the page:
+
+```html
+<script src="/js/popup.js"></script>
+```
+
+ExRx: Blexten 10mg OD to QID {% popup() %}
+
 {{ medications_toml_load(meds=["bilastine"])}}
 
 {% end %}
@@ -641,6 +656,12 @@ This will display a warning admonition if viewed from Mobile.
 ]
 
 {%/* end */%}
+```
+
+Requires a script to be placed in the bottom of the page:
+
+```html
+<script src="/js/tabs.js"></script>
 ```
 
 {% tabs() %}
