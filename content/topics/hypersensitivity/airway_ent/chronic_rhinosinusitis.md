@@ -68,6 +68,75 @@ text
 
 #### First line treatment
 
+{% json_to_table()%}
+[
+{
+"INCS": "Beclomethasone dipropionate",
+"Brand Name": "Beconase AQ",
+"Bioavailability": "44%",
+"Generation": "First",
+"Fragrance": "Scented"
+},
+{
+"INCS": "Budesonide",
+"Brand Name": "Rhinocort Aqua, Rhinocort Turbuhaler",
+"Bioavailability": "31% (Spray), 22% (Turbuhaler)",
+"Generation": "First",
+"Fragrance": "Non-scented"
+},
+{
+"INCS": "Ciclesonide",
+"Brand Name": "Omnaris",
+"Bioavailability": "<1%",
+"Generation": "Second",
+"Fragrance": "Non-scented"
+},
+{
+"INCS": "Flunisolide",
+"Brand Name": "Rhinalar",
+"Bioavailability": "49%",
+"Generation": "First",
+"Fragrance": "Non-scented"
+},
+{
+"INCS": "Fluticasone - azelastine",
+"Brand Name": "Dymista",
+"Bioavailability": "0.8%",
+"Generation": "Second",
+"Fragrance": "Non-scented"
+},
+{
+"INCS": "Fluticasone furoate",
+"Brand Name": "Avamys",
+"Bioavailability": "0.5%",
+"Generation": "Second",
+"Fragrance": "Non-scented"
+},
+{
+"INCS": "Fluticasone propionate",
+"Brand Name": "Flonase",
+"Bioavailability": "0.5%",
+"Generation": "Second",
+"Fragrance": "Scented"
+},
+{
+"INCS": "Mometasone furoate",
+"Brand Name": "Nasonex",
+"Bioavailability": "0.5%",
+"Generation": "Second",
+"Fragrance": "non-scented"
+},
+{
+"INCS": "Triamcinolone acetonide",
+"Brand Name": "Nasacort AQ",
+"Bioavailability": "46%",
+"Generation": "First",
+"Fragrance": "Non-scented"
+}
+]
+{% end %}
+_Table adapted from Fowler and Sowerby (2021)_
+
 #### CRSsNP specific treatment
 
 {% dropdown(header="DEEP-DIVE: INCS sprays in CRSsNP") %}
