@@ -175,16 +175,22 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 
 #### AFRS
 
-Inflammation from hypersensitivity to usually commensal fungi
-More often in younger immunocompetent individuals in hot/humid climates (moreso in the US) and low SES; associated with polyposis <span class="references">2,7</span>
-Classically peanut-butter like mucus, very thick and tenacious
-Specific criteria: ALL of
-CRS symptoms, Type 1 hypersensitivity to fungi confirmed by history, skin test, or serology, typical CT findings, Eosinophilic mucin with non-invasive fungal hyphae, absence of immunodeficiency, uncontrolled diabetes <span class="references">7</span>
+- Inflammation from hypersensitivity to usually commensal fungi
+- More often in younger immunocompetent individuals in hot/humid climates (moreso in the US) and low SES; associated with polyposis <span class="references">2,7</span>
+- Classically peanut-butter like mucus, very thick and tenacious
+- Specific criteria: ALL of
+  - CRS symptoms, Type 1 hypersensitivity to fungi confirmed by history, skin test, or serology, typical CT findings, Eosinophilic mucin with non-invasive fungal hyphae, absence of immunodeficiency, uncontrolled diabetes <span class="references">7</span>
 
 {% dropdown(header="FYI: A new classification system?") %}
 
-In 2020 a new classification system beyond sNP/wNP/AFRS was proposed based on primary vs secondary causes, and localization/type of inflammation (local vs diffuse; TH2 skewed vs non-TH2) <span class="references">8</span>. Note that not all guidelines / position statements use this classification.
-Read the referenced JAMA article if you’re interested in learning more :)
+In 2020 a new classification system beyond sNP/wNP/AFRS was proposed based on primary vs secondary causes, and localization/type of inflammation (local vs diffuse; TH2 skewed vs non-TH2). <span class="references">8</span>
+
+<br>
+<br>
+
+Note that not all guidelines / position statements use this classification. Read the referenced JAMA article if you’re interested in learning more :)
+
+<br>
 
 {% mermaid() %}
 flowchart LR
@@ -530,7 +536,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 #### CRSsNP specific treatment
 
-- Trial first-line treatment. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control" <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
+- Trial first-line treatment. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
 - Look for risk factors (ie immunodeficiency, CF) if refractory to treatment
 - Surgery last line
 - No biologics yet
@@ -572,7 +578,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 <ul>
   <li><strong>Bottom-line:</strong> there is generally low quality evidence that INCS compared to placebo improves symptoms and QoL without significant side effects, though specifics vary by delivery system</li>
-  <li><em>The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis</em> <span class="references">13</span>
+  <li><em>The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis</em><span class="references">13</span>
     <ul>
       <li>SNOT-22: rinses/EDS &gt; sprays</li>
       <li>Symptoms (nasal obstruction/smell esp): sprays/EDS &gt; rinses</li>
