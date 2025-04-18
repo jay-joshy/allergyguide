@@ -284,7 +284,7 @@ Diabetes`"]
 
 # Pathophysiology and risk factors
 
-{% text_image(src="/topic_assets/chronic_rhinosinusitis/sinus.png", alt="Image of the sinuses", caption = "Red = inflamed sinuses, green is happy :)", height="40vh") %}
+{% text_image(src="/topic_assets/chronic_rhinosinusitis/sinus.png", alt="Image of the sinuses", caption = "Red = inflamed sinuses, green is happy :)<br>_Created in https://BioRender.com_", height="40vh") %}
 
 ### The sinuses
 
