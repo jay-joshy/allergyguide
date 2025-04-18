@@ -7,8 +7,8 @@
 categories = ["testcategory", "testA", "testB"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
-  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
-  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+  { province = "ON", price = "~$X CAD / Ymg tab" },
+  { province = "BC", price = "~$X CAD / Ymg tab" },
 ]
 coverage = [
   { province = "ON", details = "enter details" },
@@ -18,8 +18,8 @@ moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
 doses = [
-  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
-  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+  { indication = "diseaseA", dose = "Zmg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "Zmg BID", notes = "pediatric (ages X-Y)" },
 ]
 pearls = ["Insert pearl here"]
 age_group = "insert age group"
