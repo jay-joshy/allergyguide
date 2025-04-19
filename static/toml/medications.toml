@@ -14,7 +14,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes"
+otc = "yes" # only 'yes' or 'no' allowed
 moa = "Insert MoA"
 half_life = "~X hours"
 peak_action = "Optional to add this in"
