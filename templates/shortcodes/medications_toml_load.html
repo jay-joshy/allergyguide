@@ -58,28 +58,9 @@
           {% for brand in details.brand_names %}
           {{ brand }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
-        <p><strong><i class="fas fa-dollar-sign"></i>
-            Cost:</strong>
-          {% for item in details.cost %}
-          {{ item.price }} ({{ item.province }}){% if not loop.last %}; {% endif %}
-          {% endfor %}</p>
-        <p><strong><i class="fas fa-dollar-sign"></i>
-            Coverage:</strong>
-          {% for item in details.coverage%}
-          {{ item.province }} - ({{ item.details}}){% if not loop.last %}; {% endif %}
-          {% endfor %}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
           {{ details.routes }}</p>
-        <p><strong><i class="fas fa-syringe"></i>
-            Doses:</strong></p>
-        <ul>
-          {% for dose in details.doses %}
-          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="drug-card-column">
         <p><strong>MoA:</strong>
           {{ details.moa }}</p>
         <p><strong><i class="fas fa-hourglass-half"></i>
@@ -90,11 +71,33 @@
             Time to peak action:</strong>
           {{ details.peak_action}}</p>
         {% endif %}
+        <p><strong><i class="fas fa-syringe"></i>
+            Doses:</strong></p>
+        <ul>
+          {% for dose in details.doses %}
+          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="drug-card-column">
+        {% if details.cost %}
+        <p><strong><i class="fas fa-dollar-sign"></i>
+            Cost:</strong>
+          {% for item in details.cost %}
+          {{ item.price }} ({{ item.province }}){% if not loop.last %}; {% endif %}
+          {% endfor %}</p>
+        {% endif %}
+        <p><strong><i class="fas fa-dollar-sign"></i>
+            Coverage:</strong>
+          {% for item in details.coverage%}
+          {{ item.province }} ({{ item.details}}){% if not loop.last %}; {% endif %}
+          {% endfor %}</p>
         <p><strong><i class="fas fa-user"></i>
             Age Group:</strong>
           {{ details.age_group }}</p>
         <p><strong><i class="fas fa-baby"></i>
-            Pregnancy:</strong>{{ details.pregnancy | safe }}</p>
+            Pregnancy:</strong>
+          {{ details.pregnancy | safe }}</p>
         <p><strong><i class="fas fa-ban"></i>
             Contraindications:</strong>
           {{ details.contraindications | safe }}</p>
