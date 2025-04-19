@@ -1,4 +1,4 @@
-:root:not(.switch) {
+:root {
   /* Dark mode */
   --medstl_background: #1e1e1e;
   --medstl_text: #ffffff;
@@ -96,10 +96,31 @@
     background-color: var(--medstl_background);
     color: var(--medstl_text);
     border: 1px solid var(--medstl_border);
-    border-radius: 8px;
+    border-radius: 0.6rem;
     padding: 16px;
     box-shadow: 0 4px 8px var(--medstl_shadow);
     transition: background-color 0.3s, color 0.3s;
+    position: relative; // Important for absolute positioning of the status indicator
+
+    .rx-status {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-top-right-radius: 0.4rem;
+      border-bottom-left-radius: 0.6rem;
+      color: white;
+
+      &.otc {
+        background-color: #4CAF50; // Green for OTC
+      }
+
+      &.rx {
+        background-color: #f44336; // Red for prescription-only
+      }
+    }
 
     h2 {
       margin-top: 0;

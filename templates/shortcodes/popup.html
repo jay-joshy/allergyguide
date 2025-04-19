@@ -1,0 +1,26 @@
+{# Generate a unique ID per popup instance #}
+{% set popup_id = "popup-" ~ get_random(end=100000) %}
+<button
+  class="popup-trigger"
+  data-popup-id="{{ popup_id }}"
+  aria-haspopup="dialog"
+  aria-controls="{{ popup_id }}"
+>
+  <!-- Replace with your own icon SVG or font‑icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" fill="currentColor" class="bi bi-capsule popup-icon" viewBox="0 0 16 16">
+    <path d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429z"/>
+  </svg>
+</button>
+<div
+  id="{{ popup_id }}"
+  class="popup-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+  <div class="popup-overlay" data-popup-id="{{ popup_id }}"></div>
+  <div class="popup-content">
+    <button class="popup-close" aria-label="Close">&times;</button>
+    {{ body | safe }}
+  </div>
+</div>
