@@ -10,8 +10,6 @@
 
 ## Shortcodes
 
-- popout icon (ie so you can show research supporting things)
-
 ## Misc
 
 - Optimize .PNGS used (see https://github.com/shssoichiro/oxipng and https://abridge.pages.dev/overview-abridge/#optimize-png-ico-files
