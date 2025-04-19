@@ -14,7 +14,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
 peak_action = "Optional to add this in"
@@ -47,7 +47,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -98,7 +98,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "2nd generation H1 receptor antagonist"
 half_life = "8.4 hours (half life of active metabolite--desloratadine--is 28h)"
 routes = "oral tab/capsule, solution"
@@ -128,7 +128,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -155,7 +155,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -182,7 +182,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -209,7 +209,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -240,7 +240,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -267,7 +267,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -295,7 +295,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -323,7 +323,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -351,7 +351,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -378,7 +378,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -405,7 +405,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "yes or no"
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"

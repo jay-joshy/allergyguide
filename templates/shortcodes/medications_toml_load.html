@@ -40,6 +40,12 @@
   {% for drug, details in data %}
   {% if drug in meds %}
   <div class="drug-card" data-categories="{{ details.categories | join(sep=',') }}" data-brand-names="{{ details.brand_names | join(sep=',') }}">
+    {% if details.otc not in ['yes', 'no'] %}
+    {{ throw(message="otc in .toml must be either 'yes' or 'no', nothing else") }}
+    {% endif %}
+    <div class="rx-status {% if details.otc == 'yes' %}otc{% else %}rx{% endif %}">
+      {% if details.otc == 'yes' %}OTC{% else %}Rx{% endif %}
+    </div>
     <h2 class="generic-name">{{ drug | split(pat="_") | first | replace(from="-", to=" ") | capitalize }}
     {% set z = drug | split(pat="_") | last %}
     {% if z != drug %}
@@ -62,9 +68,6 @@
           {% for item in details.coverage%}
           {{ item.province }} - ({{ item.details}}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
-        <p><strong><i class="fas fa-dollar-sign"></i>
-            OTC:</strong>
-          {{ details.otc}}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
           {{ details.routes }}</p>
