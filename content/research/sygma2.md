@@ -157,7 +157,6 @@ In total, 8.5% of the budesonide-formoterol group compared to 8.8% in the budeso
 
 {% end %}
 
-<div style = "  overflow-x: auto;">
 <table>
   <thead>
     <tr>
@@ -204,7 +203,6 @@ In total, 8.5% of the budesonide-formoterol group compared to 8.8% in the budeso
     </tr>
   </tbody>
 </table>
-</div>
 
 #### ACQ-5, AQLQ
 

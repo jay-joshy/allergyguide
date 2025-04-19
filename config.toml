@@ -1,7 +1,7 @@
 theme = "abridge"
 
 # do NOT include a trailing slash on the base URL
-base_url = "/"
+base_url = "https://allergyguide.ca"
 # Usable site directly from disk, Including Search: "/home/jieiku/.dev/abridge/public"
 # Also set index format = "elasticlunr_javascript", and in [extra] uglyurls = true, integrity = false
 # If you use the npm/node script then all you have to do is set offline = true, and everything else is automatic.
@@ -92,7 +92,7 @@ footer_credit_override = '<p class = "s90"><br>A project by residents, for resid
 ### Uncomment one of the below lines, or neither, depending on which type of logo you want to use:
 # logo = { file = "logo.svg", width = "32", height = "32", alt = "Abridge", text = "bridge" }
 # textlogo = '<font color="#f90">A</font>bridge'
-textlogo = '<img src="/icon/immunoglobulin.svg" alt="A" style="width: 2rem; height: 2rem;">llergyguide'
+textlogo = '<img src="/icon/immunoglobulin.svg" alt="A">llergyguide'
 
 sitedesc = false # enables or disables the display of the site description below the logo.
 headhr = true    # show or hide horizontal rule below header

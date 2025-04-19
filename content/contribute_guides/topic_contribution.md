@@ -9,14 +9,17 @@ authors = ["Joshua Yu"]
 
 Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).
 
+Not all topics will fit this general structure, and it is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points.
+
+Where possible, especially for more recent changes to guidelines, please include references. In general, if a fact is self-evident (ie. INCS are used to treat allergic rhinitis), it does not need a citation.
+
 ## Topic structure
 
 {% two_columns() %}
 
-- Macro to c/p
+- Macro to c/p (see [here](/contribute#macros) for guide on writing macros)
 - Summary:
   - Condition name, epidemiology, pathophysiology, manifestations, diagnosis, management.
-- Summary diagram
 - Definitions:
   - Things to know up front before reading the article
   - Abbreviations
@@ -49,31 +52,6 @@ Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersen
 
 {% end %}
 
-## Other topic content specifics:
-
-- Not all topics will fit this general structure, and it is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points
-- Where possible, especially for more recent changes to guidelines, please include references. If a fact is obviously self-evident (ie. INCS is used to treat allergic rhinitis), it does not need a citation; however, a specific point-estimate should have one. This is somewhat subjective; confer with the editors and staff during the review period if questions arise
-  - References should be in Vancouver format. If you are writing your rough draft in Google Docs, please use a citation manager -- **having the correct numbers for in-text citations makes it MUCH easier** to port the references to the website
-  - If there are particular references that are very high yield, feel free to include a small blurb about them (it will show up in the reference icon, as such: <span class="references">2</span>)
-- If you need to list a specific prescription, format as "ExRx: Nasonex 2 sprays EN BID" (ExRx = Example Prescription)
-- If possible for key management options, there should be a 'drop box' for a deeper dive into the evidence: specifically, any relevant point estimates that would be useful for patient counseling. For example:
-
-{% dropdown(header="DEEP-DIVE: Efficacy of INCS in CRSwNP") %}
-
-Here you would put the evidence behind a study (ideally a systematic review or meta-analysis) that contains <b>data relevant to patients</b><span class='references'>2</span>
-<br>
-
-<ul>
-<li> What's the bottom line of the research?</li>
-<li> What outcomes were studied, and population?</li>
-<li> What are relevant concrete data points?</li>
-<li> Is this evidence "strong"? This is a very nuanced point (and there are frameworks such as GRADE for this). You shouldn't spend a LOT of time on this up-front; while interpretation of complex research is crucial, it's not the main point of this project</li>
-</ul>
-
-<br>
-
-{% end %}
-
 ## Macros
 
 Macros exist at the top of the topic page. While not all topics need a macro, most will. It has 2 sections:
@@ -88,7 +66,6 @@ Example:
 ## Styling of topic pages
 
 {% admonition(type="danger", icon="info", title="Don't just use plain-text") %}
-
 Within a topic page, there are many ways to customize the text: in particular, **Markdown** and **Shortcodes**.
 
 {% end %}
@@ -202,7 +179,7 @@ Benadryl is not a fantastic antihistamine to use :)
 
 #### references
 
-References are embeddable! All you need to do it prepare references like you normally do with a bibliography in Vancouver style, and the editor will implement the rest. For example:
+References are embeddable! All you need to do it prepare references like you normally do with a bibliography in AHA style, and the editor will implement the rest. For example:
 
 This sentence needs two references <span class="references">1,2</span>. Here is another sentence with one reference <span class="references">3</span>.
 
@@ -211,17 +188,17 @@ This sentence needs two references <span class="references">1,2</span>. Here is 
 {% references(showBib = true) %}
 [{
 "id": "1",
-"bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
+"aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
 "url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
 "notes": ""
 }, {
 "id": "2",
-"bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
+"aha_bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
 "url": "https://www.jacionline.org/article/S0091-6749(22)01186-1/fulltext",
-"notes": "Here is a custom blurb about this particular paper!"
+"notes": "This study was good!"
 }, {
 "id": "3",
-"bib": "Another reference here with its own details.",
+"aha_bib": "Another reference here with its own details.",
 "url": "https://example.com",
 "notes": ""
 }]

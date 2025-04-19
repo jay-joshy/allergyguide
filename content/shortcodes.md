@@ -10,10 +10,6 @@ in_search_index = false
 toc = true
 +++
 
-Here is an example thing {% example() %}
-holy moly
-{% end %}
-
 ## Highlights
 
 Not a shortcode but still useful. You have several colours to choose from:
@@ -168,10 +164,6 @@ This is a danger admonition with a danger icon.
 **Markdown can be used here :)**
 {% end %}
 
-{% admonition(type="danger", icon="flag", title="DANGER") %}
-There's also a FLAG icon you can add as well!
-{% end %}
-
 {% admonition(type="warning", icon="warning", title="WARNING") %}
 Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text Blah blah here is a wall of text wall of text
 {% end %}
@@ -210,26 +202,26 @@ Insert sage clinical pearl
 Of note; you cannot nest a shortcode easily within a shortcode. Ie. I could not use {{ shortcode }} within the text image to right text.
 
 ```md
-{%/* text_image(src="/images/example.png", alt="An image description", caption = "test caption") */%}
+{%/* text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
 
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {%/* end */%}
 ```
 
-{% text_image(src="/images/example.png", alt="An image description", caption = "test caption") %}
+{% text_image(src="/images/example.jpg", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
 ```md
-{%/* text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") */%}
+{%/* text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") */%}
 
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {%/* end */%}
 ```
 
-{% text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") %}
+{% text_image(text_position = "right", src="/images/example.jpg", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
 {% end %}
 
@@ -295,40 +287,6 @@ testing this
 
 {% spoiler(fixed_blur = true) %}
 testing this
-{% end %}
-
-## dropdown
-
-```md
-{%/* dropdown(header="this is what the user will click on to get more info") */%}
-
-This text will appear in the dropdown
-
-And it will **LOOK GOOD** with markdown!
-<a href="allergyguide.ca">link</a>
-
-{% admonition(type="danger", icon="danger", title="DANGER") %}
-This is a danger admonition with a danger icon.
-
-**Markdown can be used here :)**
-
-{% end %}
-
-{%/* end */%}
-```
-
-{% dropdown(header="this is what the user will click on to get more info") %}
-This text will appear in the dropdown
-
-And it will **LOOK GOOD** with markdown!
-<a href="allergyguide.ca">link</a>
-
-{% admonition(type="danger", icon="danger", title="DANGER") %}
-This is a danger admonition with a danger icon.
-
-**Markdown can be used here :)**
-{% end %}
-
 {% end %}
 
 ## contributors
@@ -450,10 +408,10 @@ excludes weekends
 ## wide_contact_card
 
 ```md
-{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.png", url="/research/") */}}
+{{/* wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") */}}
 ```
 
-{{ wide_contact_card(title="example title", text = "test text", src="/images/example.png", url="/research/") }}
+{{ wide_contact_card(title="example title", text = "test text", src="/images/example.jpg", url="/research/") }}
 
 ## custom_macro
 
@@ -488,30 +446,6 @@ if not provided default will show all medications from the toml
 
 {{ medications_toml_load(meds=["bilastine"])}}
 
-## popup
-
-```md
-ExRx: Blexten 10mg OD to QID {%/* popup() */%}
-
-{{ medications_toml_load(meds=["bilastine"])}}
-
-{%/* end */%}
-```
-
-Requires one script tag to be placed at the bottom of the page:
-
-```html
-<script src="/js/popup.js"></script>
-```
-
-ExRx: Blexten 10mg OD to QID {% popup() %}
-
-{{ medications_toml_load(meds=["bilastine"])}}
-
-{% end %}
-
-<script src="/js/popup.js"></script>
-
 ## wip
 
 ```md
@@ -530,7 +464,17 @@ ExRx: Blexten 10mg OD to QID {% popup() %}
 {{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
 ```
 
-## references
+# example
+
+proof of concept that 1) you can load in simple arrays and 2) use tera macros
+
+```md
+{{/* example(a = ["test1", "test2"], n = 10) */}}
+```
+
+{{ example(a = ["test1", "test2"], n = 10) }}
+
+# references
 
 ```md
 This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
@@ -542,17 +486,17 @@ Here is another sentence with one reference <span class="references">2</span>
 {%/* references(showBib = true) */%}
 [{
 "id": "1",
-"bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
+"aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
 "url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
 "notes": ""
 }, {
 "id": "2",
-"bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
+"aha_bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
 "url": "https://www.jacionline.org/article/S0091-6749(22)01186-1/fulltext",
 "notes": "This study was good!"
 }, {
 "id": "3",
-"bib": "Another reference here with its own details.",
+"aha_bib": "Another reference here with its own details.",
 "url": "https://example.com",
 "notes": ""
 }]
@@ -560,7 +504,7 @@ Here is another sentence with one reference <span class="references">2</span>
 {%/* end */%}
 ```
 
-This sentence needs two references <span class="references">the world,2,3,1,1,1</span> and some of this
+This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
 
 Here is another sentence with one reference <span class="references">2</span>
 
@@ -568,24 +512,24 @@ Here is another sentence with one reference <span class="references">2</span>
 
 {% references(showBib = true) %}
 [{
-"id": "the world",
-"bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
+"id": "1",
+"aha_bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
 "url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
 "notes": ""
 }, {
 "id": "2",
-"bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
+"aha_bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
 "url": "https://www.jacionline.org/article/S0091-6749(22)01186-1/fulltext",
 "notes": "This study was good!"
 }, {
 "id": "3",
-"bib": "Another reference here with its own details.",
+"aha_bib": "Another reference here with its own details.",
 "url": "https://example.com",
 "notes": ""
 }]
 {% end %}
 
-## mobile_warning
+# mobile_warning
 
 This will display a warning admonition if viewed from Mobile.
 
@@ -595,7 +539,7 @@ This will display a warning admonition if viewed from Mobile.
 
 {{ mobile_warning() }}
 
-## json_to_table
+# json_to_table
 
 - body -- the JSON
 - show_headers: bool, default true
@@ -621,7 +565,7 @@ This will display a warning admonition if viewed from Mobile.
 ]
 {% end %}
 
-## research_card
+# research_card
 
 ```md
 {{/* research_card(paper="sygma2") */}}
@@ -634,65 +578,3 @@ This will display a warning admonition if viewed from Mobile.
 ```
 
 {{ research_card(paper="sygma2", show_title=false) }}
-
-## tabs
-
-```md
-{%/* tabs() */%}
-
-<!-- TAB -->Overview
-<!-- CONTENT -->
-<p>This is an <strong>overview</strong> of the feature.</p>
-
-<!-- TAB -->Details
-<!-- CONTENT -->
-<ul>
-  <li>Fast</li>
-  <li>Secure</li>
-  <li>Reliable</li>
-</ul>
-{% admonition(type="danger", icon="danger", title="DANGER") %}
-This is a danger admonition with a danger icon.
-
-**Markdown can be used here :)**
-{% end %}
-
-<!-- TAB -->Pricing
-<!-- CONTENT -->
-<p>Starting at <em>$9.99/month</em>.</p>
-
-{%/* end */%}
-```
-
-Requires a script to be placed in the bottom of the page:
-
-```html
-<script src="/js/tabs.js"></script>
-```
-
-{% tabs() %}
-
-<!-- TAB -->Overview
-<!-- CONTENT -->
-<p>This is an <strong>overview</strong> of the feature.</p>
-
-<!-- TAB -->Details
-<!-- CONTENT -->
-<ul>
-  <li>Fast</li>
-  <li>Secure</li>
-  <li>Reliable</li>
-</ul>
-{% admonition(type="danger", icon="danger", title="DANGER") %}
-This is a danger admonition with a danger icon.
-
-**Markdown can be used here :)**
-{% end %}
-
-<!-- TAB -->Pricing
-<!-- CONTENT -->
-<p>Starting at <em>$9.99/month</em>.</p>
-
-{% end %}
-
-<script src="/js/tabs.js"></script>

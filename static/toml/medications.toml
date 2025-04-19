@@ -7,22 +7,15 @@
 categories = ["testcategory", "testA", "testB"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
-  { province = "ON", price = "~$X CAD / Ymg tab" },
-  { province = "BC", price = "~$X CAD / Ymg tab" },
+  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
+  { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
-peak_action = "Optional to add this in"
 routes = "oral tab, liquid, ODT"
 doses = [
-  { indication = "diseaseA", dose = "Zmg OD", notes = "adult" },
-  { indication = "diseaseA", dose = "Zmg OD", notes = "adult, CrCl < 30" },
-  { indication = "diseaseB", dose = "Zmg BID", notes = "pediatric (ages X-Y)" },
+  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
+  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
 pearls = ["Insert pearl here"]
 age_group = "insert age group"
@@ -32,10 +25,6 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 
-###############################
-# ANTIHISTAMINES
-###############################
-
 [rupatadine]
 categories = ["2G antihistamine"]
 brand_names = ["Rupall", "Rupafin", "Rupita"]
@@ -43,11 +32,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -67,11 +51,6 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 categories = ["2G antihistamine"]
 brand_names = ["Blexten"]
 cost = [{ province = "ON", price = "~$1.1 CAD / 20mg tab" }]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "2nd generation H1 receptor antagonist."
 half_life = "~15 hours"
 routes = "PO tab, liquid (uncommon)"
@@ -79,11 +58,8 @@ doses = [
   { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "adult dosing" },
   { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "pediatric dosing" },
 ]
-pearls = [
-  "Theoretically does not cross BBB; less sedating than other AHs",
-  "Take without food or juice otherwise absorption impaired",
-]
-age_group = "≥12 years of age; used off-label in younger ages"
+pearls = ["Theoretically does not cross BBB"]
+age_group = ">=12 years of age; has been used off-label in younger children"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
@@ -93,12 +69,9 @@ monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 [loratadine]
 categories = ["2G antihistamine"]
 brand_names = ["Claritin", "Alavert"]
-cost = [{ province = "ON", price = "~$0.6 CAD / 10mg tab" }]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
+cost = [
+  { province = "ON", price = "~$0.6 CAD / 10mg tab" }
 ]
-otc = "no"
 moa = "2nd generation H1 receptor antagonist"
 half_life = "8.4 hours (half life of active metabolite--desloratadine--is 28h)"
 routes = "oral tab/capsule, solution"
@@ -107,9 +80,7 @@ doses = [
   { indication = "CSU, AR", dose = "10mg q48h", notes = "CrCl <30ml/min" },
   { indication = "CSU, AR", dose = "5mg OD to QID", notes = "ages [2,6)" },
 ]
-pearls = [
-  "No QTc prolongation noted in monographs or UpToDate. Mostly hepatically cleared, but in adults still renally adjust.",
-]
+pearls = ["No QTc prolongation noted in monographs or UpToDate. Mostly hepatically cleared, but in adults still renally adjust."]
 age_group = "[2, adults) with dosing adjustments"
 pregnancy = "Safe as per [ACOG](https://www.acog.org/womens-health/experts-and-stories/ask-acog/what-medicine-can-i-take-for-allergies-while-im-pregnant) and [firstexposure](https://firstexposure.ca/seasonal-allergies-and-allergic-rhinitis-in-pregnancy-and-lactation/)"
 contraindications = "Hypersensitivity"
@@ -124,11 +95,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -151,11 +117,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -178,11 +139,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -205,11 +161,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -225,10 +176,6 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 
-###############################
-# PUFFERS
-###############################
-
 [salbutamol]
 categories = ["inhaler", "SABA"]
 brand_names = ["Ventolin", "Albuterol (not a brand name)"]
@@ -236,11 +183,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -263,11 +205,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -291,11 +228,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -319,11 +251,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -347,11 +274,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -374,11 +296,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -401,11 +318,6 @@ cost = [
   { province = "ON", price = "~$0.50 CAD / 10mg tab" },
   { province = "BC", price = "~$1000 CAD / 10mg tab" },
 ]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -420,31 +332,3 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
-
-###############################
-# INCS
-###############################
-
-###############################
-# TOPICAL STEROIDS
-###############################
-
-###############################
-# EYE DROPS
-###############################
-
-###############################
-# LTRAs
-###############################
-
-###############################
-# EPINEPHRINE
-###############################
-
-###############################
-# ANGIOEDEMA MEDS
-###############################
-
-###############################
-# BIOLOGICS
-###############################

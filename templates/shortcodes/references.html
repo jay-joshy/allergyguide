@@ -20,46 +20,21 @@
     <div id="ref-popup-inner"></div>
   </div>
 </div>
+
 {# For biblography #}
 {% set showBib = showBib | default(value=false) %}
 {% if showBib %}
 <div class="ref-bib">
   {% for ref in references %}
-  <div class="item">
-    {{ loop.index }}. {{ ref.bib }}.
-    <a class="ref-link" href="{{ref.url}}" target="_blank">Link.</a>
-  </div>
+    <div class = "item">
+      {{ ref.id }}. {{ ref.aha_bib }}. <a class="ref-link" href="{{ref.url}}" target="_blank">Link.</a>
+    </div>
   {% endfor %}
 </div>
 {% endif %}
 
 {# Pass the JSON data into JavaScript – note: the `jsonify` filter will output proper JSON #}
 <script>
-  /**
- * Takes a reference string and returns the same string
- * with the title bolded using <strong> tags.
- * 
- * @param {string} referenceStr - A string formatted like a citation, e.g.:
- *  "Fokkens WJ, Lund VJ, Hopkins C, Hellings PW, Kern R, Reitsma S, et al. 
- *   European Position Paper on Rhinosinusitis and Nasal Polyps 2020. 
- *   Rhinology. 2020 Feb 20;58(Suppl S29):1–464"
- * 
- * @returns {string} - The same string with the title bolded.
- */
-function boldTitleAndYear(referenceStr) {
-    // Match everything after the last period in the author list and before the next period (title)
-    const titleRegex = /\. ([^.]+?)\./;
-    const titleMatch = referenceStr.match(titleRegex);
-
-    let result = referenceStr;
-
-    if (titleMatch) {
-        const title = titleMatch[1];
-        result = result.replace(title, `<strong>${title}</strong>`);
-    }
-    return result;
-}
-
   document.addEventListener('DOMContentLoaded', function () {
     // The full list of reference objects loaded from the shortcode JSON input.
     const references = {{references | json_encode() | safe
@@ -90,8 +65,8 @@ function boldTitleAndYear(referenceStr) {
         const ref = references.find(function (r) {return r.id === id;});
         if (ref) {
           popupContent += '<div class="ref-entry">';
-          <!-- // Show the bibliography. -->
-          popupContent += '<p class="ref-text"><a class="ref-link" href="' + ref.url + '" target="_blank">' + boldTitleAndYear(ref.bib) + '</a></p>';
+          // Show the AHA style bibliography.
+          popupContent += '<p class="ref-text"><a class="ref-link" href="' + ref.url + '" target="_blank">' + ref.id + ".  " + ref.aha_bib + '</a></p>';
           // If there are any extra notes, show them.
           if (ref.notes && ref.notes.trim() !== "") {
             popupContent += '<p class="ref-notes">' + ref.notes + '</p>';
