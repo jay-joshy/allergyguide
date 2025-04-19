@@ -1,5 +1,5 @@
 +++
-title = "Chronic rhinosinusitis"
+title = "Chronic rhinosinusitis: patient resource"
 description = "Patient handout for chronic rhinosinusitis"
 date = 2025-04-12
 draft = false
@@ -12,17 +12,19 @@ toc = true
 authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
 +++
 
-{% text_image(src="/images/topics/chronic_rhinosinusitis/normal_sinus.png", alt="Picture of a normal sinus from the front", caption = "Normal sinus structure. Image adapted from Servier Medical Art, https://smart.servier.com, licensed under CC BY 4.0.", height="15rem") %}
+{% text_image(src="/topic_assets/chronic_rhinosinusitis/normal_sinus.png", alt="Picture of a normal sinus from the front", caption = "Normal sinus structure. Image adapted from Servier Medical Art, https://smart.servier.com, licensed under CC BY 4.0.", height="15rem") %}
 
 ## What are the sinuses?
 
-We all have pockets of air behind our face, called the sinuses, that are connected with our nostrils. Each pocket is normally lined with a small amount of tissue that produces mucous to keep the area moist and healthy.
+Sinuses are small air-filled spaces behind your cheeks, forehead, and eyes. They connect to your nose through tiny openings. Each sinus has a thin lining that makes mucus. This mucus helps keep the sinuses moist and clean. Your sinuses remain healthy when the openings stay open, which allows the mucus to drain.
 
 {% end %}
 
 ## What is chronic rhinosinusitis (CRS), and how is it diagnosed?
 
-When this lining becomes chronically (>3 months) irritated and inflamed, it becomes swollen and produces too much mucous. This can lead to blockages and poor clearance of mucous, reduced airflow, and poor drainage: **this is known as chronic rhinosinusitis**. To have CRS therefore, <span class="hl-yellow">you need **both** key symptoms and imaging evidence of sinus inflammation</span>:
+Chronic rhinosinusitis (CRS) happens when the lining of your sinuses stays swollen and irritated for more than 3 months. The swelling can block the sinuses, making it hard for mucus to drain. This can cause stuffy nose, pressure in the face, and trouble breathing through the nose.
+
+<span class="hl-yellow">To be diagnosed with CRS, you need to have both at least 2 key ongoing symptoms and clear signs of swelling or inflammation inside the sinuses:</span>
 
 {% two_columns() %}
 
@@ -37,7 +39,7 @@ When this lining becomes chronically (>3 months) irritated and inflamed, it beco
 
 <!-- split -->
 
-{% admonition(type="info", icon="info", title="Imaging confirming sinus inflammation") %}
+{% admonition(type="info", icon="info", title="Objective sinus inflammation") %}
 
 This is done through either:
 
@@ -48,10 +50,10 @@ This is done through either:
 
 {% end %}
 
-Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _those these are not always present and are non-specific_.
+Sometimes, these symptoms are not quickly brought to medical attention due to being relatively mild and long-standing. You may also experience ear fullness, headache, fatigue, altered taste, and or cough, _though these are not always present and are non-specific_.
 
-{% admonition(type="warning", icon="warning", title="Atypical symptoms you should watch watch out for?") %}
-If you have any of the following, you should let your doctor know: these may suggest there is something else going on aside from CRS.
+{% admonition(type="warning", icon="warning", title="Atypical symptoms you should watch out for?") %}
+If you have any of the following, you should let your doctor know: these may suggest something else going on aside from CRS.
 
 - new numbness or tingling
 - nasal dripping that only occurs from one side
@@ -61,140 +63,128 @@ If you have any of the following, you should let your doctor know: these may sug
 
 {% end %}
 
-## There are 3 main types of CRS: with and without nasal polyps
+## What are the types of CRS?
+
+There are three main types of CRS. They are grouped based on what’s causing the problem in the sinuses.
 
 {% two_columns() %}
 
 **CRS without nasal polyps:**
 
-This is the most common type. It may be linked to allergies, infections, irritants, or other factors.
+This is the most common type. It may be linked to allergies, infections, or breathing in irritants like smoke or pollution.
 
 **CRS with nasal polyps:**
 
-Sometimes, CRS is caused by soft, non-cancerous growths called polyps that grow in the sinuses. If large enough, they can cause blockage of the nasal passages and sinuses. Often, there is also associated asthma; there may also be sensitivity to medications known as NSAIDs (for example, aspirin, ibuprofen, naproxen). Polyps are usually found using nasal endoscopy or CT scan. It is unclear what exactly can cause these polyps to form.
+In this type, soft, non-cancerous growths called polyps form in the nose or sinuses. Polyps can block airflow and mucus drainage. People with this type often also have asthma. Some may also react badly to certain pain relievers like aspirin, ibuprofen, or naproxen. Polyps can be found with a CT scan or nasal endoscopy; if they are big enough they may be seen on physical examination. Doctors aren’t sure exactly why polyps form.
 
 <!-- split -->
 
 **CRS with fungal allergy (Allergic fungal rhinosinusitis):**
 
-It is normal for there to be a small amount of fungi spores in the air we breathe. Normally, we breathe them in and out without issue. However, when our body develops an allergy to these fungi it causes a distinct inflammatory response and very thick mucous. There is specific diagnostic criteria for this condition involving allergy testing, mucous analysis, and evidence on imaging.
+There is normally a small amount of fungi in the air we breathe. Most people breathe them in without problems. But in rare cases, the body has an allergic reaction to these fungi. This leads to thick mucus and strong sinus inflammation. Special tests, mucus samples, and sinus scans are used to diagnose this condition. It’s quite uncommon and happens more often in the US.
 
 {% end %}
 
 [include image of sinuses with nasal polyps -- likely image to the right of the above text]
 
-## What are risk factors for developing CRS?
+## What are risk factors for CRS?
 
-There are a variety of possible risk factors for CRS; often, more than one may be involved. These include:
+There are a variety of possible risk factors for CRS. Often, more than one is involved:
 
 {% two_columns() %}
 
 **Allergies**:
-If you are chronically exposed to particles in the air you are allergic to (for example, dust mites, cat/dog danger, molds), the resulting inflammation can drive and worsen CRS.
+If you're often around things you’re allergic to (like dust mites, pet dander, or mold), your sinuses can stay inflamed. This can lead to CRS or make it worse.
 
 **Irritants in the air**:
-Chronic exposure to irritants such as smoke and other irritants can increase your risk of CRS.
+Breathing in smoke, pollution, or strong fumes over time can irritate your sinuses and raise your risk of CRS. Smoking cigarettes is a risk factor.
 
 **Repeated viral infections**:
-There is evidence that repeated viral infections (for example, the common cold) can lead to CRS, even though the virus itself goes away.
+Getting viral infections often, like the common cold, can damage the sinuses over time. Even after the virus is gone, inflammation may remain.
 
 <!-- split -->
 
 **Immune system problems**:
-Though rare, if someone has certain problems with their immune system they are at higher risk of recurrent sinus infection and eventually CRS.
+People with very weak immune systems are more likely to get repeated sinus infections, which can lead to CRS. This is relatively rare.
 
 **Pre-existing structural problems**:
-Variations in the structure of your nasal passages and sinuses may make you more vulnerable to developing CRS. However, _by themselves, these are very uncommon causes of CRS_. For example, a deviated septum.
+Some people are born with narrow or blocked sinus passages. For example, a deviated septum. By themselves, these issues don’t usually cause CRS but may make it more likely if other factors are present.
 
 {% end %}
 
-## What further investigations can be done once CRS is diagnosed?
+## What tests might be done after CRS is diagnosed?
 
-There is no standard panel of testing for CRS. However, depending on your symptoms and triggers, the following tests may be considered:
+There isn’t one standard test for everyone with CRS. But based on your symptoms and possible triggers, your doctor may suggest:
 
-- Skin prick testing for common allergens such as dust and moulds
-- Testing for certain immune deficiencies if specific criteria are met
-- Testing for other conditions related to CRS, including asthma and NSAID sensitivity
+- Allergy testing – A skin prick test can check if you’re allergic to things like dust or mold
+- Immune system testing – If certain signs are present, your doctor may test how well your immune system works
+- Related condition checks – You may also be tested for other issues linked to CRS, like asthma
 
-## What are the available treatments?
+## What treatments are available?
 
-CRS is often a **long-term condition**. While it might not be fully “curable,” **most people can manage symptoms well** with the right treatments. Your doctor will suggest likely a combination of the following to start:
+CRS is usually a long-term condition. It may not fully go away, but most people can control their symptoms with the right care. Your doctor will likely recommend a mix of the following treatments to help you feel better:
 
-### First-line / Cornerstone treatments
+### First-line or "Cornerstone" treatments
+
+These are the main treatments that most people with CRS start with. Your doctor may suggest using a combination of them together:
 
 {% json_to_table()%}
 [
 {
 "Treatment": "Lifestyle",
-"Details": "
-Avoid cigarettes and smoke<br>Avoidance of known triggers, irritants, and/or allergens
-",
-"Examples": "
-Getting dust-mite covers;<br>keeping the cat out of the bedroom
-"
+"Details": "Stay away from cigarette smoke and things that trigger your symptoms, like allergens or strong smells.",
+"Examples": "Using dust-mite covers on bedding, keeping pets out of the bedroom."
 },
 {
 "Treatment": "Nasal saline rinses",
-"Details": "Washes out extra mucus and irritants/allergens. Cleaning the nose before other medications (for example, a steroid nasal spray) can help get them more effectively to the sinuses.",
-"Examples": "This should be done with <b>sterile</b> saline. These are usually non-prescription, and may be in the form of squeeze bottles or pots. We recommend these more than the saline sprays if possible."
+"Details": "Helps flush out mucus, dust, and allergens. Rinsing before using a nasal spray helps the medicine reach deeper into the sinuses.",
+"Examples": "Use <b>sterile</b> saline. Sold over the counter as squeeze bottles or neti pots. Sprays are easier but much less effective than rinses."
 },
 {
-"Treatment": "Corticosteroid nasal sprays or rinses",
-"Details": "Corticosteroids are potent anti-inflammatories, but take time to work. With <i>consistent daily use over weeks</i>, they reduce swelling and inflammation. Most commonly, a nasal spray is used. Sometimes, a sinus rinse with steroids is used instead to better reach the sinuses.<br><br>Because these are only applied to the surface of your tissues and are not swallowed, extremely little steroid makes in into your blood. This is <b>not</b> the same steroid that bodybuilders would use!",
+"Treatment": "Steroid nasal sprays or rinses",
+"Details": "Steroids reduce swelling in the nose. They work best with <i>daily use for 8–12 weeks</i>. Sprays are common, but some people use steroid rinses for deeper reach.<br><br>These steroids are very low dose and stay in the nose. They are <b>not</b> the same as muscle-building steroids.",
 "Examples": "Omnaris, Nasonex"
 },
-{ "Treatment": "Antibiotics", "Details": "Used if there is an acute flare with suspected infection.",
-"Examples": "Amoxicillin-clavulanate for 10 days. Moxifloxacin is an alternative for those with true penicillin allergies."}
+{
+"Treatment": "Antibiotics",
+"Details": "Sometimes used if your CRS flares and your doctor thinks there may be an infection.",
+"Examples": "Amoxicillin-clavulanate for 10 days. Moxifloxacin may be used if you’re allergic to penicillin"
+}
 ]
 {% end %}
 
 {% admonition(type="danger", icon="danger", title="CONSISTENCY IS KEY") %}
 
-The above treatments **do not work right away**, and need time with regular use before you expect significant improvement in symptoms.
+These treatments don’t work overnight. Most need to be used every day for weeks before you feel real improvement.
 
 {% end %}
 
-### Further specialized therapies for CRS with nasal polyps
+### Additional Treatments for CRS with Nasal Polyps
+
+If you have nasal polyps, your doctor may suggest more advanced treatments along with first-line therapy:
 
 {% json_to_table()%}
 [
-{ "Treatment": "
-Biologic therapies
-",
-"Details": "
-Biologics are medications that target specific steps in the inflammatory process in CRS. When used in conjunction with first-line therapy they can offer significant relief, and often can help with other related conditions, like asthma.
-",
-"Examples": "
-Dupilumab (brand-name Dupixent), omalizumab (brand-name Xolair), mepolizumab (brand-name Nucala)
-"
+{
+"Treatment": "Biologic therapies",
+"Details": "Biologics are newer medicines that block specific causes of inflammation. They are very effective at reducing symptoms and may shrink your polyps. These medicines also often help with related conditions like asthma. Studies show they have very few side effects.",
+"Examples": "Dupilumab (Dupixent), omalizumab (Xolair), mepolizumab (Nucala)"
 },
-{ "Treatment": "
-Oral corticosteroids
-",
-"Details": "
-Short courses of oral steroids can be used for rapid temporary symptomatic relief (~ a few weeks); they will shrink polyps and improve smell. However, oral steroids are absorbed all across the body and chronic use is associated with significant side effects, and should be used sparingly.
-",
-"Examples": "
-Prednisone, 30mg per day for 7 days
-"
-},
-{ "Treatment": "
-Leukotriene blockers
-",
-"Details": "
-These medications are most effective if there is also asthma. They also reduce inflammation through a different mechanism than steroids.
-",
-"Examples": "
-Montelukast (brand-name Singulair)
-"}
+{
+"Treatment": "Oral steroids",
+"Details": "These are strong anti-inflammatory pills used for a short time. They can quickly shrink polyps and help improve your sense of smell temporarily. But because they affect your whole body, they can have serious side effects if used too often.",
+"Examples": "Prednisone, 30mg per day for 7 days"
+}
 ]
 {% end %}
 
-### The role of surgery
+### What about surgery?
 
-For CRS with or without polyps, endoscopic (with a small camera) minimally invasive surgery is considered **_when medical therapy has failed_**. Inflamed areas and blockages are removed and reduces the burden of inflammation in the sinuses, while also allowing improved penetration of first-line medications such as nasal steroids to reach the sinuses.
+Surgery may be an option if medicines haven’t worked well for your CRS. An Ear-Nose-Throat (ENT) specialist uses a small camera (endoscope) to do minimally invasive sinus surgery. They remove swollen tissue or blockages to help open up your sinuses. This also helps nasal sprays and rinses reach deeper into the sinuses and work better.
 
-By itself, surgery does not cure CRS; unless other underlying risk factors are also being addressed, recurrence and worsening of CRS may occur. Revisions or repeat surgery may be required after a few years. The details of the surgery itself would be discussed with an Ear Nose and Throat (ENT) specialist.
+**By itself, surgery does not cure CRS**. If underlying risk factors aren't being treated, symptoms can come back. Some people may need another surgery years later.
+
+If surgery is being considered, an ENT specialist will explain the details and what to expect.
 
 ## FAQs
 
@@ -205,3 +195,13 @@ By itself, it is **not** a common cause of CRS, though can contribute to nasal b
 No, CRS itself is not contagious. However, infections that can worsen it (like colds) can be.
 
 **Are oral decongestants like pseudoephedrine helpful?** No. In fact, chronic use can be quite harmful and lead to increased blood pressure.
+
+<style>
+@media print {
+  /* Hide navigation, footers, and other unnecessary elements */
+  header, nav, footer, .sidebar { display: none; }
+
+  /* Ensure proper page breaks */
+  h2, h3, h4 { page-break-after: avoid; }
+}
+</style>

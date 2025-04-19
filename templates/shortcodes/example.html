@@ -1,7 +1,1 @@
-{% import "macros/factorial.html" as macros %}
-<!-- proof of concept that you can load arrays as vars in shortcodes -->
-{% for item in a %}
-<div>{{ item | capitalize }}</div>
-{% endfor %}
-<!-- proof of concept of macros. the import must be placed at the top -->
-{{ macros::factorial(n = 5) }}
+<span>{{body | safe}}</span>

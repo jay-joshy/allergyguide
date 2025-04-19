@@ -1,15 +1,15 @@
 +++
-title = "Asthma and pet allergies: patient resource"
-description = "[description of md page]"
-date = 2025-01-01
-draft = true
+title = "Puffers: patient resource"
+description = "Patient handout for puffers and how to use them"
+date = 2025-04-12
+draft = false
 
 [taxonomies]
 tags = ["handout"]
 
 [extra]
 toc = true
-authors = ["author 1", "author 2"]
+authors = ["Joshua Yu"]
 +++
 
 {{ wip() }}
