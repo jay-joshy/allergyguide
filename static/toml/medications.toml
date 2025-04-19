@@ -50,18 +50,18 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
-routes = "oral tab, liquid, ODT"
+routes = "oral 10 mg tab, liquid 1mg/ml"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
-age_group = "insert age group"
-pregnancy = "insert information, can link to data"
-contraindications = "insert"
+pearls = ["no data for renal insufficiency"]
+age_group = "≥2 years old"
+pregnancy = "Avoid (not enough data)"
+contraindications = "Hypersensitivity, QT prolongation or history of Torsades"
 side_effects.common = "insert"
 side_effects.severe = "insert"
-monograph_links = ["/monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/rupatadine_2023_1.pdf"]
 
 [bilastine]
 categories = ["2G antihistamine"]
@@ -83,7 +83,7 @@ pearls = [
   "Theoretically does not cross BBB; less sedating than other AHs",
   "Take without food or juice otherwise absorption impaired",
 ]
-age_group = "≥12 years of age; used off-label in younger ages"
+age_group = "≥12 years old; used off-label in younger ages"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
