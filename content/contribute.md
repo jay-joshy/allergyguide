@@ -10,7 +10,7 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out, connect with us (see the mail button at the bottom of the page).
+Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out, connect with us (see the mail button at the bottom of the page). We are interested in recruiting medical students, residents, and allergy-immunology staff.
 
 ## Contribution process
 
@@ -28,7 +28,7 @@ The contribution process follows this rough timeline:
 },
 {
 "title":"Drafting",
-"body":"Timeline 2 weeks for initial draft. See the contribution guides for [macros and topics](@/contribute_guides/topic_contribution.md), [medications](@/contribute_guides/medication_contribution.md), and [critical appraisal of research](@/contribute_guides/research_contribution.md).",
+"body":"Timeline 2 weeks for initial draft. See the contribution guides for:<br>- [macros, topics, patient handouts](@/contribute_guides/topic_contribution.md)<br>- [medications](@/contribute_guides/medication_contribution.md)<br>- [critical appraisal of research](@/contribute_guides/research_contribution.md)",
 "date":"Step 2"
 },
 {
@@ -51,7 +51,7 @@ The contribution process follows this rough timeline:
 - Use clear, structured formatting (headings, bullet points, tables) for readability
 - Avoid passive voice where possible
 - Abbreviations are fine but must be defined
-- While a single topic might be quite complex (i.e. asthma), each page is still meant to be relatively simple -- the goal is **not** to be a comprehensive textbook. Link to a resource that goes more in depth at that juncture, or to another subpage
+- While a single topic might be quite complex (i.e. asthma), each page is still meant to be relatively simple -- the goal is **not** to be a comprehensive textbook. Link to a resource that goes more in depth at that juncture, to another subpage, or create a drop-down 'Deep-dive'
 
 {% end %}
 

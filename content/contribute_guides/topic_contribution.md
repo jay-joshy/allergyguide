@@ -7,9 +7,9 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).
+Example of a finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).
 
-## Topic structure
+## Rough topic structure
 
 {% two_columns() %}
 
@@ -51,11 +51,18 @@ Example of a semi-finished topic page: [Chronic rhinosinusitis](/topics/hypersen
 
 ## Other topic content specifics:
 
-- Not all topics will fit this general structure, and it is meant as a general scaffold. Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points
+- <span class="hl-yellow">**Not all topics will fit this general structure, and it is meant as a general scaffold**</span>. If you look at [this article](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/), you can see how the structure can be deviated (but the content remains comprehensive)
+- Pearls, tips, pitfalls, etc. should be intermixed throughout the topic -- ideally, the page is not just a solid mass of bullet points
 - Where possible, especially for more recent changes to guidelines, please include references. If a fact is obviously self-evident (ie. INCS is used to treat allergic rhinitis), it does not need a citation; however, a specific point-estimate should have one. This is somewhat subjective; confer with the editors and staff during the review period if questions arise
   - References should be in Vancouver format. If you are writing your rough draft in Google Docs, please use a citation manager -- **having the correct numbers for in-text citations makes it MUCH easier** to port the references to the website
   - If there are particular references that are very high yield, feel free to include a small blurb about them (it will show up in the reference icon, as such: <span class="references">2</span>)
 - If you need to list a specific prescription, format as "ExRx: Nasonex 2 sprays EN BID" (ExRx = Example Prescription)
+  - If possible, you can also list a 'med-popup' linking to a relevant medication card. For example: {% popup() %}
+
+{{ medications_toml_load(meds=["bilastine"])}}
+
+{% end %}
+
 - If possible for key management options, there should be a 'drop box' for a deeper dive into the evidence: specifically, any relevant point estimates that would be useful for patient counseling. For example:
 
 {% dropdown(header="DEEP-DIVE: Efficacy of INCS in CRSwNP") %}
@@ -84,6 +91,14 @@ Macros exist at the top of the topic page. While not all topics need a macro, mo
 Example:
 
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
+
+## Patient handouts/resources
+
+If applicable, each topic should have an accompanying printable patient resource: [see this example](/handouts/chronic-rhinosinusitis/).
+
+- It should be written at a 6th grade level or lower
+- Use of tables, diagrams is highly encouraged
+- Often, use of LLMs such as ChatGPT are quite helpful at this stage to reword with simpler language
 
 ## Styling of topic pages
 
@@ -262,6 +277,22 @@ A small cut-out for contributors. This may be removed in the future.
 }]
 {% end %}
 
+#### dropdown
+
+Dropdowns are useful if you want to host information in more depth without taking up more space. For example, deep dives into the evidence behind a management option, listing the detailed options for a particular class of medication, etc.
+
+{% dropdown(header="this is what the user will click on to get more info") %}
+This text will appear in the dropdown
+
+<a href="allergyguide.ca">link</a>
+
+{% admonition(type="danger", icon="danger", title="DANGER") %}
+This is a danger admonition with a danger icon.
+
+{% end %}
+
+{% end %}
+
 #### mermaid
 
 mermaid diagrams are interesting to use but not mandatory. If you want to explore and use these, check out their [documentation](https://mermaid.js.org/intro/).
@@ -294,3 +325,5 @@ Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text d
     Alice->John: Yes... John, how are you?
 
 {% end %}
+
+<script src="/js/popup.js"></script>
