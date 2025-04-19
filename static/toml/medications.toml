@@ -39,28 +39,28 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 [rupatadine]
 categories = ["2G antihistamine"]
 brand_names = ["Rupall", "Rupafin", "Rupita"]
-cost = [
-  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
-  { province = "BC", price = "~$1000 CAD / 10mg tab" },
-]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
+cost = [{ province = "ON", price = "~$0.99 CAD / 10mg tab" }]
+coverage = [{ province = "ON", details = "ODB" }]
 otc = "no"
-moa = "Insert MoA"
-half_life = "~X hours"
+moa = "2nd generation H1 receptor antagonist and platelet activating factor antagonist"
+half_life = "~6 hours, but some metabolites (ie. desloratadine) remain longer; effects last ~24h"
+peak_action = "Rapid absorption; maximal blood concentration in 1 hr"
 routes = "oral 10 mg tab, liquid 1mg/ml"
 doses = [
-  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
-  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+  { indication = "CSU, AR", dose = "10mg tab OD to QID", notes = "ages ≥12" },
+  { indication = "CSU, AR", dose = "2.5mg liq OD to QID, ", notes = "10-25kg, ages 2-11" },
+  { indication = "CSU, AR", dose = "5mg liq OD to QID, ", notes = ">25kg, ages 2-11" },
 ]
-pearls = ["no data for renal insufficiency"]
+pearls = [
+  "No data for hepatic or renal insufficiency",
+  "Take with or without food (avoid grapefruit)",
+  "Going more than OD is technically off-label",
+]
 age_group = "≥2 years old"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of Torsades"
-side_effects.common = "insert"
-side_effects.severe = "insert"
+side_effects.common = "Drowsiness (3-9%[D], 2-5%[P]); headache (1-6%[D], 2-5%[P]); tiredness (1%[D], 1%[P]); QT-prolongation (1%[D], <1%[P]); dizziness (1%[D], 1%[P]); nausea (0-2%[D], 1-2%[P])"
+side_effects.severe = "All very rare (<1%): Torsades (only 1 event), liver enzyme elevation"
 monograph_links = ["/monographs/rupatadine_2023_1.pdf"]
 
 [bilastine]

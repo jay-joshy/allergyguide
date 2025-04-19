@@ -58,15 +58,17 @@
           {% for brand in details.brand_names %}
           {{ brand }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
+        {% if details.cost %}
         <p><strong><i class="fas fa-dollar-sign"></i>
             Cost:</strong>
           {% for item in details.cost %}
           {{ item.price }} ({{ item.province }}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
+        {% endif %}
         <p><strong><i class="fas fa-dollar-sign"></i>
             Coverage:</strong>
           {% for item in details.coverage%}
-          {{ item.province }} - ({{ item.details}}){% if not loop.last %}; {% endif %}
+          {{ item.province }} ({{ item.details}}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
@@ -94,7 +96,8 @@
             Age Group:</strong>
           {{ details.age_group }}</p>
         <p><strong><i class="fas fa-baby"></i>
-            Pregnancy:</strong>{{ details.pregnancy | safe }}</p>
+            Pregnancy:</strong>
+          {{ details.pregnancy | safe }}</p>
         <p><strong><i class="fas fa-ban"></i>
             Contraindications:</strong>
           {{ details.contraindications | safe }}</p>
