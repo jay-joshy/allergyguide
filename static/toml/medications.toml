@@ -14,11 +14,14 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = "Optional to add this in"
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "Zmg OD", notes = "adult" },
+  { indication = "diseaseA", dose = "Zmg OD", notes = "adult, CrCl < 30" },
   { indication = "diseaseB", dose = "Zmg BID", notes = "pediatric (ages X-Y)" },
 ]
 pearls = ["Insert pearl here"]
@@ -44,6 +47,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -67,6 +71,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "2nd generation H1 receptor antagonist."
 half_life = "~15 hours"
 routes = "PO tab, liquid (uncommon)"
@@ -74,8 +79,11 @@ doses = [
   { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "adult dosing" },
   { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "pediatric dosing" },
 ]
-pearls = ["Theoretically does not cross BBB"]
-age_group = ">=12 years of age; has been used off-label in younger children"
+pearls = [
+  "Theoretically does not cross BBB; less sedating than other AHs",
+  "Take without food or juice otherwise absorption impaired",
+]
+age_group = "≥12 years of age; used off-label in younger ages"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation; drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
@@ -90,6 +98,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "2nd generation H1 receptor antagonist"
 half_life = "8.4 hours (half life of active metabolite--desloratadine--is 28h)"
 routes = "oral tab/capsule, solution"
@@ -119,6 +128,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -145,6 +155,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -171,6 +182,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -197,6 +209,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -227,6 +240,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -253,6 +267,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -280,6 +295,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -307,6 +323,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -334,6 +351,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -360,6 +378,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
@@ -386,6 +405,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
+otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
 routes = "oral tab, liquid, ODT"
