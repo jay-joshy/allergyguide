@@ -58,6 +58,28 @@
           {% for brand in details.brand_names %}
           {{ brand }}{% if not loop.last %}, {% endif %}
           {% endfor %}</p>
+        <p><strong><i class="fas fa-route"></i>
+            Routes:</strong>
+          {{ details.routes }}</p>
+        <p><strong>MoA:</strong>
+          {{ details.moa }}</p>
+        <p><strong><i class="fas fa-hourglass-half"></i>
+            Half-life:</strong>
+          {{ details.half_life  }}</p>
+        {% if details.peak_action %}
+        <p><strong><i class="fas fa-hourglass-half"></i>
+            Time to peak action:</strong>
+          {{ details.peak_action}}</p>
+        {% endif %}
+        <p><strong><i class="fas fa-syringe"></i>
+            Doses:</strong></p>
+        <ul>
+          {% for dose in details.doses %}
+          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="drug-card-column">
         {% if details.cost %}
         <p><strong><i class="fas fa-dollar-sign"></i>
             Cost:</strong>
@@ -70,28 +92,6 @@
           {% for item in details.coverage%}
           {{ item.province }} ({{ item.details}}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
-        <p><strong><i class="fas fa-route"></i>
-            Routes:</strong>
-          {{ details.routes }}</p>
-        <p><strong><i class="fas fa-syringe"></i>
-            Doses:</strong></p>
-        <ul>
-          {% for dose in details.doses %}
-          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="drug-card-column">
-        <p><strong>MoA:</strong>
-          {{ details.moa }}</p>
-        <p><strong><i class="fas fa-hourglass-half"></i>
-            Half-life:</strong>
-          {{ details.half_life  }}</p>
-        {% if details.peak_action %}
-        <p><strong><i class="fas fa-hourglass-half"></i>
-            Time to peak action:</strong>
-          {{ details.peak_action}}</p>
-        {% endif %}
         <p><strong><i class="fas fa-user"></i>
             Age Group:</strong>
           {{ details.age_group }}</p>
