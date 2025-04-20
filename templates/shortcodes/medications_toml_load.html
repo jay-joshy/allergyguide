@@ -130,6 +130,15 @@
     <!-- Pearls Section -->
     {% if details.pearls %}
     <div class="pearls-section">
+      {% if details.abbreviations %}
+      <div class="abbreviations-tab">
+        <i class="fas fa-info-circle"></i>
+        Abbr.
+      </div>
+      <div class="abbreviations-content">
+        <i>{{ details.abbreviations }}</i>
+      </div>
+      {% endif %}
       <h3>
         <svg class="pearl-icon" viewBox="0 0 1000.00 1000.00" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 1000 1000" xml:space="preserve" stroke="currentColor" stroke-width="350" fill="currentColor">
           <g>
