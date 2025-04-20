@@ -100,7 +100,7 @@ coverage = [
 ]
 otc = "no"
 moa = "2nd generation H1 receptor antagonist"
-half_life = "8.4 hours (half life of active metabolite--desloratadine--is 28h)"
+half_life = "8.4 hours (half life of active metabolite desloratadine is 28h)"
 routes = "oral tab/capsule, solution"
 doses = [
   { indication = "CSU, AR", dose = "10mg OD to QID", notes = ">= 6y" },
@@ -111,7 +111,7 @@ pearls = [
   "No QTc prolongation noted in monographs or UpToDate. Mostly hepatically cleared, but in adults still renally adjust.",
 ]
 age_group = "[2, adults) with dosing adjustments"
-pregnancy = "Safe as per [ACOG](https://www.acog.org/womens-health/experts-and-stories/ask-acog/what-medicine-can-i-take-for-allergies-while-im-pregnant) and [firstexposure](https://firstexposure.ca/seasonal-allergies-and-allergic-rhinitis-in-pregnancy-and-lactation/)"
+pregnancy = "Safe as per <a target='blank' href='https://www.acog.org/womens-health/experts-and-stories/ask-acog/what-medicine-can-i-take-for-allergies-while-im-pregnant'>ACOG</a> and <a target='blank' href='https://firstexposure.ca/seasonal-allergies-and-allergic-rhinitis-in-pregnancy-and-lactation/'>firstexposure</a>"
 contraindications = "Hypersensitivity"
 side_effects.common = "Fatigue, headache, dry mouth, drowsiness, nausea (~4-8%)"
 side_effects.severe = "Essentially none reported in monograph."
@@ -424,6 +424,27 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 ###############################
 # INCS
 ###############################
+[mometasone-furoate_INCS]
+categories = ["steroid", "INCS"]
+brand_names = ["Nasonex", "Sinuva"]
+cost = []
+coverage = [{ province = "ON", details = "ODB" }]
+otc = "yes" # only 'yes' or 'no' allowed
+moa = "Steroid, topical"
+half_life = "~5.8 hours"
+peak_action = ""
+routes = "nasal spray (50mcg)"
+doses = [{ indication = "diseaseA", dose = "Zmg OD", notes = "adult" }]
+pearls = [
+  "2nd-generation INCS, minimal systemic absorption (0.5%), no evidence of AI",
+]
+age_group = "≥3 years"
+pregnancy = "Maybe OK, but no adequate or well-controlled studies in pregnant or nursing women"
+contraindications = "Hypersensitivity, acute bacterial sinus infection without antibiotics"
+side_effects.common = "insert"
+side_effects.severe = "insert"
+monograph_links = ["/monographs/example_2025_1.pdf"]
+
 
 ###############################
 # TOPICAL STEROIDS

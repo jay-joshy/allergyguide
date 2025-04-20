@@ -88,10 +88,12 @@
           {% endfor %}</p>
         {% endif %}
         <p><strong><i class="fas fa-dollar-sign"></i>
+            {% if details.coverage %}
             Coverage:</strong>
           {% for item in details.coverage%}
           {{ item.province }} ({{ item.details}}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
+        {% endif %}
         <p><strong><i class="fas fa-user"></i>
             Age Group:</strong>
           {{ details.age_group }}</p>
