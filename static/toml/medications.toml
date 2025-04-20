@@ -465,7 +465,7 @@ pregnancy = "Maybe OK, but no adequate or well-controlled studies in pregnant or
 contraindications = "Hypersensitivity, acute bacterial sinus infection without antibiotics"
 side_effects.common = "For adults: headache 8%[D], 6%[P]; epistaxis 8%[D], 5%[P], pharyngitis 4%[D], 3%[P]. For 3-11, all comparable to placebo"
 side_effects.severe = "All very rare (<1%): liver enzyme elevation"
-monograph_links = ["/monographs/example_2025_1.pdf"]
+monograph_links = ["/monographs/mometasone-furoate_2021_1.pdf"]
 abbreviations = "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-adrenal insufficiency"
 
 
