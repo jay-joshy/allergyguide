@@ -1,7 +1,7 @@
 +++
 title = "Chronic rhinosinusitis: patient resource"
 description = "Patient handout for chronic rhinosinusitis"
-date = 2025-04-12
+date = 2025-04-20
 draft = false
 
 [taxonomies]
@@ -9,7 +9,7 @@ tags = ["handout"]
 
 [extra]
 toc = true
-authors = ["Joshua Yu", "Editor: Adhora Mir", "Staff: TBD"]
+authors = ["Author: JY", "Editor: AR", "Staff: TBD"]
 +++
 
 {% text_image(src="/topic_assets/chronic_rhinosinusitis/normal_sinus.png", alt="Picture of a normal sinus from the front", caption = "Normal sinus structure. Image adapted from Servier Medical Art, https://smart.servier.com, licensed under CC BY 4.0.", height="15rem") %}
@@ -147,7 +147,7 @@ These are the main treatments that most people with CRS start with. Your doctor 
 },
 {
 "Treatment": "Antibiotics",
-"Details": "Sometimes used if your CRS flares and your doctor thinks there may be an infection.",
+"Details": "<i>Sometimes</i> used if your CRS flares and your doctor thinks there may be an infection. Benefit is a little bit controversial.",
 "Examples": "Amoxicillin-clavulanate for 10 days. Moxifloxacin may be used if you’re allergic to penicillin"
 }
 ]
