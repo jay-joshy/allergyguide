@@ -60,22 +60,22 @@
           {% endfor %}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
-          {{ details.routes }}</p>
+          {{ details.routes | safe }}</p>
         <p><strong>MoA:</strong>
-          {{ details.moa }}</p>
+          {{ details.moa | safe }}</p>
         <p><strong><i class="fas fa-hourglass-half"></i>
             Half-life:</strong>
-          {{ details.half_life  }}</p>
+          {{ details.half_life | safe }}</p>
         {% if details.peak_action %}
         <p><strong><i class="fas fa-hourglass-half"></i>
             Time to peak action:</strong>
-          {{ details.peak_action}}</p>
+          {{ details.peak_action | safe }}</p>
         {% endif %}
         <p><strong><i class="fas fa-syringe"></i>
             Doses:</strong></p>
         <ul>
           {% for dose in details.doses %}
-          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
+          <li>{{ dose.indication | safe }}: {{ dose.dose | safe }} ({{ dose.notes | safe }})</li>
           {% endfor %}
         </ul>
       </div>
