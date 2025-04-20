@@ -91,7 +91,7 @@ contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation (at 100mg ODx4, max mean increase 6ms); drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
 side_effects.severe = "Torsades (very rare)"
 monograph_links = ["/monographs/bilastine_2021_1.pdf"]
-abbreviations = ""
+abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
 [loratadine]
 categories = ["2G antihistamine"]
