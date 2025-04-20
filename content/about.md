@@ -28,7 +28,7 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 - Sets of questions for RC studying (and maybe an Anki deck)
 - Setting up practice; how to bill (for fellows)
 
-# The editors
+# Meet the editors
 
 {{ profile_grid() }}
 
