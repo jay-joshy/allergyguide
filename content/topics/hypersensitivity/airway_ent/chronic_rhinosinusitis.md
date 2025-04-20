@@ -1,7 +1,7 @@
 +++
 title = "Chronic rhinosinusitis"
 description = "An approach to chronic rhinosinusitis"
-date = 2025-04-18
+date = 2025-04-20
 draft = false
 [taxonomies]
 tags = ["hypersensitivity","airway and ent"]
@@ -300,11 +300,11 @@ Diabetes`"]
 
 {% end %}
 
-### PREDISPOSING CONDITIONS/RISK FACTORS TO ASSESS FOR ALL CRS
+<h3>Predisposing conditions/risk factors to assess for ALL CRS</h3>
 
 {% two_columns() %}
 
-- Allergic rhinitis (common culprits: dust mites, pets, molds, cockroaches); typically secretions are more clear/thin
+- <span class="hl-yellow">Allergic rhinitis (common culprits: dust mites, pets, molds, cockroaches)</span>; typically secretions are more clear/thin
 - Airborne irritants (ie. smoking, pollution, occupational exposures)
 - Asthma & lower airway respiratory disease
 - Disorders of impaired ciliary motility (CF, PCD)
@@ -358,7 +358,7 @@ Goals are symptom control through reduction of inflammation and improvement of s
   - _High volume_ nasal saline rinses/irrigation (OTC, rinses > sprays), at least 200 mL per side <span class="references">9</span>. Can improve penetration/efficacy of other topicals if used beforehand
     - _Examples: neti pot, squeeze bottles, etc. Must be STERILE saline (boiled/distilled water)_
 - **INCS**
-  - Multiple delivery methods, most common in Canada are spray and rinses; widely available <span class="hl-yellow">but high chance of operator misuse with sprays</span>
+  - Multiple delivery methods, most common in Canada are spray and rinses; widely available <span class="hl-yellow">but very common operator misuse with sprays</span> (see how to use [here](/handouts/incs/))
   - Takes **8-12 weeks** to have maximal effect
   - Minimal concern for long-term side effects, ie. adrenal insufficiency
   - _ExRx: Nasonex 2 sprays BID_ {% popup() %}
@@ -508,14 +508,14 @@ Dymista 1 spray EN BID {% popup() %}
 - **Consider involving ENT** for endoscopic assessment and consideration of early surgical management
 - **Antibiotics**
   - May consider for acute flares. Most common organism is _S. aureus_
-  - **CAUTION**: <span class="hl-yellow">_this is not a routine treatment_</span> and there is poor quality evidence it has benefit <span class="references">4</span> - exercise antibiotic stewardship :). If requiring multiple courses or known resistant bugs => CULTURE first
+  - **CAUTION**: <span class="hl-yellow"><u>_this is not a routine treatment_</u></span> and there is poor quality evidence it has benefit <span class="references">4</span>: exercise antibiotic stewardship :). If requiring multiple courses or known resistant bugs => CULTURE first
   - _ExRx: clavulin 875 mg twice daily for 10 d, moxifloxacin 400 mg PO x10 if penicillin allergic_
 
 {% admonition(type="pearl", icon="pearl", title="PEARLS") %}
 
 <b>Empiric treatment without imaging/endoscopy?</b>
 
-While technically imaging or endoscopy is needed to formally diagnose CRS, if the clinical history is otherwise consistent empiric first-line treatments are often trialed for a few months first before those tests (unless you suspect AFRS or CRSwNP).
+While technically imaging or endoscopy is needed to formally diagnose CRS, if the clinical history is otherwise consistent, empiric first-line treatments are often trialed for a few months first before those tests (unless you suspect AFRS or CRSwNP).
 
 <br>
 
@@ -528,7 +528,7 @@ You may see oral corticosteroids used up-front for severely symptomatic cases, b
 </div>
 
 {% admonition(type="tip", icon="tip", title="How is treatment monitored?") %}
-In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-20 (higher score = worse QoL; in some papers minimally significant difference ~9 to 12 points). However, it is not uncommon to see mainly gestalt and variable assessments of symptom control.
+In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-20 (higher score = worse QoL). However, it is not uncommon to see mainly gestalt (and therefore variable) assessments of symptom control.
 {% end %}
 
 {% dropdown(header="SNOT-22 SCORE") %}
@@ -555,7 +555,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
     <b>Bottom line</b>: while recommended and common, evidence of benefit for INCS sprays in CRSsNP is actually unclear/sparse, though low-harm
   </li>
   <li>
-    EPOS 2020 – symptom score benefit in CRS was lower than CRSwNP; only 5 RCTs with CRSsNP <span class="references">4</span>
+    <i>EPOS 2020</i> – symptom score benefit in CRS was lower than CRSwNP; only 5 RCTs with CRSsNP listed<span class="references">4</span>
   </li>
   <li>
     <i>Topical steroids for chronic rhinosinusitis without nasal polyps: A systematic review and meta-analysis</i> <span class="references">11</span>
@@ -593,11 +593,11 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 {% end %}
 
 - **At any point biologics can <em>technically</em> be considered**, especially if high baseline severity or refractory to other medical therapy; greatest positive effect on QoL outcomes <span class="references">13</span>
-- Three options: <span class="hl-yellow">dupilumab</span> (2024 monograph states adults, but studied in ≥12 yo for other indications), <span class="hl-yellow">omalizumab</span> (adults), <span class="hl-yellow">mepolizumab</span> (adults) (***<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>)
-  - All overall have excellent side effect profile
-  - Cost/insurance prohibitive
-  - Unclear on: long-term side effects, duration of treatment, predictive patient factors for most benefit
-  - <em>ExRx: Dupilumab 300mg SC q2w {% popup() %}
+  - Three options: <span class="hl-yellow">dupilumab</span> (2024 monograph states adults, but studied in ≥12 yo for other indications), <span class="hl-yellow">omalizumab</span> (adults), <span class="hl-yellow">mepolizumab</span> (adults) (***<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>)
+    - All overall have excellent side effect profile
+    - Cost/insurance prohibitive
+    - Unclear on: long-term side effects, duration of treatment, predictive patient factors for most benefit
+    - <em>ExRx: Dupilumab 300mg SC q2w {% popup() %}
 
 {{ medications_toml_load(meds=["template_med"])}}
 
