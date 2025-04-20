@@ -60,22 +60,22 @@
           {% endfor %}</p>
         <p><strong><i class="fas fa-route"></i>
             Routes:</strong>
-          {{ details.routes }}</p>
+          {{ details.routes | safe }}</p>
         <p><strong>MoA:</strong>
-          {{ details.moa }}</p>
+          {{ details.moa | safe }}</p>
         <p><strong><i class="fas fa-hourglass-half"></i>
             Half-life:</strong>
-          {{ details.half_life  }}</p>
+          {{ details.half_life | safe }}</p>
         {% if details.peak_action %}
         <p><strong><i class="fas fa-hourglass-half"></i>
             Time to peak action:</strong>
-          {{ details.peak_action}}</p>
+          {{ details.peak_action | safe }}</p>
         {% endif %}
         <p><strong><i class="fas fa-syringe"></i>
             Doses:</strong></p>
         <ul>
           {% for dose in details.doses %}
-          <li>{{ dose.indication }}: {{ dose.dose }} ({{ dose.notes }})</li>
+          <li>{{ dose.indication | safe }}: {{ dose.dose | safe }} ({{ dose.notes | safe }})</li>
           {% endfor %}
         </ul>
       </div>
@@ -88,10 +88,12 @@
           {% endfor %}</p>
         {% endif %}
         <p><strong><i class="fas fa-dollar-sign"></i>
+            {% if details.coverage %}
             Coverage:</strong>
           {% for item in details.coverage%}
           {{ item.province }} ({{ item.details}}){% if not loop.last %}; {% endif %}
           {% endfor %}</p>
+        {% endif %}
         <p><strong><i class="fas fa-user"></i>
             Age Group:</strong>
           {{ details.age_group }}</p>
@@ -128,6 +130,15 @@
     <!-- Pearls Section -->
     {% if details.pearls %}
     <div class="pearls-section">
+      {% if details.abbreviations %}
+      <div class="abbreviations-tab">
+        <i class="fas fa-info-circle"></i>
+        Abbr.
+      </div>
+      <div class="abbreviations-content">
+        <i>{{ details.abbreviations }}</i>
+      </div>
+      {% endif %}
       <h3>
         <svg class="pearl-icon" viewBox="0 0 1000.00 1000.00" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 1000 1000" xml:space="preserve" stroke="currentColor" stroke-width="350" fill="currentColor">
           <g>
