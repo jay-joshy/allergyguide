@@ -176,6 +176,7 @@
       /* Negative margin to reach the edges */
       grid-column: span 2;
       /* Span both columns */
+      position: relative;
 
       .pearl-icon {
         width: 1.4rem;
@@ -204,6 +205,44 @@
           margin: 0.5em 0;
         }
       }
+
+      .abbreviations-tab {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 4px 10px;
+        font-size: 0.9rem;
+        border-top-right-radius: 0;
+        /* Remove top-right radius to make it flush with corner */
+        border-bottom-left-radius: 0.6rem;
+        background-color: var(--medstl_icon);
+        /* Blue color, you can adjust to match your theme */
+        color: white;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .abbreviations-content {
+        display: none;
+        position: absolute;
+        top: 2.5rem;
+        right: 0;
+        background-color: var(--pearls_background);
+        border: 1px solid var(--medstl_border);
+        border-radius: 0.4rem;
+        padding: 10px;
+        min-width: 200px;
+        max-width: 300px;
+        box-shadow: 0 4px 8px var(--medstl_shadow);
+        z-index: 3;
+      }
+
+      .abbreviations-tab:hover+.abbreviations-content,
+      .abbreviations-content:hover {
+        display: block;
+      }
+
     }
   }
+
 }
