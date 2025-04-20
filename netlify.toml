@@ -2,7 +2,7 @@
 publish = "public"
 # command = "npm run abridge -- '--base-url https://abridge.netlify.app'"
 # command = "zola build"
-command = "git submodule init && git submodule update --recursive && zola build && npm run abridge"
+command = "git submodule init && git submodule update --recursive && zola build"
 
 [build.environment]
 ZOLA_VERSION = "0.20.0"
