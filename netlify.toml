@@ -1,7 +1,7 @@
 [build]
 publish = "public"
 # command = "npm run abridge -- '--base-url https://abridge.netlify.app'"
-command = "npm run abridge -- '--base-url https://allergyguidenetlify.netlify.app'"
+command = "npm run abridge -- '--base-url allergyguide.ca'"
 # command = "git submodule init && git submodule update --recursive && zola build"
 
 [build.environment]
