@@ -41,7 +41,8 @@
       margin-bottom: -0.0625rem;
 
       &:hover {
-        font-weight: 600;
+        /* font-weight: 600; */
+        color: var(--tabs-highlight)
       }
 
       &.active {
