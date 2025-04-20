@@ -26,14 +26,14 @@
   }
 
   .paper-table thead th {
-    border-top: 0.1rem solid #ddd;
+    border-top: 0.01rem solid #ddd;
     border-color: var(--rc-bold_border);
     text-align: left;
   }
 
   .paper-table tbody tr:first-child td {
     border-bottom: 0.01rem solid #ddd;
-    border-top: 2px solid;
+    border-top: 0.01rem solid;
     border-top-color: var(--rc-bold_border);
   }
 
