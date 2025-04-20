@@ -4,7 +4,7 @@
 # similarly, [fluticasone-furoate_inhaler] - note the hyphenation used between the drug combos.
 
 [template_med]
-categories = ["testcategory", "testA", "testB"]
+categories = ["testcategory"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
   { province = "ON", price = "~$X CAD / Ymg tab" },
@@ -31,6 +31,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 ###############################
 # ANTIHISTAMINES
@@ -62,6 +63,7 @@ contraindications = "Hypersensitivity, QT prolongation or history of Torsades"
 side_effects.common = "Drowsiness 3-9%[D], 2-5%[P]; headache 1-6%[D], 2-5%[P]; tiredness 1%[D], 1%[P]; QT-prolongation 1%[D], <1%[P]; dizziness 1%[D], 1%[P]; nausea 0-2%[D], 1-2%[P]"
 side_effects.severe = "All very rare (<1%): Torsades (only 1 event), liver enzyme elevation"
 monograph_links = ["/monographs/rupatadine_2023_1.pdf"]
+abbreviations = ""
 
 [bilastine]
 categories = ["2G antihistamine"]
@@ -89,6 +91,7 @@ contraindications = "Hypersensitivity, QT prolongation or history of torsades"
 side_effects.common = "QT prolongation (at 100mg ODx4, max mean increase 6ms); drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
 side_effects.severe = "Torsades (very rare)"
 monograph_links = ["/monographs/bilastine_2021_1.pdf"]
+abbreviations = ""
 
 [loratadine]
 categories = ["2G antihistamine"]
@@ -116,6 +119,7 @@ contraindications = "Hypersensitivity"
 side_effects.common = "Fatigue, headache, dry mouth, drowsiness, nausea (~4-8%)"
 side_effects.severe = "Essentially none reported in monograph."
 monograph_links = ["/monographs/loratadine_2017_1.pdf"]
+abbreviations = ""
 
 [cetirizine]
 categories = ["2G antihistamine"]
@@ -143,6 +147,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 [fexofenadine]
 categories = ["2G antihistamine"]
@@ -170,6 +175,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 [desloratadine]
 categories = ["2G antihistamine"]
@@ -197,6 +203,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 [diphenhydramine]
 categories = ["1G antihistamine"]
@@ -224,6 +231,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 ###############################
 # PUFFERS
@@ -255,6 +263,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 [budesonide_inhaler]
 categories = ["inhaler", "steroid"]
@@ -282,6 +291,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 
 [fluticasone-furoate_inhaler]
@@ -310,6 +320,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 
 [fluticasone-propionate_inhaler]
@@ -338,6 +349,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 
 [mometasone-furoate_inhaler]
@@ -366,6 +378,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 [beclomethasone-dipropionate_inhaler]
 categories = ["inhaler", "steroid"]
@@ -393,6 +406,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 [ciclesonide_inhaler]
 categories = ["inhaler", "steroid"]
@@ -420,6 +434,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = ""
 
 ###############################
 # INCS
@@ -429,21 +444,29 @@ categories = ["steroid", "INCS"]
 brand_names = ["Nasonex", "Sinuva"]
 cost = []
 coverage = [{ province = "ON", details = "ODB" }]
-otc = "yes" # only 'yes' or 'no' allowed
+otc = "no" # only 'yes' or 'no' allowed
 moa = "Steroid, topical"
 half_life = "~5.8 hours"
-peak_action = ""
+peak_action = "While monograph says ~12 hours, <b>maximal effect requires 2-4 weeks of use</b>"
 routes = "nasal spray (50mcg)"
-doses = [{ indication = "diseaseA", dose = "Zmg OD", notes = "adult" }]
+doses = [
+  { indication = "AR", dose = "1-4 sprays (50mcg per spray) EN OD", notes = "≥12 years" },
+  { indication = "AR", dose = "1 spray (50mcg per spray) EN OD", notes = "3-11 years" },
+  { indication = "CRS", dose = "1-2 sprays (50mcg per spray) EN BID", notes = "≥12 years" },
+]
 pearls = [
-  "2nd-generation INCS, minimal systemic absorption (0.5%), no evidence of AI",
+  "2nd-generation INCS, **minimal systemic absorption (0.5%)**, no evidence of AI in PII and PIII studies",
+  "For AR, classically useful for 'wet' nasal congestion",
+  "**High** operator error; [see here for how to use](/handouts/incs/)",
+  "OTC in the US; Rx in Canada",
 ]
 age_group = "≥3 years"
 pregnancy = "Maybe OK, but no adequate or well-controlled studies in pregnant or nursing women"
 contraindications = "Hypersensitivity, acute bacterial sinus infection without antibiotics"
-side_effects.common = "insert"
-side_effects.severe = "insert"
+side_effects.common = "For adults: headache 8%[D], 6%[P]; epistaxis 8%[D], 5%[P], pharyngitis 4%[D], 3%[P]. For 3-11, all comparable to placebo"
+side_effects.severe = "All very rare (<1%): liver enzyme elevation"
 monograph_links = ["/monographs/example_2025_1.pdf"]
+abbreviations = "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-adrenal insufficiency"
 
 
 ###############################
