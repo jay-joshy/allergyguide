@@ -363,7 +363,7 @@ Goals are symptom control through reduction of inflammation and improvement of s
   - Minimal concern for long-term side effects, ie. adrenal insufficiency
   - _ExRx: Nasonex 2 sprays BID_ {% popup() %}
 
-{{ medications_toml_load(meds=["template_med"])}}
+{{ medications_toml_load(meds=["mometasone-furoate_INCS"])}}
 
 {% end %}
 
@@ -373,7 +373,7 @@ Goals are symptom control through reduction of inflammation and improvement of s
   <li>
     Nasonex (mometasone furoate 50 mcg) 2 sprays EN BID {% popup() %}
 
-{{ medications_toml_load(meds=["template_med"])}}
+{{ medications_toml_load(meds=["mometasone-furoate_INCS"])}}
 
 {% end %}
 
@@ -532,6 +532,8 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 {% end %}
 
 {% dropdown(header="SNOT-22 SCORE") %}
+
+{{ mobile_warning() }}
 
 <div style = "height:60vh">
 <embed src="/topic_assets/chronic_rhinosinusitis/SNOT22.pdf" width="100%" height="100%" />
