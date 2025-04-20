@@ -57,12 +57,12 @@
 
   /* Responsive sizing */
   width: 90%;
-  max-width: 60vw;
+  max-width: 65vw;
   max-height: 80vh;
 
   @media (orientation: portrait) {
-    max-width: 80vw;
-    max-height: 50vh;
+    max-width: 95vw;
+    max-height: 65vh;
   }
 }
 
