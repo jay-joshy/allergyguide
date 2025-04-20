@@ -97,7 +97,7 @@
     color: var(--medstl_text);
     border: 1px solid var(--medstl_border);
     border-radius: 0.6rem;
-    padding: 16px;
+    padding: 16px 16px 0 16px;
     box-shadow: 0 4px 8px var(--medstl_shadow);
     transition: background-color 0.3s, color 0.3s;
     position: relative; // Important for absolute positioning of the status indicator
@@ -169,10 +169,11 @@
     .pearls-section {
       background-color: var(--pearls_background);
       color: var(--pearls_text);
-      border-radius: 8px;
+      border-radius: 0 0 0.6rem 0.6rem;
+      /* Match bottom corners with parent card */
       padding: 16px;
-      margin: 0px;
-      margin-top: 16px;
+      margin: 16px -16px 0;
+      /* Negative margin to reach the edges */
       grid-column: span 2;
       /* Span both columns */
 
