@@ -5,7 +5,7 @@ Some people prefer a landing page for the index, and then use a separate paginat
 #}
 
 {% extends "base.html" %}
-{% import "macros/badges.html" as badges %}
+{% import "macros/get_topic_li.html" as topic_links %}
 
 {%- block seo %}
   {{- super() }}
@@ -38,13 +38,11 @@ Some people prefer a landing page for the index, and then use a separate paginat
 
 {%- block content %}
 <div>
-  {% set s = get_section(path="topics/misc/_index.md") %}
-  {% for p in s.pages %}
-  {% set page_path = p.path %}
-  {% set page_status = p.extra.status | default(value="not-started") %}
-  <a href="{{ p.permalink}}">{{ p.title }} {{ badges::status_badge(status=page_status, msg="") }}</a><br>
-  {% endfor %}
-
+  <ul>
+    <ul>
+      {{ topic_links::get_topic_li(section_path="topics/misc/_index.md") }}
+    </ul>
+  </ul>
   {%- if page.content %}
 {{ page.content | safe }}
 {%- elif section.content %}
