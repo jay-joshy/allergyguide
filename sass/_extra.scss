@@ -69,3 +69,29 @@ pre.language-md {
   background: linear-gradient(to right, orange, transparent);
   margin-top: 1rem;
 }
+
+
+:root {
+  /* Dark mode */
+
+  /* Other dark mode styles */
+
+  /* Image inversion for dark mode */
+  .dark-invert {
+    filter: invert(100%);
+
+    /* No inversion in light mode */
+  }
+}
+
+:root.switch {
+  /* Light mode */
+
+  /* Other light mode styles */
+
+  /* Disable image inversion for light mode */
+  .dark-invert {
+    filter: invert(0%);
+    /* Invert colors in dark mode */
+  }
+}
