@@ -536,7 +536,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 {{ mobile_warning() }}
 
 <div style = "height:60vh">
-<embed src="/topic_assets/chronic_rhinosinusitis/SNOT22.pdf" width="100%" height="100%" />
+<iframe src="/topic_assets/chronic_rhinosinusitis/SNOT22.pdf" width="100%" height="100%" style="border: none;"></iframe>
 </div>
 
 {% end %}
