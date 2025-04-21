@@ -3,6 +3,7 @@ title = "Food challenges"
 description = "[description of md page]"
 date = 2025-01-01
 draft = false
+weight=1
 
 [taxonomies]
 tags = ["tests", "foods"]
@@ -10,7 +11,9 @@ tags = ["tests", "foods"]
 toc = true
 series = "tests"
 authors = ["author 1", "author 2"]
+status="not-started"
 +++
+
 {{ wip() }}
 
 </br>

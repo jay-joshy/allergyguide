@@ -3,6 +3,7 @@ title = "Food Immunotherapy"
 description = "[description of md page]"
 date = 2025-01-01
 draft = false
+weight=2
 
 [taxonomies]
 tags = ["hypersensitivity","foods", "immunotherapy"]
@@ -10,6 +11,7 @@ tags = ["hypersensitivity","foods", "immunotherapy"]
 toc = true
 series = "foods"
 authors = ["author 1", "author 2"]
+status="not-started"
 +++
 
 {{ wip() }}
