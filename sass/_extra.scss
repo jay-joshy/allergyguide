@@ -77,7 +77,7 @@ pre.language-md {
   /* Other dark mode styles */
 
   /* Image inversion for dark mode */
-  .dark-invert {
+  img.dark-invert {
     filter: invert(100%);
 
     /* No inversion in light mode */
@@ -90,7 +90,7 @@ pre.language-md {
   /* Other light mode styles */
 
   /* Disable image inversion for light mode */
-  .dark-invert {
+  img.dark-invert {
     filter: invert(0%);
     /* Invert colors in dark mode */
   }
