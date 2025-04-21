@@ -531,7 +531,9 @@ You may see oral corticosteroids used up-front for severely symptomatic cases, b
 In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-20 (higher score = worse QoL). However, it is not uncommon to see mainly gestalt (and therefore variable) assessments of symptom control.
 {% end %}
 
-{% dropdown(header="SNOT-22 score") %}
+{% dropdown(header="SNOT-22 SCORE") %}
+
+{{ mobile_warning() }}
 
 <div style = "height:60vh">
 <embed src="/topic_assets/chronic_rhinosinusitis/SNOT22.pdf" width="100%" height="100%" />
