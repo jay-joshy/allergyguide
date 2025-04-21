@@ -1,7 +1,5 @@
 {#
-This Template is for the 'Pages' (abridge/content/pages) eg: example.com/about/  example.com/privacy/
-This Template can also be used as a home page for the index, eg: example.com/
-Some people prefer a landing page for the index, and then use a separate paginated page for their blog.
+This Template is for the topic homepage where all the conditions and topics are listesd 
 #}
 
 {% extends "base.html" %}
@@ -40,7 +38,7 @@ Some people prefer a landing page for the index, and then use a separate paginat
 <div>
   <ul>
     <ul>
-      {{ topic_links::get_topic_li(section_path="topics/misc/_index.md") }}
+      {{ topic_links::get_topic_li(section_path="topics/hypersensitivity/foods/_index.md") }}
     </ul>
   </ul>
   {%- if page.content %}
