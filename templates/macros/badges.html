@@ -1,0 +1,12 @@
+{% macro status_badge(status, msg) %}
+    {% if status == "wip" %}
+      {% set badge_class = "badge-wip" %}
+    {% elif status == "ready" %}
+      {% set badge_class = "badge-ready" %}
+    {% elif status == "not-started" %}
+      {% set badge_class = "badge-not-started" %}
+    {% else %}
+    {{ throw(message=status ~ " is not a valid option. Only not-started, wip, or ready are accepted.") }}
+    {% endif %}
+<span class="status-badge {{ badge_class }}">{% if msg %}{{ msg }}{% endif %}</span>
+{% endmacro status_badge %}

@@ -95,3 +95,34 @@ pre.language-md {
     /* Invert colors in dark mode */
   }
 }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.1em 0.6em;
+  margin-left: 0.3em;
+  font-size: 0.5em;
+  font-style: italic;
+  font-weight: normal;
+  border-radius: 3px;
+  vertical-align: middle;
+  line-height: 1;
+  height: 1.5em;
+  margin-bottom: 0rem;
+}
+
+.badge-not-started {
+  background-color: #f44336;
+  color: white;
+}
+
+.badge-wip {
+  background-color: #ff9800;
+  color: black;
+}
+
+.badge-ready {
+  background-color: #4caf50;
+  color: white;
+}
