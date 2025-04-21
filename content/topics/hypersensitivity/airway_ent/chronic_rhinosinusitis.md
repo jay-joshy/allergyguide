@@ -541,8 +541,6 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 {% end %}
 
-<embed src="/topic_assets/chronic_rhinosinusitis/SNOT22.pdf" width="100%" height="100%" />
-
 ### CRSsNP specific treatment
 
 - **Trial first-line treatment**. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
