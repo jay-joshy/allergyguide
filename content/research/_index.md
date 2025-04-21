@@ -6,4 +6,4 @@ title = "Page Title"
 description = "description"
 +++
 
-{{ wip() }}
+{{ img(src="/images/gullibility_forestplot.png", class="dark-invert", style="height:60vh;width:auto") }}
