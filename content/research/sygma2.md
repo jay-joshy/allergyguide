@@ -92,7 +92,7 @@ Adherence to regular controller steroid puffer therapy in mild asthma is poor, w
 
 This study was a <span class="hl-yellow">double-blind, multicenter, parallel-group randomized controlled trial</span> conducted over <span class="hl-yellow">52 weeks</span> across 354 sites in 25 countries.
 
-{% text_image(src="/research/sygma2/study_design.png", alt="Figure S1, showing the study design", caption = "Study design. Figure S1 from the supplementary appendix.") %}
+{% text_image(src="/research/sygma2/study_design.png", class="dark-invert", alt="Figure S1, showing the study design", caption = "Study design. Figure S1 from the supplementary appendix.") %}
 
 There was a **2 to 4 week run-in period** where patients used PRN terbutaline alone for symptom relief, before randomization. Randomization was stratified by study site, and computer generated. During the 52-week period there was no regular medication reminders.
 
@@ -141,13 +141,13 @@ Time to the first severe exacerbation was analyzed using a Cox proportional-haza
 
 ### Primary Outcome
 
-{{ img(src="/research/sygma2/primary.png" alt="Primary outcome results", class="c1", caption = "Rate ratios for the annualized rate of severe asthma exacerbations. Solid line: non-inferiority margin; dashed line: superiority margin.") }}
+{{ img(src="/research/sygma2/primary.png" alt="Primary outcome results", class="c1 dark-invert", caption = "Rate ratios for the annualized rate of severe asthma exacerbations. Solid line: non-inferiority margin; dashed line: superiority margin.") }}
 
 <span class="hl-yellow">PRN budesonide-formoterol was non-inferior to budesonide maintenance therapy for the annualized rate of severe asthma exacerbations</span>, with rates of 0.11 (95% CI, 0.10 to 0.13) and 0.12 (95% CI, 0.10 to 0.14), respectively (RR 0.97; upper one-sided 95% confidence limit, 1.16).
 
 ### Secondary Outcomes
 
-{% text_image(src="/research/sygma2/time_to_ex.png", alt="Figure 1B, showing time to first severe exacerbation", caption = "Time to first exacerbation between treatment groups.") %}
+{% text_image(src="/research/sygma2/time_to_ex.png",class="dark-invert", alt="Figure 1B, showing time to first severe exacerbation", caption = "Time to first exacerbation between treatment groups.") %}
 
 #### Exacerbations - time to first, total numbers
 
@@ -230,8 +230,8 @@ However, the <span class="hl-yellow">actual magnitude of change for both scores 
 
 <!-- split -->
 
-{{ img(src="/research/sygma2/acq5.png" alt="ACQ-5 trend over time", class="c1", caption = "Trend of ACQ-5 over 52 weeks from baseline. Minimal clinically important difference is 0.5.") }}
-{{ img(src="/research/sygma2/aqlq.png" alt="AQLQ trend over time", class="c1", caption = "Trend of AQLQ over 52 weeks. Overall score is 1-7 inclusive; higher scores => better QOL.") }}
+{{ img(src="/research/sygma2/acq5.png" alt="ACQ-5 trend over time", class="c1 dark-invert", caption = "Trend of ACQ-5 over 52 weeks from baseline. Minimal clinically important difference is 0.5.") }}
+{{ img(src="/research/sygma2/aqlq.png" alt="AQLQ trend over time", class="c1 dark-invert", caption = "Trend of AQLQ over 52 weeks. Overall score is 1-7 inclusive; higher scores => better QOL.") }}
 
 {% end %}
 
@@ -244,7 +244,7 @@ However, the <span class="hl-yellow">actual magnitude of change for both scores 
 
 <!-- split -->
 
-{{ img(src="/research/sygma2/fev1.png" alt="FEV1 over 52 weeks", class="c1", caption = "Trend of FEV1 over 52 weeks.") }}
+{{ img(src="/research/sygma2/fev1.png" alt="FEV1 over 52 weeks", class="c1 dark-invert", caption = "Trend of FEV1 over 52 weeks.") }}
 {% end %}
 
 #### Puffer and steroid use
