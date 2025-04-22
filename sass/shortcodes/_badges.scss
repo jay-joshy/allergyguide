@@ -1,0 +1,50 @@
+:root {
+  /* Dark mode */
+  --badge-not-started-bg: #d32f2f;
+  --badge-not-started-text: #ffffff;
+  --badge-wip-bg: #f57c00;
+  --badge-wip-text: #000000;
+  --badge-ready-bg: #388e3c;
+  --badge-ready-text: #ffffff;
+}
+
+:root.switch {
+  /* Light mode - more vibrant colors */
+  --badge-not-started-bg: #ff5252;
+  --badge-not-started-text: #212121;
+  --badge-wip-bg: #ffab40;
+  --badge-wip-text: #212121;
+  --badge-ready-bg: #69f0ae;
+  --badge-ready-text: #212121;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.5rem;
+  margin-left: 0.3em;
+  font-size: 0.5rem;
+  font-style: italic;
+  font-weight: normal;
+  border-radius: 3px;
+  vertical-align: middle;
+  line-height: 1;
+  height: 0.6rem;
+  margin-bottom: 0rem;
+}
+
+.badge-not-started {
+  background-color: var(--badge-not-started-bg);
+  color: var(--badge-not-started-text);
+}
+
+.badge-wip {
+  background-color: var(--badge-wip-bg);
+  color: var(--badge-wip-text);
+}
+
+.badge-ready {
+  background-color: var(--badge-ready-bg);
+  color: var(--badge-ready-text);
+}
