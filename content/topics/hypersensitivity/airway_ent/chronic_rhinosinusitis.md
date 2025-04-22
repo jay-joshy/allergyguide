@@ -752,5 +752,9 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 ]
 {% end %}
 
+<h1>Contributors</h1>
+
+{{ contributors(authors=["Joshua Yu"], editors=["Adhora Mir"], staff_reviewers=["TBD"]) }}
+
 <script src="/js/tabs.js"></script>
 <script src="/js/popup.js"></script>
