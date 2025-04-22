@@ -1,7 +1,7 @@
 .text_image {
   display: flex;
   align-items: flex-start;
-  gap: 20px; // Space between text and image
+  gap: 0.5rem; // Space between text and image
 
   .text-content {
     flex: 1;
@@ -15,7 +15,7 @@
     img {
       max-width: 100%;
       height: auto;
-      max-height: 25em;
+      max-height: 25rem;
       display: block;
     }
   }
