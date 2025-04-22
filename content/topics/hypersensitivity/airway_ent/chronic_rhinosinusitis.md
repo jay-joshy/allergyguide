@@ -30,6 +30,12 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
 
+# Summary diagram
+
+<div style="display: flex;justify-content: center;">
+<img src="/topic_assets/chronic_rhinosinusitis/summary.png" style="max-height:60vh">
+</div>
+
 # Definitions
 
 {% two_columns() %}
@@ -46,12 +52,6 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 - OMC: Ostiomeatal complex
 
 {% end %}
-
-# Summary diagram
-
-<div style="display: flex;justify-content: center;">
-<img src="/topic_assets/chronic_rhinosinusitis/summary.png" style="max-height:60vh">
-</div>
 
 # Diagnostic criteria (multiple exist)
 
