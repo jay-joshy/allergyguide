@@ -1,5 +1,6 @@
 # Used in the card_grid.html shortcode to display on the homepage
 # the actual [] content doesn't matter much
+# add dark_invert = true if you want the image to invert on dark mode
 # 
 [title1]
 url = "/topics/"
@@ -27,6 +28,7 @@ text = "High-yield, to-the-point information about common medications"
 
 [title5]
 url = "/research/"
-src = "/images/sptgen.png"
+src = "/images/gullibility_forestplot.png"
 title = "Research"
 text = "Critical appraisal of landmark allergy immunology research"
+dark_invert = true
