@@ -3,12 +3,14 @@ title = "Chronic rhinosinusitis"
 description = "An approach to chronic rhinosinusitis"
 date = 2025-04-20
 draft = false
+weight =2
 [taxonomies]
 tags = ["hypersensitivity","airway and ent"]
 [extra]
 toc = true
 series = "airway and ent"
 authors = ["Author: JY", "Editor: AR", "Staff: TBD"]
+status="ready" # options include not-started, wip, or ready
 +++
 
 <div style="padding-top:1rem;">

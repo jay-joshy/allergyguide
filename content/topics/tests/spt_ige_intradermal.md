@@ -10,7 +10,9 @@ tags = ["tests", "drugs", "foods"]
 toc = true
 series = "tests"
 authors = ["author 1", "author 2"]
+status="not-started" # options include not-started, wip, or ready
 +++
+
 {{ wip() }}
 
 </br>

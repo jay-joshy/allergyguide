@@ -3,6 +3,8 @@ title = "Idiopathic / recurrent anaphylaxis"
 description = "[description of md page]"
 date = 2025-01-01
 draft = false
+weight=2
+
 
 [taxonomies]
 tags = ["hypersensitivity","anaphylaxis"]
@@ -10,6 +12,7 @@ tags = ["hypersensitivity","anaphylaxis"]
 toc = true
 series = "anaphylaxis"
 authors = ["author 1", "author 2"]
+status="not-started" # options include not-started, wip, or ready
 +++
 
 {{ wip() }}
