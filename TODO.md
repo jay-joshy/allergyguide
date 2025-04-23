@@ -8,6 +8,7 @@
 ## Shortcodes
 
 - port original pen-fast questions over with extra options; need to see if .PDF js packages are possible.
+- Finalize medication card specs. Ie. format for age to be used. Right now it's not consistent.
 
 ## Misc
 
