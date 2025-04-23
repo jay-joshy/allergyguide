@@ -4,30 +4,32 @@
 # similarly, [fluticasone-furoate_inhaler] - note the hyphenation used between the drug combos.
 
 [template_med]
-draft = false
-categories = ["testcategory"]
+draft = false # if false, the medication card will be rendered with a WIP sign
+categories = ["testcategory"] # check with the editors for the proper category
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
   { province = "ON", price = "~$X CAD / Ymg tab" },
   { province = "BC", price = "~$X CAD / Ymg tab" },
 ]
 coverage = [
-  { province = "ON", details = "enter details" },
+  { province = "ON", details = "enter details" }, # ie. ODB
   { province = "BC", details = "enter details" },
 ]
 otc = "yes" # only 'yes' or 'no' allowed
 moa = "Insert MoA"
 half_life = "~X hours"
-peak_action = "Optional to add this in"
+peak_action = "Optional to add this in" # how long it takes for the medication to have its intended or maximal effect
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "Zmg OD", notes = "adult" },
   { indication = "diseaseA", dose = "Zmg OD", notes = "adult, CrCl < 30" },
   { indication = "diseaseB", dose = "Zmg BID", notes = "pediatric (ages X-Y)" },
 ]
-pearls = ["Insert pearl here"]
+pearls = [
+  "Insert pearl here",
+] # each separate element in the array is a bullet point
 age_group = "insert age group"
-pregnancy = "insert information, can link to data"
+pregnancy = "insert information, can link to data" # link with HTML
 contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
