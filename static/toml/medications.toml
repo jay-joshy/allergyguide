@@ -4,6 +4,7 @@
 # similarly, [fluticasone-furoate_inhaler] - note the hyphenation used between the drug combos.
 
 [template_med]
+draft = false
 categories = ["testcategory"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
@@ -38,6 +39,7 @@ abbreviations = ""
 ###############################
 
 [rupatadine]
+draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Rupall", "Rupafin", "Rupita"]
 cost = [{ province = "ON", price = "~$0.99 CAD / 10mg tab" }]
@@ -66,6 +68,7 @@ monograph_links = ["/monographs/rupatadine_2023_1.pdf"]
 abbreviations = ""
 
 [bilastine]
+draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Blexten"]
 cost = [{ province = "ON", price = "~$1.1 CAD / 20mg tab" }]
@@ -94,6 +97,7 @@ monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
 [loratadine]
+draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Claritin", "Alavert"]
 cost = [{ province = "ON", price = "~$0.6 CAD / 10mg tab" }]
@@ -123,6 +127,7 @@ monograph_links = ["/monographs/loratadine_2017_1.pdf"]
 abbreviations = ""
 
 [cetirizine]
+draft = true
 categories = ["2G antihistamine"]
 brand_names = ["Reactine", "Allacan"]
 cost = [
@@ -152,6 +157,7 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 
 [fexofenadine]
+draft = true
 categories = ["2G antihistamine"]
 brand_names = ["Allegra"]
 cost = [
@@ -181,6 +187,7 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 
 [desloratadine]
+draft = true
 categories = ["2G antihistamine"]
 brand_names = ["Aerius", "Clarinex"]
 cost = [
@@ -210,6 +217,7 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 
 [diphenhydramine]
+draft = true
 categories = ["1G antihistamine"]
 brand_names = ["Benadryl", "Nytol"]
 cost = [
@@ -243,6 +251,7 @@ abbreviations = ""
 ###############################
 
 [salbutamol]
+draft = true
 categories = ["inhaler", "SABA"]
 brand_names = ["Ventolin", "Albuterol (not a brand name)"]
 cost = [
@@ -272,6 +281,7 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 
 [budesonide_inhaler]
+draft = true
 categories = ["inhaler", "steroid"]
 brand_names = ["Pulmicort Turbuhaler"]
 cost = [
@@ -302,6 +312,7 @@ abbreviations = ""
 
 
 [fluticasone-furoate_inhaler]
+draft = true
 categories = ["inhaler", "steroid"]
 brand_names = ["Arnuity Ellipta"]
 cost = [
@@ -332,6 +343,7 @@ abbreviations = ""
 
 
 [fluticasone-propionate_inhaler]
+draft = true
 categories = ["inhaler", "steroid"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
@@ -362,6 +374,7 @@ abbreviations = ""
 
 
 [mometasone-furoate_inhaler]
+draft = true
 categories = ["inhaler", "steroid"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
@@ -391,6 +404,7 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 
 [beclomethasone-dipropionate_inhaler]
+draft = true
 categories = ["inhaler", "steroid"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
@@ -420,6 +434,7 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 
 [ciclesonide_inhaler]
+draft = true
 categories = ["inhaler", "steroid"]
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
@@ -452,6 +467,7 @@ abbreviations = ""
 # INCS
 ###############################
 [mometasone-furoate_INCS]
+draft = false
 categories = ["steroid", "INCS"]
 brand_names = ["Nasonex", "Sinuva"]
 cost = []
