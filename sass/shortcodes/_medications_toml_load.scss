@@ -1,6 +1,7 @@
 :root {
   /* Dark mode */
-  --medstl_background: #1e1e1e;
+  --medstl_background: #2d2d2d;
+  --medstl_button_bg: #2d2d2d;
   --medstl_text: #ffffff;
   --medstl_border: #444;
   --medstl_shadow: rgba(0, 0, 0, 0.5);
@@ -17,6 +18,7 @@
 :root.switch {
   /* Light mode */
   --medstl_background: #ffffff;
+  --medstl_button_bg: #f5f5f5;
   --medstl_text: #000000;
   --medstl_border: #ccc;
   --medstl_shadow: rgba(0, 0, 0, 0.1);
@@ -45,7 +47,7 @@
       padding: 8px 16px;
       border: 1px solid var(--medstl_border);
       border-radius: 4px;
-      background-color: var(--medstl_background);
+      background-color: var(--medstl_button_bg);
       color: var(--medstl_text);
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
