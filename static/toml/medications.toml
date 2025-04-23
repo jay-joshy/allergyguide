@@ -1,9 +1,8 @@
-# RULES:
+# All sections accept HTML aside from the pearls, which accepts markdown format
+[template_med]
 # [medname] must be formatted as {generic (hyphenate if combination)} with {_route} if dramatically different from oral.
 # for example: [budesonide_inhaler] because the oral form is used for EoE.
 # similarly, [fluticasone-furoate_inhaler] - note the hyphenation used between the drug combos.
-
-[template_med]
 draft = false # if false, the medication card will be rendered with a WIP sign
 categories = ["testcategory"] # check with the editors for the proper category
 brand_names = ["brandnameA", "brandnameB"]
@@ -16,25 +15,27 @@ coverage = [
   { province = "BC", details = "enter details" },
 ]
 otc = "yes" # only 'yes' or 'no' allowed
-moa = "Insert MoA"
+moa = "Insert MoA" # should be BRIEF
 half_life = "~X hours"
-peak_action = "Optional to add this in" # how long it takes for the medication to have its intended or maximal effect
-routes = "oral tab, liquid, ODT"
+peak_action = "Optional" # how long it takes for the medication to have its intended or maximal effect
+routes = "Xmg tab; Xmg/ml liq" # include doses available for each route ie. "10/20mg tab; 2.5mg/ml liq"
 doses = [
-  { indication = "diseaseA", dose = "Zmg OD", notes = "adult" },
-  { indication = "diseaseA", dose = "Zmg OD", notes = "adult, CrCl < 30" },
-  { indication = "diseaseB", dose = "Zmg BID", notes = "pediatric (ages X-Y)" },
+  { indication = "diseaseA", dose = "Zmg OD", notes = "ages 3-11" },           # ages should be listed as "ages X-Y", or "ages ≥X"
+  { indication = "diseaseA", dose = "Zmg OD", notes = "ages ≥12; CrCl < 30" }, # separate different notes with semi-colon
+  { indication = "diseaseB", dose = "Zmg BID", notes = "ages ≥18; >25kg" },    # just list weights out
 ]
 pearls = [
   "Insert pearl here",
 ] # each separate element in the array is a bullet point
-age_group = "insert age group"
-pregnancy = "insert information, can link to data" # link with HTML
+age_group = "insert age group" # just list the ages it has been used in; this is a broad overview. you'll go into the specific ages for separate indications in the doses section
+pregnancy = "insert information, can link to data/links if need be"
 contraindications = "insert"
-side_effects.common = "insert"
-side_effects.severe = "insert"
-monograph_links = ["/monographs/example_2025_1.pdf"]
-abbreviations = ""
+side_effects.common = "insert" # common is ≥1%; if severe list below instead; if possible list out drug vs placebo rates from the monograph, ie. "Drowsiness 3-9%[D], 2-5%[P];"
+side_effects.severe = "insert" # list the probability for these
+monograph_links = [
+  "/monographs/example_2025_1.pdf",
+] # Filenames should be formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug
+abbreviations = "" # ie: "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-adrenal insufficiency"
 
 ###############################
 # ANTIHISTAMINES
@@ -47,10 +48,10 @@ brand_names = ["Rupall", "Rupafin", "Rupita"]
 cost = [{ province = "ON", price = "~$0.99 CAD / 10mg tab" }]
 coverage = [{ province = "ON", details = "ODB" }]
 otc = "no"
-moa = "2nd generation H1 receptor antagonist and platelet activating factor antagonist"
+moa = "2nd gen H1 receptor antagonist, platelet activating factor antagonist"
 half_life = "~6 hours, but some metabolites (ie. desloratadine) remain longer; effects last ~24h"
-peak_action = "Rapid absorption; maximal blood concentration in 1 hr"
-routes = "oral 10 mg tab, liquid 1mg/ml"
+peak_action = "Rapid absorption; max blood concentration in 1 hr"
+routes = "10 mg tab, 1mg/ml liq"
 doses = [
   { indication = "CSU, AR", dose = "10mg tab OD to QID", notes = "ages ≥12" },
   { indication = "CSU, AR", dose = "2.5mg liq OD to QID, ", notes = "10-25kg, ages 2-11" },
@@ -61,7 +62,7 @@ pearls = [
   "Take with or without food (avoid grapefruit)",
   "Going more than OD is technically off-label",
 ]
-age_group = "≥2 years old"
+age_group = "ages ≥2"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of Torsades"
 side_effects.common = "Drowsiness 3-9%[D], 2-5%[P]; headache 1-6%[D], 2-5%[P]; tiredness 1%[D], 1%[P]; QT-prolongation 1%[D], <1%[P]; dizziness 1%[D], 1%[P]; nausea 0-2%[D], 1-2%[P]"
@@ -76,13 +77,13 @@ brand_names = ["Blexten"]
 cost = [{ province = "ON", price = "~$1.1 CAD / 20mg tab" }]
 coverage = [{ province = "ON", details = "ODB" }]
 otc = "no"
-moa = "2nd generation H1 receptor antagonist"
+moa = "2nd gen H1 receptor antagonist"
 half_life = "~15 hours"
 peak_action = "~1h, rapid absorption"
-routes = "10/20mg PO tab, 2.5mg/ml liquid (uncommon)"
+routes = "10/20mg tab, 2.5mg/ml liq (uncommon)"
 doses = [
-  { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "≥12 years old" },
-  { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "4-11 years old" },
+  { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "ages ≥12" },
+  { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "ages 4-11" },
 ]
 pearls = [
   "Theoretically does not cross BBB; less sedating than other AHs",
@@ -90,11 +91,11 @@ pearls = [
   "Going beyond OD is technically off-label",
   "Take without food or juice otherwise absorption impaired",
 ]
-age_group = "≥4 years old"
+age_group = "ages ≥4"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
-side_effects.common = "QT prolongation (at 100mg ODx4, max mean increase 6ms); drowsiness (4%); headache (4%). For reference, drowisness/headache had a 2% incidence rate in placebo arm"
-side_effects.severe = "Torsades (very rare)"
+side_effects.common = "QT prolongation (at 100mg ODx4, max mean increase 6ms); drowsiness/headache ~4%[D], ~3%[P]; abdo pain 3%[D], 3%[P]"
+side_effects.severe = "Torsades (extremely rare; only 1 case reported in monograph post-market reactions)"
 monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
@@ -103,30 +104,32 @@ draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Claritin", "Alavert"]
 cost = [{ province = "ON", price = "~$0.6 CAD / 10mg tab" }]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "no"
-moa = "2nd generation H1 receptor antagonist"
-half_life = "8.4 hours (half life of active metabolite desloratadine is 28h)"
-peak_action = ""
-routes = "oral tab/capsule, solution"
+coverage = [{ province = "ON", details = "ODB" }]
+otc = "yes"
+moa = "2nd gen H1 receptor antagonist"
+half_life = "7.8-11 hours (half life of active metabolite descarboethoxyloratadine is 17-24h)"
+peak_action = "Rapid onset, ~1-2h"
+routes = "10mg tab (generic), 5mg tab, 1mg/ml liq"
 doses = [
-  { indication = "CSU, AR", dose = "10mg OD to QID", notes = ">= 6y" },
-  { indication = "CSU, AR", dose = "10mg q48h", notes = "CrCl <30ml/min" },
-  { indication = "CSU, AR", dose = "5mg OD to QID", notes = "ages [2,6)" },
+  { indication = "CSU, AR", dose = "10mg OD to QID", notes = "ages ≥6" },
+  { indication = "CSU, AR", dose = "5mg OD to QID", notes = "ages 2-6" },
+  { indication = "CSU, AR", dose = "5mg OD or 10mg q48h", notes = ">30kg; if severe liver impairment" },
+  { indication = "CSU, AR", dose = "5mg q48h", notes = "≤30kg; if severe liver impairment" },
 ]
 pearls = [
-  "No QTc prolongation noted in monographs or UpToDate. Mostly hepatically cleared, but in adults still renally adjust.",
+  "No QTc prolongation in humans noted in monographs or UpToDate. _'Prolongation of QRS-interval was observed **in monkeys at a dose 200 times** the proposed clinical dose'_",
+  "Mostly hepatically cleared. No renal adjustment required",
 ]
-age_group = "[2, adults) with dosing adjustments"
+age_group = "ages ≥2"
 pregnancy = "Safe as per <a target='blank' href='https://www.acog.org/womens-health/experts-and-stories/ask-acog/what-medicine-can-i-take-for-allergies-while-im-pregnant'>ACOG</a> and <a target='blank' href='https://firstexposure.ca/seasonal-allergies-and-allergic-rhinitis-in-pregnancy-and-lactation/'>firstexposure</a>"
 contraindications = "Hypersensitivity"
-side_effects.common = "Fatigue, headache, dry mouth, drowsiness, nausea (~4-8%)"
-side_effects.severe = "Essentially none reported in monograph."
-monograph_links = ["/monographs/loratadine_2017_1.pdf"]
-abbreviations = ""
+side_effects.common = "Fatigue 4%[D], 4%[P]; headache 8%[D], 6%[D]; drowsiness 8%[D], 6%[P]"
+side_effects.severe = "<b>Extremely</b> rare and all post-market: anaphylaxis, hepatic dysfunction, palpitations"
+monograph_links = [
+  "/monographs/loratadine_2017_1.pdf",
+  "/monographs/claritin_2020_1.pdf",
+]
+abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
 [cetirizine]
 draft = true
@@ -156,7 +159,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
-abbreviations = ""
+abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
 [fexofenadine]
 draft = true
@@ -186,7 +189,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
-abbreviations = ""
+abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
 [desloratadine]
 draft = true
@@ -216,7 +219,7 @@ contraindications = "insert"
 side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
-abbreviations = ""
+abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 
 [diphenhydramine]
 draft = true
