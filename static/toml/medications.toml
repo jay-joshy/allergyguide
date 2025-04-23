@@ -483,17 +483,17 @@ half_life = "~5.8 hours"
 peak_action = "While monograph says ~12 hours, <b>maximal effect requires 2-4 weeks of use</b>"
 routes = "nasal spray (50mcg)"
 doses = [
-  { indication = "AR", dose = "1-4 sprays (50mcg per spray) EN OD", notes = "≥12 years" },
-  { indication = "AR", dose = "1 spray (50mcg per spray) EN OD", notes = "3-11 years" },
-  { indication = "CRS", dose = "1-2 sprays (50mcg per spray) EN BID", notes = "≥12 years" },
+  { indication = "AR", dose = "1-4 sprays (50mcg per spray) EN OD", notes = "ages ≥12" },
+  { indication = "AR", dose = "1 spray (50mcg per spray) EN OD", notes = "ages 3-11" },
+  { indication = "CRS", dose = "1-2 sprays (50mcg per spray) EN BID", notes = "ages ≥12" },
 ]
 pearls = [
-  "2nd-generation INCS, **minimal systemic absorption (0.5%)**, no evidence of AI in PII and PIII studies",
+  "2nd-gen INCS, **minimal systemic absorption (0.5%)**, no evidence of AI in PII and PIII studies",
   "For AR, classically useful for 'wet' nasal congestion",
   "**High** operator error; [see here for how to use](/handouts/incs/)",
   "OTC in the US; Rx in Canada",
 ]
-age_group = "≥3 years"
+age_group = "ages ≥3"
 pregnancy = "Maybe OK, but no adequate or well-controlled studies in pregnant or nursing women"
 contraindications = "Hypersensitivity, acute bacterial sinus infection without antibiotics"
 side_effects.common = "For adults: headache 8%[D], 6%[P]; epistaxis 8%[D], 5%[P], pharyngitis 4%[D], 3%[P]. For 3-11, all comparable to placebo"
