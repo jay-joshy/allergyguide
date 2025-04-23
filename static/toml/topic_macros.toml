@@ -105,52 +105,8 @@ Thank you once again for involving us in this patient's care. Please do not hesi
 Sincerely,
 '''
 
-# PROCEDURES / NON CONDITIONS 
-# -----------------------------
-[oral_food_challenge]
-topic = "Oral Challenge"
-keywords = ["OFC", "oral food challenge"]
-content = '''
-Placeholder macro  
-'''
-
-[drug_challenge]
-topic = "Drug Challenge"
-keywords = ["direct drug challenge", "drug challenge"]
-content = '''
-Placeholder macro  
-'''
-
-[scit_injection]
-topic = "SCIT injection"
-keywords = ["tbd"]
-content = '''
-Placeholder macro  
-'''
-
-[slit_initiation]
-topic = "SLIT initiation"
-keywords = ["tbd"]
-content = '''
-Placeholder macro  
-'''
-
-[patch_test]
-topic = "Patch test"
-keywords = ["tbd"]
-content = '''
-Placeholder macro  
-'''
-
 # CONDITIONS
 # -----------------------------
-
-[allergic_rhinitis]
-topic = "Allergic Rhinitis"
-keywords = ["rhinitis", "ar", "rhinosinusitis"]
-content = '''
-Placeholder macro  
-'''
 
 [chronic_rhinosinusitis]
 topic = "Chronic rhinosinusitis"
@@ -186,3 +142,9 @@ Recommendations:
 - Consider biologics for CRSwNP if severe/failed first-line therapy
 - Follow-up: ~3-4 months
 '''
+
+# PROCEDURES / NON CONDITIONS 
+# -----------------------------
+
+# TESTS
+# -----------------------------
