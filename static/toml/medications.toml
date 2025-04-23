@@ -104,6 +104,7 @@ coverage = [
 otc = "no"
 moa = "2nd generation H1 receptor antagonist"
 half_life = "8.4 hours (half life of active metabolite desloratadine is 28h)"
+peak_action = ""
 routes = "oral tab/capsule, solution"
 doses = [
   { indication = "CSU, AR", dose = "10mg OD to QID", notes = ">= 6y" },
@@ -135,6 +136,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -163,6 +165,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -191,6 +194,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -219,6 +223,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -251,6 +256,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -279,6 +285,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -308,6 +315,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -337,6 +345,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -366,6 +375,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -394,6 +404,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
@@ -422,6 +433,7 @@ coverage = [
 otc = "no"
 moa = "Insert MoA"
 half_life = "~X hours"
+peak_action = ""
 routes = "oral tab, liquid, ODT"
 doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
