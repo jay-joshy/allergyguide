@@ -1,4 +1,4 @@
-# All sections accept HTML aside from the pearls, which accepts markdown format
+# All sections accept HTML aside from the pearl, which accepts markdown format
 [template_med]
 # [medname] must be formatted as {generic (hyphenate if combination)} with {_route} if dramatically different from oral.
 # for example: [budesonide_inhaler] because the oral form is used for EoE.
@@ -24,9 +24,6 @@ doses = [
   { indication = "diseaseA", dose = "Zmg OD", notes = "ages ≥12; CrCl < 30" }, # separate different notes with semi-colon
   { indication = "diseaseB", dose = "Zmg BID", notes = "ages ≥18; >25kg" },    # just list weights out
 ]
-pearls = [
-  "Insert pearl here",
-] # each separate element in the array is a bullet point
 age_group = "insert age group" # just list the ages it has been used in; this is a broad overview. you'll go into the specific ages for separate indications in the doses section
 pregnancy = "insert information, can link to data/links if need be"
 contraindications = "insert"
@@ -36,6 +33,9 @@ monograph_links = [
   "/monographs/example_2025_1.pdf",
 ] # Filenames should be formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug
 abbreviations = "" # ie: "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-adrenal insufficiency"
+pearls = [
+  "Insert pearl here",
+] # each separate element in the array is a bullet point
 
 ###############################
 # ANTIHISTAMINES
@@ -57,11 +57,6 @@ doses = [
   { indication = "CSU, AR", dose = "2.5mg liq OD to QID, ", notes = "10-25kg, ages 2-11" },
   { indication = "CSU, AR", dose = "5mg liq OD to QID, ", notes = ">25kg, ages 2-11" },
 ]
-pearls = [
-  "No data for hepatic or renal insufficiency",
-  "Take with or without food (avoid grapefruit)",
-  "Going more than OD is technically off-label",
-]
 age_group = "ages ≥2"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of Torsades"
@@ -69,6 +64,11 @@ side_effects.common = "Drowsiness 3-9%[D], 2-5%[P]; headache 1-6%[D], 2-5%[P]; t
 side_effects.severe = "All very rare (<1%): Torsades (only 1 event), liver enzyme elevation"
 monograph_links = ["/monographs/rupatadine_2023_1.pdf"]
 abbreviations = ""
+pearls = [
+  "No data for hepatic or renal insufficiency",
+  "Take with or without food (avoid grapefruit)",
+  "Going more than OD is technically off-label",
+]
 
 [bilastine]
 draft = false
@@ -85,12 +85,6 @@ doses = [
   { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "ages ≥12" },
   { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "ages 4-11" },
 ]
-pearls = [
-  "Theoretically does not cross BBB; less sedating than other AHs",
-  "No renal adjustments needed; minimal data with hepatic impairment but not expected to cause issues",
-  "Going beyond OD is technically off-label",
-  "Take without food or juice otherwise absorption impaired",
-]
 age_group = "ages ≥4"
 pregnancy = "Avoid (not enough data)"
 contraindications = "Hypersensitivity, QT prolongation or history of torsades"
@@ -98,6 +92,12 @@ side_effects.common = "QT prolongation (at 100mg ODx4, max mean increase 6ms); d
 side_effects.severe = "Torsades (extremely rare; only 1 case reported in monograph post-market reactions)"
 monograph_links = ["/monographs/bilastine_2021_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
+pearls = [
+  "Theoretically does not cross BBB; less sedating than other AHs",
+  "No renal adjustments needed; minimal data with hepatic impairment but not expected to cause issues",
+  "Going beyond OD is technically off-label",
+  "Take without food or juice otherwise absorption impaired",
+]
 
 [loratadine]
 draft = false
@@ -116,10 +116,6 @@ doses = [
   { indication = "CSU, AR", dose = "5mg OD or 10mg q48h", notes = ">30kg; if severe liver impairment" },
   { indication = "CSU, AR", dose = "5mg q48h", notes = "≤30kg; if severe liver impairment" },
 ]
-pearls = [
-  "No QTc prolongation in humans noted in monographs or UpToDate. _'Prolongation of QRS-interval was observed **in monkeys at a dose 200 times** the proposed clinical dose'_",
-  "Mostly hepatically cleared. No renal adjustment required",
-]
 age_group = "ages ≥2"
 pregnancy = "Safe as per <a target='blank' href='https://www.acog.org/womens-health/experts-and-stories/ask-acog/what-medicine-can-i-take-for-allergies-while-im-pregnant'>ACOG</a> and <a target='blank' href='https://firstexposure.ca/seasonal-allergies-and-allergic-rhinitis-in-pregnancy-and-lactation/'>firstexposure</a>"
 contraindications = "Hypersensitivity"
@@ -130,6 +126,10 @@ monograph_links = [
   "/monographs/claritin_2020_1.pdf",
 ]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
+pearls = [
+  "**No QTc prolongation in humans noted in monographs or UpToDate**. _'Prolongation of QRS-interval was observed **in monkeys at a dose 200 times** the proposed clinical dose'_",
+  "Mostly hepatically cleared. No renal adjustment required",
+]
 
 [cetirizine]
 draft = true
@@ -143,7 +143,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "no"
+otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
 peak_action = ""
@@ -152,7 +152,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -160,6 +159,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
+pearls = ["Insert pearl here"]
 
 [fexofenadine]
 draft = true
@@ -173,7 +173,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "no"
+otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
 peak_action = ""
@@ -182,7 +182,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -190,6 +189,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
+pearls = ["Insert pearl here"]
 
 [desloratadine]
 draft = true
@@ -203,7 +203,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "no"
+otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
 peak_action = ""
@@ -212,7 +212,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -220,6 +219,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
+pearls = ["Insert pearl here"]
 
 [diphenhydramine]
 draft = true
@@ -233,7 +233,7 @@ coverage = [
   { province = "ON", details = "enter details" },
   { province = "BC", details = "enter details" },
 ]
-otc = "no"
+otc = "yes"
 moa = "Insert MoA"
 half_life = "~X hours"
 peak_action = ""
@@ -242,7 +242,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["Insert pearl here"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -250,6 +249,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["One of the few more common antihistamines that can be used IV"]
 
 ###############################
 # PUFFERS
@@ -276,7 +276,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -284,6 +283,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 [budesonide_inhaler]
 draft = true
@@ -306,7 +306,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -314,6 +313,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 
 [fluticasone-furoate_inhaler]
@@ -337,7 +337,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -345,6 +344,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 
 [fluticasone-propionate_inhaler]
@@ -368,7 +368,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -376,6 +375,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 
 [mometasone-furoate_inhaler]
@@ -399,7 +399,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -407,6 +406,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 [beclomethasone-dipropionate_inhaler]
 draft = true
@@ -429,7 +429,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -437,6 +436,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 [ciclesonide_inhaler]
 draft = true
@@ -459,7 +459,6 @@ doses = [
   { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
   { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
 ]
-pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 age_group = "insert age group"
 pregnancy = "insert information, can link to data"
 contraindications = "insert"
@@ -467,6 +466,7 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
+pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
 ###############################
 # INCS
@@ -487,12 +487,6 @@ doses = [
   { indication = "AR", dose = "1 spray (50mcg per spray) EN OD", notes = "ages 3-11" },
   { indication = "CRS", dose = "1-2 sprays (50mcg per spray) EN BID", notes = "ages ≥12" },
 ]
-pearls = [
-  "2nd-gen INCS, **minimal systemic absorption (0.5%)**, no evidence of AI in PII and PIII studies",
-  "For AR, classically useful for 'wet' nasal congestion",
-  "**High** operator error; [see here for how to use](/handouts/incs/)",
-  "OTC in the US; Rx in Canada",
-]
 age_group = "ages ≥3"
 pregnancy = "Maybe OK, but no adequate or well-controlled studies in pregnant or nursing women"
 contraindications = "Hypersensitivity, acute bacterial sinus infection without antibiotics"
@@ -500,6 +494,12 @@ side_effects.common = "For adults: headache 8%[D], 6%[P]; epistaxis 8%[D], 5%[P]
 side_effects.severe = "All very rare (<1%): liver enzyme elevation"
 monograph_links = ["/monographs/mometasone-furoate_2021_1.pdf"]
 abbreviations = "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-adrenal insufficiency"
+pearls = [
+  "2nd-gen INCS, **minimal systemic absorption (0.5%)**, no evidence of AI in PII and PIII studies",
+  "For AR, classically useful for 'wet' nasal congestion",
+  "**High** operator error; [see here for how to use](/handouts/incs/)",
+  "OTC in the US; Rx in Canada",
+]
 
 
 ###############################
