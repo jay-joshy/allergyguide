@@ -12,7 +12,7 @@ tags = ["hypersensitivity", "dermatology"]
 toc = true
 series = "dermatology"
 authors = ["author 1", "author 2"]
-status="not-started" # options include not-started, wip, or ready
+status="wip" # options include not-started, wip, or ready
 +++
 
 {{ wip() }}
