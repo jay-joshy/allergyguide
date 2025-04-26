@@ -10,14 +10,10 @@ tags = ["tests"]
 toc = true
 series = "tests"
 authors = ["author 1", "author 2"]
-status="not-started" # options include not-started, wip, or ready
+status="wip" # options include not-started, wip, or ready
 +++
 
-{{ wip() }}
+Rough notes:
+Gas trapping relief can improve fvc in asthma.bad
 
-</br>
-</br>
-
-<div class="blur-container">
-
-</div>
+Kerry Lake is open to being a reviewer for this section (can add another allergist too if needed)
