@@ -192,34 +192,39 @@ abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 pearls = ["Insert pearl here"]
 
 [desloratadine]
-draft = true
+draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Aerius", "Clarinex"]
-cost = [
-  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
-  { province = "BC", price = "~$1000 CAD / 10mg tab" },
-]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
+# cost = [{ province = "ON", price = "~$0.50 CAD / 10mg tab" }]
+coverage = [{ province = "ON", details = "None on ODB" }]
 otc = "yes"
-moa = "Insert MoA"
-half_life = "~X hours"
-peak_action = ""
-routes = "oral tab, liquid, ODT"
+moa = "2nd gen H1 receptor antagonist"
+half_life = "~27 hours"
+peak_action = "Max serum conc in 3 hours"
+routes = "5mg tab, 0.5mg/ml liq"
 doses = [
-  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
-  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+  { indication = "CSU, AR", dose = "5mg OD to QID", notes = "ages ≥12" },
+  { indication = "CSU, AR", dose = "2.5mg liq OD to QID", notes = "ages 6-11" },
+  { indication = "CSU, AR", dose = "1.25mg liq OD to QID", notes = "ages 2-5" },
 ]
-age_group = "insert age group"
-pregnancy = "insert information, can link to data"
-contraindications = "insert"
-side_effects.common = "insert"
-side_effects.severe = "insert"
-monograph_links = ["/monographs/example_2025_1.pdf"]
+age_group = "≥12 tablet, ≥2 liq"
+pregnancy = "Avoid (limited data) for pregnancy and breast-feeding"
+contraindications = "Hypersensitivity"
+side_effects.common = "Tab: Fatigue 1.8%[D], 0.6%[P]; headache 4.5%[D], 4%[P], drowsiness 2%[D], 2%[P]. Liq: only 2/115 S/E reported (headache/rash)."
+side_effects.severe = "Extremely rarely: anaphylaxis, seizure, liver enzyme elevation"
+monograph_links = [
+  "/monographs/aerius_2019_1.pdf",
+  "/monographs/desloratadine_2018_1.pdf",
+  "/monographs/desloratadine_2023_1.pdf",
+]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
-pearls = ["Insert pearl here"]
+pearls = [
+  "**No significant QT-prolongation**: 45mg ODx10 did not show a significant increase in QTc",
+  "Technically going beyond OD is off-label",
+  "Theoretically does not enter the CNS",
+  "No dosage adjustment for hepatic or renal dysfunction. Take with or without food; no obvious drug interactions",
+  "Not an absolute contraindication, but use with caution if seizure history",
+]
 
 [diphenhydramine]
 draft = true
