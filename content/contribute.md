@@ -28,7 +28,7 @@ The contribution process follows this rough timeline:
 },
 {
 "title":"Drafting",
-"body":"Timeline 2 weeks for initial draft. See the contribution guides for:<br>- [macros, topics, patient handouts](@/contribute_guides/topic_contribution.md)<br>- [medications](@/contribute_guides/medication_contribution.md)<br>- [critical appraisal of research](@/contribute_guides/research_contribution.md)",
+"body":"Timeline for initial draft depends on topic (ie. a few weeks to 1-2 months; check with an editor). See the contribution guides for:<br>- [macros, topics, patient handouts](@/contribute_guides/topic_contribution.md)<br>- [medications](@/contribute_guides/medication_contribution.md)<br>- [critical appraisal of research](@/contribute_guides/research_contribution.md)",
 "date":"Step 2"
 },
 {
