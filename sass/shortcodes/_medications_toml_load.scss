@@ -122,6 +122,11 @@
       &.rx {
         background-color: #f44336; // Red for prescription-only
       }
+
+      &.both {
+        background-color: #ffb74d; // yellow for both
+        color: black;
+      }
     }
 
     h2 {
