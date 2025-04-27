@@ -30,7 +30,13 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 
 # Meet the editors
 
-{{ profile_grid() }}
+{% profile_grid() %}
+[
+{ "name": "Joshua Yu, MD BSc", "src": "/images/profile_jy.png", "text": "PGY-3 IM resident at McMaster, fellow-to-be at UBC." },
+{ "name": "Adhora Mir", "src": "/images/profile_am.png", "text": "PGY-4 Adult Allergy & Immunology resident at McGill University." },
+{ "name": "Editor 3", "src": "/images/example.png", "text": "Could also be you!" }
+]
+{% end %}
 
 # Sponsors and acknowledgments
 
