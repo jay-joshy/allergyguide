@@ -10,7 +10,9 @@ in_search_index = false
 toc = true
 +++
 
-{{ example() }}
+Here is an example thing {% example() %}
+holy moly
+{% end %}
 
 ## Highlights
 

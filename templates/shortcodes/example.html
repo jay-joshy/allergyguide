@@ -1,6 +1,1 @@
-{% set body = '{"seed":123,"start":1,"end":10}' %}
-
-{{ body }}
-
-{% set shuffled = load_data( url="https://allergyguide.ca/.netlify/functions/shuffle", method="POST", format="json", content_type="application/json", body=body ) %}
-{{ shuffled }}
+<span>{{body | safe}}</span>
