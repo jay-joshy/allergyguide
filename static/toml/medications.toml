@@ -14,7 +14,7 @@ coverage = [
   { province = "ON", details = "enter details" }, # ie. ODB
   { province = "BC", details = "enter details" },
 ]
-otc = "yes" # only 'yes' or 'no' allowed
+otc = "yes" # only 'yes' or 'no' or 'both' allowed
 moa = "Insert MoA" # should be BRIEF
 half_life = "~X hours"
 peak_action = "Optional" # how long it takes for the medication to have its intended or maximal effect
@@ -132,34 +132,35 @@ pearls = [
 ]
 
 [cetirizine]
-draft = true
+draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Reactine", "Allacan"]
-cost = [
-  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
-  { province = "BC", price = "~$1000 CAD / 10mg tab" },
-]
-coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
-]
-otc = "yes"
-moa = "Insert MoA"
-half_life = "~X hours"
-peak_action = ""
-routes = "oral tab, liquid, ODT"
+cost = [{ province = "ON", price = "~$0.40 CAD / 10mg tab" }]
+coverage = [{ province = "ON", details = "ODB" }]
+otc = "both"
+moa = "2nd gen H1 receptor antagonist"
+half_life = "~8 hours"
+peak_action = "~1 hour"
+routes = "20mg tab (Rx), 5/10mg tab (OTC)"
 doses = [
-  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
-  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+  { indication = "CSU, AR", dose = "10mg OD to QID", notes = "ages ≥12" },
+  { indication = "CSU, AR", dose = "5mg OD", notes = "ages ≥12; 'moderate hepatic or renal impairment'" },
 ]
-age_group = "insert age group"
-pregnancy = "insert information, can link to data"
-contraindications = "insert"
-side_effects.common = "insert"
-side_effects.severe = "insert"
-monograph_links = ["/monographs/example_2025_1.pdf"]
+age_group = "ages ≥12"
+pregnancy = "Generally considered safe in pregnancy"
+contraindications = "CrCl <10ml/min, "
+side_effects.common = "For the 20mg OD: Drowsiness 24%[D], 8%[P]; fatigue 7%[D], 2.5%[P]; dry mouth 8%[D], 1.5%[P]"
+side_effects.severe = "<1% and rare: see monograph"
+monograph_links = [
+  "/monographs/cetirizine_2025_1.pdf",
+  "/monographs/cetirizine_2018_1.pdf",
+]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
-pearls = ["Insert pearl here"]
+pearls = [
+  "Use with or without food, though food delays onset of effect",
+  "No significant effect on QTc seen with 60mg OD",
+  "Comparatively to other 2nd-gen antihistamines, it has the highest drowsiness rates",
+]
 
 [fexofenadine]
 draft = true
