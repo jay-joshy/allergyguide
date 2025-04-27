@@ -38,61 +38,63 @@
 .card_grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  gap: 1rem;
+  padding: 1rem;
   justify-content: center;
   align-content: start;
+
+  .grid-item {
+    display: flex;
+  }
 
   .contact-card-link {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: var(--card-bg);
-    border: 2px solid var(--card-border);
-    border-radius: 12px;
+    border: 0.1rem solid var(--card-border);
+    border-radius: 0.5rem;
     overflow: hidden;
     /* box-shadow: 0 4px 6px var(--card-shadow); */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
 
     &:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 12px var(--card-shadow);
     }
 
     &:focus {
-      outline: 2px solid var(--card-border);
+      outline: 0.5rem solid var(--card-border);
       outline-offset: 4px;
     }
   }
 
   .contact-card-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover; // This prevents stretching while filling the space
+    aspect-ratio: 19/18;
+    /* Portrait: width is 3, height is 4 */
+    object-fit: cover;
     filter: brightness(var(--card-image-brightness));
+    border-bottom: 0.2rem solid var(--card-border);
   }
 
-  .contact-card-image-container {
-    position: relative;
-    padding-top: 91%; // Creates a 1:1 aspect ratio
-    border-bottom: 2px solid var(--card-border);
-    overflow: hidden;
-  }
+  .contact-card-image-container {}
 
 
   .contact-card-content {
-    padding: 15px;
+    padding: 0.5rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
   .contact-card-title {
     font-size: 1.2em;
     font-weight: bold;
     color: var(--card-title);
-    margin: 10px 0;
+    margin: 0.5rem 0;
   }
 
   .contact-card-body {

@@ -3,7 +3,7 @@ $yellow: #ffeb3b;
 $red: #f44336;
 $blue: #2196f3;
 
-:root:not(.switch) {
+:root {
   /* Dark mode */
   --radio-bg: #2D3748; // Dark container background
   --radio-border: rgba(255, 255, 255, 0.12); // Subtle light border for dark mode
