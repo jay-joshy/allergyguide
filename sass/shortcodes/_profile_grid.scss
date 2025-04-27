@@ -39,21 +39,27 @@
 .profile_grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  gap: 1rem;
+  padding: 0.5rem;
+
+  .grid-item {
+    display: flex;
+  }
 
   .profile-card {
+    display: flex;
+    flex-direction: column;
     background-color: var(--profile-card-bg);
-    border: 1px solid var(--profile-card-border);
-    border-radius: 12px;
+    border: 0.01rem solid var(--profile-card-border);
+    border-radius: 0.5rem;
     overflow: hidden;
     /* box-shadow: 0 4px 6px var(--profile-card-shadow); */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
+    width: 100%;
 
     &:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 12px var(--profile-card-shadow);
     }
   }
 
@@ -62,19 +68,20 @@
     aspect-ratio: 7/8;
     /* Portrait: width is 3, height is 4 */
     object-fit: cover;
-    border-bottom: 2px solid var(--profile-card-border);
+    border-bottom: 0.2rem solid var(--profile-card-border);
     filter: brightness(var(--profile-card-image-brightness));
   }
 
   .profile-card-content {
-    padding: 15px;
+    padding: 0.5rem;
+    flex-grow: 1;
   }
 
   .profile-card-name {
-    font-size: 1.4em;
+    font-size: 1.4rem;
     font-weight: bold;
     color: var(--profile-card-name);
-    margin: 10px 0;
+    margin: 0.5rem 0;
   }
 
   .profile-card-description {
