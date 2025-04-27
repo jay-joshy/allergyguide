@@ -27,8 +27,7 @@ title = "Medication reference"
 text = "High-yield, to-the-point information about common medications"
 
 [title5]
-url = "/research/"
-src = "/images/gullibility_forestplot.png"
-title = "Research"
-text = "Critical appraisal of landmark allergy immunology research"
-dark_invert = true
+url = "/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/"
+src = "/topic_assets/chronic_rhinosinusitis/normal_sinus.png"
+title = "Chronic rhinosinusitis"
+text = "An approach to chronic rhinosinusitis with some research deep-dives"

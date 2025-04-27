@@ -43,16 +43,22 @@
   justify-content: center;
   align-content: start;
 
+  .grid-item {
+    display: flex;
+  }
+
   .contact-card-link {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: var(--card-bg);
     border: 0.1rem solid var(--card-border);
     border-radius: 0.5rem;
     overflow: hidden;
     /* box-shadow: 0 4px 6px var(--card-shadow); */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
 
     &:hover {
       transform: scale(1.05);
@@ -65,29 +71,23 @@
   }
 
   .contact-card-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover; // This prevents stretching while filling the space
-    filter: brightness(var(--card-image-brightness));
-  }
-
-  .contact-card-image-container {
     aspect-ratio: 19/18;
     /* Portrait: width is 3, height is 4 */
-
-    position: relative;
-    padding-top: 91%; // Creates a 1:1 aspect ratio
-    border-bottom: 0.1rem solid var(--card-border);
-    overflow: hidden;
+    object-fit: cover;
+    filter: brightness(var(--card-image-brightness));
+    border-bottom: 0.2rem solid var(--card-border);
   }
+
+  .contact-card-image-container {}
 
 
   .contact-card-content {
     padding: 0.5rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
   .contact-card-title {
