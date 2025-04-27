@@ -17,6 +17,9 @@ to = "https://allergyguide.ca/:splat"
 status = 301
 force = true
 
+[functions]
+directory = "netlify/functions"
+
 [[headers]]
 for = "/*"
 [headers.values]
