@@ -163,34 +163,37 @@ pearls = [
 ]
 
 [fexofenadine]
-draft = true
+draft = false
 categories = ["2G antihistamine"]
 brand_names = ["Allegra"]
 cost = [
-  { province = "ON", price = "~$0.50 CAD / 10mg tab" },
-  { province = "BC", price = "~$1000 CAD / 10mg tab" },
+  { province = "ON", price = "~$0.80 CAD / 120mg tab at Shoppers (2025)" },
 ]
 coverage = [
-  { province = "ON", details = "enter details" },
-  { province = "BC", details = "enter details" },
+  { province = "ON", details = "None" },
 ]
 otc = "yes"
-moa = "Insert MoA"
-half_life = "~X hours"
-peak_action = ""
-routes = "oral tab, liquid, ODT"
+moa = "2nd gen H1 receptor antagonist"
+half_life = "~11-16 hours"
+peak_action = "Rapid absorption, max serum conc at ~2.5h"
+routes = "60mg tab, 120mg tab"
 doses = [
-  { indication = "diseaseA", dose = "180mg OD", notes = "adult" },
-  { indication = "diseaseB", dose = "30mg BID", notes = "pediatric (ages 2-11)" },
+  { indication = "CSU, AR", dose = "60mg BID", notes = "" },
+  { indication = "CSU, AR", dose = "120mg OD to QID", notes = "up to QID for CSU" },
+    { indication = "CSU, AR", dose = "60mg OD", notes = "CrCl<40" },
 ]
-age_group = "insert age group"
-pregnancy = "insert information, can link to data"
-contraindications = "insert"
-side_effects.common = "insert"
-side_effects.severe = "insert"
-monograph_links = ["/monographs/example_2025_1.pdf"]
+age_group = "ages ≥12"
+pregnancy = "Not recommended, due to lack of data"
+contraindications = "Hypersensitivity to drug or components"
+side_effects.common = "Drowsiness, nausea, fatigue 1%[D], 1%[P]; headache 3%[D], 3%[P]"
+side_effects.severe = "One case of CHF and atrial fibrillation, post-market"
+monograph_links = ["/monographs/fexofenadine_2021_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
-pearls = ["Insert pearl here"]
+pearls = [
+"Avoid taking with fruit juice or food",
+"No QT-prolongation seen at 11x recommended dose",
+"Hard to OD; single doses up to 690mg BID x1mo did not show worse side effects than placebo in drug studies",
+]
 
 [desloratadine]
 draft = false
@@ -255,7 +258,12 @@ side_effects.common = "insert"
 side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
-pearls = ["One of the few more common antihistamines that can be used IV"]
+pearls = [
+"<a target='blank' href='https://aacijournal.biomedcentral.com/articles/10.1186/s13223-019-0375-9'>CSACI position statement</a>: newer generation H1-antihistamines are safer than first-generation H1-antihistamines",
+"",
+"",
+"One of the few more common antihistamines that can be used IV",
+]
 
 ###############################
 # PUFFERS
