@@ -1,4 +1,4 @@
-{{ set seed = now() | date(format="%Y%m%d")}}
+{% set seed = now() | date(format="%Y%m%d") %}
 {% set key = get_env(name="SHUFFLE_KEY") %}
 {% set body = '{"seed":{{ seed | int }},"start":1,"end":10}' %}
 {% set shuffled = load_data(
