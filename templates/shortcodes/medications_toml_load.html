@@ -91,7 +91,7 @@
             Doses:</strong></p>
         <ul>
           {% for dose in details.doses %}
-          <li>{{ dose.indication | safe }}: {{ dose.dose | safe }} ({{ dose.notes | safe }})</li>
+          <li>{{ dose.indication | safe }}: {{ dose.dose | safe }} {% if dose.notes %}({{ dose.notes | safe }}){% endif %}</li>
           {% endfor %}
         </ul>
       </div>
