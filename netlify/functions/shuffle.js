@@ -1,27 +1,24 @@
-// netlify/functions/shuffle.js
-
 exports.handler = async (event, context) => {
-  const allowedOrigin = "https://yourdomain.com"; // change to your real domain
+  const expectedKey = process.env.SHUFFLE_KEY; // load from environment
 
-  // Only allow from your domain
-  if (event.headers.origin !== allowedOrigin) {
+  const providedKey = event.headers['x-api-key']; // get from request headers
+
+  // Check API key
+  if (!providedKey || providedKey !== expectedKey) {
     return {
       statusCode: 403,
-      body: JSON.stringify({ message: "Forbidden" }),
-      headers: {
-        'Access-Control-Allow-Origin': allowedOrigin,
-      },
+      body: JSON.stringify({ message: "Forbidden: Invalid API key" }),
     };
   }
 
-  // Allow preflight OPTIONS request
+  // Handle preflight OPTIONS request for CORS
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, X-Api-Key',
       },
     };
   }
@@ -35,13 +32,13 @@ exports.handler = async (event, context) => {
       return { statusCode: 400, body: "Invalid parameters" };
     }
 
-    // Create the array
+    // Create array
     let arr = [];
     for (let i = start; i <= end; i++) {
       arr.push(i);
     }
 
-    // Seeded shuffle using a simple LCG (Linear Congruential Generator)
+    // Seeded shuffle
     let rng = mulberry32(seed);
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(rng() * (i + 1));
@@ -51,7 +48,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(arr),
@@ -61,7 +58,7 @@ exports.handler = async (event, context) => {
   }
 };
 
-// Seeded RNG function (good enough for shuffling)
+// Simple seeded RNG
 function mulberry32(a) {
   return function() {
     let t = a += 0x6D2B79F5;
@@ -70,3 +67,4 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   }
 }
+
