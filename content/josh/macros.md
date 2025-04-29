@@ -1,9 +1,10 @@
 +++
-title = "Josh's corner"
-description = "This is a page just for Josh to test and experiment with things."
+title = "Josh's macros"
+description = "Usually draft or non allergy macros"
 template = "pages.html"
 draft = false
 in_search_index = false
+date = "2025-04-29"
 +++
 
 {% custom_macro() %}
