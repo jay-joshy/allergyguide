@@ -51,7 +51,7 @@ otc = "no"
 moa = "2nd gen H1 receptor antagonist, platelet activating factor antagonist"
 half_life = "~6 hours, but some metabolites (ie. desloratadine) remain longer; effects last ~24h"
 peak_action = "Rapid absorption; max blood concentration in 1 hr"
-routes = "10 mg tab, 1mg/ml liq"
+routes = "10mg tab, 1mg/ml liq"
 doses = [
   { indication = "CSU, AR", dose = "10mg tab OD to QID", notes = "ages ≥12" },
   { indication = "CSU, AR", dose = "2.5mg liq OD to QID, ", notes = "10-25kg, ages 2-11" },
@@ -80,7 +80,7 @@ otc = "no"
 moa = "2nd gen H1 receptor antagonist"
 half_life = "~15 hours"
 peak_action = "~1h, rapid absorption"
-routes = "10/20mg tab, 2.5mg/ml liq (uncommon)"
+routes = "10 or 20mg tab, 2.5mg/ml liq (uncommon)"
 doses = [
   { indication = "CSU, AR", dose = "20mg PO OD to QID", notes = "ages ≥12" },
   { indication = "CSU, AR", dose = "10mg PO OD to QID", notes = "ages 4-11" },
@@ -141,7 +141,7 @@ otc = "both"
 moa = "2nd gen H1 receptor antagonist"
 half_life = "~8 hours"
 peak_action = "~1 hour"
-routes = "20mg tab (Rx), 5/10mg tab (OTC)"
+routes = "20mg tab (Rx), 5 or 10mg tab (OTC)"
 doses = [
   { indication = "CSU, AR", dose = "10mg OD to QID", notes = "ages ≥12" },
   { indication = "CSU, AR", dose = "5mg OD", notes = "ages ≥12; 'moderate hepatic or renal impairment'" },
@@ -169,18 +169,16 @@ brand_names = ["Allegra"]
 cost = [
   { province = "ON", price = "~$0.80 CAD / 120mg tab at Shoppers (2025)" },
 ]
-coverage = [
-  { province = "ON", details = "None" },
-]
+coverage = [{ province = "ON", details = "None" }]
 otc = "yes"
 moa = "2nd gen H1 receptor antagonist"
 half_life = "~11-16 hours"
 peak_action = "Rapid absorption, max serum conc at ~2.5h"
-routes = "60mg tab, 120mg tab"
+routes = "60 or 120mg tab"
 doses = [
   { indication = "CSU, AR", dose = "60mg BID", notes = "" },
   { indication = "CSU, AR", dose = "120mg OD to QID", notes = "up to QID for CSU" },
-    { indication = "CSU, AR", dose = "60mg OD", notes = "CrCl<40" },
+  { indication = "CSU, AR", dose = "60mg OD", notes = "CrCl<40" },
 ]
 age_group = "ages ≥12"
 pregnancy = "Not recommended, due to lack of data"
@@ -190,9 +188,9 @@ side_effects.severe = "One case of CHF and atrial fibrillation, post-market"
 monograph_links = ["/monographs/fexofenadine_2021_1.pdf"]
 abbreviations = "CSU-chronic spontaneous urticaria; AR-allergic rhinitis"
 pearls = [
-"Avoid taking with fruit juice or food",
-"No QT-prolongation seen at 11x recommended dose",
-"Hard to OD; single doses up to 690mg BID x1mo did not show worse side effects than placebo in drug studies",
+  "Avoid taking with fruit juice or food",
+  "No QT-prolongation seen at 11x recommended dose",
+  "Hard to OD; single doses up to 690mg BID x1mo did not show worse side effects than placebo in drug studies",
 ]
 
 [desloratadine]
@@ -259,10 +257,10 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = [
-"<a target='blank' href='https://aacijournal.biomedcentral.com/articles/10.1186/s13223-019-0375-9'>CSACI position statement</a>: newer generation H1-antihistamines are safer than first-generation H1-antihistamines",
-"",
-"",
-"One of the few more common antihistamines that can be used IV",
+  "<a target='blank' href='https://aacijournal.biomedcentral.com/articles/10.1186/s13223-019-0375-9'>CSACI position statement</a>: newer generation H1-antihistamines are safer than first-generation H1-antihistamines",
+  "",
+  "",
+  "One of the few more common antihistamines that can be used IV",
 ]
 
 ###############################
