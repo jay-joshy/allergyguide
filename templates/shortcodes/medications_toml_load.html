@@ -90,8 +90,14 @@
         <p><strong><i class="fas fa-syringe"></i>
             Doses:</strong></p>
         <ul>
-          {% for dose in details.doses %}
-          <li>{{ dose.indication | safe }}: {{ dose.dose | safe }} {% if dose.notes %}({{ dose.notes | safe }}){% endif %}</li>
+          {% set indications = details.doses | map(attribute="indication") | unique %}
+          {% for ind in indications %}
+          <li><strong>{{ ind }}:</strong>
+            <ul>
+              {% for dose in details.doses | filter(attribute="indication", value=ind) %}
+              <li>{{ dose.dose | safe }}{% if dose.notes %} ({{ dose.notes | safe }}){% endif %}</li>
+              {% endfor %}
+            </ul></li>
           {% endfor %}
         </ul>
       </div>
