@@ -491,20 +491,37 @@ if not provided default will show all medications from the toml
 ## popup
 
 ```md
-ExRx: Blexten 10mg OD to QID {%/* popup() */%}
+ExRx: Blexten 10mg OD to QID {%/* popup(icon="rx") */%}
 
 {{ medications_toml_load(meds=["bilastine"])}}
 
 {%/* end */%}
 ```
 
-Requires one script tag to be placed at the bottom of the page:
+Accepts parameter `icon` which is similar to the admonition icons, but a couple of added options (default: 'rx'). These include:
+
+```md
+capsule
+capsule-pill
+rx
+note
+tip
+info
+warning
+danger
+pearl
+question
+flag
+popup
+```
+
+To be interactive/work, this shortcode requires one script tag to be placed at the bottom of the page:
 
 ```html
 <script src="/js/popup.js"></script>
 ```
 
-ExRx: Blexten 10mg OD to QID {% popup() %}
+ExRx: Blexten 10mg OD to QID {% popup(icon="rx") %}
 
 {{ medications_toml_load(meds=["bilastine"])}}
 

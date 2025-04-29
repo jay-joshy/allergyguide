@@ -1,15 +1,41 @@
 {# Generate a unique ID per popup instance #}
 {% set popup_id = "popup-" ~ get_random(end=100000) %}
+{% set icon = icon | default(value="rx") %}
+<!-- Set icon type, default will be pill -->
+{% if icon == "capsule" %}
+{% set icon_data = load_data(path="static/icon/capsule.svg") %}
+{% elif icon == "capsule-pill" %}
+{% set icon_data = load_data(path="static/icon/capsule-pill.svg") %}
+{% elif icon == "rx" %}
+{% set icon_data = load_data(path="static/icon/rx.svg") %}
+{% elif icon == "note" %}
+{% set icon_data = load_data(path="static/icon/t_note.svg") %}
+{% elif icon == "tip" %}
+{% set icon_data = load_data(path="static/icon/t_tip.svg") %}
+{% elif icon == "info" %}
+{% set icon_data = load_data(path="static/icon/t_info.svg") %}
+{% elif icon == "warning" %}
+{% set icon_data = load_data(path="static/icon/t_warning.svg") %}
+{% elif icon == "danger" %}
+{% set icon_data = load_data(path="static/icon/t_danger.svg") %}
+{% elif icon == "pearl" %}
+{% set icon_data = load_data(path="static/icon/t_pearl.svg") %}
+{% elif icon == "question" %}
+{% set icon_data = load_data(path="static/icon/t_question.svg") %}
+{% elif icon == "flag" %}
+{% set icon_data = load_data(path="static/icon/flag.svg") %}
+{% else %}
+{% set icon_data = null %}
+{% endif %}
 <button
   class="popup-trigger"
   data-popup-id="{{ popup_id }}"
   aria-haspopup="dialog"
   aria-controls="{{ popup_id }}"
 >
-  <!-- Replace with your own icon SVG or font‑icon -->
-  <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" fill="currentColor" class="bi bi-capsule popup-icon" viewBox="0 0 16 16">
-    <path d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429z"/>
-  </svg>
+  <div class="popup-icon">
+    {{ icon_data | safe }}
+  </div>
 </button>
 <div
   id="{{ popup_id }}"
