@@ -18,7 +18,7 @@ status="ready" # options include not-started, wip, or ready
 
 {% admonition(type="info", icon="info", title="THE BOTTOM LINE") %}
 
-CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. <span class="hl-yellow">**Diagnosis requires both objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell)</span>. Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may require ENT surgery**. Biologics such as dupilumab are highly effective for CRSwNP, and are indicated for refractory or severe presentations.
+CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. **Diagnosis requires _both_ objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell). Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may require ENT surgery**. Biologics such as dupilumab are highly effective for CRSwNP, and are indicated for refractory or severe presentations.
 
 <br>
 
@@ -167,7 +167,6 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 ### CRSsNP
 
 - <span class="hl-yellow">Most common (~⅔ of cases)</span>
-- Most common (~⅔ of cases)
 - Likely link to allergies, infections, irritants, etc.
 - **Classically thick and mucopurulent** anterior/posterior nasal discharge predominant, less hypo/anosmia than CRSwNP
 - May have persistent symptoms with occasional flares
@@ -264,10 +263,10 @@ Diabetes`"]
 - Rhinitis (ie. allergic, vasomotor, medicamentosa, hormonal, etc.)
 - GPA/EGPA
 - Malignancy
-- Non-rhinogenic (ie. migraines, trigeminal neuralgia)
 
 <!-- split -->
 
+- Non-rhinogenic (ie. migraines, trigeminal neuralgia)
 - Structural abnormalities
 - CF
 - Immunodeficiency
