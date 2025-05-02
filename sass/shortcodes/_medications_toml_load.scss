@@ -213,10 +213,11 @@
         }
       }
 
-      .abbreviations-tab {
+      .abbreviations-tab,
+      .credits-tab {
         position: absolute;
         top: 0;
-        right: 0;
+        /* right: 0; */
         padding: 4px 10px;
         font-size: 0.9rem;
         border-top-right-radius: 0;
@@ -229,11 +230,26 @@
         z-index: 2;
       }
 
-      .abbreviations-content {
+      .abbreviations-tab {
+        right: 5rem;
+        background-color: var(--pearls_icon);
+        border-bottom-left-radius: 0.6rem;
+        padding-right: 1rem;
+      }
+
+      .credits-tab {
+        right: 0rem;
+        background-color: #444;
+        /* Darker grey for contrast */
+        border-bottom-left-radius: 0.6rem;
+      }
+
+      .abbreviations-content,
+      .credits-content {
         display: none;
         position: absolute;
         top: 2.5rem;
-        right: 0;
+        /* right: 0; */
         background-color: var(--pearls_background);
         border: 1px solid var(--medstl_border);
         border-radius: 0.4rem;
@@ -244,8 +260,18 @@
         z-index: 3;
       }
 
+      .abbreviations-content {
+        right: 5.1rem;
+      }
+
+      .credits-content {
+        right: 1rem;
+      }
+
       .abbreviations-tab:hover+.abbreviations-content,
-      .abbreviations-content:hover {
+      .abbreviations-content:hover,
+      .credits-tab:hover+.credits-content,
+      .credits-content:hover {
         display: block;
       }
 
