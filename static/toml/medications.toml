@@ -36,6 +36,10 @@ abbreviations = "" # ie: "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-a
 pearls = [
   "Insert pearl here",
 ] # each separate element in the array is a bullet point
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 ###############################
 # ANTIHISTAMINES
@@ -69,6 +73,10 @@ pearls = [
   "Take with or without food (avoid grapefruit)",
   "Going more than OD is technically off-label",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 [bilastine]
 draft = false
@@ -98,6 +106,10 @@ pearls = [
   "Going beyond OD is technically off-label",
   "Take without food or juice otherwise absorption impaired",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 [loratadine]
 draft = false
@@ -130,6 +142,10 @@ pearls = [
   "**No QTc prolongation in humans noted in monographs or UpToDate**. _'Prolongation of QRS-interval was observed **in monkeys at a dose 200 times** the proposed clinical dose'_",
   "Mostly hepatically cleared. No renal adjustment required",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 [cetirizine]
 draft = false
@@ -161,6 +177,10 @@ pearls = [
   "No significant effect on QTc seen with 60mg OD",
   "Comparatively to other 2nd-gen antihistamines, it has the highest drowsiness rates",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 [fexofenadine]
 draft = false
@@ -192,6 +212,10 @@ pearls = [
   "No QT-prolongation seen at 11x recommended dose",
   "Hard to OD; single doses up to 690mg BID x1mo did not show worse side effects than placebo in drug studies",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 [desloratadine]
 draft = false
@@ -227,6 +251,10 @@ pearls = [
   "No dosage adjustment for hepatic or renal dysfunction. Take with or without food; no obvious drug interactions",
   "Not an absolute contraindication, but use with caution if seizure history",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 [diphenhydramine]
 draft = true
@@ -262,6 +290,10 @@ pearls = [
   "",
   "One of the few more common antihistamines that can be used IV",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 
 ###############################
 # PUFFERS
@@ -297,6 +329,10 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
 
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
 [budesonide_inhaler]
 draft = true
 categories = ["inhaler", "steroid"]
@@ -326,6 +362,9 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 
 [fluticasone-furoate_inhaler]
@@ -357,6 +396,9 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 
 [fluticasone-propionate_inhaler]
@@ -388,6 +430,9 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 
 [mometasone-furoate_inhaler]
@@ -419,6 +464,9 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 [beclomethasone-dipropionate_inhaler]
 draft = true
@@ -449,6 +497,9 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 [ciclesonide_inhaler]
 draft = true
@@ -479,6 +530,9 @@ side_effects.severe = "insert"
 monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = ["[inhalerguide.ca](https://www.inhalerguide.ca/)"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 ###############################
 # INCS
@@ -512,6 +566,49 @@ pearls = [
   "**High** operator error; [see here for how to use](/handouts/incs/)",
   "OTC in the US; Rx in Canada",
 ]
+authors.primary = "Joshua Yu"
+authors.editors = "TBD"
+authors.staff = "TBD"
+
+
+[ciclesonide_INCS]
+draft = true # if false, the medication card will be rendered with a WIP sign
+categories = [
+  "INCS",
+  "steroid",
+] # check with the editors for the proper category
+brand_names = ["brandnameA", "brandnameB"]
+cost = [
+  { province = "ON", price = "~$X CAD / Ymg tab" },
+  { province = "BC", price = "~$X CAD / Ymg tab" },
+]
+coverage = [
+  { province = "ON", details = "enter details" }, # ie. ODB
+  { province = "BC", details = "enter details" },
+]
+otc = "yes" # only 'yes' or 'no' or 'both' allowed
+moa = "Insert MoA" # should be BRIEF
+half_life = "~X hours"
+peak_action = "Optional" # how long it takes for the medication to have its intended or maximal effect
+routes = "Xmg tab; Xmg/ml liq" # include doses available for each route ie. "10/20mg tab; 2.5mg/ml liq"
+doses = [
+  { indication = "diseaseA", dose = "Zmg OD", notes = "ages 3-11" },           # ages should be listed as "ages X-Y", or "ages ≥X"
+  { indication = "diseaseA", dose = "Zmg OD", notes = "ages ≥12; CrCl < 30" }, # separate different notes with semi-colon
+  { indication = "diseaseB", dose = "Zmg BID", notes = "ages ≥18; >25kg" },    # just list weights out
+]
+age_group = "insert age group" # just list the ages it has been used in; this is a broad overview. you'll go into the specific ages for separate indications in the doses section
+pregnancy = "insert information, can link to data/links if need be"
+contraindications = "insert"
+side_effects.common = "insert" # common is ≥1%; if severe list below instead; if possible list out drug vs placebo rates from the monograph, ie. "Drowsiness 3-9%[D], 2-5%[P];"
+side_effects.severe = "insert" # list the probability for these
+monograph_links = [
+  "/monographs/example_2025_1.pdf",
+] # Filenames should be formatted as: genericname_2016_1, where the year is of the last revision and the last number is if there are multiple monographs that year for that drug
+abbreviations = "" # ie: "AR-allergic rhinitis; CRS-chronic rhinosinusitis; AI-adrenal insufficiency"
+pearls = ["Insert pearl here"]
+authors.primary = "TBD"
+authors.editors = "TBD"
+authors.staff = "TBD"
 
 
 ###############################
