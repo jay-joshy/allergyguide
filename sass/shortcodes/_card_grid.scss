@@ -19,7 +19,7 @@
 
 /* Light Theme: Activate by adding the "switch" class to the root element */
 :root.switch {
-  --card-bg: #ddd;
+  --card-bg: #fff;
   /* Card background */
   --card-border: #ddd;
   /* Divider & border color */
@@ -84,7 +84,7 @@
 
   .contact-card-content {
     padding: 0.5rem;
-    padding-top: 0.25rem;
+    padding-top: 0.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
