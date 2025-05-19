@@ -75,7 +75,13 @@ pre.language-md {
 :root {
   /* Dark mode */
 
-  /* Other dark mode styles */
+  hr.topic {
+    border: none;
+    height: 0.01rem;
+    margin-top: 1rem;
+    background-color: transparentize(white, 0.7); // Also 50% transparent
+  }
+
 
   /* Image inversion for dark mode */
   img.dark-invert {
@@ -88,7 +94,14 @@ pre.language-md {
 :root.switch {
   /* Light mode */
 
-  /* Other light mode styles */
+  /* For hr lines --- */
+  hr.topic {
+    border: none;
+    height: 0.01rem;
+    margin-top: 1rem;
+    background-color: transparentize(#ddd, 0.3); // Also 50% transparent
+  }
+
 
   /* Disable image inversion for light mode */
   img.dark-invert {

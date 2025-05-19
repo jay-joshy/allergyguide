@@ -36,6 +36,8 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 <img src="/topic_assets/chronic_rhinosinusitis/summary.png" style="max-height:60vh">
 </div>
 
+<hr class="topic">
+
 # Definitions
 
 {% two_columns() %}
@@ -52,6 +54,8 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 - OMC: Ostiomeatal complex
 
 {% end %}
+
+<hr class="topic">
 
 # Diagnostic criteria (multiple exist)
 
@@ -256,6 +260,8 @@ Diabetes`"]
 
 {% end %}
 
+<hr class="topic">
+
 # Differential diagnosis
 
 {% two_columns() %}
@@ -282,6 +288,8 @@ Diabetes`"]
 - Unexplained weight loss, recurrent fevers, night sweats
 
 {% end %}
+
+<hr class="topic">
 
 # Pathophysiology and risk factors
 
@@ -321,6 +329,8 @@ Diabetes`"]
 
 {% end %}
 
+<hr class="topic">
+
 # Investigations
 
 <span class="hl-yellow">No standard panel of tests</span>. However, consider ad-hoc testing such as:
@@ -331,6 +341,8 @@ Diabetes`"]
 - CF testing
 - NERD testing
 - Asthma testing
+
+<hr class="topic">
 
 # Management
 
@@ -652,13 +664,19 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 - Post-surgery, it is important to maintain remission with ongoing medical therapy
 - Revisions may be required after a few years; rates ~10-30% <span class="references">6</span>
 
+<hr class="topic">
+
 # Factoids
 
 - Oral decongestants with chronic use can lead to rhinitis medicamentosa and rebound nasal obstruction when stopped
 
+<hr class="topic">
+
 # Quiz yourself:
 
 {{ wip(body="This section remains a work in progress. If you want to help contribute, see below :)") }}
+
+<hr class="topic">
 
 # Further reading:
 
