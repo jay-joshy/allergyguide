@@ -1,18 +1,18 @@
 ## Content
 
-- guideline compilation section (not sure if there's a way to automate this unfortunately)
-- Allergic rhinitis seasonal calendar for allergens?
+- guideline compilation section (not sure if there's a way to automate this unfortunately but will attempt)
+- Allergic rhinitis seasonal calendar for allergens
 - creation of video resources if time permits
-- Billing tips (would have to be province specific -- VERY fellow focused)
+- Billing tips (would have to be province specific -- VERY fellow/new staff focused)
+- Running a practice tips potentially?
 
 ## Shortcodes
 
+- Refactor references so that it accepts a .bibtex file instead
 - port original pen-fast questions over with extra options; need to see if .PDF js packages are possible.
-- Finalize medication card specs. Ie. format for age to be used. Right now it's not consistent.
 
 ## Misc
 
-- Reach out to staff re: supporting the project / funding -- once example pages completed and overall structure of site more solidified
-- main staff TBD
-- other editors/contributors -- TBD
-- team structure?
+- main staff TBD - to reach out
+- other editors/contributors -- TBD but WIP
+- team structure to be more well defined
