@@ -82,6 +82,11 @@ Some of these can include:
 - IgG binding surface receptors
 - self antigen that causes IgE cross linking
 
+# P/E
+
+Do dermatographism testing
+do more thourugh look: HEENT, arthropagis, etc. exam thyroid
+
 # Differential
 
 CIU
