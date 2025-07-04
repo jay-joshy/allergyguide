@@ -19,8 +19,11 @@ status="not-started" # options include not-started, wip, or ready
 
 <div class="blur-container">
 
-</br>
-</br>
+# macro
+
+## History:
+
+- We discussed non-pharmacologic treatment principles
 
 ## Summary:
 
