@@ -1,8 +1,10 @@
 # Topic -- the way you want it to appear on the website
 # keywords -- part of the search index for the fuzzy find
 # content -- plain text macro
+# wip -- boolean
 
 [_consult]
+wip = false
 topic = "Consult template"
 keywords = ["template", "consult"]
 content = '''
@@ -65,6 +67,7 @@ Sincerely,
 '''
 
 [_followup]
+wip = false
 topic = "Follow-up template"
 keywords = ["template", "follow up"]
 content = '''
@@ -109,6 +112,7 @@ Sincerely,
 # -----------------------------
 
 [chronic_rhinosinusitis]
+wip = false
 topic = "Chronic rhinosinusitis"
 keywords = ["CRS", "sinusitis", "polyp"]
 content = '''
