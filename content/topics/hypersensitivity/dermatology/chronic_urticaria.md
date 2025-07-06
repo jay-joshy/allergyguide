@@ -53,10 +53,6 @@ Chronic spontaneous / inducible urticaria. This is a generally benign, mast-cell
 *** if COLD induced:
 there is a risk of more severe reactions including anaphylaxis. As such, we have advised to keep her Epi Pen and to avoid significant cold exposures (cold plunges in water).
 
-. For non-pharmacologic management, .
-. Food avoidance with elimination diets is not helpful for CSU.
-. Should the maximum dose of antihistamine be intolerable or insufficient to manage symptoms, we can investigate further for alternative etiologies and disease markers, and consider biologic anti IgE treatment (omalizumab).
-
 # approach
 
 prefer mcmac simple approach overall
