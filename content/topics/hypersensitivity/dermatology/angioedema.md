@@ -24,6 +24,31 @@ angioedema
 
 <div class="blur-container">
 
+# macro
+
+HPI:
+ACEi or NSAIDs
+Exposures, triggers (foods, hormones, stress, meds, trauma)
+duration, speed of swelling, relation to exposure timing
+location of swelling
+when was the first episode
+abdo pain, systemic symptoms, rashes, arthralgias, vitiligo
+family history
+Urticaria
+
+AP:
+
+=> We have ordered C3/C4, C1-INH level and function, C1q
+=> if suspicion for lymphoproliferative disorders can consider SPEP Ca CBC etc
+=> in the interim, even if the mechanism is primarily bradykinin mediated, it may be worth a trial of mast cell inhibitors. We have given a Rx for ****
+=> We have also advised the importance of avoiding stress, limiting alcohol
+
+*** confirmed HAE
+=> acute mgment: C1-INH concentrate (Berinert), Bradykinin receptor antagonist Icatibant (FIRAZYR®), plasma kallikrein inhibition Lanadelumab (TAKHZYRO®), present to ED
+=> long term prophylaxis: C1-INH, ?androgrens but AEs
+
+*** AAE ACEi supportive care, avoid ACEi and Entresto, ARBs ok in a pinch
+
 # rough
 
 ## classification

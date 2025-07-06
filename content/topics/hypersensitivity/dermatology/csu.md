@@ -21,6 +21,42 @@ status="wip" # options include not-started, wip, or ready
 
 <div class="blur-container">
 
+# macro
+
+is it hive? raised, erythematous, transient, itchy
+scars, painful, bruising
+Locations
+onset, ?trigger
+Duration and frequency;
+Timing during day
+Can you make your hives appear? Triggers: cold, heat, pressure, sun, materials
+Response to antihistamines
+Angioedema
+NSAIDS
+Red flags: anaphylaxis, thyroid, B symptoms, rheum
+No burning or pain, bruising, systemic symptoms of fever, weight loss, bone pain, adenopathy, signs of inflammatory arthritis, no skin rashes, no photosensitivity, no Raynaud's, no dry eyes or dry mouth, no oral or genital ulcers.
+
+```
+Chronic spontaneous / inducible urticaria. This is a generally benign, mast-cell mediated idiopathic primary skin disorder. Chronic spontaneous urticaria is typically a self-resolving condition over 2-5 years; chronic inducible urticaria is generally more long lived. In the vast majority of cases it is not a sign of more insidious underlying disease.
+
+> Bloodwork is usually not required for diagnosis, but in certain cases we consider CBC, CRP, LFTs, TSH, Calcium, H. pylori serology
+> Non-pharmacologically we recommended:
+  > They do/do not have physical triggers that lead to worsening of symptoms. As such, we have advised avoidance of ****
+  > Symptoms can be exacerbated by stress and skin abrasions. Recommended regular moisturization at least twice a day to prevent dry skin and stress reduction
+  > Food avoidance with elimination diets is contreversial
+> For symptomatic management we recommend 2nd generation antihistamines, with titration to 4x the regular dose as required. We have provided:
+  > Rupatadine 10mg PO OD, which can be titrated to 40mg OD if required
+  > Bilastine 20mg PO OD, which can be titrated to 80mg OD if required
+> If refractory to maximal regular antihistamine, we will investigate further for alternative etiologies and consider biologic anti IgE treatment (omalizumab)
+```
+
+*** if COLD induced:
+there is a risk of more severe reactions including anaphylaxis. As such, we have advised to keep her Epi Pen and to avoid significant cold exposures (cold plunges in water).
+
+. For non-pharmacologic management, .
+. Food avoidance with elimination diets is not helpful for CSU.
+. Should the maximum dose of antihistamine be intolerable or insufficient to manage symptoms, we can investigate further for alternative etiologies and disease markers, and consider biologic anti IgE treatment (omalizumab).
+
 # approach
 
 prefer mcmac simple approach overall

@@ -22,6 +22,54 @@ status="not-started" # options include not-started, wip, or ready
 
 <div class="blur-container">
 
+# macro
+
+Adults:
+1.Two or more ear infections / year
+2.Two or more sinus infections/ year (in absence of allergy)
+3.One pneumonia per year for more than one year (must be CXR documented)
+4.Chronic diarrhea + weight loss
+5.Recurrent viral infections (colds, herpes, warts, condyloma)
+6.Recurrent need for IV antibiotics to clear infection.
+7.Long duration or multiple courses of antibiotics
+8.Recurrent deep abscesses of skin / internal organs
+9.Persistent thrush/ fungal skin infections
+10.Infected with normally harmless TB- like bacteria.
+** if you have positive history of infection, ask in detail (age of onset, circumstance, type
+of bug, where they vaccinated for this bug, how long did it need to be cleared,
+complications)
+
+Warning Signs of PIDDs in Children
+
+1. ≥4 new ear infections within 1 year
+2. ≥2 serious sinus infections within 1 year
+3. ≥2 months on antibiotics with little effect
+4. ≥2 pneumonias within 1 year
+5. Failure of an infant to gain weight or grow normally 6. Recurrent, deep skin or organ abscesses
+6. Persistent thrush in mouth or fungal infection of skin 8. Need for IV antibiotics to clear infections
+7. ≥2 deep-seated infections, including septicemia
+8. A family history of PIDD
+
+Autoimmune review of systems – rash, photosensitivity, ulcers, Reynaud’s,
+arthritis/arthralgia, sicca symptoms, abdominal pain, neuropathy/focal weakness • Cancer
+Constitutional symptoms and age-appropriate cancer screening
+developmental issues
+fhx: autoimmune, immune def, infections, relative died young unknown, cancer
+
+AP:
+
+=> We have ordered quantitative Igs (IgG, IgM, IgA) as well as a response assay to vaccination (tet and dip for protein, pneumococcal for polysacc). Can consider flow cytometry for B, T, NK cells, C3/C4, CBC, HIV testing, CH50 (completment), neutrophil burst assay
+=> Immunoglobulin replacement is the mainstay of preventative therapy of recurrent infections.
+
+- IVIG > 400 to 600 mg/kg every three to four weeks vs:
+- SCIG (more stable IgG numbers, good for people who react to IVIG, poor IV access, self administered at home, improved QoL) Higher doses may be required in patients with bronchiectasis and in those with protein-losing enteropathy
+  Calculation for weight appropriate dose of IG: https://ivig.transfusionontario.org/dose
+  The half-life of IG is approximately 30 days, Steady-state levels are usually achieved after
+  three to six months of therapy
+  => followup and screening: Pulmonary function testing yearly, CT thorax q5y, serum b12/iron qyear
+  => IVIG monitoring? CBC, lytes, renal, ALT, quant Ig trough levels?
+  => avoid live vaccinations such as live shingles, live flu shot, etc
+
 # from talk 07/02/2025
 
 Categorization: primary vs secondary, innate vs adaptive, T cell vs B cell
