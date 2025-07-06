@@ -30,7 +30,7 @@ FAMILY HISTORY:
 SOCIAL HISTORY:
 Home environment:
 Occupation:
-Private coverage:
+Private coverage/Extended benefits:
 Smoking:
 Pets:
 
@@ -45,7 +45,7 @@ HISTORY OF PRESENTING ILLNESS:
 
 PHYSICAL EXAM:
 On physical examination, they were not in distress.
-Assessment of the head and neck reveled no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
+Assessment of the head and neck revealed no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
 Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
 There were no rashes present on examination of the skin.
 
@@ -91,7 +91,7 @@ Otherwise:
 
 PHYSICAL EXAM:
 On physical examination, they were not in distress.
-Assessment of the head and neck reveled no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
+Assessment of the head and neck revealed no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
 Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
 There were no rashes present on examination of the skin.
 
@@ -108,8 +108,244 @@ Thank you once again for involving us in this patient's care. Please do not hesi
 Sincerely,
 '''
 
+# -----------------------------
 # CONDITIONS
 # -----------------------------
+
+# FOOD
+# -----------------------------
+[food-ige_food]
+wip = true
+topic = "IgE mediated food reactions"
+keywords = ["food", "food allergy", "ige mediated food allergy"]
+content = '''
+substance
+form
+route
+age at reaction
+sx after what time
+sx (cut resp gi card)
+other exposures (ie substance, sting)
+cofactors NSAIDs, exercise, alcohol, infection
+treatment: where, what, response; epipen?
+epipen carried all times?
+exposed b4?
+repeat exposure since?
+
+> At this time, strict avoidance of:
+> Rx: epinephrine autoinjector x2. Counseled to keep on oneself at all times, how to use it, and use in case of two-system involvement (skin/mucous membrane, respiratory, cardiac, GI) or if symptoms are severe in one category, following exposure to known or possible allergen
+> Immunotherapy
+> Consider baseline Tryptase testing if severe reactions consistently
+
+*** In case of unclear food allergy & SPT/IGE not available / neg
+
+> While the history is consistent with an IgE-mediated allergy, there is not current evidence of IgE sensitization on SPT - however, these tests are not 100% sensitive. We have offered serum IgE testing and/or a graded oral challenge at a later date. In addition, we have asked them to start/continue a food-symptom diary
+
+*** if not allergic
+
+> The clinical history is inconsistent with IgE-mediated food allergy, and skin testing was negative.
+> Recommended a slow introduction at home. Once they have tolerated the food consistently, they no longer need to carry their epinephrine autoinjector
+> However, given ongoing avoidance and concern around re-introduction we have arranged an oral challenge to liberate the patient from this label. They will continue to carry an epinephrine autoinjector until the challenge is completed
+
+*** Their symptoms are most consistent with oral allergy syndrome, which is a type of reaction that typically remains localized and does not progress to systemic illness/anaphylaxis. Symptoms are characterized by predominantly oral itch, scratchy throat, mild rash or swelling of the lips and occasionally abdominal upset after eating certain fruits, vegetables or tree nuts. It results from cross-reactivity between tree pollens and several fresh fruits, nuts, and vegetables, and usually disappears with cooked foods. The patients skin test was positive for ***, which cross reacts with ***. Therefore, her/his reaction to cherries may be attributable to oral allergy syndrome. We recommend
+```
+
+'''
+
+[food-non_ige_food]
+wip = true
+topic = "Non-IgE mediated food reactions"
+keywords = ["food", "non-ige mediated food allergy"]
+content = '''
+Placeholder
+'''
+
+# DRUG
+# -----------------------------
+[drug-drug_reaction_approach]
+wip = true
+topic = "Drug reactions"
+keywords = ["drug", "drug reaction"]
+content = '''
+Drug:
+Route: PO IV SC topical
+Prior exposure? Reaction before? Had it since?
+Most recent rx?
+Sx: wheeze, SOB, rash, angioedema, GI, cardiovascular
+Rash - desquam, location, itch,
+Timing after exposure:
+Duration:
+Treatment: hospital, epi, antihist, etc
+Other exposures: (ie other drugs, herbals, bites)
+Cofactors: alcohol, exercise, nsaids, infection, poor sleep
+
+Impression:
+
+ix:
+PEN-FAST score
+?histamine / tryptase
+Skin test - only penicillin, rest not great
+if currently in a Type 4 rx, order markers of end organ damage
+
+Mx:
+is it true?
+avoid? challenge? desensitizie?
+
+'''
+
+[drug-drug_challenge]
+wip = true
+topic = "Drug challenge"
+keywords = ["drug", "drug challenge"]
+content = '''
+Placeholder
+'''
+
+[drug-drug_desensitization]
+wip = true
+topic = "Drug desensitization"
+keywords = ["drug", "desensitization"]
+content = '''
+Placeholder
+'''
+
+[drug-penicillin]
+wip = true
+topic = "Penicillin allergy"
+keywords = ["drug", "penicillin"]
+content = '''
+Placeholder
+'''
+
+# AIRWAY AND ENT
+# -----------------------------
+
+
+[airwayent-chronic_cough]
+wip = true
+topic = "Chronic cough"
+keywords = ["Chronic cough"]
+content = '''
+Cough is a normal reflex with protective mechanisms. Most people will cough 18-20 times a day NORMALLY.
+When people come with chronic cough the goal of symptomatic treatment is not to get RID of the cough but to improve it and their QoL.
+The cause of a cough can be varied, but cough by itself can be a 'cause' of cough; you become hypersensitive and cough triggers another cough
+
+Duration
+Severity (important to trend over time)
+Frequency
+Impact
+Triggers
+Dry vs wet (determines whether you might send for sputum)
+Red flags
+Medication causes (ie ACEi)
+Occupational
+Smoking
+GERD
+Asthma
+AR
+PNDS symptoms
+Previous treatment trials
+Current treatment
+
+Ddx: 5 main categories then idiopathic
+Asthma
+UACS (clearing of throat is a suggestive sign)
+GERD
+Structural lung disease (ie COPD)
+post infectious (months to a yearish)
+Then if all else is neg: cough hypersensitivity syndrome
+
+Ix: CBC, IgE
+CXR CT chest
+PFTs, maybe MCT
+Sputum eos / FeNO
+bronch is rarely ever helpful
+
+Tx:
+First line (not kitchen sink, do one at a time for a month or two to see what will happen first)
+Basic: ICS trial
+Nasal steroids and sinus rinse
+PPI trial
+Prednisone short trial consider
+Cough diary (ie count the coughs per day so patients understand level of improvement?)
+
+Advanced treatments if things haven't worked already or sig QoL impairments:
+Gabapentoids
+ie Pregabalin 25-75mg PO BID titrate weekly to target dose of 150mg BID
+ie. gabapentin start 100mg TID titrate to 300mg TID target dose x 12 weeks
+Opioids: morphine typically
+Hycodan syrup
+Gefapixant (new cough blockers not yet in Can yet)
+
+because it's a feedback loop there is likely going to be improvement after these drugs are taken away too
+less cough = less cough, feedback loop
+'''
+
+
+[airwayent-allergic_rhinitis]
+wip = true
+topic = "Allergic rhinitis"
+keywords = ["rhinitis", "seasonal allergies", "hay fever"]
+content = '''
+[ rhinorrhea | post-nasal drip | congestion | sneezing | itchy eyes ]
+onset
+season
+triggers
+[ colds | activity / animals | pollens | dust / cold air | smoke | strong odors / perfume | hot/spicy | heat / foods | ASA/NSAID ]
+sinusitis/other red flags? anosmia, purulent drainage, facial pain/pressure; nose bleed, systemic decline
+prior testing
+treatment tried
+
+# Allergic rhinitis, sensitized to ***. Current symptom control:
+
+Recommendations:
+> Non-pharmacologically, discussed avoidance strategies for ***, including:
+> Use OTC sterile saline rinses prior to intra-nasal corticosteroids (INCS)
+> Start Ryaltris 2 sprays EN BID. Counseled on correct technique. Risk of nosebleeds disclosed. While a combination anti-histamine/INCS spray offers quicker relief, consistent use over weeks provides the most symptomatic benefit
+> We briefly discussed immunotherapy (SCIT vs SLIT), and have provided a handout. They are welcome to contact our office if they wish to pursue it later
+'''
+
+[airwayent-asthma]
+wip = true
+topic = "Asthma"
+keywords = ["asthma"]
+content = '''
+Started:
+[ wheezing | cough | chest tightness | SOBOE ]
+Triggers: [ exercise | cold air | irritants (perfumes) | aeroallergens | pets | infections | medications | laughing ]
+Mainly night vs day
+Puffers:
+When NOT sick with URTI:
+Daytime /week
+Waking up at night? / week
+Rescue / week
+missing work/school
+Response to SABAs, ICS, Montelukast, Prednisone was nil/weak/fair/substantial. Never required prednisone, ER visits, hospitalization, ICU admission, or intubation/mechanical ventilation
+?GERD?
+
+# Asthma. Phenotype: allergic/eosinophilic/nonallergic/ intermittent (exercise induced vs. occupational vs. viral induced). Current control with *** compliance/technique:
+
+Recommendations:
+* Baseline spirometry, SPT, FeNO
+* Consider methacholine / Exercise challenge test given diagnostic uncertainty
+* Ad-hoc: OSA study
+> Optimize exacerbating comorbid conditions: smoking, obesity, obstructive sleep apnea, nasal polyps, allergic rhinitis, anxiety, de-conditioning, viruses, pollution exposure
+> Pharmacologically:
+- Symbicort 200/6 1 puff PRN (up to 8 puffs/daily) for mild intermittent asthma or issues with adherence (as per the SYGMA2 trial)
+- Symbicort 200/6 1-2 puffs BID; it can be used additionally PRN
+- Triple therapy with: Breo Ellipta 100/25 or 200/25 mcg 1 puff daily
+- If in exacerbation: prednisone 50mg PO OD x 5 days with a taper, vs present to the ED
+> Asthma action plan was reviewed alongside importance of medication adherence and technique
+> As they are well controlled, we discussed stepping down therapy to:
+'''
+
+[airwayent-abpa]
+wip = true
+topic = "Allergic bronchopulmonary aspergillosis"
+keywords = ["abpa", "allergic bronchopulmonary aspergillosis"]
+content = '''
+Placeholder
+'''
 
 [chronic_rhinosinusitis]
 wip = false
@@ -136,22 +372,296 @@ SNOT-22 Score
 Their clinical picture is suggestive of CRS, an inflammatory syndrome defined by objective structural evidence of sinus inflammation and ≥2 cardinal symptoms (nasal congestion, facial pain/pressure, anterior/posterior nasal drainage, absent/reduced smell) ≥12 weeks. While chronic, regular pharmacotherapy can usually control symptoms well.
 
 Recommendations:
-- CT sinuses (non-contrast) vs ENT referral
-- SPT for common aeroallergens
-- Ad-hoc testing: ie. B-cell immunodeficiency workup in setting of suspicious symptoms / acute recurrent sinusitis
-- High volume nasal saline rinses, avoidance of triggers
-- INCS + treatment of any underlying causes
-- Consider short course prednisone for symptom management (most evidence for CRSwNP or AFRS)
-- Consider oral antibiotics for acute exacerbations (controversial)
-- Consider biologics for CRSwNP if severe/failed first-line therapy
-- Follow-up: ~3-4 months
+* CT sinuses (non-contrast) vs ENT referral
+* SPT for common aeroallergens
+* Ad-hoc testing: ie. B-cell immunodeficiency workup in setting of suspicious symptoms / acute recurrent sinusitis
+> High volume nasal saline rinses, avoidance of triggers
+> INCS + treatment of any underlying causes
+> Consider short course prednisone for symptom management (most evidence for CRSwNP or AFRS)
+> Consider oral antibiotics for acute exacerbations (controversial)
+> Consider biologics for CRSwNP if severe/failed first-line therapy
+Follow-up: ~3-4 months
 '''
 
-# PROCEDURES / NON CONDITIONS 
+# DERMATOLOGY
 # -----------------------------
 
+[dermatology-chronic_urticaria]
+wip = true
+topic = "Chronic urticaria"
+keywords = ["CSU", "chronic urticaria", "CIU"]
+content = '''
+is it hive? raised, erythematous, transient, itchy
+scars, painful, bruising
+Locations
+onset, ?trigger
+Duration and frequency;
+Timing during day
+Can you make your hives appear? Triggers: cold, heat, pressure, sun, materials
+Response to antihistamines
+Angioedema
+NSAIDS
+Red flags: anaphylaxis, thyroid, B symptoms, rheum
+No burning or pain, bruising, systemic symptoms of fever, weight loss, bone pain, adenopathy, signs of inflammatory arthritis, no skin rashes, no photosensitivity, no Raynaud's, no dry eyes or dry mouth, no oral or genital ulcers.
+
+```
+Chronic spontaneous / inducible urticaria. This is a generally benign, mast-cell mediated idiopathic primary skin disorder. Chronic spontaneous urticaria is typically a self-resolving condition over 2-5 years; chronic inducible urticaria is generally more long lived. In the vast majority of cases it is not a sign of more insidious underlying disease.
+
+> Bloodwork is usually not required for diagnosis, but in certain cases we consider CBC, CRP, LFTs, TSH, Calcium, H. pylori serology
+> Non-pharmacologically we recommended:
+  > They do/do not have physical triggers that lead to worsening of symptoms. As such, we have advised avoidance of ****
+  > Symptoms can be exacerbated by stress and skin abrasions. Recommended regular moisturization at least twice a day to prevent dry skin and stress reduction
+  > Food avoidance with elimination diets is contreversial
+> For symptomatic management we recommend 2nd generation antihistamines, with titration to 4x the regular dose as required. We have provided:
+  > Rupatadine 10mg PO OD, which can be titrated to 40mg OD if required
+  > Bilastine 20mg PO OD, which can be titrated to 80mg OD if required
+> If refractory to maximal regular antihistamine, we will investigate further for alternative etiologies and consider biologic anti IgE treatment (omalizumab)
+```
+
+*** if COLD induced:
+there is a risk of more severe reactions including anaphylaxis. As such, we have advised to keep her Epi Pen and to avoid significant cold exposures (cold plunges in water).
+
+'''
+
+[dermatology-angioedema]
+wip = true
+topic = "Angioedema"
+keywords = ["angioedema", "hae"]
+content = '''
+HPI:
+ACEi or NSAIDs
+Exposures, triggers (foods, hormones, stress, meds, trauma)
+duration, speed of swelling, relation to exposure timing
+location of swelling
+when was the first episode
+abdo pain, systemic symptoms, rashes, arthralgias, vitiligo
+family history
+Urticaria
+
+- Work up: C3/C4, C1-INH level and function, C1q; SPEP, CBC, Cr, Calcium/Albumin
+
+> We have advised the importance of avoiding stress, limiting alcohol, and no NSAID use
+> In the interim, we will start empiric treatment with second generation antihistamines; undifferentiated angioedema may still be mast-cell mediated.
+
+- Rx: Blexten 40mg PO BID
+
+*** confirmed HAE
+=> acute mgment: C1-INH concentrate (Berinert), Bradykinin receptor antagonist Icatibant (FIRAZYR®), plasma kallikrein inhibition Lanadelumab (TAKHZYRO®), present to ED
+=> long term prophylaxis: C1-INH, ?androgrens but AEs
+
+*** AAE ACEi supportive care, avoid ACEi and Entresto, ARBs ok in a pinch
+'''
+
+[dermatology-atopic_dermatitis]
+wip = true
+topic = "Atopic dermatitis"
+keywords = ["AD", "atopic dermatitis", "eczema"]
+content = '''
+onset
+distribution
+rash type
+pruritus
+scratch until bleed
+sleep
+Anyone else in household? Systemic symptoms?
+triggers (ie. foods)
+new creams, detergents, skin products, medications?
+past infections and need for antibiotics
+current skin regimen
+treatments done (topical steroids, AH, etc.)
+current EASI score (>8yo)
+
+Atopic dermatitis. Current control: 
+
+> Regular moisturization (at least BID) is a crucial part of management; there is strong evidence it reduces disease severity and need for prescription creams. We reviewed options such as (but not limited to) Vaseline, CeraVe, or Cetaphil creams
+> For disease flares we suggest:
+  - Betaderm 0.1% ointment BID to body and Desonide 0.05% cream BID to face (or Protopic 0.1% ointment BID to face), until clear of ezcema; then switching to maintenance schedule
+  - Maintenance schedule: application of topicals 2-3x/weekly to eczema-prone areas; can consider taper to OTC moisturization with sustained control
+> If symptoms are refractory, we can consider systemic therapies such as Dupilimab and further investigate for mimickers such as allergic contact dermatitis, cutaneous T cell lymphoma, scabies, or immunodeficiency
+'''
+
+[dermatology-contact_dermatitis]
+wip = true
+topic = "Contact dermatitis"
+keywords = [
+  "Contact dermatitis",
+  "irritant contact dermatitis",
+  "allergic contact dermatitis",
+]
+content = '''
+Placeholder
+'''
+
+
+# ANAPHYLAXIS AND MISC
+# -----------------------------
+
+[misc-eosinophilic_esophagitis]
+wip = true
+topic = "Eosinophilic esophagitis"
+keywords = ["eoe", "eosinophilic esophagitis"]
+content = '''
+onset
+trigger
+
+Dysphagia
+Solid/liquid, location
+Heartburn, chest pain
+GERD
+Food triggers, avoidance?
+Particular: CM, soy, meats, wheat
+Regurg?
+Endoscopy / swallow
+PPI before, response?
+Topical steroids, response?
+
+AP:
+Sx consistent with this bc:
+Endoscopy:
+PPI trial:
+IgE mediated food allergy?
+
+The underlying etiology is not fully understood but felt to be food-related in many cases. Unfortunately, we do not have a testing modality to identify culprit foods.
+The goal of treatment is both histological and clinical improvement.
+
+```
+> We have made a referral to GI / They should continue follow-up with their current GI; we defer to our colleagues regarding timing of repeat endoscopy
+> Start empiric 8-week trial of PPI: 40mg pantoprazole BID
+> Start topical corticosteroids:
+  - Swallowed fluticasone propionate (Flonase) 500-1000 µg/day OR oral viscous budesonide (Jorveza) 1000-2000 µg/day
+  - Advised not to eat, drink, or rinse their mouth for 30 min after
+> Dietary modifications:
+  - Avoidance of food triggers for ~6 weeks; ~30-50% of patients improve with a milk elimination diet, which is the commonest trigger for EoE
+  - If dairy avoidance alone is unsuccessful, we will discuss additional empiric 6 week avoidance periods of other foods (ie. fish, shellfish, tree nuts, wheat, soy, legumes), followed by reintroduction, with observation of clinical symptoms
+  - Another alternative approaches include the 6-food (wheat, milk, egg, nuts, soy, fish and shellfish) elimination diet or 4 food (wheat, milk, egg, nuts, soy) diet, but should be done working with a dietician; they are harder logistically to implement
+> We otherwise defer ongoing surgical management to the GI team
+> Should symptoms persist we would consider Dupixent for more advanced disease
+```
+'''
+
+
+[misc-venom]
+wip = true
+topic = "Venom allergy"
+keywords = ["venom allergy", "insect"]
+content = '''
+what bug
+circumstances? location of string
+local, large local, or systemic
+timing and duration post sting
+rash, pustules, resp, gi, cardio
+anaphylaxis?
+consistent hx
+exposure risk
+treatment
+
+AP:
+
+- Skin testing prior to intradermal may be considered if hx of anaphylaxis
+- Otherwise, intradermal testing doses are titrated up until positive result (gives baseline for venom therapy)
+  *** A skin test may be negative in the days or weeks after a sting reaction, which may be attributed to a refractory period of anergy; for these patients, the skin test should be repeated after 4–6 weeks
+
+***non systemic reactions
+.The symptoms often last a few days to a week. The risk of a systemic reaction with a subsequent sting is about 5-10% which is only slightly higher than the general population (2-5%). Because of the low risk immunotherapy is not necessary but may be offered if the patient gets stung often and has frequent reactions as it will decrease the severity of the large local reactions.
+
+***confirmed venom allergy
+Systemic reactions to stinging insects have a 30-60% risk of a subsequent potentially life threatening reaction with another sting.
+-The allergen of concern was identified today as
+
+- Workup: baseline serum tryptase if history of anaphylaxis or atypical reaction
+
+> We counseled on sting avoidance techniques such as not eating/drinking outside, wearing shoes when walking in the grass and having nests professionally removed from the property
+> We have prescribed an epinephrine autoinjector and discussed its use
+> Venom immunotherapy (VIT) is indicated in the setting of anaphylaxis and skin or sIgE evidence of sensitization, and can reduce the risk of a systemic reaction to around 5% once maintenance dosing is achieved
+'''
+
+
+# -----------------------------
+# IMMUNOLOGY
+# -----------------------------
+[immunology-immune_deficiency]
+wip = true
+topic = "Immunodeficiency approach"
+keywords = ["immunology", "immunodeficiency"]
+content = '''
+Adults:
+1.Two or more ear infections / year
+2.Two or more sinus infections/ year (in absence of allergy)
+3.One pneumonia per year for more than one year (must be CXR documented)
+4.Chronic diarrhea + weight loss
+5.Recurrent viral infections (colds, herpes, warts, condyloma)
+6.Recurrent need for IV antibiotics to clear infection.
+7.Long duration or multiple courses of antibiotics
+8.Recurrent deep abscesses of skin / internal organs
+9.Persistent thrush/ fungal skin infections
+10.Infected with normally harmless TB- like bacteria.
+** if you have positive history of infection, ask in detail (age of onset, circumstance, type
+of bug, where they vaccinated for this bug, how long did it need to be cleared,
+complications)
+
+Warning Signs of PIDDs in Children
+
+1. ≥4 new ear infections within 1 year
+2. ≥2 serious sinus infections within 1 year
+3. ≥2 months on antibiotics with little effect
+4. ≥2 pneumonias within 1 year
+5. Failure of an infant to gain weight or grow normally 6. Recurrent, deep skin or organ abscesses
+6. Persistent thrush in mouth or fungal infection of skin 8. Need for IV antibiotics to clear infections
+7. ≥2 deep-seated infections, including septicemia
+8. A family history of PIDD
+
+Autoimmune review of systems – rash, photosensitivity, ulcers, Reynaud’s,
+arthritis/arthralgia, sicca symptoms, abdominal pain, neuropathy/focal weakness • Cancer
+Constitutional symptoms and age-appropriate cancer screening
+developmental issues
+fhx: autoimmune, immune def, infections, relative died young unknown, cancer
+
+AP:
+
+=> We have ordered quantitative Igs (IgG, IgM, IgA) as well as a response assay to vaccination (tet and dip for protein, pneumococcal for polysacc). Can consider flow cytometry for B, T, NK cells, C3/C4, CBC, HIV testing, CH50 (completment), neutrophil burst assay
+=> Immunoglobulin replacement is the mainstay of preventative therapy of recurrent infections.
+
+- IVIG > 400 to 600 mg/kg every three to four weeks vs:
+- SCIG (more stable IgG numbers, good for people who react to IVIG, poor IV access, self administered at home, improved QoL) Higher doses may be required in patients with bronchiectasis and in those with protein-losing enteropathy
+  Calculation for weight appropriate dose of IG: https://ivig.transfusionontario.org/dose
+  The half-life of IG is approximately 30 days, Steady-state levels are usually achieved after
+  three to six months of therapy
+  => followup and screening: Pulmonary function testing yearly, CT thorax q5y, serum b12/iron qyear
+  => IVIG monitoring? CBC, lytes, renal, ALT, quant Ig trough levels?
+  => avoid live vaccinations such as live shingles, live flu shot, etc
+'''
+
+# -----------------------------
+# PROCEDURES / NON CONDITIONS 
+# -----------------------------
+[food-food_challenge]
+wip = true
+topic = "Food challenges"
+keywords = ["food", "challenge", "oral challenge"]
+content = '''
+Prior to challenge risks/benefits discussed
+Patient does not have any concurrent illness, does not use betablockers/ACEi or NSAIDs, has not recently had alcohol, has not exercised strenuously <2h prior to this visit, and is not sleep deprived.
+
+Examination:
+Vitals, skin exam, mouth exam
+
+Procedure:
+A total serving size of *** was used, which is about *** grams of food protein. It was done in *** steps, seperated by 30 minutes each. The patient was monitored about one hour after the last step.
+
+'''
+
+[food-immunotherapy]
+wip = true
+topic = "Food immunotherapy"
+keywords = ["food", "OIT", "immunotherapy"]
+content = '''
+Placeholder
+'''
+
+# -----------------------------
 # TESTS
 # -----------------------------
 
+# -----------------------------
 # SCORES
 # -----------------------------
