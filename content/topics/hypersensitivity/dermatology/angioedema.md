@@ -36,12 +36,12 @@ abdo pain, systemic symptoms, rashes, arthralgias, vitiligo
 family history
 Urticaria
 
-AP:
+- Work up: C3/C4, C1-INH level and function, C1q; SPEP, CBC, Cr, Calcium/Albumin
 
-=> We have ordered C3/C4, C1-INH level and function, C1q
-=> if suspicion for lymphoproliferative disorders can consider SPEP Ca CBC etc
-=> in the interim, even if the mechanism is primarily bradykinin mediated, it may be worth a trial of mast cell inhibitors. We have given a Rx for ****
-=> We have also advised the importance of avoiding stress, limiting alcohol
+> We have advised the importance of avoiding stress, limiting alcohol, and no NSAID use
+> In the interim, we will start empiric treatment with second generation antihistamines; undifferentiated angioedema may still be mast-cell mediated.
+
+- Rx: Blexten 40mg PO BID
 
 *** confirmed HAE
 => acute mgment: C1-INH concentrate (Berinert), Bradykinin receptor antagonist Icatibant (FIRAZYR®), plasma kallikrein inhibition Lanadelumab (TAKHZYRO®), present to ED

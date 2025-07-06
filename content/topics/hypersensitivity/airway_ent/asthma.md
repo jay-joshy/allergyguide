@@ -22,14 +22,13 @@ status="not-started" # options include not-started, wip, or ready
 
 # macro
 
-HPI:
 Started:
 Symptoms: wheezing/cough/chest tightness/SOBOE
 Triggers: exercise, cold air, irritants (perfumes), aeroallergens, pets, infections, medications, laughing
 Mainly night vs day
+Puffers:
 Daytime /week
 Waking up at night? / week
-Puffers:
 Rescue / week
 missing work/school
 Response to SABAs, ICS, Montelukast, Prednisone was nil/weak/fair/substantial. Never required prednisone, ER visits, hospitalization, ICU admission, or intubation/mechanical ventilation
@@ -44,29 +43,21 @@ Asthma
   (>2 daytime, woken up at night, activity limitation, rescue >2)
 - Relevant comorbidities include rhinosinusitis, OSA, GERD, obesity, and depression.
 
-PLAN:
-=> We will pursue spirometry / Methacholine challenge testing / exercise challenge / SPT / OSA study
-=> We discussed management of comorbid conditions that can exacerbate symptoms including smoking, obesity, dysfunctional breathing, obstructive sleep apnea, nasal polyps, allergic rhinitis, anxiety, de-conditioning, viruses, and pollution exposure.
-=> We reviewed the importance of adherence to medications with proper technique.
-=> Pharmacologic control therapy detailed below:
+* Baseline spirometry, SPT, FeNO
+* Methacholine / Exercise challenge test given diagnostic uncertainty
+* Ad-hoc: OSA study
 
-Anti-Inflammatory Strategy-Symbicort 200/6 mcg 1 puff prn up to 8 puffs/day for mild intermittent asthma with no exacerbation risk factors.
-SMART Strategy-Symbicort 200/6 mcg 2 puffs bid + PRN up to 8 puffs/day.
-Patients with adherence issues - Breo Ellipta 100/25 or 200/25 mcg 1 puff daily.
+> Comorbid conditions that can exacerbate symptoms should be optimized. These include smoking, obesity, obstructive sleep apnea, nasal polyps, allergic rhinitis, anxiety, de-conditioning, viruses, and pollution exposure
+> Pharmacologically:
 
-GINA guidelines, >12 years of age:
-Step 1: Low dose budesonide-formoterol PRN
-Alternatives: SABA PRN taken with low dose ICS PRN
-Step 2: Daily Low dose ICS + PRN SABA
-or PRN Low dose budesonide-formoterol Alternatives: SABA PRN taken with low dose ICS PRN; daily low
-dose LTRA
-Step 3: Maintenance Low dose ICS/LABA +
-PRN low dose ICS-formoterol Alternatives: med dose ICS +SABA, low dose ICS-LTRA
-Step 4: Maintenance medium dose ICS-LABA + PRN low dose ICS-formoterol
-Alternatives: high dose ICS+SABA; add on tiotroprium; add on LTRA
-Step 5: Maintenance high dose ICS-LABA and Refer for add-on treatment (e.g. tiotropium, omalizumab, mepolizumab)
+- Symbicort 200/6 1 puff PRN (up to 8 puffs/daily) for mild intermittent asthma or issues with adherence (as per the SYGMA2 trial)
+- Symbicort 200/6 1-2 puffs BID
+- Triple therapy with: Breo Ellipta 100/25 or 200/25 mcg 1 puff daily
+- If in exacerbation: prednisone 50mg PO OD x 5 days with a taper, vs present to the ED
 
-Well controlled:
-In regards to his asthma, the patient feels that his symptoms are currently well controlled and declined spirometry today. We would be happy to see for follow up lung function testing should he have any further concerns regarding asthma management.
+> We reviewed the importance of adherence to medications with proper technique
+> As they are well controlled, we discussed stepping down therapy to:
+
+Patients with adherence issues -
 
 </div>

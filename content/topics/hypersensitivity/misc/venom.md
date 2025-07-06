@@ -45,11 +45,10 @@ AP:
 Systemic reactions to stinging insects have a 30-60% risk of a subsequent potentially life threatening reaction with another sting.
 -The allergen of concern was identified today as
 
-- Recommended to measure tryptase in severe reaction to a sting, hypotensive reaction, lack of urticaria in systemic reaction to a sting, and systemic reaction to a sting with negative venom IgE.
-  -Immunotherapy is the treatment of choice, and indicated for patients with clinical history of anaphylaxis to insect sting and evidence of venom- specific IgE with skin test or serologic testing, unless there are specific contraindications, and can reduce the risk back down to about 5% once the patients are on maintenance dosing.
-  -As such, immunotherapy to was suggested today to
-  -VIT administered 1-2 times per week with starting dose 1μg; Dosing is generally monthly for 12-18 months, 6-8 weeks until 4 years, every 12 weeks after 4 years
-  -We have counseled on sting avoidance techniques such as not eating/drinking outside, wearing shoes when walking in the grass and having nests professionally removed from the property.
-  => EPIPEN
+- Workup: baseline serum tryptase if history of anaphylaxis or atypical reaction
+
+> We counseled on sting avoidance techniques such as not eating/drinking outside, wearing shoes when walking in the grass and having nests professionally removed from the property
+> We have prescribed an epinephrine autoinjector and discussed its use
+> Venom immunotherapy (VIT) is indicated in the setting of anaphylaxis and skin or sIgE evidence of sensitization, and can reduce the risk of a systemic reaction to around 5% once maintenance dosing is achieved
 
 </div>
