@@ -287,14 +287,16 @@ wip = true
 topic = "Allergic rhinitis"
 keywords = ["rhinitis", "seasonal allergies", "hay fever"]
 content = '''
-[ rhinorrhea | post-nasal drip | congestion | sneezing | itchy eyes ]
+Symptoms include: [ rhinorrhea | post-nasal drip | congestion | sneezing | itchy eyes ]
 onset
 season
-triggers
-[ colds | activity / animals | pollens | dust / cold air | smoke | strong odors / perfume | hot/spicy | heat / foods | ASA/NSAID ]
+triggers:
+[ animals | outside | ASA/NSAID | pollen ]
+[ temperature shift | exercise | cold air | stress | hot/spicy food | dust | smoke/irritants | strong odors/perfume ]
 sinusitis/other red flags? anosmia, purulent drainage, facial pain/pressure; nose bleed, systemic decline
+prior ENT or surg
 prior testing
-treatment tried
+treatment tried, technique, duration
 
 # Allergic rhinitis, sensitized to ***. Current symptom control:
 
@@ -575,6 +577,86 @@ Systemic reactions to stinging insects have a 30-60% risk of a subsequent potent
 > Venom immunotherapy (VIT) is indicated in the setting of anaphylaxis and skin or sIgE evidence of sensitization, and can reduce the risk of a systemic reaction to around 5% once maintenance dosing is achieved
 '''
 
+[misc-chronic_cough]
+wip = true
+topic = "Chronic cough"
+keywords = ["Chronic cough"]
+content = '''
+Cough is a normal reflex with protective mechanisms. Most people will cough 18-20 times a day NORMALLY.
+When people come with chronic cough the goal of symptomatic treatment is not to get RID of the cough but to improve it and their QoL.
+The cause of a cough can be varied, but cough by itself can be a 'cause' of cough; you become hypersensitive and cough triggers another cough
+
+Duration
+Severity (important to trend over time)
+Frequency
+Impact
+Triggers
+Dry vs wet (determines whether you might send for sputum)
+Red flags
+Medication causes (ie ACEi)
+Occupational
+Smoking
+GERD
+Asthma
+AR
+PNDS symptoms
+Previous treatment trials
+Current treatment
+
+Ddx: 5 main categories then idiopathic
+Asthma
+UACS (clearing of throat is a suggestive sign)
+GERD
+Structural lung disease (ie COPD)
+post infectious (months to a yearish)
+Then if all else is neg: cough hypersensitivity syndrome
+
+Ix: CBC, IgE
+CXR CT chest
+PFTs, maybe MCT
+Sputum eos / FeNO
+bronch is rarely ever helpful
+
+Tx:
+First line (not kitchen sink, do one at a time for a month or two to see what will happen first)
+Basic: ICS trial
+Nasal steroids and sinus rinse
+PPI trial
+Prednisone short trial consider
+Cough diary (ie count the coughs per day so patients understand level of improvement?)
+
+Advanced treatments if things haven't worked already or sig QoL impairments:
+Gabapentoids
+ie Pregabalin 25-75mg PO BID titrate weekly to target dose of 150mg BID
+ie. gabapentin start 100mg TID titrate to 300mg TID target dose x 12 weeks
+Opioids: morphine typically
+Hycodan syrup
+Gefapixant (new cough blockers not yet in Can yet)
+
+because it's a feedback loop there is likely going to be improvement after these drugs are taken away too
+less cough = less cough, feedback loop
+'''
+
+[misc-pruritus]
+wip = true
+topic = "Pruritus"
+keywords = ["itch", "pruritus"]
+content = '''
+
+Ddx:
+Heptaobiliary: cirrhosis/liver, cholestasis, PSC/PBC  
+Allergy/dermatology: CU (with/without hives), AD, psoriasis, other
+Infection: Hep B/C, HIV, scabies 
+Metabolic/Endocrine: hemochromatosis, thyroid, diabetes, CKD, hyperparathyroid syndrome; pregnancy related conditions
+Malignancy/Hematologic: IDA, PCD, mastocytosis, MPNs (ie. ET, PV)
+Autoimmune: DM/PM, Sjogren, celiac dermatitis
+By exclusion: xerosis (dry skin)
+
+* CBC, lytes + extended w/albumin, Cr, liver panel (AST/ALT/ALP/GGT, bilirubin), HbA1c, ferritin, TSH, HIV/HBV/HCV, 
+* Ad-hoc: SPEP/SFLC/quant Ig, liver ultrasound, autoimmune workup, celiac workup, tryptase 
+> Start OTC anti-itch cream from CeraVe (contains pramoxine hydrochloride)
+> Start empiric 2nd generation antihistamine therapy. Rx:  
+'''
 
 # -----------------------------
 # IMMUNOLOGY
