@@ -88,6 +88,18 @@ Macros exist at the top of the topic page. While not all topics need a macro, mo
 - relevant HPI
 - Family doctor focused blurb about the condition (ie. pathophys, prognosis), investigations, management recommendations
 
+FORMAT:
+
+- The first section will be relevant HPI
+- The Impression and plan MUST be styled as follows:
+
+  ```txt
+  # Topic name: blurb about the topic is either after the topic name, or below in plain text (see the example)
+  * Investigations are prepended with a *
+  > Management is prepended with a >
+  - if you require additional context or writing, use a -
+  ```
+
 Example:
 
 {{ load_macro(topic_name = "chronic_rhinosinusitis") }}
