@@ -1,7 +1,7 @@
-# Topic -- the way you want it to appear on the website
-# keywords -- part of the search index for the fuzzy find
-# content -- plain text macro
-# wip -- boolean
+# Topic - the way you want it to appear on the website
+# keywords - part of the search index for the fuzzy find
+# content - plain text macro
+# wip - boolean
 
 [_consult]
 wip = false
@@ -9,6 +9,8 @@ topic = "Consult template"
 keywords = ["template", "consult"]
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
+
+Dear Dr. 
 
 We assessed this patient today on {current_date} with Dr. ***.
 As you know, they are a *** referred for assessment of ***.
@@ -21,10 +23,11 @@ FAMILY HISTORY:
 
 SOCIAL HISTORY:
 Home environment:
+Pets:
 Occupation:
 Private coverage/Extended benefits:
 Smoking:
-Pets:
+Alcohol:
 
 If pediatric:
 PRENATAL/OB:
@@ -47,7 +50,9 @@ HISTORY OF PRESENTING ILLNESS:
 
 PHYSICAL EXAM:
 On physical examination, they were not in distress.
-Assessment of the head and neck revealed no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
+Assessment of the head and neck revealed no conjunctival injection.
+Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps.
+The oropharynx was unremarkable with no cobblestoning or erythema.
 Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
 There were no rashes present on examination of the skin.
 
@@ -61,7 +66,7 @@ PLAN:
 
 FOLLOW-UP:
 We have not arranged any follow-up at this time, but they are welcome to contact us as required.
-We have arranged for follow-up in *** or sooner if required.
+We have arranged for follow-up in ***
 
 Thank you for allowing us to take part in this patient's care. Please feel free to contact us if there are any questions or concerns.
 
@@ -79,8 +84,6 @@ Dr. *** and I saw this patient in follow up on {current_date}.
 They were last seen on *** previously.
 As you know, they are a *** who we follow for ***.
 
-Their last assessment and plan was:
-
 RELEVANT ALLERGIC AND MEDICAL HISTORY:
 
 CURRENT MEDICATIONS:
@@ -93,7 +96,9 @@ Otherwise:
 
 PHYSICAL EXAM:
 On physical examination, they were not in distress.
-Assessment of the head and neck revealed no conjunctival injection. Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps. The oropharynx was unremarkable with no cobblestoning or erythema.
+Assessment of the head and neck revealed no conjunctival injection.
+Anterior rhinoscopy showed no turbinate edema with no nasal secretions, mucosal pallor, or polyps.
+The oropharynx was unremarkable with no cobblestoning or erythema.
 Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
 There were no rashes present on examination of the skin.
 
@@ -103,7 +108,7 @@ IMPRESSION AND PLAN:
 
 FOLLOW-UP:
 We have not arranged any follow-up at this time, but they are welcome to contact us as required.
-We have arranged for follow-up in *** or sooner if required.
+We have arranged for follow-up in *** 
 
 Thank you once again for involving us in this patient's care. Please do not hesitate to contact us if you have any further questions or concerns.
 
@@ -122,13 +127,14 @@ topic = "IgE mediated food reactions"
 keywords = ["food", "food allergy", "ige mediated food allergy"]
 content = '''
 substance
-form
+form(s): [raw|cooked|raw and cooked]
 route
 age at reaction
-sx after what time
-sx (cut resp gi card)
+symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
+other symptoms: 
+sx how long after exposure:
 other exposures (ie substance, sting)
-cofactors NSAIDs, exercise, alcohol, infection
+cofactors: [NSAIDs|exercise|alcohol|infection]
 treatment: where, what, response; epipen?
 epipen carried all times?
 exposed b4?
@@ -243,24 +249,24 @@ wip = true
 topic = "Allergic rhinitis"
 keywords = ["rhinitis", "seasonal allergies", "hay fever"]
 content = '''
-Symptoms include: [ rhinorrhea | post-nasal drip | congestion | sneezing | itchy eyes ]
+Symptoms include: [rhinorrhea|post-nasal drip|congestion|sneezing|itchy eyes]
 onset
-season
-triggers:
-[ animals | outside | ASA/NSAID | pollen ]
-[ temperature shifts | exercise | hot/spicy food | dust | smoke/irritants | strong odors/perfume ]
-sinusitis/other red flags? anosmia, purulent drainage, facial pain/pressure; nose bleed, systemic decline
-prior ENT or surg
-prior testing
+season: [perennial|seasonal: ]
+triggers: [animals|ASA/NSAID|indoor/outdoor]
+[temperature shifts|exercise|hot/spicy food|dust|smoke/irritants|strong odors/perfume]
+sinusitis/other red flags? [anosmia|purulent drainage|facial pain/pressure|nose bleed|systemic decline]
+prior ENT or surg:
+prior testing: 
 treatment tried, technique, duration
 
 # Allergic rhinitis, sensitized to ***. Current symptom control:
 Ddx: non-allergic rhinits (irritant, occupational, vasomotor, gustatory), localized allergic rhinitis, sinusitis
 
 Recommendations:
-> Non-pharmacologically, discussed avoidance strategies for ***, including:
+> Non-pharmacologically, discussed avoidance strategies including:
 > Use OTC sterile saline rinses prior to intra-nasal corticosteroids (INCS)
-> Start Ryaltris 2 sprays EN BID. Counseled on correct technique. Risk of nosebleeds disclosed. While a combination anti-histamine/INCS spray offers quicker relief, consistent use over weeks provides the most symptomatic benefit
+> Start Ryaltris 2 sprays EN BID. Counseled on correct technique. While a combination anti-histamine/INCS spray offers quicker relief, consistent use over weeks provides the most symptomatic benefit
+> Start anti-histamine eye drops PRN
 > We briefly discussed immunotherapy (SCIT vs SLIT), and have provided a handout. They are welcome to contact our office if they wish to pursue it later
 '''
 
@@ -270,28 +276,28 @@ topic = "Asthma"
 keywords = ["asthma"]
 content = '''
 Started:
-[ wheezing | cough | chest tightness | SOBOE ]
-Triggers: [ exercise | cold air | irritants (perfumes) | aeroallergens | pets | infections | medications | laughing ]
+Main symptoms: [wheezing|cough|chest tightness|SOBOE]
+Triggers: [exercise|cold air|irritants (perfumes)|aeroallergens|pets|infections|medications|laughing]
 night vs day
 Puffers:
 need for systemic steroids
 ED visits
-background: GERD, smoking, OSA, rhinitis? seasonal worsening?
+background comorbidities: [GERD|smoking|OSA|rhinitis]
 
-When NOT sick with URTI:
+Current control: (When NOT sick with URTI):
 Daytime /week
 Waking up at night? / week
 Rescue / week
 missing work/school
 Reponse to treatment
 
-# Asthma. Phenotype: allergic/eosinophilic/nonallergic/ intermittent (exercise induced vs. occupational vs. viral induced). Current control with *** compliance/technique:
+# Asthma. Phenotype: allergic/eosinophilic/nonallergic/ intermittent (exercise induced vs. occupational vs. viral induced). Current control with *** compliance/technique: [uncontrolled|excellent]
 
 Recommendations:
 * Baseline spirometry, SPT, FeNO
 * Consider methacholine / Exercise challenge test given diagnostic uncertainty
 * Ad-hoc: OSA study
-> Optimize exacerbating comorbid conditions: smoking, obesity, obstructive sleep apnea, nasal polyps, allergic rhinitis, anxiety, de-conditioning, viruses, pollution exposure
+> Optimize exacerbating comorbid conditions: [smoking|obesity|obstructive sleep apnea|nasal polyps|allergic rhinitis|anxiety|de-conditioning|viruses|pollution exposure]
 > Pharmacologically:
   - Symbicort 200/6 1 puff PRN (up to 8 puffs/daily) for mild intermittent asthma or issues with adherence (as per the SYGMA2 trial)
   - Symbicort 200/6 1-2 puffs BID; it can be used additionally PRN
@@ -319,9 +325,10 @@ wip = false
 topic = "Chronic rhinosinusitis"
 keywords = ["CRS", "sinusitis", "polyp"]
 content = '''
-[nasal congestion/fullness | facial pain/pressure/fullness | anterior or posterior nasal drainage (?purulent) | hypo/anosmia ]
-[ change in voice | cough | headache | fatigue/disruption of sleep | halitosis/dental pain | ear pain/fullness ]
+onset
 duration
+Cardinal symptoms: [nasal congestion/fullness|facial pain/pressure/fullness|anterior or posterior nasal drainage (?purulent)|hypo/anosmia]
+Other symptoms: [change in voice|cough|headache|fatigue/disruption of sleep|halitosis/dental pain|ear pain/fullness]
 CT/ENT before? Known nasal polyps?
 ? asthma/COPD, AR, CF, NERD/ASA sensitivity, recurrent infect, EtOH induced worsening of upper airway disease, impaired cilia(CF, PCD), smoking, pollution, occupational exposure, nasal anatomic variations, vasculitis
 Treatment trials
@@ -357,11 +364,11 @@ Locations
 onset, ?trigger
 Duration and frequency;
 Timing during day
-Can you make your hives appear? Triggers: cold, heat, pressure, sun, materials
+Can you make your hives appear? Triggers: [cold|heat/exercise|pressure|sun|scratches]
 Response to antihistamines
 Angioedema
 NSAIDS
-Red flags: anaphylaxis, thyroid, B symptoms, rheum
+Red flags: [anaphylaxis|thyroid|B symptoms|rheum]
 No burning or pain, bruising, systemic symptoms of fever, weight loss, bone pain, adenopathy, signs of inflammatory arthritis, no skin rashes, no photosensitivity, no Raynaud's, no dry eyes or dry mouth, no oral or genital ulcers.
 
 # Chronic spontaneous / inducible urticaria.
@@ -380,6 +387,10 @@ This is a generally benign, mast-cell mediated idiopathic primary skin disorder.
 
 *** if COLD induced:
 there is a risk of more severe reactions including anaphylaxis. As such, we have advised to keep her Epi Pen and to avoid significant cold exposures (cold plunges in water).
+
+*** dermatographism:
+This is a form of chronic inducible urticaria triggered by pressure on the skin. This is a self-limiting condition but can take months to years to subside; unfortunately, the only curative therapy is time. Intermittent flares are
+not atypical. It can sometimes also be worsened during periods of stress, infection or other immune system triggers. 
 '''
 
 [dermatology-angioedema]
@@ -422,8 +433,7 @@ pruritus
 scratch until bleed
 sleep
 Anyone else in household? Systemic symptoms?
-triggers (ie. foods)
-new creams, detergents, skin products, medications?
+triggers: [foods|new topicals|detergent|medications] 
 past infections and need for antibiotics
 current skin regimen
 treatments done (topical steroids, AH, etc.)
@@ -468,7 +478,7 @@ onset
 trigger
 
 
-[ Dysphagia | Regurg | Solid/liquid | location | Heartburn | chest | pain | GERD ]
+Symptoms: [Dysphagia|Regurg|Solid/liquid|location|Heartburn|chest|pain|GERD]
 Food triggers, avoidance?
 Particular: CM, soy, meats, wheat
 Endoscopy / swallow
@@ -541,7 +551,7 @@ content = '''
 Duration
 Severity (important to trend over time)
 Frequency
-Impact
+Impact on life:
 Triggers
 Dry vs wet (determines whether you might send for sputum)
 Red flags
@@ -597,7 +607,16 @@ wip = true
 topic = "Pruritus"
 keywords = ["itch", "pruritus"]
 content = '''
-Placeholder history
+Current skin regimen
+Treatment trialled
+
+ROS:
+Heptaobiliary: [known liver disease|prior bilirubin]
+Allergy/dermatology: [urticaria|eczema|psoriasis|other]
+Infection: [IVDU|Hep B/C|HIV|scabies (pustules/furrows|other household members)]
+Metabolic/Endocrine: [skin tone changes|hypo/hyper thyroid sx|diabetes|pregnant (ie. cholestasis of pregnancy)]
+Malignancy/Hematologic: [IDA|fever|weight loss|night sweats|abnormal CBC]
+Autoimmune: [DM rashes|proximal weakness|sicca|arthropathy|vitiligo|aleopecia ]
 
 # Pruritus
 Ddx:
@@ -687,15 +706,13 @@ wip = true
 topic = "Food challenges"
 keywords = ["food", "challenge", "oral challenge"]
 content = '''
-Prior to challenge risks/benefits discussed
+Prior to challenge, risk of anaphylaxis and milder localized allergic reactions discussed.
 Patient does not have any concurrent illness, does not use betablockers/ACEi or NSAIDs, has not recently had alcohol, has not exercised strenuously <2h prior to this visit, and is not sleep deprived.
 
-Examination:
-Vitals, skin exam, mouth exam
-
 Procedure:
-A total serving size of *** was used, which is about *** grams of food protein. It was done in *** steps, seperated by 30 minutes each. The patient was monitored about one hour after the last step.
-
+A total serving size of *** was used, about *** grams of protein.
+It was done in *** steps, seperated by [15|20|30] minutes each.
+The patient was monitored about one hour after the last step.
 '''
 
 [food-immunotherapy]
@@ -710,6 +727,31 @@ Placeholder
 * Investigations
 > Management
 '''
+
+[airwayent-SCIT]
+wip = true
+topic = "Subcutaneous Immunotherapy"
+keywords = ["immunotherapy", "SCIT", "subcutaneous"]
+content = '''
+Subcutaneous Immunotherapy (SCIT)
+> Typically there is 6-9 months of weekly build-up injections, followed by monthly maintenance injections.
+> Symptomatic benefit is expected within 1-2 years, with a total course of 3-5 years ideally and lasting benefit thereafter; premature discontinuation is associated with less lasting benefit.
+> Risks discussed: life-threatening anaphylaxis, and localized reactions. 
+> We have ordered a prescription; once the serum is available we will arrange a follow-up visit for the first injection
+'''
+
+[airwayent-SLIT]
+wip = true
+topic = "Sublingual immunotherapy"
+keywords = ["immunotherapy", "SLIT", "sublingual"]
+content = '''
+Sublingual immunotherapy (SLIT)
+> He is a candidate for [Acarizax (dust mite)|Itulatek (birch/tree)|Grastek (Timothy/grass)|Oralair (sweet vernal, orchard, perennial, rye, timothy, Kentucky blue)|Ragwitek (ragweed)].
+> Sublingual tablets are given daily at home, with a typical course for 3 years. Symptomatic relief is expected within 6-12 months with lasting benefit after completion of the full course. 
+> Risks discussed: oral pruritus, eosinophilic esophagitis. Anaphylaxis is exceedingly rare with SLIT
+> The first dose of each allergen must be give in clinic due to elevated risk of anaphylaxis 
+'''
+
 
 # -----------------------------
 # TESTS
