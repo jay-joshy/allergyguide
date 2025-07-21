@@ -19,5 +19,5 @@ status = "not-started" # Can be either 'not-started', 'WIP', or 'ready'
 </br>
 
 <div class="blur-container">
-This is a WIP!
+
 </div>

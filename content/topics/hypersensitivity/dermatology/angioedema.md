@@ -26,6 +26,35 @@ angioedema
 
 # macro
 
+To add to macro:
+
+HAE I or II
+Treatment of acute attacks
+
+- ie Berinent, Firazyr
+
+pearl:
+study from germany on deaths
+phase 1 2 3
+1 first sx
+2 dyspnea
+3 about to die
+if tx stage 1 then good outcome
+otherwise poor.
+treat EARLY.
+
+Prophylaxis
+if more frequent attacks
+not specific threhosld
+but funded if 3x in a month
+or any SEVERE attack life-threatening etc
+
+procedures
+does require surgical or dental procedures, she will need prophylactic therapy with C1 inhibitor to prevent angioedema attack.
+
+triggers
+We reviewed that there are certain medications that she will need to avoid as they interfere with bradykinin metabolism and could precipitate life-threatening angioedema attacks. These include: ACE inhibitors, Neprilysin inhibitors, DPP-4 inhibitors and Estrogens. She does not currently have indications for any of these medications.
+
 HPI:
 ACEi or NSAIDs
 Exposures, triggers (foods, hormones, stress, meds, trauma)

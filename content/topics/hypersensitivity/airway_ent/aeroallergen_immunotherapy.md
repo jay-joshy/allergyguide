@@ -56,6 +56,9 @@ BB ACEi relative contraindicatoins
 
 # SCIT side effects
 
+> pearl:
+> new vial first dose should probably be done in allergy clinic ... anecdotal higher risk of reaction
+
 # SLIT contraindications
 
 # SLIT side effects
