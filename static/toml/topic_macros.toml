@@ -127,9 +127,10 @@ topic = "IgE mediated food reactions"
 keywords = ["food", "food allergy", "ige mediated food allergy"]
 content = '''
 substance
+age at reaction
+exposed b4?
 form(s): [raw|cooked|raw and cooked]
 route
-age at reaction
 symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
 other symptoms: 
 sx how long after exposure:
@@ -137,7 +138,6 @@ other exposures (ie substance, sting)
 cofactors: [NSAIDs|exercise|alcohol|infection]
 treatment: where, what, response; epipen?
 epipen carried all times?
-exposed b4?
 repeat exposure since?
 consistency?
 
@@ -183,16 +183,16 @@ topic = "Drug reactions"
 keywords = ["drug", "drug reaction"]
 content = '''
 Drug:
-Route: PO IV SC topical
+Route: [PO|IV|SC|topical]
 Prior exposure? Reaction before? Had it since?
 Most recent rx?
-Sx: wheeze, SOB, rash, angioedema, GI, cardiovascular
+symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
 Rash - desquam, location, itch,
 Timing after exposure:
 Duration:
 Treatment: hospital, epi, antihist, etc
 Other exposures: (ie other drugs, herbals, bites)
-Cofactors: alcohol, exercise, nsaids, infection, poor sleep
+cofactors: [NSAIDs|exercise|alcohol|infection|poor sleep]
 
 # Reaction to:
 [scores]
@@ -254,7 +254,7 @@ onset
 season: [perennial|seasonal: ]
 triggers: [animals|ASA/NSAID|indoor/outdoor]
 [temperature shifts|exercise|hot/spicy food|dust|smoke/irritants|strong odors/perfume]
-sinusitis/other red flags? [anosmia|purulent drainage|facial pain/pressure|nose bleed|systemic decline]
+sinusitis/other red flags? [anosmia|purulent drainage|facial pain/pressure|nose bleed|constitutional decline]
 prior ENT or surg:
 prior testing: 
 treatment tried, technique, duration
@@ -480,7 +480,7 @@ trigger
 
 Symptoms: [Dysphagia|Regurg|Solid/liquid|location|Heartburn|chest|pain|GERD]
 Food triggers, avoidance?
-Particular: CM, soy, meats, wheat
+Particular: dairy, wheat, soy, meats
 Endoscopy / swallow
 PPI before, response?
 Topical steroids, response?
@@ -517,8 +517,7 @@ what bug
 circumstances? location of string
 local, large local, or systemic
 timing and duration post sting
-rash, pustules, resp, gi, cardio
-anaphylaxis?
+symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
 consistent hx
 exposure risk
 treatment
