@@ -1,15 +1,23 @@
 export default async (req, context) => {
-  const headers = {
-    "Access-Control-Allow-Origin": "*", // Or your exact frontend origin like "http://127.0.0.1:1025"
+  const allowedOrigins = [
+    "http://127.0.0.1:1025",      // local dev (Zola)
+    "https://allergyguide.ca"     // production
+  ];
+
+  const origin = req.headers.get("origin");
+  const allowOrigin = allowedOrigins.includes(origin) ? origin : "";
+
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": allowOrigin,
     "Access-Control-Allow-Headers": "X-API-Key",
     "Access-Control-Allow-Methods": "GET, OPTIONS"
   };
 
-  // ✅ Handle preflight (OPTIONS)
+  // ✅ Preflight handler
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
-      headers
+      headers: corsHeaders
     });
   }
 
@@ -19,13 +27,12 @@ export default async (req, context) => {
   if (requestKey === apiKey) {
     return new Response("Welcome!", {
       status: 200,
-      headers
+      headers: corsHeaders
     });
   }
 
   return new Response("Sorry, no access for you.", {
     status: 401,
-    headers
+    headers: corsHeaders
   });
 };
-
