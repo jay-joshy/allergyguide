@@ -1,6 +1,6 @@
 export default async (req, context) => {
   const requestKey = req.headers.get("X-API-Key");
-  const apiKey = Netlify.env.get("SHUFFLE_KEY");
+  const apiKey = process.env.SHUFFLE_KEY;
 
   if (requestKey === apiKey) {
     return new Response("Welcome!");
