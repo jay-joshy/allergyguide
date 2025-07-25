@@ -59,18 +59,118 @@
         this.imageCache.clear();
       }
 
-      // Prompt user for credentials
-      async promptCredentials() {
-        return new Promise((resolve) => {
-          const username = prompt("Username:");
-          const password = prompt("Password:");
+      // Show login form
+      showLoginForm(containerId) {
+        const container = document.getElementById(containerId);
+        if (container) {
+          container.innerHTML = `
+            <div class="protected-login-form">
+              <h4>Protected Content - Login Required</h4>
+              <form class="login-form" onsubmit="return false;">
+                <div class="form-group">
+                  <label for="${containerId}-username">Username:</label>
+                  <input type="text" id="${containerId}-username" name="username" required>
+                </div>
+                <div class="form-group">
+                  <label for="${containerId}-password">Password:</label>
+                  <input type="password" id="${containerId}-password" name="password" required>
+                </div>
+                <button type="button" onclick="window.protectedLoader.submitLogin('${containerId}')" class="login-button">
+                  Access Content
+                </button>
+                <div id="${containerId}-error" class="login-error" style="display: none;"></div>
+              </form>
+            </div>
+          `;
+        }
+      }
+
+      // Handle form submission
+      async submitLogin(containerId) {
+        const usernameField = document.getElementById(`${containerId}-username`);
+        const passwordField = document.getElementById(`${containerId}-password`);
+        const errorDiv = document.getElementById(`${containerId}-error`);
+        const button = document.querySelector(`#${containerId} .login-button`);
+        
+        if (!usernameField || !passwordField) {
+          console.error('Login form fields not found');
+          return;
+        }
+
+        const username = usernameField.value.trim();
+        const password = passwordField.value;
+
+        if (!username || !password) {
+          this.showLoginError(containerId, 'Please enter both username and password');
+          return;
+        }
+
+        // Show loading state
+        button.textContent = 'Authenticating...';
+        button.disabled = true;
+        errorDiv.style.display = 'none';
+
+        try {
+          const credentials = { username, password };
+          const path = document.getElementById(containerId).getAttribute('data-protected-path');
           
-          if (!username || !password) {
-            resolve(null);
-            return;
+          // Try to authenticate and fetch content
+          await this.authenticateAndLoadContent(containerId, path, credentials);
+          
+        } catch (error) {
+          this.log('Login failed:', error);
+          
+          // Reset button state
+          button.textContent = 'Access Content';
+          button.disabled = false;
+          
+          if (error.message.includes('401') || error.message.includes('Invalid credentials') || error.message.includes('Authentication')) {
+            this.showLoginError(containerId, 'Invalid credentials. Please try again.');
+          } else {
+            this.showLoginError(containerId, error.message || 'Authentication failed. Please try again.');
           }
-          
-          resolve({ username, password });
+        }
+      }
+
+      // Show login error
+      showLoginError(containerId, message) {
+        const errorDiv = document.getElementById(`${containerId}-error`);
+        if (errorDiv) {
+          errorDiv.textContent = message;
+          errorDiv.style.display = 'block';
+        }
+      }
+
+      // Authenticate and load content (separated from main flow)
+      async authenticateAndLoadContent(containerId, path, credentials) {
+        const token = btoa(`${credentials.username}:${credentials.password}`);
+        
+        // Fetch content with credentials
+        const contentData = await this.fetchContent(path, token);
+        
+        // Store the token data
+        if (contentData.tokenData) {
+          this.storeToken(contentData.tokenData, credentials);
+        }
+
+        // Get current token for image processing
+        const currentTokenData = this.getStoredToken();
+        const currentToken = currentTokenData ? currentTokenData.token : null;
+
+        // Get base path for images (directory of the content file)
+        const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+
+        // Process and render content
+        await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
+        this.log('Content rendered successfully after login');
+      }
+
+      // Prompt user for credentials (now returns form instead of prompt)
+      async promptCredentials(containerId) {
+        return new Promise((resolve) => {
+          // Show login form instead of prompting
+          this.showLoginForm(containerId);
+          resolve(null); // Return null to indicate form is shown
         });
       }
 
@@ -257,66 +357,46 @@
 
         try {
           let tokenData = this.getStoredToken();
-          let credentials = null;
 
           // Check if we have a valid token
           if (!tokenData || !this.isTokenValid(tokenData)) {
-            this.log('No valid token found, prompting for credentials');
-            credentials = await this.promptCredentials();
-            if (!credentials) {
-              this.showError(containerId, 'Authentication cancelled');
-              return;
-            }
+            this.log('No valid token found, showing login form');
+            await this.promptCredentials(containerId);
+            return; // Exit here - form will handle the rest
           } else {
             this.log('Using stored token');
           }
 
-          // Attempt to fetch content
-          let contentData;
+          // Attempt to fetch content with stored token
           try {
-            const token = tokenData ? tokenData.token : btoa(`${credentials.username}:${credentials.password}`);
-            this.log('Attempting to fetch content with token');
-            contentData = await this.fetchContent(path, token);
+            const token = tokenData.token;
+            this.log('Attempting to fetch content with stored token');
+            const contentData = await this.fetchContent(path, token);
+            
+            this.log('Content fetch successful:', contentData);
+
+            // Get current token for image processing
+            const currentToken = tokenData.token;
+
+            // Get base path for images (directory of the content file)
+            const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+
+            // Process and render content
+            await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
+            this.log('Content rendered successfully');
+
           } catch (error) {
-            this.log('First fetch attempt failed:', error.message);
-            // If token was invalid or expired, try with new credentials
+            this.log('Stored token failed:', error.message);
+            // If stored token was invalid or expired, show login form
             if (error.message.includes('401') || error.message.includes('Authentication') || error.message.includes('Invalid credentials')) {
               this.clearToken();
-              
-              if (!credentials) {
-                this.log('Getting new credentials after auth failure');
-                credentials = await this.promptCredentials();
-                if (!credentials) {
-                  this.showError(containerId, 'Authentication cancelled');
-                  return;
-                }
-              }
-              
-              const newToken = btoa(`${credentials.username}:${credentials.password}`);
-              this.log('Retrying with new credentials');
-              contentData = await this.fetchContent(path, newToken);
+              this.log('Token expired/invalid, showing login form');
+              await this.promptCredentials(containerId);
+              return;
             } else {
               throw error;
             }
           }
-
-          this.log('Content fetch successful:', contentData);
-
-          // Store the new token data if we have credentials
-          if (credentials && contentData.tokenData) {
-            this.storeToken(contentData.tokenData, credentials);
-          }
-
-          // Get current token for image processing
-          const currentTokenData = this.getStoredToken();
-          const currentToken = currentTokenData ? currentTokenData.token : null;
-
-          // Get base path for images (directory of the content file)
-          const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-
-          // Process and render content
-          await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
-          this.log('Content rendered successfully');
 
         } catch (error) {
           this.log('Error loading protected content:', error);
@@ -389,6 +469,81 @@
 
     .protected-image-error::before {
       content: "🚫 ";
+    }
+
+    /* Login form styles */
+    .protected-login-form {
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.5rem;
+      max-width: 400px;
+    }
+
+    .protected-login-form h4 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #495057;
+      font-size: 1.1rem;
+    }
+
+    .login-form .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .login-form label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+      color: #495057;
+      font-size: 0.9rem;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      box-sizing: border-box;
+    }
+
+    .login-form input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .login-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.15s ease-in-out;
+      width: 100%;
+    }
+
+    .login-button:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+
+    .login-button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    .login-error {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 4px;
     }
 </style>
 <!-- Mark that scripts have been loaded -->
