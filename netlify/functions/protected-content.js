@@ -1,3 +1,5 @@
+// netlify/functions/protected-content.js
+
 const fetch = require('node-fetch'); // Only needed in local dev
 
 exports.handler = async (event) => {
@@ -43,7 +45,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         headers: {
-          "WWW-Authenticate": 'Basic realm="Protected"',
+          // REMOVED: "WWW-Authenticate": 'Basic realm="Protected"',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Authentication required' })
@@ -67,7 +69,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         headers: {
-          "WWW-Authenticate": 'Basic realm="Protected"',
+          // REMOVED: "WWW-Authenticate": 'Basic realm="Protected"',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Invalid credentials' })

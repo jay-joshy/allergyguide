@@ -44,7 +44,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         headers: {
-          "WWW-Authenticate": 'Basic realm="Protected"',
+          // removed  "WWW-Authenticate": 'Basic realm="Protected"',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Authentication required' })
@@ -68,7 +68,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         headers: {
-          "WWW-Authenticate": 'Basic realm="Protected"',
+          // removed  "WWW-Authenticate": 'Basic realm="Protected"',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Invalid credentials' })
