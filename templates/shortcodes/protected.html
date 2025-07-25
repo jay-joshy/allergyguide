@@ -1,0 +1,352 @@
+<!-- templates/shortcodes/protected.html -->
+{% set container_id = id | default(value="protected-" ~ path | replace(from="/", to="-") | replace(from=".", to="-")) %}
+{% set loading_text = loading | default(value="Loading protected content...") %}
+{% set css_class = class | default(value="protected") %}
+<div id="{{ container_id }}" class="{{ css_class }}" data-protected-path="{{ path }}" data-loading-text="{{ loading_text }}">
+  {{ loading_text }}
+</div>
+{% if not config.extra.protected_content_script_loaded %}
+<!-- Only load scripts once per page -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  // Enhanced protected content loader with image handling
+    class ProtectedContentLoader {
+      constructor() {
+        this.baseUrl = 'https://allergyguide.ca/.netlify/functions/protected-content';
+        this.imageUrl = 'https://allergyguide.ca/.netlify/functions/protected-image';
+        this.storageKey = 'auth-token-data';
+        this.imageCache = new Map();
+      }
+
+      // Check if stored token is still valid
+      isTokenValid(tokenData) {
+        if (!tokenData || !tokenData.exp) return false;
+        return Date.now() < tokenData.exp;
+      }
+
+      // Get stored token data
+      getStoredToken() {
+        try {
+          const stored = localStorage.getItem(this.storageKey);
+          return stored ? JSON.parse(stored) : null;
+        } catch (e) {
+          console.warn('Failed to parse stored token:', e);
+          localStorage.removeItem(this.storageKey);
+          return null;
+        }
+      }
+
+      // Store token data
+      storeToken(tokenData, credentials) {
+        const dataToStore = {
+          ...tokenData,
+          token: btoa(`${credentials.username}:${credentials.password}`)
+        };
+        localStorage.setItem(this.storageKey, JSON.stringify(dataToStore));
+      }
+
+      // Clear stored token
+      clearToken() {
+        localStorage.removeItem(this.storageKey);
+        this.imageCache.clear();
+      }
+
+      // Prompt user for credentials
+      async promptCredentials() {
+        return new Promise((resolve) => {
+          const username = prompt("Username:");
+          const password = prompt("Password:");
+          
+          if (!username || !password) {
+            resolve(null);
+            return;
+          }
+          
+          resolve({ username, password });
+        });
+      }
+
+      // Fetch protected content
+      async fetchContent(path, token) {
+        const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
+        
+        try {
+          const response = await fetch(url, {
+            headers: { 'Authorization': `Basic ${token}` }
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP ${response.status}`);
+          }
+
+          return await response.json();
+        } catch (fetchError) {
+          if (fetchError.name === 'TypeError' && fetchError.message.includes('fetch')) {
+            throw new Error('Network error - please check your connection');
+          }
+          throw fetchError;
+        }
+      }
+
+      // Fetch protected image and convert to data URL
+      async fetchImage(imagePath, token) {
+        // Check cache first
+        const cacheKey = `${imagePath}-${token}`;
+        if (this.imageCache.has(cacheKey)) {
+          return this.imageCache.get(cacheKey);
+        }
+
+        const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
+        
+        try {
+          const response = await fetch(url, {
+            headers: { 'Authorization': `Basic ${token}` }
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to load image: ${imagePath}`);
+          }
+
+          const data = await response.json();
+          const dataUrl = `data:${data.contentType};base64,${data.content}`;
+          
+          // Cache the result
+          this.imageCache.set(cacheKey, dataUrl);
+          return dataUrl;
+        } catch (error) {
+          console.warn(`Failed to load protected image ${imagePath}:`, error);
+          return null;
+        }
+      }
+
+      // Process images in content - replace src with data URLs
+      async processImages(content, token, basePath = '') {
+        if (!token) return content;
+
+        // Find all img tags with src attributes
+        const imgRegex = /<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi;
+        const images = [];
+        let match;
+
+        while ((match = imgRegex.exec(content)) !== null) {
+          const fullMatch = match[0];
+          const beforeSrc = match[1];
+          const srcPath = match[2];
+          const afterSrc = match[3];
+
+          // Only process relative paths (assume these are private repo images)
+          if (!srcPath.startsWith('http') && !srcPath.startsWith('data:') && !srcPath.startsWith('/')) {
+            images.push({
+              fullMatch,
+              beforeSrc,
+              srcPath,
+              afterSrc,
+              fullPath: basePath ? `${basePath}/${srcPath}` : srcPath
+            });
+          }
+        }
+
+        // Fetch all images in parallel
+        const imagePromises = images.map(async (img) => {
+          const dataUrl = await this.fetchImage(img.fullPath, token);
+          return { ...img, dataUrl };
+        });
+
+        const imageResults = await Promise.all(imagePromises);
+
+        // Replace image sources in content
+        let processedContent = content;
+        imageResults.forEach(({ fullMatch, beforeSrc, afterSrc, dataUrl, srcPath }) => {
+          if (dataUrl) {
+            const newImg = `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`;
+            processedContent = processedContent.replace(fullMatch, newImg);
+          } else {
+            // If image failed to load, add error class and alt text
+            const newImg = `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
+            processedContent = processedContent.replace(fullMatch, newImg);
+          }
+        });
+
+        return processedContent;
+      }
+
+      // Render content based on file type
+      async renderContent(content, fileType, containerId, token, basePath) {
+        const container = document.getElementById(containerId);
+        if (!container) {
+          throw new Error(`Container with id '${containerId}' not found`);
+        }
+
+        // Process images first
+        const processedContent = await this.processImages(content, token, basePath);
+
+        if (fileType === 'html') {
+          container.innerHTML = processedContent;
+        } else if (fileType === 'md') {
+          if (typeof marked === 'undefined') {
+            throw new Error('Marked library not loaded for Markdown rendering');
+          }
+          container.innerHTML = marked.parse(processedContent);
+        } else {
+          container.textContent = processedContent;
+        }
+      }
+
+      // Show error message
+      showError(containerId, message) {
+        const container = document.getElementById(containerId);
+        if (container) {
+          container.innerHTML = `<div class="protected-error" style="color: #dc3545; padding: 1rem; border: 1px solid #dc3545; border-radius: 4px; background: #f8d7da;">
+            <strong>Error:</strong> ${message}
+          </div>`;
+        }
+      }
+
+      // Show loading state
+      showLoading(containerId, loadingText = 'Loading protected content...') {
+        const container = document.getElementById(containerId);
+        if (container) {
+          container.innerHTML = `<div class="protected-loading">${loadingText}</div>`;
+        }
+      }
+
+      // Main method to load protected content
+      async loadProtectedContent(containerId, path) {
+        const container = document.getElementById(containerId);
+        const loadingText = container?.getAttribute('data-loading-text') || 'Loading protected content...';
+        
+        this.showLoading(containerId, loadingText);
+
+        try {
+          let tokenData = this.getStoredToken();
+          let credentials = null;
+
+          // Check if we have a valid token
+          if (!tokenData || !this.isTokenValid(tokenData)) {
+            credentials = await this.promptCredentials();
+            if (!credentials) {
+              this.showError(containerId, 'Authentication cancelled');
+              return;
+            }
+          }
+
+          // Attempt to fetch content
+          let contentData;
+          try {
+            const token = tokenData ? tokenData.token : btoa(`${credentials.username}:${credentials.password}`);
+            contentData = await this.fetchContent(path, token);
+          } catch (error) {
+            // If token was invalid or expired, try with new credentials
+            if (error.message.includes('401') || error.message.includes('Authentication') || error.message.includes('Invalid credentials')) {
+              this.clearToken();
+              
+              if (!credentials) {
+                credentials = await this.promptCredentials();
+                if (!credentials) {
+                  this.showError(containerId, 'Authentication cancelled');
+                  return;
+                }
+              }
+              
+              const newToken = btoa(`${credentials.username}:${credentials.password}`);
+              contentData = await this.fetchContent(path, newToken);
+            } else {
+              throw error;
+            }
+          }
+
+          // Store the new token data if we have credentials
+          if (credentials && contentData.tokenData) {
+            this.storeToken(contentData.tokenData, credentials);
+          }
+
+          // Get current token for image processing
+          const currentTokenData = this.getStoredToken();
+          const currentToken = currentTokenData ? currentTokenData.token : null;
+
+          // Get base path for images (directory of the content file)
+          const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+
+          // Process and render content
+          await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
+
+        } catch (error) {
+          console.error('Failed to load protected content:', error);
+          this.showError(containerId, error.message || 'Failed to load content');
+        }
+      }
+    }
+
+    // Global instance
+    window.protectedLoader = new ProtectedContentLoader();
+
+    // Auto-load content for elements with data-protected-path attribute
+    document.addEventListener('DOMContentLoaded', () => {
+      const protectedElements = document.querySelectorAll('[data-protected-path]');
+      protectedElements.forEach(element => {
+        const path = element.getAttribute('data-protected-path');
+        if (path) {
+          window.protectedLoader.loadProtectedContent(element.id, path);
+        }
+      });
+    });
+
+    // Global logout function
+    window.logoutProtectedContent = function() {
+      window.protectedLoader.clearToken();
+      const protectedElements = document.querySelectorAll('[data-protected-path]');
+      protectedElements.forEach(element => {
+        element.innerHTML = '<div class="protected-logged-out">Logged out. <a href="javascript:location.reload()">Reload</a> to access content.</div>';
+      });
+    };
+</script>
+<style>
+  .protected {
+      min-height: 2rem;
+      padding: 1rem;
+      border-left: 4px solid #007bff;
+      background-color: #f8f9fa;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .protected-error {
+      color: #dc3545;
+      padding: 1rem;
+      border: 1px solid #dc3545;
+      border-radius: 4px;
+      background: #f8d7da;
+    }
+
+    .protected-loading {
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    .protected-logged-out {
+      color: #856404;
+      background-color: #fff3cd;
+      border: 1px solid #ffeaa7;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+
+    .protected-image-error {
+      border: 2px dashed #dc3545;
+      padding: 1rem;
+      background: #f8d7da;
+      color: #dc3545;
+    }
+
+    .protected-image-error::before {
+      content: "🚫 ";
+    }
+</style>
+<!-- Mark that scripts have been loaded -->
+<script>
+  if (!window.config) window.config = {};
+    if (!window.config.extra) window.config.extra = {};
+    window.config.extra.protected_content_script_loaded = true;
+</script>
+{% endif %}

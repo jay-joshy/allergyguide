@@ -715,3 +715,7 @@ This is a danger admonition with a danger icon.
 This is testing the ability for Netlify to securely hydrate a div with content based on credentials.
 
 {{ test_net_functions() }}
+
+## protected
+
+{{ protected(path="test.md") }}
