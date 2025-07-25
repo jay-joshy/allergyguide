@@ -1,5 +1,5 @@
 exports.handler = async (event, context) => {
-  const expectedKey = process.env.SHUFFLE_KEY; // load from environment
+  const expectedKey = Netlify.env.get(SHUFFLE_KEY); // load from environment
 
   const providedKey = event.headers['x-api-key']; // get from request headers
 
