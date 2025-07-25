@@ -283,6 +283,8 @@
           }
         }
 
+        console.log(`following images were found: ${images}`)
+
         // Fetch all images in parallel
         const imagePromises = images.map(async (img) => {
           const dataUrl = await this.fetchImage(img.fullPath, token);
