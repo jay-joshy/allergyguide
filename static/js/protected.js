@@ -222,7 +222,7 @@ class ProtectedContentLoader {
       return this.imageCache.get(cacheKey);
     }
 
-    const url = `${this.imageUrl}?path=${imagePath}`;
+    const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
     console.log(`Fetch URL: ${url}`)
 
     try {
