@@ -1,4 +1,4 @@
-<!-- templates/shortcodes/protected.html -->
+<!-- templates/shortcodes/protected.html - DEBUG VERSION -->
 {% set container_id = id | default(value="protected-" ~ path | replace(from="/", to="-") | replace(from=".", to="-")) %}
 {% set loading_text = loading | default(value="Loading protected content...") %}
 {% set css_class = class | default(value="protected") %}
@@ -9,13 +9,21 @@
 <!-- Only load scripts once per page -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  // Enhanced protected content loader with image handling
+  // Enhanced protected content loader with DEBUG logging
     class ProtectedContentLoader {
       constructor() {
-        this.baseUrl = 'https://allergyguide.ca/.netlify/functions/protected-content';
-        this.imageUrl = 'https://allergyguide.ca/.netlify/functions/protected-image';
+        // Use relative URLs - works for both local dev and production
+        this.baseUrl = '/.netlify/functions/protected-content';
+        this.imageUrl = '/.netlify/functions/protected-image';
         this.storageKey = 'auth-token-data';
         this.imageCache = new Map();
+        this.debug = true; // Enable debug logging
+      }
+
+      log(message, data = null) {
+        if (this.debug) {
+          console.log(`[ProtectedLoader] ${message}`, data || '');
+        }
       }
 
       // Check if stored token is still valid
@@ -69,19 +77,47 @@
       // Fetch protected content
       async fetchContent(path, token) {
         const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
+        this.log('Fetching content from:', url);
         
         try {
           const response = await fetch(url, {
             headers: { 'Authorization': `Basic ${token}` }
           });
 
+          this.log('Response status:', response.status);
+          this.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
           if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
+            // Get the raw response text for debugging
+            const responseText = await response.text();
+            this.log('Error response body:', responseText);
+            
+            // Try to parse as JSON, fall back to text
+            let errorData;
+            try {
+              errorData = JSON.parse(responseText);
+            } catch (e) {
+              // If it's not JSON, it's probably an HTML error page
+              if (responseText.includes('<html') || responseText.includes('<!DOCTYPE')) {
+                throw new Error(`Function returned HTML instead of JSON. Status: ${response.status}. This usually means the function isn't deployed or there's a server error.`);
+              }
+              errorData = { error: responseText };
+            }
+            
             throw new Error(errorData.error || `HTTP ${response.status}`);
           }
 
-          return await response.json();
+          const responseText = await response.text();
+          this.log('Success response body:', responseText);
+          
+          try {
+            return JSON.parse(responseText);
+          } catch (e) {
+            this.log('Failed to parse JSON response:', e);
+            throw new Error('Invalid JSON response from server');
+          }
         } catch (fetchError) {
+          this.log('Fetch error:', fetchError);
           if (fetchError.name === 'TypeError' && fetchError.message.includes('fetch')) {
             throw new Error('Network error - please check your connection');
           }
@@ -216,6 +252,7 @@
         const container = document.getElementById(containerId);
         const loadingText = container?.getAttribute('data-loading-text') || 'Loading protected content...';
         
+        this.log('Starting to load protected content', { containerId, path });
         this.showLoading(containerId, loadingText);
 
         try {
@@ -224,24 +261,30 @@
 
           // Check if we have a valid token
           if (!tokenData || !this.isTokenValid(tokenData)) {
+            this.log('No valid token found, prompting for credentials');
             credentials = await this.promptCredentials();
             if (!credentials) {
               this.showError(containerId, 'Authentication cancelled');
               return;
             }
+          } else {
+            this.log('Using stored token');
           }
 
           // Attempt to fetch content
           let contentData;
           try {
             const token = tokenData ? tokenData.token : btoa(`${credentials.username}:${credentials.password}`);
+            this.log('Attempting to fetch content with token');
             contentData = await this.fetchContent(path, token);
           } catch (error) {
+            this.log('First fetch attempt failed:', error.message);
             // If token was invalid or expired, try with new credentials
             if (error.message.includes('401') || error.message.includes('Authentication') || error.message.includes('Invalid credentials')) {
               this.clearToken();
               
               if (!credentials) {
+                this.log('Getting new credentials after auth failure');
                 credentials = await this.promptCredentials();
                 if (!credentials) {
                   this.showError(containerId, 'Authentication cancelled');
@@ -250,11 +293,14 @@
               }
               
               const newToken = btoa(`${credentials.username}:${credentials.password}`);
+              this.log('Retrying with new credentials');
               contentData = await this.fetchContent(path, newToken);
             } else {
               throw error;
             }
           }
+
+          this.log('Content fetch successful:', contentData);
 
           // Store the new token data if we have credentials
           if (credentials && contentData.tokenData) {
@@ -270,8 +316,10 @@
 
           // Process and render content
           await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
+          this.log('Content rendered successfully');
 
         } catch (error) {
+          this.log('Error loading protected content:', error);
           console.error('Failed to load protected content:', error);
           this.showError(containerId, error.message || 'Failed to load content');
         }
