@@ -2,7 +2,7 @@
 {% set key = get_env(name="SHUFFLE_KEY") %}
 {% set body = '{"seed":{{ seed | int }},"start":1,"end":10}' %}
 {% set shuffled = load_data(
-    url="https://allergyguide.ca/.netlify/functions/shuffle",
+    url="https://allergyguide.ca/netlify/functions/shuffle",
     method="POST",
     format="json",
     content_type="application/json",
@@ -11,3 +11,4 @@
 ) %}
 
 The api key is: {{ SHUFFLE_KEY }}
+The shuffled response is: {{ shuffled }}
