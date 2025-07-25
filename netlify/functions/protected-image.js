@@ -149,15 +149,44 @@ exports.handler = async (event) => {
     };
 
     const contentType = getContentType(imageData.name);
+    let base64Content = imageData.content;
+
+    if (!base64Content) {
+      // Content was too large — fetch from download_url
+      if (!imageData.download_url) {
+        return {
+          statusCode: 500,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Missing download_url for large file' })
+        };
+      }
+
+      const imageBinaryRes = await fetch(imageData.download_url, {
+        headers: {
+          Authorization: `token ${githubToken}` // Might not be needed for raw URLs
+        }
+      });
+
+      if (!imageBinaryRes.ok) {
+        return {
+          statusCode: 500,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Failed to fetch image binary' })
+        };
+      }
+
+      const arrayBuffer = await imageBinaryRes.arrayBuffer();
+      base64Content = Buffer.from(arrayBuffer).toString('base64');
+    }
 
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'private, max-age=3600' // Cache for 1 hour
+        'Cache-Control': 'private, max-age=3600'
       },
       body: JSON.stringify({
-        content: imageData.content, // Base64 encoded content from GitHub
+        content: base64Content,
         contentType: contentType,
         filename: imageData.name,
         size: imageData.size
