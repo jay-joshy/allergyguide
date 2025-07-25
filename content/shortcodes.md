@@ -719,3 +719,5 @@ This is testing the ability for Netlify to securely hydrate a div with content b
 ## protected
 
 {{ protected(path="test.html") }}
+
+{{ protected(path="complex_test.html") }}
