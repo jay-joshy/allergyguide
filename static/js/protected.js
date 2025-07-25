@@ -223,6 +223,7 @@ class ProtectedContentLoader {
     }
 
     const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
+    console.log(`Fetch URL: ${url}`)
 
     try {
       const response = await fetch(url, {
