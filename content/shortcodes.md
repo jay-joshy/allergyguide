@@ -10,10 +10,6 @@ in_search_index = false
 toc = true
 +++
 
-Here is an example thing {% example() %}
-holy moly
-{% end %}
-
 ## Highlights
 
 Not a shortcode but still useful. You have several colours to choose from:
@@ -713,3 +709,9 @@ This is a danger admonition with a danger icon.
 {% end %}
 
 <script src="/js/tabs.js"></script>
+
+## test_net_functions
+
+This is testing the ability for Netlify to securely hydrate a div with content based on credentials.
+
+{{ test_net_functions() }}
