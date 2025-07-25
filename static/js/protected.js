@@ -235,6 +235,7 @@ class ProtectedContentLoader {
       }
 
       const data = await response.json();
+      console.log("GitHub API response in fetchImage():", data);
       const dataUrl = `data:${data.contentType};base64,${data.content}`;
 
       // Cache the result
