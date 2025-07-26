@@ -276,10 +276,12 @@ class ProtectedContentLoader {
         let fullPath;
 
         if (srcPath.startsWith('/')) {
+          srcPath = "static" + srcPath;
           // Absolute path - remove leading slash and combine with base path
           const relativePath = srcPath.substring(1); // Remove leading /
           fullPath = basePath ? `${basePath}/${relativePath}` : relativePath;
         } else {
+          srcPath = "static/" + srcPath;
           // Relative path - combine directly with base path
           fullPath = basePath ? `${basePath}/${srcPath}` : srcPath;
         }
