@@ -260,27 +260,47 @@ class ProtectedContentLoader {
     while ((match = imgRegex.exec(content)) !== null) {
       const fullMatch = match[0];
       const beforeSrc = match[1];
-      const srcPath = match[2];
+      let srcPath = match[2];
       const afterSrc = match[3];
 
-      // Only process relative paths (assume these are private repo images)
-      if (!srcPath.startsWith('http') && !srcPath.startsWith('data:') && !srcPath.startsWith('/')) {
+      // Decode HTML entities in the src path
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = srcPath;
+      srcPath = tempDiv.textContent || tempDiv.innerText || srcPath;
+
+      this.log('Processing image src:', { original: match[2], decoded: srcPath });
+
+      // Only process relative paths or absolute paths that should be from the private repo
+      // Skip external URLs and data URLs
+      if (!srcPath.startsWith('http') && !srcPath.startsWith('data:')) {
+        let fullPath;
+
+        if (srcPath.startsWith('/')) {
+          // Absolute path - remove leading slash and combine with base path
+          const relativePath = srcPath.substring(1); // Remove leading /
+          fullPath = basePath ? `${basePath}/${relativePath}` : relativePath;
+        } else {
+          // Relative path - combine directly with base path
+          fullPath = basePath ? `${basePath}/${srcPath}` : srcPath;
+        }
+
+        this.log('Image path resolution:', { srcPath, basePath, fullPath });
+
         images.push({
           fullMatch,
           beforeSrc,
           srcPath,
           afterSrc,
-          fullPath: basePath ? `${basePath}/${srcPath}` : srcPath
+          fullPath
         });
       }
     }
 
     // Fetch all images in parallel
     const imagePromises = images.map(async (img) => {
-      console.log(`not cleaned img fullpath: ${img.fullPath}`)
+      this.log(`Fetching image from: ${img.fullPath}`);
       const dataUrl = await this.fetchImage(img.fullPath, token);
-
-      console.log(`dataURL: ${dataUrl}`)
+      this.log(`Image fetch result for ${img.fullPath}:`, dataUrl ? 'success' : 'failed');
       return { ...img, dataUrl };
     });
 
@@ -292,10 +312,12 @@ class ProtectedContentLoader {
       if (dataUrl) {
         const newImg = `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`;
         processedContent = processedContent.replace(fullMatch, newImg);
+        this.log(`Successfully replaced image: ${srcPath}`);
       } else {
         // If image failed to load, add error class and alt text
         const newImg = `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
         processedContent = processedContent.replace(fullMatch, newImg);
+        this.log(`Failed to load image: ${srcPath}`);
       }
     });
 
