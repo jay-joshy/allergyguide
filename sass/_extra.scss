@@ -35,6 +35,7 @@
 @use "shortcodes/tabs";
 @use "shortcodes/popup";
 @use "shortcodes/badges";
+@use "shortcodes/protected";
 
 /* Markdown code blocks soft wrap */
 pre.language-md {
