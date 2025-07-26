@@ -5,6 +5,7 @@ const fetch = require('node-fetch'); // Only needed in local dev
 exports.handler = async (event) => {
   try {
     // Parse environment variables
+    // These need to be present in Netlify and secure
     const users = JSON.parse(process.env.AUTH_USERS || "{}");
     const tokenExpiryHours = parseInt(process.env.TOKEN_EXPIRY_HOURS || "24");
     const githubToken = process.env.GITHUB_TOKEN;
@@ -45,7 +46,6 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         headers: {
-          // REMOVED: "WWW-Authenticate": 'Basic realm="Protected"',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Authentication required' })
@@ -69,7 +69,6 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         headers: {
-          // REMOVED: "WWW-Authenticate": 'Basic realm="Protected"',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Invalid credentials' })

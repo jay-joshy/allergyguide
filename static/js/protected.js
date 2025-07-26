@@ -1,5 +1,4 @@
 // protected.js
-// Enhanced protected content loader with DEBUG logging
 class ProtectedContentLoader {
   constructor() {
     // Use relative URLs - works for both local dev and production
