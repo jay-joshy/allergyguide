@@ -274,12 +274,13 @@ class ProtectedContentLoader {
       }
     }
 
-    console.log(`following images were found: ${images}`)
-
     // Fetch all images in parallel
     const imagePromises = images.map(async (img) => {
-      console.log(`fullpath: ${img.fullPath}`)
-      const dataUrl = await this.fetchImage(img.fullPath, token);
+      console.log(`not cleaned img fullpath: ${img.fullPath}`)
+      let clean_fullPath = img.fullPath.replace(/&#x2F;/g, "/")
+      console.log(`cleaned img fullpath: ${clean_fullPath}`)
+      const dataUrl = await this.fetchImage(clean_fullPath, token);
+
       console.log(`dataURL: ${dataUrl}`)
       return { ...img, dataUrl };
     });
