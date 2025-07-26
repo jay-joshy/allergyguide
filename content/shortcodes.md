@@ -718,4 +718,12 @@ This is testing the ability for Netlify to securely hydrate a div with content b
 
 ## protected
 
+This allows for secure username/password protected content. The actual content is hidden in a private repository and is securely fetched dynamically to populate the content when the user signs in. Once the user signs in, until ~24h that password will be remembered on their machine. No log-out has been implemented yet but I see little utility at this time for that feature.
+
+To use, the shortcode requires the relative path to the HTML file needed to hydrate the page.
+
+```md
+{{/* protected(path="content/private/test.html") */}}
+```
+
 {{ protected(path="content/private/test.html") }}
