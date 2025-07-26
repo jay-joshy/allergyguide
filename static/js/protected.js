@@ -298,9 +298,9 @@ class ProtectedContentLoader {
 
     // Fetch all images in parallel
     const imagePromises = images.map(async (img) => {
-      this.log(`Fetching image from: ${img.fullPath}`);
-      const dataUrl = await this.fetchImage(img.fullPath, token);
-      this.log(`Image fetch result for ${img.fullPath}:`, dataUrl ? 'success' : 'failed');
+      this.log(`Fetching image from: ${img.srcPath}`);
+      const dataUrl = await this.fetchImage(img.srcPath, token);
+      this.log(`Image fetch result for ${img.srcPath}:`, dataUrl ? 'success' : 'failed');
       return { ...img, dataUrl };
     });
 
