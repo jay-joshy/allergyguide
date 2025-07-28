@@ -612,7 +612,8 @@ This will display a warning admonition if viewed from Mobile.
 
 - body -- the JSON
 - show_headers: bool, default true
-- output_md: bool, default false (when true it outputs in a ```md block)
+
+For simple flat tables
 
 ```md
 {%/* json_to_table() */%}
@@ -632,6 +633,99 @@ This will display a warning admonition if viewed from Mobile.
 { "name": "Sarah", "age": 22, "isCool": true },
 { "name": "Lee", "age": 23, "isCool": true }
 ]
+{% end %}
+
+For more complex nested tables
+
+```js
+{%/* json_to_table() */%}
+
+{
+  "C1Inh-HAE": {
+    "HAE Type I": {
+      "C1Inh function": "< 50%",
+      "C1Inh": "< 50%",
+      "C4": "Low",
+      "C1q": "Normal",
+      "Anti-C1Inh Ab": "",
+      "Mutation": "_SERPING1_"
+    },
+    "HAE Type II": {
+      "C1Inh function": "< 50%",
+      "C1Inh": "Normal",
+      "C4": "Low",
+      "C1q": "Normal",
+      "Anti-C1Inh Ab": "",
+      "Mutation": "_SERPING1_"
+    }
+  },
+  "C1Inh-AAE": {
+    "": {
+      "C1Inh function": "< 50%",
+      "C1Inh": "< 50%",
+      "C4": "Low",
+      "C1q": "Low (70% of cases)",
+      "Anti-C1Inh Ab": "Present (50% of cases)",
+      "Mutation": "No"
+    }
+  },
+  "ACEi-AAE and nC1Inh-AAE": {
+    "": {
+      "C1Inh function": "Normal",
+      "C1Inh": "Normal",
+      "C4": "Normal",
+      "C1q": "Normal",
+      "Anti-C1Inh Ab": "",
+      "Mutation": "_FXII, PLG, ANGPT1, KNG1_"
+    }
+  }
+}
+
+{%/* end */%}
+```
+
+{% json_to_table()%}
+{
+"C1Inh-HAE": {
+"HAE Type I": {
+"C1Inh function": "< 50%",
+"C1Inh": "< 50%",
+"C4": "Low",
+"C1q": "Normal",
+"Anti-C1Inh Ab": "",
+"Mutation": "_SERPING1_"
+},
+"HAE Type II": {
+"C1Inh function": "< 50%",
+"C1Inh": "Normal",
+"C4": "Low",
+"C1q": "Normal",
+"Anti-C1Inh Ab": "",
+"Mutation": "_SERPING1_"
+}
+},
+"C1Inh-AAE": {
+"": {
+"C1Inh function": "< 50%",
+"C1Inh": "< 50%",
+"C4": "Low",
+"C1q": "Low (70% of cases)",
+"Anti-C1Inh Ab": "Present (50% of cases)",
+"Mutation": "No"
+}
+},
+"ACEi-AAE and nC1Inh-AAE": {
+"": {
+"C1Inh function": "Normal",
+"C1Inh": "Normal",
+"C4": "Normal",
+"C1q": "Normal",
+"Anti-C1Inh Ab": "",
+"Mutation": "_FXII, PLG, ANGPT1, KNG1_"
+}
+}
+}
+
 {% end %}
 
 ## research_card

@@ -1,63 +1,107 @@
-{# Set default for output type (markdown vs. HTML) #}
-{% set output_md = output_md | default(value=false) %}
+{# Set defaults #}
 {% set show_headers = show_headers | default(value=true) %}
 
-{# Generate a unique id for this instance #}
+{# Unique ID #}
 {% set unique_id = "json_table_" ~ get_random(end=100000) %}
 <div id="{{ unique_id }}" class="json_to_table" data-json='{{ body | safe }}'></div>
 <script>
   (function() {
-    const output_md = {{ output_md | safe }};
-    const show_headers = {{ show_headers }};
-    const container = document.getElementById('{{ unique_id }}');
-    if (!container) return;
+  const showHeaders = {{ show_headers }};
+  const container = document.getElementById('{{ unique_id }}');
+  if (!container) return;
 
-    var jsonStr = container.getAttribute('data-json').replace(/[\r\n]+/g, '');
-    var data;
-    try {
-      data = JSON.parse(jsonStr);
-    } catch (e) {
-      console.error("Invalid JSON data provided", e);
-      container.innerHTML = "<p>Invalid JSON</p>";
-      return;
-    }
+  let raw = container.getAttribute('data-json')
+                      .replace(/[\r\n]+/g, '')
+                      .trim();
+  let data;
+  try {
+    data = JSON.parse(raw);
+  } catch (e) {
+    console.error("Invalid JSON", e);
+    container.innerHTML = "<p>Invalid JSON</p>";
+    return;
+  }
 
-    if (!Array.isArray(data) || data.length === 0) {
+  // FLAT ARRAY OF ROWS? ---------------------------------------------------
+  if (Array.isArray(data)) {
+    if (data.length === 0) {
       container.innerHTML = "<p>No data available</p>";
       return;
     }
-
-    var headers = Object.keys(data[0]);
-    if (output_md) {
-      var mdTable = '';
-      mdTable += '| ' + headers.join(' | ') + ' |\n';
-      mdTable += '| ' + headers.map(() => '---').join(' | ') + ' |\n';
-      data.forEach(function (row) {
-        var rowData = headers.map(function (key) {
-          return row[key];
-        });
-        mdTable += '| ' + rowData.join(' | ') + ' |\n';
-      });
-      container.innerHTML = '<pre>' + mdTable + '</pre>';
-    } else {
-      var htmlTable = '<table class="json-table">';
-      if (show_headers) {
-        htmlTable += '<thead><tr>';
-        headers.forEach(function (header) {
-          htmlTable += '<th>' + header + '</th>';
-        });
-        htmlTable += '</tr></thead>';
-      }
-      htmlTable += '<tbody>';
-      data.forEach(function (row) {
-        htmlTable += '<tr>';
-        headers.forEach(function (header) {
-          htmlTable += '<td>' + row[header] + '</td>';
-        });
-        htmlTable += '</tr>';
-      });
-      htmlTable += '</tbody></table>';
-      container.innerHTML = htmlTable;
+    const cols = Object.keys(data[0]);
+    let html = '<table class="json-table">';
+    if (showHeaders) {
+      html += '<thead><tr>' +
+                cols.map(c => `<th>${c}</th>`).join('') +
+              '</tr></thead>';
     }
-  })();
+    html += '<tbody>';
+    data.forEach(row => {
+      html += '<tr>' + cols.map(c => `<td>${row[c] ?? ''}</td>`).join('') + '</tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+    return;
+  }
+
+  // NESTED OBJECT → TWO‑LEVEL HEADER ----------------------------------------
+  // Expect shape: { Group1: { Sub1: {...}, Sub2: {...} }, Group2: { ... } }
+  const groups = Object.keys(data);
+  if (groups.length === 0) {
+    container.innerHTML = "<p>No data available</p>";
+    return;
+  }
+
+  // Collect all sub‑keys and all row identifiers
+  const subsByGroup = {};
+  const allRows = new Set();
+  groups.forEach(g => {
+    const subs = Object.keys(data[g] || {});
+    subsByGroup[g] = subs;
+    subs.forEach(sub => {
+      // assume each data[g][sub] is an object mapping rowName→value
+      Object.keys(data[g][sub] || {}).forEach(r => allRows.add(r));
+    });
+  });
+  const rowKeys = Array.from(allRows);
+
+  // Build table
+  let html = '<table class="json-table">';
+
+  if (showHeaders) {
+    // First header row: add a corner cell (row labels) spanning two header‑rows
+    html += '<thead><tr><th rowspan="2"></th>';
+    groups.forEach(g => {
+      const colspan = subsByGroup[g].length || 1;
+      html += `<th${colspan>1?` colspan="${colspan}"`:''}>${g}</th>`;
+    });
+    html += '</tr>';
+    // Second header row (sub‑labels)
+    html += '<tr>';
+    groups.forEach(g => {
+      const subs = subsByGroup[g].length ? subsByGroup[g] : [''];
+      subs.forEach(sub => {
+        html += `<th>${sub}</th>`;
+      });
+    });
+    html += '</tr></thead>';
+  }
+
+  // Body rows
+  html += '<tbody>';
+  rowKeys.forEach(rk => {
+    html += `<tr><td>${rk}</td>`;  // <td> for the row‑key label
+    groups.forEach(g => {
+      const subs = subsByGroup[g].length ? subsByGroup[g] : [''];
+      subs.forEach(sub => {
+        const cellValue = (data[g][sub] && data[g][sub][rk]) ?? '';
+        html += `<td>${cellValue}</td>`;
+      });
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+
+  container.innerHTML = html;
+})();
 </script>
