@@ -13,7 +13,7 @@ CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
 Dear Dr. 
 
 We assessed this patient today on {current_date} with Dr. ***.
-As you know, they are a *** referred for assessment of ***.
+They are a *** referred for assessment of ***.
 
 PAST MEDICAL HISTORY:
 
@@ -39,8 +39,7 @@ DEVELOPMENT:
 ATOPIC HISTORY:
 Asthma:
 Food allergies:
-With regards to priority allergen exposure, they have tried and tolerated [dairy|eggs|wheat|sesame|peanuts|tree nuts|soy|fish|shellfish|mustard]
-
+They have tried and tolerated [dairy | eggs | wheat | sesame | peanuts | tree nuts | soy | fish | shellfish | mustard]
 Drug allergies:
 Venom allergies:
 Eczema:
@@ -80,9 +79,8 @@ keywords = ["template", "follow up"]
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY FOLLOW-UP
 
-Dr. *** and I saw this patient in follow up on {current_date}.
-They were last seen on *** previously.
-As you know, they are a *** who we follow for ***.
+Dr. *** and I saw this patient in follow up on {current_date}; last seen on:
+They are a *** who we follow for ***.
 
 RELEVANT ALLERGIC AND MEDICAL HISTORY:
 
@@ -129,13 +127,13 @@ content = '''
 substance
 age at reaction
 exposed b4?
-form(s): [raw|cooked|raw and cooked]
+form(s): [raw | cooked | raw and cooked]
 route
-symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
+symptoms: [hives | angioedema | dyspnea | stridor | wheeze | GI upset | presyncope | syncope]
 other symptoms: 
 sx how long after exposure:
 other exposures (ie substance, sting)
-cofactors: [NSAIDs|exercise|alcohol|infection]
+cofactors: [NSAIDs | exercise | alcohol | infection]
 treatment: where, what, response; epipen?
 epipen carried all times?
 repeat exposure since?
@@ -183,16 +181,16 @@ topic = "Drug reactions"
 keywords = ["drug", "drug reaction"]
 content = '''
 Drug:
-Route: [PO|IV|SC|topical]
+Route: [PO | IV | SC | topical]
 Prior exposure? Reaction before? Had it since?
 Most recent rx?
-symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
+symptoms: [hives | angioedema | dyspnea | stridor | wheeze | GI upset | presyncope | syncope]
 Rash - desquam, location, itch,
 Timing after exposure:
 Duration:
 Treatment: hospital, epi, antihist, etc
 Other exposures: (ie other drugs, herbals, bites)
-cofactors: [NSAIDs|exercise|alcohol|infection|poor sleep]
+cofactors: [NSAIDs | exercise | alcohol | infection | poor sleep]
 
 # Reaction to:
 [scores]
@@ -249,12 +247,12 @@ wip = true
 topic = "Allergic rhinitis"
 keywords = ["rhinitis", "seasonal allergies", "hay fever"]
 content = '''
-Symptoms include: [rhinorrhea|post-nasal drip|congestion|sneezing|itchy eyes]
+Symptoms include: [rhinorrhea | post-nasal drip | congestion | sneezing | itchy eyes]
 onset
-season: [perennial|seasonal: ]
-triggers: [animals|ASA/NSAID|indoor/outdoor]
-[temperature shifts|exercise|hot/spicy food|dust|smoke/irritants|strong odors/perfume]
-sinusitis/other red flags? [anosmia|purulent drainage|facial pain/pressure|nose bleed|constitutional decline]
+season: [perennial | seasonal: ]
+triggers: [animals | ASA/NSAID | indoor/outdoor]
+[temperature shifts | exercise | hot/spicy food | dust | smoke/irritants | strong odors/perfume]
+sinusitis/other red flags? [anosmia | purulent drainage | facial pain/pressure | nose bleed | constitutional decline]
 prior ENT or surg:
 prior testing: 
 treatment tried, technique, duration
@@ -276,13 +274,13 @@ topic = "Asthma"
 keywords = ["asthma"]
 content = '''
 Started:
-Main symptoms: [wheezing|cough|chest tightness|SOBOE]
-Triggers: [exercise|cold air|irritants (perfumes)|aeroallergens|pets|infections|medications|laughing]
+Main symptoms: [wheezing | cough | chest tightness | SOBOE]
+Triggers: [exercise | cold air | irritants (perfumes) | aeroallergens | pets | infections | medications | laughing]
 night vs day
 Puffers:
 need for systemic steroids
 ED visits
-background comorbidities: [GERD|smoking|OSA|rhinitis]
+background comorbidities: [GERD | smoking | OSA | rhinitis]
 
 Current control: (When NOT sick with URTI):
 Daytime /week
@@ -291,13 +289,13 @@ Rescue / week
 missing work/school
 Reponse to treatment
 
-# Asthma. Phenotype: allergic/eosinophilic/nonallergic/ intermittent (exercise induced vs. occupational vs. viral induced). Current control with *** compliance/technique: [uncontrolled|excellent]
+# Asthma. Phenotype: allergic/eosinophilic/nonallergic/ intermittent (exercise induced vs. occupational vs. viral induced). Current control with *** compliance/technique: [uncontrolled | excellent]
 
 Recommendations:
 * Baseline spirometry, SPT, FeNO
 * Consider methacholine / Exercise challenge test given diagnostic uncertainty
 * Ad-hoc: OSA study
-> Optimize exacerbating comorbid conditions: [smoking|obesity|obstructive sleep apnea|nasal polyps|allergic rhinitis|anxiety|de-conditioning|viruses|pollution exposure]
+> Optimize exacerbating comorbid conditions: [smoking | obesity | obstructive sleep apnea | nasal polyps | allergic rhinitis | anxiety | de-conditioning | viruses | pollution exposure]
 > Pharmacologically:
   - Symbicort 200/6 1 puff PRN (up to 8 puffs/daily) for mild intermittent asthma or issues with adherence (as per the SYGMA2 trial)
   - Symbicort 200/6 1-2 puffs BID; it can be used additionally PRN
@@ -327,8 +325,8 @@ keywords = ["CRS", "sinusitis", "polyp"]
 content = '''
 onset
 duration
-Cardinal symptoms: [nasal congestion/fullness|facial pain/pressure/fullness|anterior or posterior nasal drainage (?purulent)|hypo/anosmia]
-Other symptoms: [change in voice|cough|headache|fatigue/disruption of sleep|halitosis/dental pain|ear pain/fullness]
+Cardinal symptoms: [nasal congestion/fullness | facial pain/pressure/fullness | anterior or posterior nasal drainage (?purulent) | hypo/anosmia]
+Other symptoms: [change in voice | cough | headache | fatigue/disruption of sleep | halitosis/dental pain | ear pain/fullness]
 CT/ENT before? Known nasal polyps?
 ? asthma/COPD, AR, CF, NERD/ASA sensitivity, recurrent infect, EtOH induced worsening of upper airway disease, impaired cilia(CF, PCD), smoking, pollution, occupational exposure, nasal anatomic variations, vasculitis
 Treatment trials
@@ -364,11 +362,11 @@ Locations
 onset, ?trigger
 Duration and frequency;
 Timing during day
-Can you make your hives appear? Triggers: [cold|heat/exercise|pressure|sun|scratches]
+Can you make your hives appear? Triggers: [cold | heat/exercise | pressure | sun | scratches]
 Response to antihistamines
 Angioedema
 NSAIDS
-Red flags: [anaphylaxis|thyroid|B symptoms|rheum]
+Red flags: [anaphylaxis | thyroid | B symptoms | rheum]
 No burning or pain, bruising, systemic symptoms of fever, weight loss, bone pain, adenopathy, signs of inflammatory arthritis, no skin rashes, no photosensitivity, no Raynaud's, no dry eyes or dry mouth, no oral or genital ulcers.
 
 # Chronic spontaneous / inducible urticaria.
@@ -437,7 +435,7 @@ pruritus
 scratch until bleed
 sleep
 Anyone else in household? Systemic symptoms?
-triggers: [foods|new topicals|detergent|medications] 
+triggers: [foods | new topicals | detergent | medications] 
 past infections and need for antibiotics
 current skin regimen
 treatments done (topical steroids, AH, etc.)
@@ -482,7 +480,7 @@ onset
 trigger
 
 
-Symptoms: [Dysphagia|Regurg|Solid/liquid|location|Heartburn|chest|pain|GERD]
+Symptoms: [Dysphagia | Regurg | Solid/liquid | location | Heartburn | chest | pain | GERD]
 Food triggers, avoidance?
 Particular: dairy, wheat, soy, meats
 Endoscopy / swallow
@@ -521,7 +519,7 @@ what bug
 circumstances? location of string
 local, large local, or systemic
 timing and duration post sting
-symptoms: [hives|angioedema|dyspnea|stridor|wheeze|GI upset|presyncope|syncope]
+symptoms: [hives | angioedema | dyspnea | stridor | wheeze | GI upset | presyncope | syncope]
 consistent hx
 exposure risk
 treatment
@@ -614,12 +612,12 @@ Current skin regimen
 Treatment trialled
 
 ROS:
-Heptaobiliary: [known liver disease|prior bilirubin]
-Allergy/dermatology: [urticaria|eczema|psoriasis|other]
-Infection: [IVDU|Hep B/C|HIV|scabies (pustules/furrows|other household members)]
-Metabolic/Endocrine: [skin tone changes|hypo/hyper thyroid sx|diabetes|pregnant (ie. cholestasis of pregnancy)]
-Malignancy/Hematologic: [IDA|fever|weight loss|night sweats|abnormal CBC]
-Autoimmune: [DM rashes|proximal weakness|sicca|arthropathy|vitiligo|aleopecia ]
+Heptaobiliary: [known liver disease | prior bilirubin]
+Allergy/dermatology: [urticaria | eczema | psoriasis | other]
+Infection: [IVDU | Hep B/C | HIV | scabies (pustules/furrows | other household members)]
+Metabolic/Endocrine: [skin tone changes | hypo/hyper thyroid sx | diabetes | pregnant (ie. cholestasis of pregnancy)]
+Malignancy/Hematologic: [IDA | fever | weight loss | night sweats | abnormal CBC]
+Autoimmune: [DM rashes | proximal weakness | sicca | arthropathy | vitiligo | aleopecia ]
 
 # Pruritus
 Ddx:
@@ -714,7 +712,7 @@ Patient does not have any concurrent illness, does not use betablockers/ACEi or 
 
 Procedure:
 A total serving size of *** was used, about *** grams of protein.
-It was done in *** steps, seperated by [15|20|30] minutes each.
+It was done in *** steps, seperated by [15 | 20 | 30] minutes each.
 The patient was monitored about one hour after the last step.
 '''
 
@@ -749,7 +747,7 @@ topic = "Sublingual immunotherapy"
 keywords = ["immunotherapy", "SLIT", "sublingual"]
 content = '''
 Sublingual immunotherapy (SLIT)
-> He is a candidate for [Acarizax (dust mite)|Itulatek (birch/tree)|Grastek (Timothy/grass)|Oralair (sweet vernal, orchard, perennial, rye, timothy, Kentucky blue)|Ragwitek (ragweed)].
+> He is a candidate for [Acarizax (dust mite) | Itulatek (birch/tree) | Grastek (Timothy/grass) | Oralair (sweet vernal, orchard, perennial, rye, timothy, Kentucky blue) | Ragwitek (ragweed)].
 > Sublingual tablets are given daily at home, with a typical course for 3 years. Symptomatic relief is expected within 6-12 months with lasting benefit after completion of the full course. 
 > Risks discussed: oral pruritus, eosinophilic esophagitis. Anaphylaxis is exceedingly rare with SLIT
 > The first dose of each allergen must be give in clinic due to elevated risk of anaphylaxis 
