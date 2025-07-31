@@ -166,7 +166,6 @@
       {% if details.authors %}
       <div class="credits-tab">
         <i class="fas fa-user-edit"></i>
-        Credits
       </div>
       <div class="credits-content">
         <p><strong>Primary:</strong>
@@ -293,5 +292,97 @@
       });
     }
   });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  // Function to restructure pearls into two columns
+  function restructurePearls() {
+    const pearlsSections = document.querySelectorAll('.pearls-section');
+    
+    pearlsSections.forEach(section => {
+      const pearlsList = section.querySelector('ul');
+      if (!pearlsList) return;
+      
+      const listItems = Array.from(pearlsList.querySelectorAll('li'));
+      if (listItems.length <= 1) return; // No need to restructure if only one item
+      
+      // Check if we're in landscape mode
+      const isLandscape = window.matchMedia('(min-aspect-ratio: 1/1)').matches;
+      
+      if (isLandscape && listItems.length > 1) {
+        // Create two-column structure
+        const twoColumnsDiv = document.createElement('div');
+        twoColumnsDiv.className = 'two_columns';
+        
+        const leftColumn = document.createElement('div');
+        leftColumn.className = 'column';
+        const leftUl = document.createElement('ul');
+        
+        const rightColumn = document.createElement('div');
+        rightColumn.className = 'column';
+        const rightUl = document.createElement('ul');
+        
+        // Split items: first item goes to left, second to right, then alternate
+        listItems.forEach((item, index) => {
+          const clonedItem = item.cloneNode(true);
+          if (index === 0) {
+            leftUl.appendChild(clonedItem);
+          } else if (index === 1) {
+            rightUl.appendChild(clonedItem);
+          } else {
+            // For remaining items, distribute to balance columns
+            const leftCount = leftUl.children.length;
+            const rightCount = rightUl.children.length;
+            
+            if (leftCount <= rightCount) {
+              leftUl.appendChild(clonedItem);
+            } else {
+              rightUl.appendChild(clonedItem);
+            }
+          }
+        });
+        
+        leftColumn.appendChild(leftUl);
+        rightColumn.appendChild(rightUl);
+        twoColumnsDiv.appendChild(leftColumn);
+        twoColumnsDiv.appendChild(rightColumn);
+        
+        // Replace the original ul with the two-column structure
+        pearlsList.parentNode.replaceChild(twoColumnsDiv, pearlsList);
+        
+      } else {
+        // For portrait mode or single item, ensure we have a single column
+        // Check if it's already been restructured and revert if needed
+        const existingTwoColumns = section.querySelector('.two_columns');
+        if (existingTwoColumns) {
+          const singleUl = document.createElement('ul');
+          
+          // Collect all li elements from both columns
+          const allLis = existingTwoColumns.querySelectorAll('li');
+          allLis.forEach(li => {
+            singleUl.appendChild(li.cloneNode(true));
+          });
+          
+          existingTwoColumns.parentNode.replaceChild(singleUl, existingTwoColumns);
+        }
+      }
+    });
+  }
+  
+  // Initial restructure
+  restructurePearls();
+  
+  // Listen for window resize to handle orientation changes
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(restructurePearls, 250);
+  });
+  
+  // Listen for orientation change on mobile devices
+  window.addEventListener('orientationchange', function() {
+    setTimeout(restructurePearls, 500); // Delay to ensure layout has updated
+  });
+});
 </script>
 {% endif %}

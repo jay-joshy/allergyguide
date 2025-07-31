@@ -209,30 +209,12 @@
         list-style-type: disc;
 
         li {
-          margin: 0em 0;
-        }
+          margin: 0.5em 0; // Consistent vertical spacing
 
-        // Two-column layout for landscape screens
-        @media (min-aspect-ratio: 1/1) {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          column-gap: 1.5rem;
-          row-gap: 0rem;
-          align-items: start; // Ensures top alignment of columns
-
-          li {
-            p {
-              margin: 0.1rem;
-              padding: 0rem;
-
-            }
-
+          p {
+            margin: 0.1rem;
+            padding: 0rem;
           }
-        }
-
-        // Single column for portrait/square screens
-        @media (max-aspect-ratio: 1/1) {
-          display: block;
         }
       }
 
