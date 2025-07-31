@@ -84,6 +84,7 @@
 
   .contact-card-content {
     padding: 0.5rem;
+    padding-top: 0.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -94,7 +95,8 @@
     font-size: 1.2em;
     font-weight: bold;
     color: var(--card-title);
-    margin: 0.5rem 0;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
   }
 
   .contact-card-body {

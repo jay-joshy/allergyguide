@@ -10,10 +10,6 @@ in_search_index = false
 toc = true
 +++
 
-Here is an example thing {% example() %}
-holy moly
-{% end %}
-
 ## Highlights
 
 Not a shortcode but still useful. You have several colours to choose from:
@@ -616,7 +612,8 @@ This will display a warning admonition if viewed from Mobile.
 
 - body -- the JSON
 - show_headers: bool, default true
-- output_md: bool, default false (when true it outputs in a ```md block)
+
+For simple flat tables
 
 ```md
 {%/* json_to_table() */%}
@@ -636,6 +633,99 @@ This will display a warning admonition if viewed from Mobile.
 { "name": "Sarah", "age": 22, "isCool": true },
 { "name": "Lee", "age": 23, "isCool": true }
 ]
+{% end %}
+
+For more complex nested tables
+
+```js
+{%/* json_to_table() */%}
+
+{
+  "C1Inh-HAE": {
+    "HAE Type I": {
+      "C1Inh function": "< 50%",
+      "C1Inh": "< 50%",
+      "C4": "Low",
+      "C1q": "Normal",
+      "Anti-C1Inh Ab": "",
+      "Mutation": "_SERPING1_"
+    },
+    "HAE Type II": {
+      "C1Inh function": "< 50%",
+      "C1Inh": "Normal",
+      "C4": "Low",
+      "C1q": "Normal",
+      "Anti-C1Inh Ab": "",
+      "Mutation": "_SERPING1_"
+    }
+  },
+  "C1Inh-AAE": {
+    "": {
+      "C1Inh function": "< 50%",
+      "C1Inh": "< 50%",
+      "C4": "Low",
+      "C1q": "Low (70% of cases)",
+      "Anti-C1Inh Ab": "Present (50% of cases)",
+      "Mutation": "No"
+    }
+  },
+  "ACEi-AAE and nC1Inh-AAE": {
+    "": {
+      "C1Inh function": "Normal",
+      "C1Inh": "Normal",
+      "C4": "Normal",
+      "C1q": "Normal",
+      "Anti-C1Inh Ab": "",
+      "Mutation": "_FXII, PLG, ANGPT1, KNG1_"
+    }
+  }
+}
+
+{%/* end */%}
+```
+
+{% json_to_table()%}
+{
+"C1Inh-HAE": {
+"HAE Type I": {
+"C1Inh function": "< 50%",
+"C1Inh": "< 50%",
+"C4": "Low",
+"C1q": "Normal",
+"Anti-C1Inh Ab": "",
+"Mutation": "_SERPING1_"
+},
+"HAE Type II": {
+"C1Inh function": "< 50%",
+"C1Inh": "Normal",
+"C4": "Low",
+"C1q": "Normal",
+"Anti-C1Inh Ab": "",
+"Mutation": "_SERPING1_"
+}
+},
+"C1Inh-AAE": {
+"": {
+"C1Inh function": "< 50%",
+"C1Inh": "< 50%",
+"C4": "Low",
+"C1q": "Low (70% of cases)",
+"Anti-C1Inh Ab": "Present (50% of cases)",
+"Mutation": "No"
+}
+},
+"ACEi-AAE and nC1Inh-AAE": {
+"": {
+"C1Inh function": "Normal",
+"C1Inh": "Normal",
+"C4": "Normal",
+"C1q": "Normal",
+"Anti-C1Inh Ab": "",
+"Mutation": "_FXII, PLG, ANGPT1, KNG1_"
+}
+}
+}
+
 {% end %}
 
 ## research_card
@@ -713,3 +803,21 @@ This is a danger admonition with a danger icon.
 {% end %}
 
 <script src="/js/tabs.js"></script>
+
+## test_net_functions
+
+This is testing the ability for Netlify to securely hydrate a div with content based on credentials.
+
+{{ test_net_functions() }}
+
+## protected
+
+This allows for secure username/password protected content. The actual content is hidden in a private repository and is securely fetched dynamically to populate the content when the user signs in. Once the user signs in, until ~24h that password will be remembered on their machine. No log-out has been implemented yet but I see little utility at this time for that feature.
+
+To use, the shortcode requires the relative path to the HTML file needed to hydrate the page.
+
+```md
+{{/* protected(path="content/private/test.html") */}}
+```
+
+{{ protected(path="content/private/test.html") }}

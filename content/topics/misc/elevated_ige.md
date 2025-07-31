@@ -19,4 +19,30 @@ status = "not-started"
 </br>
 <div class="blur-container">
 
+# DDx:
+
+Atopic conditions
+
+- AD
+- AR
+- Asthma
+- ABPA
+- Food allergies
+
+Infectious
+
+- Parasitic usually
+- chronic fungal
+
+IEI
+
+- Job syndrome (↑IgE, eczema, recurrent "cold" staph abscesses)
+- Wiskott-Aldrich Syndrome
+- IPEX syndrome
+
+AI
+
+- eGPA
+- SLE
+
 </div>

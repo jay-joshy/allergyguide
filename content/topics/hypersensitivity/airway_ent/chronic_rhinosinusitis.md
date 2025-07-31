@@ -18,7 +18,7 @@ status="ready" # options include not-started, wip, or ready
 
 {% admonition(type="info", icon="info", title="THE BOTTOM LINE") %}
 
-CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. <span class="hl-yellow">**Diagnosis requires both objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell)</span>. Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may require ENT surgery**. Biologics such as dupilumab are highly effective for CRSwNP, and are indicated for refractory or severe presentations.
+CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with three major subtypes: CRSsNP, CRSwNP, and AFRS. **Diagnosis requires _both_ objective structural evidence of sinus inflammation** (CT or endoscopy) and **≥2 cardinal symptoms for ≥12 weeks** (nasal congestion, facial pain or pressure, nasal drainage, and absent or reduced smell). Preliminary workup involves aeroallergen testing with other ad-hoc tests. **First-line management includes trigger avoidance, saline rinses, and INCS; failure of medical therapy may need ENT surgery**. Biologics such as dupilumab are very effective for CRSwNP, and are indicated for refractory/severe presentations.
 
 <br>
 
@@ -36,6 +36,8 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 <img src="/topic_assets/chronic_rhinosinusitis/summary.png" style="max-height:60vh">
 </div>
 
+<hr class="topic">
+
 # Definitions
 
 {% two_columns() %}
@@ -52,6 +54,8 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 - OMC: Ostiomeatal complex
 
 {% end %}
+
+<hr class="topic">
 
 # Diagnostic criteria (multiple exist)
 
@@ -167,7 +171,6 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 ### CRSsNP
 
 - <span class="hl-yellow">Most common (~⅔ of cases)</span>
-- Most common (~⅔ of cases)
 - Likely link to allergies, infections, irritants, etc.
 - **Classically thick and mucopurulent** anterior/posterior nasal discharge predominant, less hypo/anosmia than CRSwNP
 - May have persistent symptoms with occasional flares
@@ -257,6 +260,8 @@ Diabetes`"]
 
 {% end %}
 
+<hr class="topic">
+
 # Differential diagnosis
 
 {% two_columns() %}
@@ -264,10 +269,10 @@ Diabetes`"]
 - Rhinitis (ie. allergic, vasomotor, medicamentosa, hormonal, etc.)
 - GPA/EGPA
 - Malignancy
-- Non-rhinogenic (ie. migraines, trigeminal neuralgia)
 
 <!-- split -->
 
+- Non-rhinogenic (ie. migraines, trigeminal neuralgia)
 - Structural abnormalities
 - CF
 - Immunodeficiency
@@ -283,6 +288,8 @@ Diabetes`"]
 - Unexplained weight loss, recurrent fevers, night sweats
 
 {% end %}
+
+<hr class="topic">
 
 # Pathophysiology and risk factors
 
@@ -322,6 +329,8 @@ Diabetes`"]
 
 {% end %}
 
+<hr class="topic">
+
 # Investigations
 
 <span class="hl-yellow">No standard panel of tests</span>. However, consider ad-hoc testing such as:
@@ -332,6 +341,8 @@ Diabetes`"]
 - CF testing
 - NERD testing
 - Asthma testing
+
+<hr class="topic">
 
 # Management
 
@@ -653,13 +664,19 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 - Post-surgery, it is important to maintain remission with ongoing medical therapy
 - Revisions may be required after a few years; rates ~10-30% <span class="references">6</span>
 
+<hr class="topic">
+
 # Factoids
 
 - Oral decongestants with chronic use can lead to rhinitis medicamentosa and rebound nasal obstruction when stopped
 
+<hr class="topic">
+
 # Quiz yourself:
 
 {{ wip(body="This section remains a work in progress. If you want to help contribute, see below :)") }}
+
+<hr class="topic">
 
 # Further reading:
 

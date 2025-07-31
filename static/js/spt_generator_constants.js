@@ -31,24 +31,19 @@ export const ALLERGENS = {
       "cow's milk", "egg-white", "goat's milk"
     ],
     seeds: [
-      "chia", "hemp seeds", "poppy", "sesame", "tahini", "sunflower seed"
+      "chia", "hemp seeds", "poppy", "sesame", "tahini", "sunflower seed", "black pepper", "flax seed", "mustard"
     ],
     shellfish: {
       crustaceans: ["crab", "lobster", "shrimp"],
       molluscs: ["clam", "mussel", "oyster", "scallop"]
     },
     fish: ["cod", "halibut", "salmon", "tuna"],
-    meats: ["beef", "chicken", "lamb", "pork"],
+    meats: ["beef", "chicken", "lamb", "pork", "turkey"],
     vegetables: [
-      "barley", "bean", "bell pepper", "broccoli", "carrot", "celery",
-      "corn", "cucumber", "eggplant", "garlic", "lettuce", "mushroom",
-      "oat", "onion", "pea", "potato", "rice", "soy", "spinach", "squash",
-      "tomato", "wheat"
+      "asparagus", "barley", "bean", "bell pepper", "broccoli", "cabbage", "carrot", "celery", "cinnamon", "corn", "cucumber", "eggplant", "garlic", "ginger", "lentil", "lettuce", "mushroom", "oat", "onion", "pea", "potato", "rice", "soy", "spinach", "squash", "sweet potato", "tomato", "wheat"
     ],
     fruits: [
-      "apple", "apricot", "banana", "cherry", "grape", "grapefruit",
-      "kiwi", "lemon", "mango", "orange", "peach", "pear", "pineapple",
-      "plum", "strawberry", "watermelon"
+      "apple", "apricot", "avocado", "banana", "blueberry", "cantaloupe", "cherry", "grape", "grapefruit", "kiwi", "lemon", "mango", "orange", "peach", "pear", "pineapple", "plum", "strawberry", "watermelon"
     ]
   },
   venoms: ["honeybee", "wasp", "white faced hornet", "yellow hornet", "yellow jacket"],

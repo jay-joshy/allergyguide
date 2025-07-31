@@ -20,4 +20,6 @@ status="not-started" # options include not-started, wip, or ready
 
 <div class="blur-container">
 
+Link to the drug hypersensitivity later
+
 </div>
