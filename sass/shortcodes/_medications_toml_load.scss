@@ -209,7 +209,30 @@
         list-style-type: disc;
 
         li {
-          margin: 0.5em 0;
+          margin: 0em 0;
+        }
+
+        // Two-column layout for landscape screens
+        @media (min-aspect-ratio: 1/1) {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          column-gap: 1.5rem;
+          row-gap: 0rem;
+          align-items: start; // Ensures top alignment of columns
+
+          li {
+            p {
+              margin: 0.1rem;
+              padding: 0rem;
+
+            }
+
+          }
+        }
+
+        // Single column for portrait/square screens
+        @media (max-aspect-ratio: 1/1) {
+          display: block;
         }
       }
 
@@ -231,7 +254,7 @@
       }
 
       .abbreviations-tab {
-        right: 5rem;
+        right: 1.8rem;
         background-color: var(--pearls_icon);
         border-bottom-left-radius: 0.6rem;
         padding-right: 1rem;
