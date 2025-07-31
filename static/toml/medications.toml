@@ -286,8 +286,6 @@ monograph_links = ["/monographs/example_2025_1.pdf"]
 abbreviations = ""
 pearls = [
   "<a target='blank' href='https://aacijournal.biomedcentral.com/articles/10.1186/s13223-019-0375-9'>CSACI position statement</a>: newer generation H1-antihistamines are safer than first-generation H1-antihistamines",
-  "",
-  "",
   "One of the few more common antihistamines that can be used IV",
 ]
 authors.primary = "Joshua Yu"
