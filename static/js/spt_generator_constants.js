@@ -7,19 +7,19 @@ export const ALLERGENS = {
       "cockroach"
     ],
     trees: [
-      "ash", "birch", "black walnut", "box elder", "cedar",
+      "ash", "alder", "birch", "black walnut", "box elder", "cedar", "red cedar",
       "cottonwood poplar", "elm", "maple", "oak", "sycamore",
       "tree mix", "western juniper", "white mulberry"
     ],
     grasses_weeds: [
-      "grass mix", "timothy grass", "bermuda grass", "mugwort", "pigweed", "ragweed",
+      "grass mix", "grass mix (KORT)", "timothy grass", "bermuda grass", "mugwort", "pigweed", "ragweed", "weed mix",
     ],
     fungi: [
       "alternaria", "aspergillus", "cladosporium (hormodendrum)",
-      "mucor", "penicillium", "rhizopus"
+      "mucor", "penicillium", "rhizopus", "mold mix"
     ],
     animals: [
-      "cat", "dog", "feather", "horse", "rabbit"
+      "cat", "dog", "feather mix", "horse", "rabbit"
     ]
   },
   foods: {
@@ -74,10 +74,27 @@ export const TEMPLATES = {
   Fruits: ALLERGENS.foods.fruits,
   Drugs: ALLERGENS.drugs.penicillins,
   Venoms: ALLERGENS.venoms,
-  CustomA: [
+  // CUSTOM OPTIONS.
+  // NEED TO UPDATE HTML SHORTCODE EACH TIME TO INCLUDE
+  RLO: [
+    "D. farinae",         // dust mite df
+    "D. pteronyssinus",   // dust mite dp
+    "cat",
+    "dog",
+    "feather mix",
+    "grass mix (KORT)",
+    "timothy grass",
+    "ragweed",
+    "weed mix",
+    "red cedar", "oak",
+    "alder",
+    "birch",
+    "aspergillus",
+    "alternaria",
+    "cladosporium (hormodendrum)",
+    "penicillium",
+    "mold mix",
     "(+) control", "(-) control",
-    ...ALLERGENS.aeroallergens.animals,
-    ...ALLERGENS.foods.shellfish.crustaceans,
   ]
 };
 
