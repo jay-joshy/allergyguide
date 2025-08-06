@@ -126,9 +126,9 @@ keywords = ["food", "food allergy", "ige mediated food allergy"]
 content = '''
 substance
 age at reaction
-exposed b4?
 form(s): [raw | cooked | raw and cooked]
 route
+amount eaten
 symptoms: [hives | angioedema | dyspnea | stridor | wheeze | GI upset | presyncope | syncope]
 other symptoms: 
 sx how long after exposure:
@@ -136,6 +136,7 @@ other exposures (ie substance, sting)
 cofactors: [NSAIDs | exercise | alcohol | infection]
 treatment: where, what, response; epipen?
 epipen carried all times?
+exposed b4?
 repeat exposure since?
 consistency?
 
