@@ -1,0 +1,552 @@
+// CSS Custom Properties for color themes
+:root {
+  /* Dark mode food group colors */
+  --food-bg-fruits: #2a3d2a;
+  --food-text-fruits: #90ee90;
+  --food-bg-sweets: #4a2d4a;
+  --food-text-sweets: #ffb6c1;
+  --food-bg-pork: #3d2a2a;
+  --food-text-pork: #ffa07a;
+  --food-bg-nuts: #3a2f1a;
+  --food-text-nuts: #daa520;
+  --food-bg-beef: #4a1a1a;
+  --food-text-beef: #ff6b6b;
+  --food-bg-breakfast: #3a3a1a;
+  --food-text-breakfast: #f0e68c;
+  --food-bg-baby: #2a4a4a;
+  --food-text-baby: #87ceeb;
+  --food-bg-dairy: #4a3a1a;
+  --food-text-dairy: #ffd700;
+  --food-bg-vegetables: #1a3a1a;
+  --food-text-vegetables: #98fb98;
+  --food-bg-beverages: #1a2a4a;
+  --food-text-beverages: #87cefa;
+  --food-bg-mixed: #3a3a3a;
+  --food-text-mixed: #d3d3d3;
+  --food-bg-fats: #3a3a2a;
+  --food-text-fats: #f5deb3;
+  --food-bg-fast: #4a2a1a;
+  --food-text-fast: #ff8c00;
+  --food-bg-snacks: #4a3a2a;
+  --food-text-snacks: #ffa500;
+  --food-bg-lamb: #3a1a2a;
+  --food-text-lamb: #ff69b4;
+  --food-bg-poultry: #2a2a3a;
+  --food-text-poultry: #dda0dd;
+  --food-bg-soups: #2a3a3a;
+  --food-text-soups: #cd853f;
+  --food-bg-sausages: #4a1a2a;
+  --food-text-sausages: #dc143c;
+  --food-bg-legumes: #2a4a2a;
+  --food-text-legumes: #9acd32;
+  --food-bg-cereals: #3a2a3a;
+  --food-text-cereals: #deb887;
+  --food-bg-fish: #1a3a4a;
+  --food-text-fish: #40e0d0;
+  --food-bg-spices: #2a4a1a;
+  --food-text-spices: #adff2f;
+  --food-bg-baked: #4a4a2a;
+  --food-text-baked: #f4a460;
+
+  /* Dark mode general colors */
+  --food-bg: #1e1e1e;
+  --food-text: #e0e0e0;
+  --food-border: #404040;
+  --food-header-bg: #2a2a2a;
+  --food-hover: rgba(66, 133, 244, 0.1);
+  --food-input-bg: #2a2a2a;
+  --food-input-border: #404040;
+  --food-input-focus: #ff8c00;
+  --food-btn-bg: #2a2a2a;
+  --food-btn-hover: #3a3a3a;
+  --food-btn-active: #ff8c00;
+  --food-no-data: #666;
+  --food-results-bg: #252525;
+  --food-mean-value: #4caf50;
+}
+
+:root.switch {
+  /* Light mode food group colors */
+  --food-bg-fruits: #f0fff0;
+  --food-text-fruits: #228b22;
+  --food-bg-sweets: #fdf0fd;
+  --food-text-sweets: #8b008b;
+  --food-bg-pork: #fff0f0;
+  --food-text-pork: #cd5c5c;
+  --food-bg-nuts: #faf8f0;
+  --food-text-nuts: #b8860b;
+  --food-bg-beef: #ffe8e8;
+  --food-text-beef: #b22222;
+  --food-bg-breakfast: #fffacd;
+  --food-text-breakfast: #b8860b;
+  --food-bg-baby: #f0f8ff;
+  --food-text-baby: #4169e1;
+  --food-bg-dairy: #fffaf0;
+  --food-text-dairy: #ff8c00;
+  --food-bg-vegetables: #f0fff0;
+  --food-text-vegetables: #32cd32;
+  --food-bg-beverages: #f0f8ff;
+  --food-text-beverages: #1e90ff;
+  --food-bg-mixed: #f8f8f8;
+  --food-text-mixed: #696969;
+  --food-bg-fats: #fffff0;
+  --food-text-fats: #daa520;
+  --food-bg-fast: #fff8dc;
+  --food-text-fast: #ff6347;
+  --food-bg-snacks: #fff8dc;
+  --food-text-snacks: #ff8c00;
+  --food-bg-lamb: #fff0f5;
+  --food-text-lamb: #c71585;
+  --food-bg-poultry: #f8f8ff;
+  --food-text-poultry: #9370db;
+  --food-bg-soups: #f5f5dc;
+  --food-text-soups: #a0522d;
+  --food-bg-sausages: #ffe4e1;
+  --food-text-sausages: #dc143c;
+  --food-bg-legumes: #f0fff0;
+  --food-text-legumes: #6b8e23;
+  --food-bg-cereals: #faf0e6;
+  --food-text-cereals: #d2691e;
+  --food-bg-fish: #f0ffff;
+  --food-text-fish: #008b8b;
+  --food-bg-spices: #f5fffa;
+  --food-text-spices: #228b22;
+  --food-bg-baked: #fdf5e6;
+  --food-text-baked: #d2691e;
+
+  /* Light mode general colors */
+  --food-bg: #ffffff;
+  --food-text: #333333;
+  --food-border: #e0e0e0;
+  --food-header-bg: #f8f9fa;
+  --food-hover: rgba(66, 133, 244, 0.05);
+  --food-input-bg: #ffffff;
+  --food-input-border: #e0e0e0;
+  --food-input-focus: #ff8c00;
+  --food-btn-bg: #ffffff;
+  --food-btn-hover: #f5f5f5;
+  --food-btn-active: #ff8c00;
+  --food-no-data: #bbb;
+  --food-results-bg: #f9f9f9;
+  --food-mean-value: #2e7d32;
+}
+
+.food_protein_index {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--food-bg);
+  color: var(--food-text);
+
+  // Search container
+  .search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--food-input-border);
+      border-radius: 8px;
+      font-size: 16px;
+      background: var(--food-input-bg);
+      color: var(--food-text);
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--food-input-focus);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      &::placeholder {
+        color: var(--food-no-data);
+      }
+    }
+
+    .clear-btn {
+      padding: 12px 20px;
+      background: var(--food-btn-bg);
+      border: 2px solid var(--food-input-border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--food-text);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: var(--food-btn-hover);
+        border-color: var(--food-border);
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  // Filter buttons
+  .filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--food-input-border);
+      background: var(--food-btn-bg);
+      color: var(--food-text);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+
+      &:hover {
+        border-color: var(--food-input-focus);
+        background: var(--food-hover);
+      }
+
+      &.active {
+        background: var(--food-btn-active);
+        color: white;
+        border-color: var(--food-btn-active);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  // Results info
+  .results-info {
+    margin-bottom: 16px;
+
+    #results-count {
+      font-size: 14px;
+      color: var(--food-no-data);
+      font-weight: 500;
+    }
+  }
+
+  // Table container
+  .table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--food-bg);
+    border: 1px solid var(--food-border);
+  }
+
+  // Food table
+  .food-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    thead {
+      background: var(--food-header-bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+
+      th {
+        padding: 16px 12px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--food-text);
+        border-bottom: 2px solid var(--food-border);
+        white-space: nowrap;
+
+        &:first-child {
+          padding-left: 20px;
+        }
+
+        &:last-child {
+          padding-right: 20px;
+        }
+      }
+    }
+
+    tbody {
+      .food-row {
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background: var(--food-hover);
+        }
+
+        &:nth-child(even) {
+          background: rgba(128, 128, 128, 0.05);
+        }
+
+        td {
+          padding: 12px;
+          border-bottom: 1px solid var(--food-border);
+          vertical-align: top;
+
+          &:first-child {
+            padding-left: 20px;
+          }
+
+          &:last-child {
+            padding-right: 20px;
+          }
+
+          &.food-name {
+            font-weight: 500;
+            color: var(--food-text);
+            max-width: 300px;
+          }
+
+          &.food-group {
+            font-weight: 500;
+            border-radius: 6px;
+            position: relative;
+
+            // Food group specific colors using CSS custom properties
+            &[data-group="Fruits and fruit juices"] {
+              background: var(--food-bg-fruits);
+              color: var(--food-text-fruits);
+            }
+
+            &[data-group="Sweets"] {
+              background: var(--food-bg-sweets);
+              color: var(--food-text-sweets);
+            }
+
+            &[data-group="Pork Products"] {
+              background: var(--food-bg-pork);
+              color: var(--food-text-pork);
+            }
+
+            &[data-group="Nuts and Seeds"] {
+              background: var(--food-bg-nuts);
+              color: var(--food-text-nuts);
+            }
+
+            &[data-group="Beef Products"] {
+              background: var(--food-bg-beef);
+              color: var(--food-text-beef);
+            }
+
+            &[data-group="Breakfast cereals"] {
+              background: var(--food-bg-breakfast);
+              color: var(--food-text-breakfast);
+            }
+
+            &[data-group="Babyfoods"] {
+              background: var(--food-bg-baby);
+              color: var(--food-text-baby);
+            }
+
+            &[data-group="Dairy and Egg Products"] {
+              background: var(--food-bg-dairy);
+              color: var(--food-text-dairy);
+            }
+
+            &[data-group="Vegetables and Vegetable Products"] {
+              background: var(--food-bg-vegetables);
+              color: var(--food-text-vegetables);
+            }
+
+            &[data-group="Beverages"] {
+              background: var(--food-bg-beverages);
+              color: var(--food-text-beverages);
+            }
+
+            &[data-group="Mixed Dishes"] {
+              background: var(--food-bg-mixed);
+              color: var(--food-text-mixed);
+            }
+
+            &[data-group="Fats and Oils"] {
+              background: var(--food-bg-fats);
+              color: var(--food-text-fats);
+            }
+
+            &[data-group="Fast Foods"] {
+              background: var(--food-bg-fast);
+              color: var(--food-text-fast);
+            }
+
+            &[data-group="Snacks"] {
+              background: var(--food-bg-snacks);
+              color: var(--food-text-snacks);
+            }
+
+            &[data-group="Lamb, Veal and Game"] {
+              background: var(--food-bg-lamb);
+              color: var(--food-text-lamb);
+            }
+
+            &[data-group="Poultry Products"] {
+              background: var(--food-bg-poultry);
+              color: var(--food-text-poultry);
+            }
+
+            &[data-group="Soups, Sauces and Gravies"] {
+              background: var(--food-bg-soups);
+              color: var(--food-text-soups);
+            }
+
+            &[data-group="Sausages and Luncheon meats"] {
+              background: var(--food-bg-sausages);
+              color: var(--food-text-sausages);
+            }
+
+            &[data-group="Legumes and Legume Products"] {
+              background: var(--food-bg-legumes);
+              color: var(--food-text-legumes);
+            }
+
+            &[data-group="Cereals, Grains and Pasta"] {
+              background: var(--food-bg-cereals);
+              color: var(--food-text-cereals);
+            }
+
+            &[data-group="Finfish and Shellfish Products"] {
+              background: var(--food-bg-fish);
+              color: var(--food-text-fish);
+            }
+
+            &[data-group="Spices and Herbs"] {
+              background: var(--food-bg-spices);
+              color: var(--food-text-spices);
+            }
+
+            &[data-group="Baked Products"] {
+              background: var(--food-bg-baked);
+              color: var(--food-text-baked);
+            }
+
+            // Default color for unspecified groups
+            &:not([data-group]) {
+              background: var(--food-btn-bg);
+              color: var(--food-no-data);
+            }
+          }
+
+          &.mean-value {
+            font-weight: 600;
+            color: var(--food-mean-value);
+            text-align: right;
+            font-family: 'Monaco', 'Menlo', monospace;
+          }
+
+          &.standard-error {
+            text-align: right;
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: var(--food-no-data);
+
+            .no-data {
+              color: var(--food-no-data);
+              font-style: italic;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // No results message
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--food-no-data);
+    background: var(--food-results-bg);
+    border: 1px solid var(--food-border);
+    border-radius: 12px;
+    margin-top: 20px;
+
+    p {
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .food_protein_index {
+    padding: 16px;
+
+    .search-container {
+      flex-direction: column;
+
+      .search-input {
+        margin-bottom: 0;
+      }
+    }
+
+    .filter-container {
+      .filter-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+
+    .food-table {
+      font-size: 13px;
+
+      thead th {
+        padding: 12px 8px;
+
+        &:first-child {
+          padding-left: 12px;
+        }
+
+        &:last-child {
+          padding-right: 12px;
+        }
+      }
+
+      tbody td {
+        padding: 10px 8px;
+
+        &:first-child {
+          padding-left: 12px;
+        }
+
+        &:last-child {
+          padding-right: 12px;
+        }
+
+        &.food-name {
+          max-width: 200px;
+          word-break: break-word;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .food_protein_index {
+    .table-container {
+      margin: 0 -16px;
+      border-radius: 0;
+    }
+
+    .food-table {
+      thead th {
+        font-size: 12px;
+      }
+
+      tbody td {
+        font-size: 12px;
+
+        &.food-name {
+          max-width: 150px;
+        }
+      }
+    }
+  }
+}
