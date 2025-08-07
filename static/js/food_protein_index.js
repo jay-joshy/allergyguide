@@ -1,3 +1,17 @@
+// Debounce utility function
+// This allows for a slight delay so that the search is not triggered on EVERY keystroke...
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('food-search');
   const clearBtn = document.getElementById('clear-search');
@@ -26,14 +40,17 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    const fuzzyResults = fuzzysort.go(query, searchableData, {
-      key: 'foodName', // Use 'key' (singular) instead of 'keys'
-      threshold: -10000,
-      limit: 50
-    });
-    console.log(fuzzyResults)
-
-    searchResults = fuzzyResults.map(result => result.obj.element);
+    try {
+      const fuzzyResults = fuzzysort.go(query, searchableData, {
+        key: 'foodName',
+        threshold: -10000,
+        limit: 50
+      });
+      searchResults = fuzzyResults.map(result => result.obj.element);
+    } catch (error) {
+      console.error('Search error:', error);
+      searchResults = []; // Graceful fallback
+    }
   }
 
   // Filter functionality
@@ -48,25 +65,44 @@ document.addEventListener('DOMContentLoaded', function() {
   // Update display
   function updateDisplay() {
     const visibleRows = applyFilter(currentFilter);
+    const searchQuery = searchInput.value.trim();
 
-    // Hide all rows first
-    allRows.forEach(row => row.style.display = 'none');
+    // If no search query, encourage user to search
+    if (searchQuery === '' && currentFilter === 'all') {
+      tableBody.innerHTML = '';
+      resultsCount.innerHTML = `<strong>${visibleRows.length}</strong> foods.`;
 
-    // Remove all rows from the table body
-    tableBody.innerHTML = '';
+      noResults.innerHTML = `
+        <div style="text-align: center; padding: 40px 20px;">
+          <h3 style="margin-bottom: 16px; color: var(--food-text);">🔍 Start typing to search through the database.</h3>
+          <p style="margin-bottom: 20px; font-size: 16px;">
+            Search through <strong>${visibleRows.length} foods</strong> to find protein content and nutritional information.
+          </p>
+          <p style="color: var(--food-no-data); font-size: 14px;">
+            Try searching for "peanut butter", "pecans", "lobster", or any other foods.
+          </p>
+        </div>
+      `;
+      noResults.style.display = 'block';
+      foodTable.style.display = 'none';
+      return;
+    }
 
-    // Re-add rows in the correct order
+    // Normal search results
+    const fragment = document.createDocumentFragment();
+
     visibleRows.forEach(row => {
-      row.style.display = '';
-      tableBody.appendChild(row);
+      fragment.appendChild(row.cloneNode(true));
     });
 
-    // Update results count
+    tableBody.innerHTML = '';
+    tableBody.appendChild(fragment);
+
     const count = visibleRows.length;
     resultsCount.textContent = `${count} food${count !== 1 ? 's' : ''}`;
 
-    // Show/hide no results message
     if (count === 0) {
+      noResults.innerHTML = '<p>No foods match your search criteria.</p>';
       noResults.style.display = 'block';
       foodTable.style.display = 'none';
     } else {
@@ -75,15 +111,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Create debounced search function
+  const debouncedSearch = debounce(function(query) {
+    performSearch(query);
+    updateDisplay();
+  }, 150); // Wait 150ms after user stops typing
+
   // Event listeners
   searchInput.addEventListener('input', function() {
-    performSearch(this.value);
-    updateDisplay();
+    // Use debounced search instead of immediate search
+    debouncedSearch(this.value);
   });
 
   clearBtn.addEventListener('click', function() {
     searchInput.value = '';
     performSearch('');
+
+    // Reset to "All Foods" filter and show start message
+    filterBtns.forEach(b => b.classList.remove('active'));
+    filterBtns[0].classList.add('active'); // First button is "All Foods"
+    currentFilter = 'all';
+
     updateDisplay();
     searchInput.focus();
   });
@@ -100,8 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Initialize display
-  updateDisplay();
 
   // Add keyboard navigation for search
   searchInput.addEventListener('keydown', function(e) {
@@ -111,4 +157,9 @@ document.addEventListener('DOMContentLoaded', function() {
       updateDisplay();
     }
   });
+
+  // Initialize display
+  updateDisplay();
+
+  document.querySelector('.food_protein_index').classList.add('initialized');
 });
