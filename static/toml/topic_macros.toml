@@ -12,7 +12,7 @@ CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
 
 Dear Dr. 
 
-We assessed this patient today on {current_date} with Dr. ***.
+We assessed this patient today with Dr. ***.
 They are a *** referred for assessment of ***.
 
 PAST MEDICAL HISTORY:
@@ -79,8 +79,9 @@ keywords = ["template", "follow up"]
 content = '''
 CLINICAL ALLERGY AND IMMUNOLOGY FOLLOW-UP
 
-Dr. *** and I saw this patient in follow up on {current_date}; last seen on:
-They are a *** who we follow for ***.
+We followed up with this patient on:
+They were last seen on: 
+They are a *** who we follow for:
 
 RELEVANT ALLERGIC AND MEDICAL HISTORY:
 
@@ -355,7 +356,13 @@ Follow-up: ~3-4 months
 [dermatology-chronic_urticaria]
 wip = true
 topic = "Chronic urticaria"
-keywords = ["CSU", "chronic urticaria", "CIU"]
+keywords = [
+  "CSU",
+  "chronic urticaria",
+  "CIU",
+  "chronic spontaneous urticaria",
+  "chronic inducible urticaria",
+]
 content = '''
 is it hive? raised, erythematous, transient, itchy
 scars, painful, bruising
@@ -370,13 +377,12 @@ NSAIDS
 Red flags: [anaphylaxis | thyroid | B symptoms | rheum]
 No burning or pain, bruising, systemic symptoms of fever, weight loss, bone pain, adenopathy, signs of inflammatory arthritis, no skin rashes, no photosensitivity, no Raynaud's, no dry eyes or dry mouth, no oral or genital ulcers.
 
-# Chronic spontaneous / inducible urticaria.
-This is a generally benign, mast-cell mediated idiopathic primary skin disorder. Chronic spontaneous urticaria is typically a self-resolving condition over 2-5 years; chronic inducible urticaria is generally more long lived. In the vast majority of cases it is not a sign of more insidious underlying disease.
+# Chronic spontaneous / inducible urticaria (CSU).
+This is a generally benign, histamine-mediated idiopathic primary skin disorder. CSU is typically a self-resolving condition over 1-5 years; chronic inducible urticaria is generally more long lived. In the vast majority of cases it is not a sign of more insidious underlying disease, though in some cases we arrange for baseline bloodwork to assess for rarer underlying causes.
 
-> Bloodwork usually not required for diagnosis, but in certain cases we consider CBC, CRP, LFTs, TSH, Calcium, H. pylori serology
+> Bloodwork usually not required for diagnosis, but in certain cases we consider CBC, CRP, LFTs, TSH, anti-TPO, IgE, Calcium, SPEP, H. pylori serology
 > Non-pharmacologically we recommended:
   - They do/do not have physical triggers that lead to worsening of symptoms. We advised avoidance of ***
-  - Symptoms can be exacerbated by stress and skin abrasions. Recommended regular moisturization at least twice a day to prevent dry skin and stress reduction
   - Food avoidance with elimination diets is contreversial
 > For symptomatic management we recommend 2nd generation antihistamines, with titration to 4x the regular dose as required. We have provided:
   - Rupatadine 10mg PO OD, which can be titrated to 40mg OD if required

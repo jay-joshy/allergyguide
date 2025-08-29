@@ -18,8 +18,7 @@
     {% endif %}
     <div class="code-block-container">
       <button class="copy-button">Copy</button>
-      <div class="txt">{{ section_data.content | trim | replace(from="{current_date}", to=now() |
-        date(format="%B %d, %Y")) }}</div>
+      <div class="txt">{{ section_data.content | trim }}</div>
     </div>
   </div>
   {% endfor %}
