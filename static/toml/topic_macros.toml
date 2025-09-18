@@ -252,9 +252,8 @@ content = '''
 Symptoms include: [rhinorrhea | post-nasal drip | congestion | sneezing | itchy eyes]
 onset
 season: [perennial | seasonal: ]
-triggers: [animals | ASA/NSAID | indoor/outdoor]
-[temperature shifts | exercise | hot/spicy food | dust | smoke/irritants | strong odors/perfume]
-sinusitis/other red flags? [anosmia | purulent drainage | facial pain/pressure | nose bleed | constitutional decline]
+triggers: [animals | ASA/NSAID | indoor/outdoor | temperature shifts | exercise | hot/ | dust/particulates/smoke | strong odors/perfume]
+sinusitis/other red flags: [anosmia | purulent drainage | facial pain/pressure | nose bleed | constitutional decline]
 prior ENT or surg:
 prior testing: 
 treatment tried, technique, duration
