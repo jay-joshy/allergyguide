@@ -72,3 +72,7 @@ date = "2025-04-29"
 - Ingredients:
 - Tools:
 - Steps:
+
+# Further reading:
+
+{{ references_updated(showBib=true, path="content/josh/meals.bib") }}

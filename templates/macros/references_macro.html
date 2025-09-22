@@ -1,0 +1,82 @@
+{% macro bibstrip(in) %}
+{{ in | replace(from="---",to="—") | replace(from="--", to="-") | replace(from="{",to="") | replace(from="}", to="") | safe }}
+{% endmacro bibstrip %}
+
+{% macro bib_book(ref) %}
+    {{ ref.tags.author }},
+    {% if ref.tags.url %}
+<a class="ref-link" href="{{ref.tags.url}}" target="_blank">
+  <b>{{ ref.tags.title }}</b>,
+</a>
+{% else %}
+<b>{{ ref.tags.title }}</b>, 
+    {% endif %}
+    {{ ref.tags.publisher }}, 
+    {{ ref.tags.year }}
+{% endmacro bib_book %}
+
+{% macro bib_article(ref) %}
+    {{ ref.tags.author }}, 
+    {% if ref.tags.url %}
+<a class="ref-link" href="{{ref.tags.url}}" target="_blank">
+  <b>{{ ref.tags.title }}</b>,
+</a>
+{% else %}
+<b>{{ ref.tags.title }}</b>, 
+    {% endif %}
+<em>{{ ref.tags.journal }}</em>, 
+    vol. {{ ref.tags.volume }}, 
+    {{ ref.tags.number}}, 
+    pp. {{ ref.tags.pages }},
+    {% if ref.tags.month %}{{ ref.tags.month }}{% endif %}
+    {{ ref.tags.year }}
+{% endmacro bib_article %}
+
+{% macro bib_inproceedings(ref) %}
+    {{ ref.tags.author }}, 
+    "{{ ref.tags.title }}," 
+    in
+<em>{{ ref.tags.booktitle }}</em>, 
+    {{ ref.tags.address }},
+    {{ ref.tags.year }}, 
+    pp. {{ ref.tags.pages }}
+{% endmacro bib_inproceedings %}
+
+{% macro bib_manual(ref) %}
+    {{ ref.tags.author }},
+<em>{{ ref.tags.title }}</em>,
+    {{ ref.tags.organization }},
+    {{ ref.tags.address }}, 
+    {% if ref.tags.edition %}{{ ref.tags.edition }},{% endif %}
+    {% if ref.tags.month %}{{ ref.tags.month }}{% endif %}
+    {{ ref.tags.year }}.
+{% endmacro bib_manual %}
+
+{% macro bib_thesis(ref, type) %}
+    {{ ref.tags.author }}, 
+    "{{ ref.tags.title }}," 
+    {{ type }},
+    {{ ref.tags.school }},
+    {{ ref.tags.address }}, 
+    {{ ref.tags.year }}
+{% endmacro bib_thesis %}
+
+{% macro bib_mastersthesis(ref) %}
+    {{ macros::bib_thesis(ref=ref,type="M.S. Thesis") }}
+{% endmacro bib_mastersthesis %}
+
+{% macro bib_phdthesis(ref) %}
+    {{ macros::bib_thesis(ref=ref,type="Ph.D. dissertation") }}
+{% endmacro bib_phdthesis %}
+
+{% macro bib_misc(ref) %}
+    {% if ref.tags.author %}{{ ref.tags.author }},{% endif %}
+    {{ ref.tags.title }},
+    {% if ref.tags.publisher %}{{ ref.tags.publisher }},{% endif %}
+    {% if ref.tags.year %}{{ ref.tags.year }},{% endif %}
+    {% if ref.tags.doi %}
+<a href="https://doi.org/{{ ref.tags.doi }}">{{ ref.tags.doi }}</a>
+{% elif ref.tags.url %}
+<a href="{{ ref.tags.url }}" target="_blank">{{ ref.tags.url }}</a>
+{% endif %}
+{% endmacro bib_misc %}
