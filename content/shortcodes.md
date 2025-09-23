@@ -545,58 +545,61 @@ ExRx: Blexten 10mg OD to QID {% popup(icon="rx") %}
 
 ## references
 
-```md
-This sentence needs two references <span class="references">1,2,3,1,1,1</span> and some of this
+Requires a .bib Bibtex file (easily generated with a citation software such as Zotero), example shown below:
 
-Here is another sentence with one reference <span class="references">2</span>
+```bib
+@article{yu_trends_2024,
+	title = {Trends of {Peanut}-{Induced} {Anaphylaxis} {Rates} {Before} and {After} the 2017 {Early} {Peanut} {Introduction} {Guidelines} in {Montreal}, {Canada}},
+	volume = {12},
+	issn = {2213-2201},
+	doi = {10.1016/j.jaip.2024.06.004},
+	abstract = {BACKGROUND: Food allergies, particularly peanut...},
+	language = {eng},
+	number = {9},
+	journal = {J Allergy Clin Immunol Pract},
+	author = {Yu, Joshua and Lanoue, Derek and Mir, Adhora and Kaouache, Mohammed and Bretholz, Adam and Clarke, Ann and McCusker, Christine and Protudjer, Jennifer L. P. and Jones, Aaron and Ben-Shoshan, Moshe},
+	month = sep,
+	year = {2024},
+	pmid = {38876271},
+	keywords = {Adolescent, Allergens, Anaphylaxis, Arachis, Canada, Child, Child, Preschool, COVID-19, Early allergen introduction, Emergency Service, Hospital, Female, Food allergy, Humans, Infant, Infant, Newborn, Male, Peanut Hypersensitivity, Practice Guidelines as Topic, Quebec, Registries},
+	pages = {2439--2444.e4},
+}
 
-... rest of the document content
-
-{%/* references(showBib = true) */%}
-[{
-"id": "1",
-"bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
-"url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
-"notes": ""
-}, {
-"id": "2",
-"bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
-"url": "https://www.jacionline.org/article/S0091-6749(22)01186-1/fulltext",
-"notes": "This study was good!"
-}, {
-"id": "3",
-"bib": "Another reference here with its own details.",
-"url": "https://example.com",
-"notes": ""
-}]
-
-{%/* end */%}
+@article{stehlin_guiding_2025,
+	title = {Guiding {Drug} {Provocation} {Testing} for {Ibuprofen} {Hypersensitivity} in a {Pediatric} {Population}: {Development} of the {I3A} {Risk}-{Stratification} {Tool}},
+	volume = {13},
+	issn = {2213-2198, 2213-2201},
+	shorttitle = {Guiding {Drug} {Provocation} {Testing} for {Ibuprofen} {Hypersensitivity} in a {Pediatric} {Population}},
+	url = {https://www.jaci-inpractice.org/article/S2213-2198(24)01238-8/fulltext},
+	doi = {10.1016/j.jaip.2024.11.022},
+	language = {English},
+	number = {3},
+	urldate = {2025-09-23},
+	journal = {The Journal of Allergy and Clinical Immunology: In Practice},
+	author = {Stehlin, Florian and Prosty, Connor and Mulé, Angela and Al-Otaibi, Ibtihal and Colli, Luca Delli and Gaffar, Judy and Yu, Joshua and Lanoue, Derek and Copaescu, Ana-Maria and Ben-Shoshan, Moshe},
+	month = mar,
+	year = {2025},
+	pmid = {39637941},
+	note = {Publisher: Elsevier},
+	keywords = {(s)NIUAA, (Selective) NSAID-induced urticaria, ...},
+	pages = {583--593.e3},
+	file = {Full Text PDF:/Users/joshuayu/Zotero/storage/MTTZ56PS/Stehlin et al. - 2025 - Guiding Drug Provocation Testing for Ibuprofen Hypersensitivity in a Pediatric Population Developme.pdf:application/pdf},
+}
 ```
 
-This sentence needs two references <span class="references">the world,2,3,1,1,1</span> and some of this
-
-Here is another sentence with one reference <span class="references">2</span>
+```md
+This sentence needs two references <span class="references">yu_trends_2024, stehlin_guiding_2025</span> and some of this
 
 ... rest of the document content
 
-{% references(showBib = true) %}
-[{
-"id": "the world",
-"bib": "Netting MJ, Campbell DE, Koplin JJ, et al. An Australian Consensus on Infant Feeding Guidelines to Prevent Food Allergy: Outcomes From the Australian Infant Feeding Summit. Journal of Allergy and Clinical Immunology: In Practice. 2017;5(6):1617-1624. doi:10.1016/j.jaip.2017.03.013",
-"url": "https://pubmed.ncbi.nlm.nih.gov/28499774/",
-"notes": ""
-}, {
-"id": "2",
-"bib": "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: A 2022 practice parameter update. Journal of Allergy and Clinical Immunology. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
-"url": "https://www.jacionline.org/article/S0091-6749(22)01186-1/fulltext",
-"notes": "This study was good!"
-}, {
-"id": "3",
-"bib": "Another reference here with its own details.",
-"url": "https://example.com",
-"notes": ""
-}]
-{% end %}
+{{/* references(showBib = true, path="content/example.bib) */}}
+```
+
+This sentence needs two references <span class="references">yu_trends_2024, stehlin_guiding_2025</span> and some of this
+
+... rest of the document content
+
+{{ references(showBib=true, path="content/example.bib") }}
 
 ## mobile_warning
 

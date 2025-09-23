@@ -680,7 +680,7 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 
 # Further reading:
 
-{{ references_updated(showBib=true, path="content/topics/hypersensitivity/airway_ent/chronic_rhinosinusitis.bib") }}
+{{ references(showBib=true, path="content/topics/hypersensitivity/airway_ent/chronic_rhinosinusitis.bib") }}
 
 <h1>Contributors</h1>
 

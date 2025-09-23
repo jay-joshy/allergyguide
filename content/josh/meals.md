@@ -75,4 +75,4 @@ date = "2025-04-29"
 
 # Further reading:
 
-{{ references_updated(showBib=true, path="content/josh/meals.bib") }}
+{{ references(showBib=true, path="content/josh/meals.bib") }}
