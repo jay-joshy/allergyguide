@@ -3,7 +3,21 @@
 {% endmacro bibstrip %}
 
 {% macro bib_book(ref) %}
-    {{ ref.tags.author }},
+    {%- set authors = ref.tags.author | split(pat=" and ") -%}
+    {%- set first_three = authors | slice(end=3) -%}
+    {%- for author in first_three -%}
+        {%- set name_parts = author | split(pat=", ") -%}
+        {%- if name_parts | length >= 2 -%}
+            {%- set last_name = name_parts[0] -%}
+            {%- set first_names = name_parts[1] | split(pat=" ") -%}
+            {{- last_name }} {% for name in first_names %}{{ name | truncate(length=1, end="") }}{% endfor -%}
+        {%- else -%}
+            {{- author -}}
+        {%- endif -%}
+        {%- if not loop.last %}, {% endif -%}
+    {%- endfor -%}
+    {%- if authors | length > 3 %}, et al.{%else%}.{% endif %} 
+
     {% if ref.tags.url %}
 <a class="ref-link" href="{{ref.tags.url}}" target="_blank">
   <b>{{ ref.tags.title }}</b>,
@@ -11,23 +25,40 @@
 {% else %}
 <b>{{ ref.tags.title }}</b>, 
     {% endif %}
-    {{ ref.tags.publisher }}, 
+<em>{{ ref.tags.publisher }}</em>, 
     {{ ref.tags.year }}
 {% endmacro bib_book %}
 
 {% macro bib_article(ref) %}
-    {{ ref.tags.author }}, 
-    {% if ref.tags.url %}
+    {%- set authors = ref.tags.author | split(pat=" and ") -%}
+    {%- set first_three = authors | slice(end=3) -%}
+    {%- for author in first_three -%}
+        {%- set name_parts = author | split(pat=", ") -%}
+        {%- if name_parts | length >= 2 -%}
+            {%- set last_name = name_parts[0] -%}
+            {%- set first_names = name_parts[1] | split(pat=" ") -%}
+            {{- last_name }} {% for name in first_names %}{{ name | truncate(length=1, end="") }}{% endfor -%}
+        {%- else -%}
+            {{- author -}}
+        {%- endif -%}
+        {%- if not loop.last %}, {% endif -%}
+    {%- endfor -%}
+    {%- if authors | length > 3 %}, et al.{%else%}.{% endif %} 
+    {%- if ref.tags.url -%}
 <a class="ref-link" href="{{ref.tags.url}}" target="_blank">
-  <b>{{ ref.tags.title }}</b>,
+  <b>{{ ref.tags.title }}</b>.
 </a>
-{% else %}
-<b>{{ ref.tags.title }}</b>, 
-    {% endif %}
+{%- else -%}
+<b>{{ ref.tags.title }}</b>.
+{%- endif %}
+    {% if ref.tags.journal %}
 <em>{{ ref.tags.journal }}</em>, 
+    {% endif %}
+    {% if ref.tags.volume and ref.tags.volume and ref.tags.pages %}
     vol. {{ ref.tags.volume }}, 
     {{ ref.tags.number}}, 
     pp. {{ ref.tags.pages }},
+    {% endif %}
     {% if ref.tags.month %}{{ ref.tags.month }}{% endif %}
     {{ ref.tags.year }}
 {% endmacro bib_article %}

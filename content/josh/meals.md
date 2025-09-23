@@ -71,7 +71,7 @@ date = "2025-04-29"
 - Healthy:
 - Ingredients:
 - Tools:
-- Steps:
+- Steps: <span class="references">desrosiers_canadian_2011,head_topical_2018,afdslkjjk</span>
 
 # Further reading:
 

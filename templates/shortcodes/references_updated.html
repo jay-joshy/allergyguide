@@ -1,10 +1,10 @@
-{% import "macros/references_macro.html" as macros %}
+{% import "macros/bib_macro.html" as macros %}
 
 {# Load .bib file with same name as the file #}
 {% set data = load_data(path=path, format="bibtex") %}
 {% set references = data.bibliographies %}
 
-{{data | json_encode(pretty=true) | linebreaksbr | safe }}
+{#data | json_encode(pretty=true) | linebreaksbr | safe #}
 <br><br>
 {% set unique_ids = [] %}
 {% for ref in references %}
@@ -27,8 +27,198 @@
 <div class="ref-bib">
   {% for ref in references %}
   <div class="item">
-    {{ macros::bibstrip(in=macros::bib_article(ref=ref)) }}
+    {{loop.index}}. {{ macros::bib_ref(bibliography=ref) }}
   </div>
   {% endfor %}
 </div>
 {% endif %}
+
+{# Pass the JSON data into JavaScript – note: the `jsonify` filter will output proper JSON #}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  // The full list of reference objects loaded from the BibTeX file
+  const references = {{references | json_encode() | safe}};
+
+  /**
+   * Formats a BibTeX entry into a readable citation string
+   * @param {Object} ref - The reference object from BibTeX
+   * @returns {string} - Formatted citation string
+   */
+  function formatCitation(ref) {
+    const tags = ref.tags;
+    let citation = '';
+    
+    // Authors
+    if (tags.author) {
+      // Handle multiple authors - split by 'and' and format
+      const authors = tags.author.split(' and ').map(author => {
+        // Handle "Last, First" format
+        if (author.includes(',')) {
+          const parts = author.split(',');
+          const lastName = parts[0].trim();
+          const firstName = parts[1] ? parts[1].trim() : '';
+          return firstName ? `${firstName} ${lastName}` : lastName;
+        }
+        return author.trim();
+      });
+      
+      if (authors.length === 1) {
+        citation += authors[0];
+      } else if (authors.length === 2) {
+        citation += `${authors[0]} and ${authors[1]}`;
+      } else if (authors.length > 2) {
+        citation += `${authors[0]} et al.`;
+      }
+      citation += '. ';
+    }
+    
+    // Title (bolded)
+    if (tags.title) {
+      citation += `<strong>${tags.title}</strong>. `;
+    }
+    
+    // Journal/Publisher
+    if (tags.journal) {
+      citation += `${tags.journal}`;
+    } else if (tags.booktitle) {
+      citation += `${tags.booktitle}`;
+    } else if (tags.publisher) {
+      citation += `${tags.publisher}`;
+    }
+    
+    // Year
+    if (tags.year) {
+      citation += `. ${tags.year}`;
+    }
+    
+    // Volume and Issue
+    if (tags.volume) {
+      citation += `;${tags.volume}`;
+      if (tags.number) {
+        citation += `(${tags.number})`;
+      }
+    }
+    
+    // Pages
+    if (tags.pages) {
+      citation += `:${tags.pages}`;
+    }
+    
+    // DOI
+    if (tags.doi) {
+      citation += `. doi:${tags.doi}`;
+    }
+    
+    return citation;
+  }
+
+  /**
+   * Gets the URL for a reference, preferring URL links
+   * @param {Object} ref - The reference object from BibTeX
+   * @returns {string} - URL for the reference
+   */
+  function getReferenceUrl(ref) {
+    const tags = ref.tags;
+
+    if (tags.url) {
+      return tags.url;
+    } 
+    else if (tags.doi) {
+      return `https://doi.org/${tags.doi}`;
+    } else {
+      // Fallback to search URL if no direct link available
+      const title = tags.title || '';
+      const searchQuery = encodeURIComponent(title);
+      return `https://scholar.google.com/scholar?q=${searchQuery}`;
+    }
+  }
+
+  // Function to close the popup
+  function closePopup() {
+    document.getElementById('ref-popup').classList.remove('active');
+  }
+
+  // Find each element in the document that contains citation keys
+  document.querySelectorAll('.references').forEach(function (refEl) {
+    // Get the citation key(s) from the span content, handling multiple keys separated by commas
+    const citationKeys = refEl.textContent.replace(/[\[\]]/g, '').split(',').map(key => key.trim());
+
+    // Create a clickable icon element
+    const iconEl = document.createElement('span');
+    iconEl.className = 'ref-icon';
+    iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmarks-fill" viewBox="0 0 16 16"><path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5z"/><path d="M4.268 1A2 2 0 0 1 6 0h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L13 13.768V2a1 1 0 0 0-1-1z"/></svg>';
+
+    // When the icon is clicked, build and display the popup with the selected references
+    iconEl.addEventListener('click', function () {
+      let popupContent = '';
+      
+      // Loop over the citation keys
+      citationKeys.forEach(function (citationKey) {
+        // Look up the reference object matching this citation key
+        const ref = references.find(function (r) {
+          return r.citation_key === citationKey;
+        });
+        
+        if (ref) {
+          popupContent += '<div class="ref-entry">';
+          
+          // Format and display the citation
+          const formattedCitation = formatCitation(ref);
+          const referenceUrl = getReferenceUrl(ref);
+          
+          popupContent += '<p class="ref-text"><a class="ref-link" href="' + referenceUrl + '" target="_blank">' + formattedCitation + '</a></p>';
+          
+          // If there's an abstract, show it as notes (truncated)
+          if (ref.tags.abstract && ref.tags.abstract.trim() !== "") {
+            let abstract = ref.tags.abstract.trim();
+            // Truncate to approximately 3 lines (around 300 characters)
+            if (abstract.length > 300) {
+              abstract = abstract.substring(0, 300) + '...';
+            }
+            popupContent += '<p class="ref-notes" style="font-size:0.8rem">' + abstract + '</p>';
+          }
+          
+          // Add separator if there are multiple references
+          if (citationKeys.length > 1) {
+            popupContent += '<hr class="ref-separator">';
+          }
+          
+          popupContent += '</div>';
+        } else {
+          // Handle missing citation key
+          popupContent += '<div class="ref-entry">';
+          popupContent += '<p class="ref-text"><em>Reference "' + citationKey + '" not found</em></p>';
+          popupContent += '</div>';
+        }
+      });
+      
+      // Update the popup inner content
+      document.getElementById('ref-popup-inner').innerHTML = popupContent;
+      
+      // Show the popup by adding an "active" class
+      document.getElementById('ref-popup').classList.add('active');
+    });
+
+    // Replace the original marker with the icon
+    refEl.parentNode.replaceChild(iconEl, refEl);
+  });
+
+  // Attach a handler to close the popup when the close button is clicked
+  document.getElementById('ref-close').addEventListener('click', closePopup);
+
+  // Close the popup if the user clicks outside the popup content
+  document.getElementById('ref-popup').addEventListener('click', function (event) {
+    // If the click happened directly on the overlay (not within the popup content)
+    if (event.target === this) {
+      closePopup();
+    }
+  });
+
+  // Listen for the Escape key to close the popup
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closePopup();
+    }
+  });
+});
+</script>
