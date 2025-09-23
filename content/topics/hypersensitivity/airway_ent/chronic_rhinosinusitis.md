@@ -64,7 +64,7 @@ CRS is a complex inflammatory syndrome of the nose and paranasal sinuses, with t
 <!-- TAB -->International: 2021 (our preference)
 <!-- CONTENT -->
 
-Requires <span class="hl-yellow">both ≥2 key symptoms for ≥12 weeks AND objective structural evidence of sinus inflammation:</span> <span class="references">1,2</span>
+Requires <span class="hl-yellow">both ≥2 key symptoms for ≥12 weeks AND objective structural evidence of sinus inflammation:</span> <span class="references">orlandi_international_2021, hamilos_chronic_2011</span>
 
 <div style="padding-top:1rem">
 </div>
@@ -97,7 +97,7 @@ This is done through either:
 <!-- TAB -->Canadian: 2011
 <!-- CONTENT -->
 
-Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective finding on endoscopy or CT scan: <span class="references">3</span>
+Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective finding on endoscopy or CT scan: <span class="references">desrosiers_canadian_2011</span>
 
 <div style="padding-top:1rem">
 </div>
@@ -115,7 +115,7 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 <!-- TAB -->European: 2020
 <!-- CONTENT -->
 
-≥2 key symptoms for ≥12 weeks (at least one from a 'major' criteria) and at least 1 objective finding on endoscopy or CT scan: <span class="references">4</span>
+≥2 key symptoms for ≥12 weeks (at least one from a 'major' criteria) and at least 1 objective finding on endoscopy or CT scan: <span class="references">fokkens_european_2020</span>
 
 <div style="padding-top:1rem">
 </div>
@@ -143,7 +143,7 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 <!-- TAB -->American: 2015
 <!-- CONTENT -->
 
-≥2 key symptoms for ≥12 weeks and at least 1 objective finding on endoscopy or CT scan: <span class="references">5</span>
+≥2 key symptoms for ≥12 weeks and at least 1 objective finding on endoscopy or CT scan: <span class="references">rosenfeld_clinical_2015</span>
 
 <div style="padding-top:1rem">
 </div>
@@ -162,8 +162,8 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 # Epidemiology and classifications
 
 - Overall epidemiology
-  - Canadian prevalence ~2-15% <span class="references">6</span>; CRSsNP > CRSwNP >> AFRS
-  - Adults and pediatrics affected, mean diagnosis age ~39, females slightly > males <span class="references">6,7</span>
+  - Canadian prevalence ~2-15% <span class="references">chin_diagnosis_2025</span>; CRSsNP > CRSwNP >> AFRS
+  - Adults and pediatrics affected, mean diagnosis age ~39, females slightly > males <span class="references">chin_diagnosis_2025, lee_acaai_2024</span>
   - Associated with increased healthcare costs + decreased QoL
 - Often symptoms are long-standing before presenting to medical attention, given low-grade severity
 - Other non-specific symptoms include ear fullness, headache, fatigue, altered taste, cough
@@ -178,20 +178,20 @@ Requires both ≥2 key symptoms for ≥8-12 weeks and at least 1 objective findi
 ### CRSwNP
 
 - Polyps are soft, usually bilateral avascular eosinophil-rich growths that most commonly grow from the ethmoid sinuses
-- Compared with CRSsNP, stronger association with asthma (~25% of patients), AFRS, NERD <span class="references">6</span>
+- Compared with CRSsNP, stronger association with asthma (~25% of patients), AFRS, NERD <span class="references">chin_diagnosis_2025</span>
 - Often stuffy nasal quality to voice
 
 ### AFRS
 
 - Inflammation from hypersensitivity to usually commensal fungi
-- More often in younger immunocompetent individuals in hot/humid climates (moreso in the US) and low SES; associated with polyposis <span class="references">2,7</span>
+- More often in younger immunocompetent individuals in hot/humid climates (moreso in the US) and low SES; associated with polyposis <span class="references">hamilos_chronic_2011, lee_acaai_2024</span>
 - **Classically peanut-butter like mucus**, very thick and tenacious
 - Specific criteria: ALL of
-  - CRS symptoms, Type 1 hypersensitivity to fungi confirmed by history, skin test, or serology, typical CT findings, Eosinophilic mucin with non-invasive fungal hyphae, absence of immunodeficiency, uncontrolled diabetes <span class="references">7</span>
+  - CRS symptoms, Type 1 hypersensitivity to fungi confirmed by history, skin test, or serology, typical CT findings, Eosinophilic mucin with non-invasive fungal hyphae, absence of immunodeficiency, uncontrolled diabetes <span class="references">lee_acaai_2024</span>
 
 {% dropdown(header="FYI: A new classification system?") %}
 
-In 2020 a new classification system beyond sNP/wNP/AFRS was proposed based on primary vs secondary causes, and localization/type of inflammation (local vs diffuse; TH2 skewed vs non-TH2). <span class="references">8</span>
+In 2020 a new classification system beyond sNP/wNP/AFRS was proposed based on primary vs secondary causes, and localization/type of inflammation (local vs diffuse; TH2 skewed vs non-TH2). <span class="references">grayson_contemporary_2020</span>
 
 <br>
 <br>
@@ -304,7 +304,7 @@ Diabetes`"]
 
 - Exact cause not understood for any subtype of CRS, but **overall CRS is more inflammatory > infectious**
 - Likely combination of physical/environmental insults, hypersensitivity, microbial pathogens, and structural abnormalities that ultimately lead to sinus mucosal dysfunction/inflammation, poor drainage/aeration, and resultant symptoms
-  - For AFRS, common organisms: Bipolaris, Curvularia, Alternaria, Rhizopus, Drechslera, Helminthosporium, Fusarium, and Aspergillus <span class="references">7</span>
+  - For AFRS, common organisms: Bipolaris, Curvularia, Alternaria, Rhizopus, Drechslera, Helminthosporium, Fusarium, and Aspergillus <span class="references">lee_acaai_2024</span>
   - Exaggerated TH2 response and very thick mucous forms
 
 {% end %}
@@ -368,7 +368,7 @@ Goals are symptom control through reduction of inflammation and improvement of s
 - **Treat any underlying risk factors (who knew?)**
 - **Lifestyle**
   - Avoidance of environmental triggers/insults/allergens
-  - _High volume_ nasal saline rinses/irrigation (OTC, rinses > sprays), at least 200 mL per side <span class="references">9</span>. Can improve penetration/efficacy of other topicals if used beforehand
+  - _High volume_ nasal saline rinses/irrigation (OTC, rinses > sprays), at least 200 mL per side <span class="references">chong_saline_2016</span>. Can improve penetration/efficacy of other topicals if used beforehand
     - _Examples: neti pot, squeeze bottles, etc. Must be STERILE saline (boiled/distilled water)_
 - **INCS**
   - Multiple delivery methods, most common in Canada are spray and rinses; widely available <span class="hl-yellow">but very common operator misuse with sprays</span> (see how to use [here](/handouts/incs/))
@@ -514,14 +514,14 @@ Dymista 1 spray EN BID {% popup() %}
 }
 ]
 {% end %}
-<i>Table adapted from Fowler and Sowerby (2021)</i><span class="references">10</span>
+<i>Table adapted from Fowler and Sowerby (2021)</i><span class="references">fowler_using_2021</span>
 
 {% end %}
 
 - **Consider involving ENT** for endoscopic assessment and consideration of early surgical management
 - **Antibiotics**
   - May consider for acute flares. Most common organism is _S. aureus_
-  - **CAUTION**: <span class="hl-yellow"><u>_this is not a routine treatment_</u></span> and there is poor quality evidence it has benefit <span class="references">4</span>: exercise antibiotic stewardship :). If requiring multiple courses or known resistant bugs => CULTURE first
+  - **CAUTION**: <span class="hl-yellow"><u>_this is not a routine treatment_</u></span> and there is poor quality evidence it has benefit <span class="references">fokkens_european_2020</span>: exercise antibiotic stewardship :). If requiring multiple courses or known resistant bugs => CULTURE first
   - _ExRx: clavulin 875 mg twice daily for 10 d, moxifloxacin 400 mg PO x10 if penicillin allergic_
 
 {% admonition(type="pearl", icon="pearl", title="PEARLS") %}
@@ -556,7 +556,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 ### CRSsNP specific treatment
 
-- **Trial first-line treatment**. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">2</span>, though much weaker evidence compared to CRSwNP or AFRS
+- **Trial first-line treatment**. You may see the concept of “up-front intensive treatment”, where they get oral steroids + antibiotics to obtain good symptom control <span class="references">hamilos_chronic_2011</span>, though much weaker evidence compared to CRSwNP or AFRS
 - **Look for risk factors** (ie immunodeficiency, CF) especially if refractory to treatment
 - **Surgery** last line
 - No biologics yet
@@ -568,10 +568,10 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
     <b>Bottom line</b>: while recommended and common, evidence of benefit for INCS sprays in CRSsNP is actually unclear/sparse, though low-harm
   </li>
   <li>
-    <i>EPOS 2020</i> – symptom score benefit in CRS was lower than CRSwNP; only 5 RCTs with CRSsNP listed<span class="references">4</span>
+    <i>EPOS 2020</i> – symptom score benefit in CRS was lower than CRSwNP; only 5 RCTs with CRSsNP listed<span class="references">fokkens_european_2020</span>
   </li>
   <li>
-    <i>Topical steroids for chronic rhinosinusitis without nasal polyps: A systematic review and meta-analysis</i> <span class="references">11</span>
+    <i>Topical steroids for chronic rhinosinusitis without nasal polyps: A systematic review and meta-analysis</i> <span class="references">bhat_topical_2024</span>
     <ul>
       <li>Only 5 RCTs used sprays, but there was: 1) large variability on how symptoms and ‘response to treatment’ were assessed 2) No RoB was reported for each individual trial 3) relatively small overall sample size for outcomes such as symptom scores</li>
       <li>    Our opinion of this review: low quality of evidence (GRADE; unreported RoB, indirect/variable outcome assessment)</li>
@@ -584,14 +584,14 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 ### CRSwNP specific treatment
 
 - **Trial first-line treatment** + often a short course of oral steroids
-  - Oral steroids = <strong>rapid temporary</strong> relief that fades by a few months <span class="references">12</span>; <strong>must consider significant S/E profile</strong>
-    - _ExRx: prednisone 30 mg OD x7d <span class="references">6</span>; note that there is no consensus/consistent dose between trials_
+  - Oral steroids = <strong>rapid temporary</strong> relief that fades by a few months <span class="references">head_shortcourse_2016</span>; <strong>must consider significant S/E profile</strong>
+    - _ExRx: prednisone 30 mg OD x7d <span class="references">chin_diagnosis_2025</span>; note that there is no consensus/consistent dose between trials_
 
 {% dropdown(header="DEEP-DIVE: INCS in CRSwNP") %}
 
 <ul>
   <li><strong>Bottom-line:</strong> there is generally low quality evidence that INCS compared to placebo improves symptoms and QoL without significant side effects, though specifics vary by delivery system</li>
-  <li><em>The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis</em><span class="references">13</span>
+  <li><em>The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis</em><span class="references">rank_joint_2023</span>
     <ul>
       <li>SNOT-22: rinses/EDS &gt; sprays</li>
       <li>Symptoms (nasal obstruction/smell esp): sprays/EDS &gt; rinses</li>
@@ -605,7 +605,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 {% end %}
 
-- **At any point biologics can <em>technically</em> be considered**, especially if high baseline severity or refractory to other medical therapy; greatest positive effect on QoL outcomes <span class="references">13</span>
+- **At any point biologics can <em>technically</em> be considered**, especially if high baseline severity or refractory to other medical therapy; greatest positive effect on QoL outcomes <span class="references">rank_joint_2023</span>
   - Three options: <span class="hl-yellow">dupilumab</span> (2024 monograph states adults, but studied in ≥12 yo for other indications), <span class="hl-yellow">omalizumab</span> (adults), <span class="hl-yellow">mepolizumab</span> (adults) (***<strong>tezepelumab (Tezspire) is coming soon! Update TBD</strong>)
     - All overall have excellent side effect profile
     - Cost/insurance prohibitive
@@ -621,7 +621,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 <ul>
   <li><strong>Bottom-line:</strong> moderate/high quality evidence supporting large effect sizes of biologics in addition to INCS, with minimal side effects compared to placebo. Dupilumab had the largest effect sizes across multiple outcomes</li>
-  <li><em>The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis</em> <span class="references">13</span>
+  <li><em>The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis</em> <span class="references">rank_joint_2023</span>
     <ul>
       <li>SNOT-22: dupilumab &gt; omalizumab &gt; mepolizumab &gt; benralizumab</li>
       <li>Symptoms: dupilumab &gt; omalizumab &gt; mepolizumab</li>
@@ -641,7 +641,7 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
   - Involves surprisingly high doses of ASA (ie. 325 mg BID is maintenance\!\!)
   - Reference [this practice parameter](https://www.jacionline.org/article/S0091-6749(22)01484-1/fulltext#app-1) if you want to deep dive
 - **Leukotriene receptor antagonists** (LTRA) in the setting of NERD
-  - Note: generally **recommended against** for CRSwNP in EPOS 2020, noting poor quality evidence of benefit <span class="references">4</span>
+  - Note: generally **recommended against** for CRSwNP in EPOS 2020, noting poor quality evidence of benefit <span class="references">fokkens_european_2020</span>
   - _ExRx: Montelukast 10mg PO OD (adult dose)_{% popup() %}
 
 {{ medications_toml_load(meds=["template_med"])}}
@@ -652,9 +652,9 @@ In an ideal world, with regular use of validated scores such as SNOT-22 or SNOT-
 
 - Initial treatment is usually a combination of **first-line therapy**, **early diagnostic/therapeutic FESS**, and course of **oral steroids**
   - Oral steroid course is longer than CRSwNP; reduces risk of recurrence but must balance with S/E profile of long term systemic steroids
-  - _ExRx: prednisone 0.5mg/kg OD tapered over weeks to 10 mg OD, then slowly reduced to minimum effective dose_ <span class="references">2,7</span>
+  - _ExRx: prednisone 0.5mg/kg OD tapered over weeks to 10 mg OD, then slowly reduced to minimum effective dose_ <span class="references">hamilos_chronic_2011, lee_acaai_2024</span>
 - Limited evidence for allergen/fungi immunotherapy (no RCTs), may be started a few weeks postoperatively
-- Antifungals have NOT been shown to significantly modify clinical course / symptoms <span class="references">14</span>
+- Antifungals have NOT been shown to significantly modify clinical course / symptoms <span class="references">head_topical_2018</span>
 
 ### Surgery / FESS
 
@@ -662,7 +662,7 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 
 - <span class="hl-yellow">By itself, surgery does not cure CRS; recurrence can occur</span>
 - Post-surgery, it is important to maintain remission with ongoing medical therapy
-- Revisions may be required after a few years; rates ~10-30% <span class="references">6</span>
+- Revisions may be required after a few years; rates ~10-30% <span class="references">chin_diagnosis_2025</span>
 
 <hr class="topic">
 
@@ -680,94 +680,7 @@ For CRSsNP and CRSwNP, FESS is considered if medical therapy has failed. Excelle
 
 # Further reading:
 
-{% references(showBib=true) %}
-[
-{
-"id": "1",
-"bib": "Orlandi RR, Kingdom TT, Smith TL, Bleier B, DeConde A, Luong AU, et al. International consensus statement on allergy and rhinology: rhinosinusitis 2021. Int Forum Allergy Rhinol. 2021 Mar;11(3):213–739",
-"url": "https://pubmed.ncbi.nlm.nih.gov/33236525/",
-"notes": ""
-},
-{
-"id": "2",
-"bib": "Hamilos DL. Chronic rhinosinusitis: Epidemiology and medical management. J Allergy Clin Immunol. 2011 Oct 1;128(4):693–707",
-"url": "https://pubmed.ncbi.nlm.nih.gov/21890184/",
-"notes": ""
-},
-{
-"id": "3",
-"bib": "Desrosiers M, Evans GA, Keith PK, Wright ED, Kaplan A, Bouchard J, et al. Canadian clinical practice guidelines for acute and chronic rhinosinusitis. Allergy Asthma Clin Immunol. 2011 Feb 10;7(1):2",
-"url": "https://aacijournal.biomedcentral.com/articles/10.1186/1710-1492-7-2",
-"notes": ""
-},
-{
-"id": "4",
-"bib": "Fokkens WJ, Lund VJ, Hopkins C, Hellings PW, Kern R, Reitsma S, et al. European Position Paper on Rhinosinusitis and Nasal Polyps 2020. Rhinology. 2020 Feb 20;58(Suppl S29):1–464",
-"url": "https://pubmed.ncbi.nlm.nih.gov/32077450/",
-"notes": ""
-},
-{
-"id": "5",
-"bib": "Rosenfeld RM, Piccirillo JF, Chandrasekhar SS, Brook I, Ashok Kumar K, Kramper M, et al. Clinical practice guideline (update): adult sinusitis. Otolaryngol--Head Neck Surg Off J Am Acad Otolaryngol-Head Neck Surg. 2015 Apr;152(2 Suppl):S1–39",
-"url": "https://pubmed.ncbi.nlm.nih.gov/25832968/",
-"notes": ""
-},
-{
-"id": "6",
-"bib": "Chin CJ, Scott JR, Lee JM. Diagnosis and management of chronic rhinosinusitis. CMAJ. 2025 Feb 18;197(6):E148–54",
-"url": "https://www.cmaj.ca/content/197/6/E148",
-"notes": ""
-},
-{
-"id": "7",
-"bib": "Lee G, Benjamin Prince, Yu J. ACAAI Review for the Allergy and Immunology Boards. 5th Edition. American College of Allergy, Asthma & Immunology; 2024",
-"url": "https://education.acaai.org/brbook5",
-"notes": ""
-},
-{
-"id": "8",
-"bib": "Grayson JW, Hopkins C, Mori E, Senior B, Harvey RJ. Contemporary Classification of Chronic Rhinosinusitis Beyond Polyps vs No Polyps: A Review. JAMA Otolaryngol Neck Surg. 2020 Sep 1;146(9):831–8",
-"url": "https://pubmed.ncbi.nlm.nih.gov/32644117/",
-"notes": ""
-},
-{
-"id": "9",
-"bib": "Chong LY, Head K, Hopkins C, Philpott C, Glew S, Scadding G, et al. Saline irrigation for chronic rhinosinusitis. Cochrane Database Syst Rev. 2016 Apr 26;2016(4):CD011995",
-"url": "https://pubmed.ncbi.nlm.nih.gov/27115216/",
-"notes": ""
-},
-{
-"id": "10",
-"bib": "Fowler J, Sowerby LJ. Using intranasal corticosteroids. CMAJ. 2021 Jan 11;193(2):E47–E47",
-"url": "https://www.cmaj.ca/content/193/2/E47",
-"notes": ""
-},
-{
-"id": "11",
-"bib": "Bhat AM, Heiland LD, Nguyen SA, Rathi VK, Schlosser RJ, Soler ZM. Topical steroids for chronic rhinosinusitis without nasal polyps: A systematic review and meta-analysis. Int Forum Allergy Rhinol. 2024;14(9):1477–87",
-"url": "https://pubmed.ncbi.nlm.nih.gov/38787291/",
-"notes": ""
-},
-{
-"id": "12",
-"bib": "Head K, Chong LY, Hopkins C, Philpott C, Burton MJ, Schilder AG. Short‐course oral steroids alone for chronic rhinosinusitis. Cochrane Database Syst Rev. 2016 Apr 26;2016(4):CD011991",
-"url": "https://pubmed.ncbi.nlm.nih.gov/27113367/",
-"notes": ""
-},
-{
-"id": "13",
-"bib": "Rank MA, Chu DK, Bognanni A, Oykhman P, Bernstein JA, Ellis AK, et al. The Joint Task Force on Practice Parameters GRADE guidelines for the medical management of chronic rhinosinusitis with nasal polyposis. J Allergy Clin Immunol. 2023 Feb 1;151(2):386–98",
-"url": "https://www.jacionline.org/article/S0091-6749(22)01484-1/fulltext",
-"notes": ""
-},
-{
-"id": "14",
-"bib": "Head K, Sharp S, Chong L, Hopkins C, Philpott C. Topical and systemic antifungal therapy for chronic rhinosinusitis. Cochrane Database Syst Rev. 2018 Sep 10;2018(9):CD012453",
-"url": "https://pubmed.ncbi.nlm.nih.gov/30199594/",
-"notes": ""
-}
-]
-{% end %}
+{{ references_updated(showBib=true, path="content/topics/hypersensitivity/airway_ent/chronic_rhinosinusitis.bib") }}
 
 <h1>Contributors</h1>
 
