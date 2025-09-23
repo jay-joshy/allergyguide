@@ -3,9 +3,7 @@
 {# Load .bib file with same name as the file #}
 {% set data = load_data(path=path, format="bibtex") %}
 {% set references = data.bibliographies %}
-
 {#data | json_encode(pretty=true) | linebreaksbr | safe #}
-<br><br>
 {% set unique_ids = [] %}
 {% for ref in references %}
 {% if ref.citation_key in unique_ids %}
@@ -40,73 +38,90 @@
   const references = {{references | json_encode() | safe}};
 
   /**
-   * Formats a BibTeX entry into a readable citation string
-   * @param {Object} ref - The reference object from BibTeX
-   * @returns {string} - Formatted citation string
+   * Cleans BibTeX formatting artifacts from a string
+   * @param {string} str - String to clean
+   * @returns {string} - Cleaned string
    */
+  function bibStrip(str) {
+    if (!str) return '';
+    return str
+      .replace(/---/g, '—')      // em dash
+      .replace(/--/g, '–')       // en dash  
+      .replace(/{/g, '')         // remove opening braces
+      .replace(/}/g, '')         // remove closing braces
+      .replace(/\\/g, '');       // remove backslashes
+  }
+
+/**
+  * Formats a BibTeX entry into a readable citation string
+  * @param {Object} ref - The reference object from BibTeX
+  * @returns {string} - Formatted citation string
+  */
   function formatCitation(ref) {
     const tags = ref.tags;
     let citation = '';
     
-    // Authors
+    // Authors - format as "Last FM, Last FM, Last FM, et al." for first 3 authors
     if (tags.author) {
-      // Handle multiple authors - split by 'and' and format
-      const authors = tags.author.split(' and ').map(author => {
-        // Handle "Last, First" format
+      const authors = tags.author.split(' and ').map(author => author.trim());
+      const firstThree = authors.slice(0, 3);
+      
+      const formattedAuthors = firstThree.map(author => {
         if (author.includes(',')) {
           const parts = author.split(',');
           const lastName = parts[0].trim();
-          const firstName = parts[1] ? parts[1].trim() : '';
-          return firstName ? `${firstName} ${lastName}` : lastName;
+          const firstNames = parts[1] ? parts[1].trim().split(' ') : [];
+          
+          // Create initials from first names
+          const initials = firstNames.map(name => name.charAt(0).toUpperCase()).join('');
+          
+          return `${lastName} ${initials}`;
+        } else {
+          return author;
         }
-        return author.trim();
       });
       
-      if (authors.length === 1) {
-        citation += authors[0];
-      } else if (authors.length === 2) {
-        citation += `${authors[0]} and ${authors[1]}`;
-      } else if (authors.length > 2) {
-        citation += `${authors[0]} et al.`;
+      citation += formattedAuthors.join(', ');
+      
+      if (authors.length > 3) {
+        citation += ', et al.';
+      } else {
+        citation += '.';
       }
-      citation += '. ';
     }
     
     // Title (bolded)
     if (tags.title) {
-      citation += `<strong>${tags.title}</strong>. `;
+      citation += ` <b>${bibStrip(tags.title)}.</b>`;
     }
     
-    // Journal/Publisher
+    // Journal (italicized)
     if (tags.journal) {
-      citation += `${tags.journal}`;
+      citation += ` <i>${bibStrip(tags.journal)}</i>`;
     } else if (tags.booktitle) {
-      citation += `${tags.booktitle}`;
-    } else if (tags.publisher) {
-      citation += `${tags.publisher}`;
+      citation += ` <i>${bibStrip(tags.booktitle)}</i>`;
     }
     
-    // Year
-    if (tags.year) {
-      citation += `. ${tags.year}`;
-    }
-    
-    // Volume and Issue
+    // Volume
     if (tags.volume) {
-      citation += `;${tags.volume}`;
-      if (tags.number) {
-        citation += `(${tags.number})`;
-      }
+      citation += `, vol. ${bibStrip(tags.volume)}`;
+    }
+    
+    // Number/Issue
+    if (tags.number) {
+      citation += `, ${bibStrip(tags.number)}`;
     }
     
     // Pages
     if (tags.pages) {
-      citation += `:${tags.pages}`;
+      citation += `, pp. ${bibStrip(tags.pages)}`;
     }
     
-    // DOI
-    if (tags.doi) {
-      citation += `. doi:${tags.doi}`;
+    // Month and Year
+    if (tags.month && tags.year) {
+      citation += `, ${bibStrip(tags.month)} ${bibStrip(tags.year)}`;
+    } else if (tags.year) {
+      citation += `, ${bibStrip(tags.year)}`;
     }
     
     return citation;
