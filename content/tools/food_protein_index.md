@@ -13,7 +13,8 @@ authors = ["Joshua Yu"]
 +++
 
 </br>
-</br>
+
+Click on a food name to view its corresponding PRACTALL food challenge protocol.
 
 Data obtained from Health Canada [(Canadian Nutrient File, Health Canada, 2015)](https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-about-us.html)
 
