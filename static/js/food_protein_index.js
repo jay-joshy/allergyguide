@@ -356,26 +356,28 @@ function generateAsciiTable(doses, name, protein_per_g) {
 }
 
 function copyAscii(protocol, name, protein_per_g) {
-  const practall_seven_doses_mg = [3, 10, 30, 100, 300, 1000, 3000];
-  const practall_five_doses_mg = [30, 100, 300, 1000, 3000];
-  let tableString = "";
-  if (protocol === "five") {
-    tableString = generateAsciiTable(
-      practall_five_doses_mg,
-      name,
-      protein_per_g,
+  try {
+    const scope = FPI_MODAL && FPI_MODAL.modal ? FPI_MODAL.modal : document;
+    const table = scope.querySelector(
+      protocol === "five" ? "#fpi-table-five" : "#fpi-table-seven",
     );
-  } else if (protocol === "seven") {
-    tableString = generateAsciiTable(
-      practall_seven_doses_mg,
-      name,
-      protein_per_g,
-    );
+    if (!table) throw new Error("Table not found");
+
+    const doses = Array.from(table.querySelectorAll("tbody tr")).map((row) => {
+      const input = row.querySelector(".protein-mg-input");
+      const v =
+        parseFloat(input ? input.value : row.cells[2]?.textContent) || 0;
+      return Math.max(0, v);
+    });
+
+    const tableString = generateAsciiTable(doses, name, protein_per_g);
+    navigator.clipboard
+      .writeText(tableString)
+      .then(() => console.log("ASCII table copied to clipboard!"))
+      .catch((err) => alert("Error copying table: " + err));
+  } catch (err) {
+    alert("Error preparing table: " + err.message);
   }
-  navigator.clipboard
-    .writeText(tableString)
-    .then(() => console.log("ASCII table copied to clipboard!"))
-    .catch((err) => alert("Error copying table: " + err));
 }
 
 function openFpiModal(foodName, meanValue) {
@@ -383,40 +385,39 @@ function openFpiModal(foodName, meanValue) {
   els.modal.dataset.foodName = foodName || "";
   els.modal.dataset.meanValue = String(meanValue ?? "");
 
-  // PRACTALL-7 dose steps in mg
+  // Parse and compute protein per gram of food
+  const mean = parseFloat(meanValue);
+  const protein_per_g = mean && !Number.isNaN(mean) ? mean / 100 : 0;
+  els.modal.dataset.proteinPerG = String(protein_per_g);
+
+  // Dose steps in mg
   const practall_seven_doses_mg = [3, 10, 30, 100, 300, 1000, 3000];
   const practall_five_doses_mg = [30, 100, 300, 1000, 3000];
-  let protein_per_g = meanValue / 100;
-  let five_rows = "";
-  let seven_rows = "";
-  let cum_protein_mg = 0;
 
-  practall_seven_doses_mg.forEach((mg_dose, i) => {
-    const g_dose = +((mg_dose * 0.001) / protein_per_g).toFixed(2);
-    cum_protein_mg += mg_dose;
-    seven_rows += `
-      <tr>
-        <td>${i + 1}</td>
-        <td>${g_dose}</td>
-        <td>${mg_dose}</td>
-        <td>${cum_protein_mg}</td>
-      </tr>
-    `;
-  });
+  // Helper to render initial rows with inputs for Protein (mg)
+  function renderRows(doses) {
+    let cum = 0;
+    return doses
+      .map((mg, i) => {
+        cum += mg;
+        const g =
+          protein_per_g > 0
+            ? ((mg * 0.001) / protein_per_g).toFixed(2)
+            : "0.00";
+        return `
+          <tr>
+            <td>${i + 1}</td>
+            <td><span class="g-dose">${g}</span></td>
+            <td><input class="protein-mg-input" type="number" min="0" step="1" value="${mg}"></td>
+            <td><span class="cum-mg">${cum}</span></td>
+          </tr>
+        `;
+      })
+      .join("");
+  }
 
-  cum_protein_mg = 0;
-  practall_five_doses_mg.forEach((mg_dose, i) => {
-    const g_dose = +((mg_dose * 0.001) / protein_per_g).toFixed(2);
-    cum_protein_mg += mg_dose;
-    five_rows += `
-      <tr>
-        <td>${i + 1}</td>
-        <td>${g_dose}</td>
-        <td>${mg_dose}</td>
-        <td>${cum_protein_mg}</td>
-      </tr>
-    `;
-  });
+  const five_rows = renderRows(practall_five_doses_mg);
+  const seven_rows = renderRows(practall_seven_doses_mg);
 
   els.title.textContent = foodName || "";
   els.body.innerHTML =
@@ -430,7 +431,7 @@ function openFpiModal(foodName, meanValue) {
                 <button onclick="copyAscii('five', '${foodName}', ${protein_per_g})">Copy</button>
             </div>
 
-            <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
+            <table id="fpi-table-five" border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
                 <thead>
                   <tr>
                     <th>Step</th>
@@ -449,7 +450,7 @@ function openFpiModal(foodName, meanValue) {
               <span>PRACTALL-7</span>
               <button onclick="copyAscii('seven', '${foodName}', ${protein_per_g})">Copy</button>
           </div>
-            <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
+            <table id="fpi-table-seven" border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
                 <thead>
                   <tr>
                     <th>Step</th>
@@ -466,6 +467,36 @@ function openFpiModal(foodName, meanValue) {
       </div>
       `
       : "<p>No mean protein value available.</p>";
+
+  // Setup editable behavior: recalc dependent cells when Protein (mg) changes
+  function setupEditableTable(tableEl) {
+    if (!tableEl) return;
+
+    const recalc = () => {
+      let cum = 0;
+      const rows = tableEl.querySelectorAll("tbody tr");
+      rows.forEach((row) => {
+        const input = row.querySelector(".protein-mg-input");
+        let mg = parseFloat(input && input.value) || 0;
+        if (mg < 0) mg = 0;
+        const g = protein_per_g > 0 ? (mg * 0.001) / protein_per_g : 0;
+        row.querySelector(".g-dose").textContent = g.toFixed(2);
+        cum += mg;
+        row.querySelector(".cum-mg").textContent = cum;
+      });
+    };
+
+    tableEl.querySelectorAll(".protein-mg-input").forEach((inp) => {
+      inp.addEventListener("input", recalc);
+      inp.addEventListener("change", recalc);
+    });
+
+    // Initial calculation to ensure correctness
+    recalc();
+  }
+
+  setupEditableTable(els.body.querySelector("#fpi-table-five"));
+  setupEditableTable(els.body.querySelector("#fpi-table-seven"));
 
   els.modal.setAttribute("aria-hidden", "false");
   els.backdrop.style.display = "flex";
