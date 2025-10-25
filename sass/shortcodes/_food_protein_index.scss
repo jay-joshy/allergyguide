@@ -555,3 +555,56 @@
     }
   }
 }
+
+// Modal overlay for item details
+.fpi-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.fpi-modal-backdrop.open {
+  display: flex;
+}
+
+.fpi-modal {
+  background: var(--food-bg);
+  color: var(--food-text);
+  border: 1px solid var(--food-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  min-width: min(80vw, 92vw);
+  max-height: 85vh;
+  overflow: auto;
+  position: relative;
+  padding: 20px;
+}
+
+.fpi-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 20px;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  color: var(--food-text);
+  cursor: pointer;
+}
+
+// Make food name look interactive when it's rendered as a button/link
+.food-name-btn {
+  all: unset;
+  cursor: pointer;
+  color: var(--food-text);
+  text-decoration: underline dotted;
+}
+
+.food-name-btn:focus {
+  outline: 2px solid var(--food-input-focus);
+  outline-offset: 2px;
+}

@@ -210,6 +210,20 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize
   updateDisplay();
   document.querySelector(".food_protein_index").classList.add("initialized");
+
+  // Modal open on food name click (delegated so it survives table re-renders)
+  tableBody.addEventListener("click", function (e) {
+    const cell = e.target.closest(".food-name");
+    if (!cell || !tableBody.contains(cell)) return;
+
+    const row = cell.closest(".food-row");
+    const foodName = cell.textContent.trim();
+    const meanCell = row ? row.querySelector(".mean-value") : null;
+    const meanText = meanCell ? meanCell.textContent.trim() : "";
+    const meanValue = meanText.replace(/\s*g$/i, ""); // strip trailing " g" if present
+
+    openFpiModal(foodName, meanValue);
+  });
 });
 
 // Utility functions
@@ -223,4 +237,242 @@ function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+}
+
+// Modal utilities
+let FPI_MODAL = null;
+
+function ensureFpiModal() {
+  if (FPI_MODAL) return FPI_MODAL;
+
+  const backdrop = document.createElement("div");
+  backdrop.className = "fpi-modal-backdrop";
+  backdrop.style.cssText =
+    "position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:1000;";
+
+  const modal = document.createElement("div");
+  modal.className = "fpi-modal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-hidden", "true");
+  modal.style.cssText =
+    "background:var(--food-bg);color:var(--food-text);border:1px solid var(--food-border);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);width:min(600px,92vw);max-height:85vh;overflow:auto;position:relative;padding:20px;";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "fpi-modal-close";
+  closeBtn.setAttribute("aria-label", "Close dialog");
+  closeBtn.textContent = "×";
+  closeBtn.style.cssText =
+    "position:absolute;top:10px;right:12px;font-size:20px;line-height:1;background:transparent;border:none;color:var(--food-text);cursor:pointer;";
+
+  const header = document.createElement("div");
+  header.className = "fpi-modal-header";
+  const title = document.createElement("h3");
+  title.id = "fpi-modal-title";
+  header.appendChild(title);
+
+  const body = document.createElement("div");
+  body.className = "fpi-modal-body";
+
+  modal.appendChild(closeBtn);
+  modal.appendChild(header);
+  modal.appendChild(body);
+  backdrop.appendChild(modal);
+  document.body.appendChild(backdrop);
+
+  function onEsc(e) {
+    if (e.key === "Escape" && backdrop.style.display !== "none") {
+      e.preventDefault();
+      e.stopPropagation();
+      closeFpiModal();
+    }
+  }
+
+  // Close interactions
+  closeBtn.addEventListener("click", closeFpiModal);
+  backdrop.addEventListener("click", function (e) {
+    if (e.target === backdrop) closeFpiModal();
+  });
+  document.addEventListener("keydown", onEsc);
+
+  FPI_MODAL = { backdrop, modal, title, body, closeBtn };
+  return FPI_MODAL;
+}
+
+function pad(str, width, alignRight = false) {
+  str = str.toString();
+  if (alignRight) {
+    return str.padStart(width);
+  } else {
+    return str.padEnd(width);
+  }
+}
+
+/**
+ * Generates a nicely formatted ASCII table for the given doses and name.
+ * @param {Array<number>} doses - Array of doses in mg.
+ * @param {string} name - Name of the food.
+ * @param {number} protein_per_g - Protein content in g per gram of food.
+ * @returns {string} ASCII table string.
+ */
+function generateAsciiTable(doses, name, protein_per_g) {
+  let cum = 0;
+
+  // Headers
+  const headers = [
+    "Step",
+    `${name} (g)`,
+    "Protein (mg)",
+    "Cumulative dose (mg)",
+  ];
+
+  // Prepare rows and track max widths
+  const rows = doses.map((mg, i) => {
+    const g = ((mg * 0.001) / protein_per_g).toFixed(2);
+    cum += mg;
+    return [(i + 1).toString(), g, mg.toString(), cum.toString()];
+  });
+
+  // Compute column widths
+  const colWidths = headers.map((h, i) => {
+    const maxRowWidth = Math.max(...rows.map((r) => r[i].length));
+    return Math.max(h.length, maxRowWidth);
+  });
+
+  // Build ASCII table
+  let ascii = "";
+  // Header
+  ascii += headers.map((h, i) => pad(h, colWidths[i])).join(" | ") + "\n";
+  // Separator
+  ascii += colWidths.map((w) => "-".repeat(w)).join("-|-") + "\n";
+  // Rows
+  rows.forEach((row) => {
+    ascii +=
+      row.map((val, i) => pad(val, colWidths[i], true)).join(" | ") + "\n";
+  });
+
+  return ascii;
+}
+
+function copyAscii(protocol, name, protein_per_g) {
+  const practall_seven_doses_mg = [3, 10, 30, 100, 300, 1000, 3000];
+  const practall_five_doses_mg = [30, 100, 300, 1000, 3000];
+  let tableString = "";
+  if (protocol === "five") {
+    tableString = generateAsciiTable(
+      practall_five_doses_mg,
+      name,
+      protein_per_g,
+    );
+  } else if (protocol === "seven") {
+    tableString = generateAsciiTable(
+      practall_seven_doses_mg,
+      name,
+      protein_per_g,
+    );
+  }
+  navigator.clipboard
+    .writeText(tableString)
+    .then(() => console.log("ASCII table copied to clipboard!"))
+    .catch((err) => alert("Error copying table: " + err));
+}
+
+function openFpiModal(foodName, meanValue) {
+  const els = ensureFpiModal();
+  els.modal.dataset.foodName = foodName || "";
+  els.modal.dataset.meanValue = String(meanValue ?? "");
+
+  // PRACTALL-7 dose steps in mg
+  const practall_seven_doses_mg = [3, 10, 30, 100, 300, 1000, 3000];
+  const practall_five_doses_mg = [30, 100, 300, 1000, 3000];
+  let protein_per_g = meanValue / 100;
+  let five_rows = "";
+  let seven_rows = "";
+  let cum_protein_mg = 0;
+
+  practall_seven_doses_mg.forEach((mg_dose, i) => {
+    const g_dose = +((mg_dose * 0.001) / protein_per_g).toFixed(2);
+    cum_protein_mg += mg_dose;
+    seven_rows += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${g_dose}</td>
+        <td>${mg_dose}</td>
+        <td>${cum_protein_mg}</td>
+      </tr>
+    `;
+  });
+
+  cum_protein_mg = 0;
+  practall_five_doses_mg.forEach((mg_dose, i) => {
+    const g_dose = +((mg_dose * 0.001) / protein_per_g).toFixed(2);
+    cum_protein_mg += mg_dose;
+    five_rows += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${g_dose}</td>
+        <td>${mg_dose}</td>
+        <td>${cum_protein_mg}</td>
+      </tr>
+    `;
+  });
+
+  els.title.textContent = foodName || "";
+  els.body.innerHTML =
+    meanValue !== undefined && meanValue !== null && String(meanValue).length
+      ? `
+      <p>${meanValue} (g) protein per 100g</p>
+      <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
+                <span>PRACTALL-5</span>
+                <button onclick="copyAscii('five', '${foodName}', ${protein_per_g})">Copy</button>
+            </div>
+
+            <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>${foodName} (g)</th>
+                    <th>Protein (mg)</th>
+                    <th>Cumulative dose (mg)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${five_rows}
+                </tbody>
+              </table>
+          </div>
+          <div>
+          <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
+              <span>PRACTALL-7</span>
+              <button onclick="copyAscii('seven', '${foodName}', ${protein_per_g})">Copy</button>
+          </div>
+            <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>${foodName} (g)</th>
+                    <th>Protein (mg)</th>
+                    <th>Cumulative dose (mg)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${seven_rows}
+                </tbody>
+              </table>
+          </div>
+      </div>
+      `
+      : "<p>No mean protein value available.</p>";
+
+  els.modal.setAttribute("aria-hidden", "false");
+  els.backdrop.style.display = "flex";
+}
+
+function closeFpiModal() {
+  if (!FPI_MODAL) return;
+  FPI_MODAL.modal.setAttribute("aria-hidden", "true");
+  FPI_MODAL.backdrop.style.display = "none";
 }
