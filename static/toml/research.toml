@@ -29,3 +29,33 @@ study_quality.args = { headers = [
 ], outcomes = [
   "Severe ex. rate",
 ] }
+
+[liberty_csu_cupid]
+title = "SYGMA2"
+clinical_question = "Is PRN budesonide–formoterol noninferior to daily maintenance budesonide therapy in reducing severe asthma exacerbations for mild asthma?"
+study_type = "52 week double-blind, randomized, multi-center, phase 3, non-inferiority trial"
+population = "4176 patients with <span class='hl-yellow'>mild persistent asthma (≥12 years)</span> were analyzed, including those with previously controlled and uncontrolled symptoms on minimal therapy."
+intervention = "<span class='hl-yellow'>Twice-daily placebo + PRN budesonide–formoterol (200μg/6μg).</span>"
+comparison = "<span class='hl-yellow'>Regular BID budesonide (200μg) + as-needed terbutaline (0.5mg).</span>"
+outcomes = "At 52 weeks, the PRN budesonide–formoterol group had an <span class='hl-yellow'>annualized rate of severe exacerbations</span> of <span class='hl-green'>0.11 events/patient-year compared to 0.12 events/patient-year</span> in the budesonide group (RR 0.97; upper one-sided 95% CI, 1.16). <span class='hl-yellow'>ACQ-5 score</span> <span class='hl-green'>improved by 0.35 in the as-needed group versus 0.46 in the maintenance group</span> (Δ0.11 units; 95% CI, 0.07 to 0.15; p<0.001). <span class='hl-yellow'>Median daily inhaled glucocorticoid exposure</span> in the as-needed group was 66μg vs 267μg in the maintenance group."
+bottom_line = "For mild asthma, PRN budesonide–formoterol was noninferior to daily budesonide in preventing severe exacerbations, with a relatively smaller improvement in ACQ-5 and much less overall steroid exposure."
+study_quality.type = "rob"
+study_quality.args = { headers = [
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "D5",
+  "Overall RoB",
+], rows = [
+  [
+    "green",
+    "green",
+    "green",
+    "green",
+    "green",
+    "green",
+  ],
+], outcomes = [
+  "Severe ex. rate",
+] }

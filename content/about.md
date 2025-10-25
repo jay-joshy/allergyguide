@@ -32,8 +32,8 @@ To create a comprehensive cross-Canada resident-led and faculty reviewed website
 
 {% profile_grid() %}
 [
-{ "name": "Joshua Yu, MD BSc", "src": "/images/profile_jy.png", "text": "PGY-3 IM resident at McMaster, fellow-to-be at UBC." },
-{ "name": "Adhora Mir", "src": "/images/profile_am.png", "text": "PGY-4 Adult Allergy & Immunology resident at McGill University." },
+{ "name": "Joshua Yu, MD BSc", "src": "/images/profile_jy.png", "text": "PGY-4 Clinical Allergy Immunology fellow at the University of British Columbia." },
+{ "name": "Adhora Mir", "src": "/images/profile_am.png", "text": "PGY-5 Adult Allergy & Immunology fellow at McGill University." },
 { "name": "Editor 3", "src": "/images/example.png", "text": "Could also be you!" }
 ]
 {% end %}

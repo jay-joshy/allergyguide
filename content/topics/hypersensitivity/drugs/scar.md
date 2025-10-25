@@ -27,6 +27,10 @@ status="not-started" # options include not-started, wip, or ready
 Common culprits: penicillins cephalosporins
 Latency: day to few days
 
+blood neutrophilia, assocaited high fever
+PINPOINT pustules
+followed by desquamation
+
 # DRESS
 
 Morbiliform rash, typically diffuse and confluent
@@ -44,5 +48,25 @@ HLA associations with certain drugs: HLA-A\*31 with carbamazepine, HLA-B\*58 and
 Management is to STOP, but may require steroids or more specialized treatments
 
 # SJS/TENS
+
+Hung nature reviews disease primers 2024 - SCAR common and distinct pathophysiologic mechanisms
+
+SJS/TENS mostly caused by drugs
+but also post-infectious possible
+EBV especially for SJS
+
+# EM - SJS -TEN spectrum
+
+for SJS, involving mainly mucosal (mouth + eyes), it is more likely to be POST infectious etiology - MIRM (or Reactive infectious mucocutaneous eruption - RIME)
+most common is mycoplasma, but COVID also can cause this.
+see image
+
+off label - cyclosporine is used often by derms, the texts will use the steroid pulses
+
+## EM
+
+note morphology - annular, more dusky persistent darker area in the middle representing longer lasting cytotoxic damage
+
+# GBFDE
 
 </div>
