@@ -1,13 +1,13 @@
 +++
 title = "Food protein index"
-description = "Estimated food protein content database, from Health Canada"
+description = "Food protein database with oral food challenge dose calculations."
 date = 2025-08-07
 draft = false
 
 [taxonomies]
 tags = ["tools"]
 [extra]
-keywords = "Food challenge, food protein, health canada"
+keywords = "Food challenge, food protein, health canada, oral challenge"
 toc = true
 authors = ["Joshua Yu"]
 +++
