@@ -12,12 +12,14 @@ CLINICAL ALLERGY AND IMMUNOLOGY CONSULTATION
 
 Dear Dr. 
 
-We assessed this patient today with Dr. ***.
+We assessed this patient today on ***.
 They are a *** referred for assessment of ***.
 
 PAST MEDICAL HISTORY:
 
 MEDICATIONS:
+
+DRUG ALLERGY:
 
 FAMILY HISTORY:
 
@@ -39,8 +41,7 @@ DEVELOPMENT:
 ATOPIC HISTORY:
 Asthma:
 Food allergies:
-They have tried and tolerated [dairy | eggs | wheat | sesame | peanuts | tree nuts | soy | fish | shellfish | mustard]
-Drug allergies:
+They have tried and tolerate [dairy | eggs | wheat | sesame | peanuts | tree nuts | soy | fish | shellfish | mustard]
 Venom allergies:
 Eczema:
 Rhinitis:
@@ -55,9 +56,11 @@ The oropharynx was unremarkable with no cobblestoning or erythema.
 Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
 There were no rashes present on examination of the skin.
 
+
+As this was a virtual visit, physical examination was deferred.
+
 INVESTIGATIONS:
 
-Skin prick testing:
 
 IMPRESSION:
 
@@ -67,7 +70,7 @@ FOLLOW-UP:
 We have not arranged any follow-up at this time, but they are welcome to contact us as required.
 We have arranged for follow-up in ***
 
-Thank you for allowing us to take part in this patient's care. Please feel free to contact us if there are any questions or concerns.
+Thank you for allowing us to be part of this patient's care. Please contact us if there are any questions or concerns.
 
 Sincerely,
 '''
@@ -101,6 +104,8 @@ The oropharynx was unremarkable with no cobblestoning or erythema.
 Respiratory examination revealed no work of breathing and full air entry equally bilaterally with no wheeze or crackles. Cardiovascular exam revealed normal S1 and S2 with no extra heart sounds or murmurs.
 There were no rashes present on examination of the skin.
 
+As this was a virtual visit, physical examination was deferred.
+
 INVESTIGATIONS:
 
 IMPRESSION AND PLAN:
@@ -109,7 +114,7 @@ FOLLOW-UP:
 We have not arranged any follow-up at this time, but they are welcome to contact us as required.
 We have arranged for follow-up in *** 
 
-Thank you once again for involving us in this patient's care. Please do not hesitate to contact us if you have any further questions or concerns.
+Thank you again for involving us in their care. Please do not hesitate to contact us if you have any further questions or concerns.
 
 Sincerely,
 '''
@@ -376,10 +381,10 @@ NSAIDS
 Red flags: [anaphylaxis | thyroid | B symptoms | rheum]
 No burning or pain, bruising, systemic symptoms of fever, weight loss, bone pain, adenopathy, signs of inflammatory arthritis, no skin rashes, no photosensitivity, no Raynaud's, no dry eyes or dry mouth, no oral or genital ulcers.
 
-# Chronic spontaneous / inducible urticaria (CSU).
-This is a generally benign, histamine-mediated idiopathic primary skin disorder. CSU is typically a self-resolving condition over 1-5 years; chronic inducible urticaria is generally more long lived. In the vast majority of cases it is not a sign of more insidious underlying disease, though in some cases we arrange for baseline bloodwork to assess for rarer underlying causes.
+# Chronic spontaneous urticaria (CSU) / Chronic inducible urticaria (CIU).
+This is a generally benign, histamine-mediated idiopathic primary skin disorder. CSU is typically a self-resolving condition over 1-5 years; CIU is generally more long lived. In the vast majority of cases it is not a sign of more insidious underlying disease, though in some cases we arrange for baseline bloodwork to assess for rarer underlying causes.
 
-> Bloodwork usually not required for diagnosis, but in certain cases we consider CBC, CRP, LFTs, TSH, anti-TPO, IgE, Calcium, SPEP, H. pylori serology
+> CBC, CRP, TSH, anti-TPO, IgE, Calcium, SPEP, H. pylori serology
 > Non-pharmacologically we recommended:
   - They do/do not have physical triggers that lead to worsening of symptoms. We advised avoidance of ***
   - Food avoidance with elimination diets is contreversial
@@ -476,6 +481,43 @@ Placeholder
 
 # ANAPHYLAXIS AND MISC
 # -----------------------------
+
+[anaphylaxis-recurrent_nyd]
+wip = true
+topic = "Recurrent anaphylaxis NYD"
+keywords = ["anaphylaxis"]
+content = '''
+FOR EACH REACTION:
+when:
+Prior exposures: foods, medications, stings, latex, environmental
+symptoms: [hives | angioedema | dyspnea | stridor | wheeze | GI upset | presyncope | syncope]
+Duration:
+Treatment: hospital, epi, antihist, etc
+cofactors: [NSAIDs | heat/cold | exercise | alcohol | infection | poor sleep]
+
+PATTERNS OVERALL
+Consistent or variable reaction progression/phenotype: 
+Timing during day: 
+Timing during year:
+Frequency:
+Before or after food:
+Food triggers:
+Menstrual cycle:
+Medications:
+Venom:
+Cofactors:
+Response to therapy:
+Tryptase or other investigations:
+
+# Anaphylaxis NYD
+> Baseline serum tryptase, PRN requisition in case of reaction to be drawn within 4 hours
+> SPT / sIgE to potential culprits
+> Exercise induced consideration, ie omega-5 gliadin
+> Regular antihistamines vs PRN
+> Event diary
+> EpiPEN 
+
+'''
 
 [misc-eosinophilic_esophagitis]
 wip = true
