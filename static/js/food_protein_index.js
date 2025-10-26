@@ -270,7 +270,41 @@ function ensureFpiModal() {
   header.className = "fpi-modal-header";
   const title = document.createElement("h3");
   title.id = "fpi-modal-title";
+  title.contentEditable = "true";
+  title.spellcheck = false;
+  title.setAttribute("aria-label", "Food name (editable)");
   header.appendChild(title);
+
+  // Keep modal state in sync with title edits (do not rewrite the title content to avoid caret jumps)
+  title.addEventListener("input", function () {
+    const els = ensureFpiModal();
+    const name = title.textContent;
+    els.modal.dataset.foodName = name;
+    els.body.querySelectorAll(".food-name-header").forEach((el) => {
+      el.textContent = name;
+    });
+  });
+
+  // Prevent Enter from inserting a newline, and commit on Enter
+  title.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      title.blur();
+    }
+  });
+
+  // Normalize and trim the title on blur to avoid stray whitespace/newlines
+  title.addEventListener("blur", function () {
+    let name = title.textContent.replace(/\s+/g, " ").trim();
+    if (title.textContent !== name) {
+      title.textContent = name;
+    }
+    const els = ensureFpiModal();
+    els.modal.dataset.foodName = name;
+    els.body.querySelectorAll(".food-name-header").forEach((el) => {
+      el.textContent = name;
+    });
+  });
 
   const body = document.createElement("div");
   body.className = "fpi-modal-body";
@@ -355,6 +389,17 @@ function generateAsciiTable(doses, name, protein_per_g) {
   return ascii;
 }
 
+function setFpiFoodName(name) {
+  const els = ensureFpiModal();
+  const n = (name || "").toString();
+  els.modal.dataset.foodName = n;
+  els.title.textContent = n;
+  // Update headers in any visible modal tables
+  els.body.querySelectorAll(".food-name-header").forEach((el) => {
+    el.textContent = n;
+  });
+}
+
 function copyAscii(protocol, name, protein_per_g) {
   try {
     const scope = FPI_MODAL && FPI_MODAL.modal ? FPI_MODAL.modal : document;
@@ -370,7 +415,22 @@ function copyAscii(protocol, name, protein_per_g) {
       return Math.max(0, v);
     });
 
-    const tableString = generateAsciiTable(doses, name, protein_per_g);
+    const currentName =
+      (FPI_MODAL && FPI_MODAL.modal && FPI_MODAL.modal.dataset.foodName) ||
+      scope.querySelector("#fpi-modal-title")?.textContent?.trim() ||
+      name;
+
+    const currentProteinPerG =
+      (FPI_MODAL &&
+        FPI_MODAL.modal &&
+        parseFloat(FPI_MODAL.modal.dataset.proteinPerG)) ||
+      protein_per_g;
+
+    const tableString = generateAsciiTable(
+      doses,
+      currentName,
+      currentProteinPerG,
+    );
     navigator.clipboard
       .writeText(tableString)
       .then(() => console.log("ASCII table copied to clipboard!"))
@@ -419,7 +479,7 @@ function openFpiModal(foodName, meanValue) {
   const five_rows = renderRows(practall_five_doses_mg);
   const seven_rows = renderRows(practall_seven_doses_mg);
 
-  els.title.textContent = foodName || "";
+  setFpiFoodName(foodName || "");
   els.body.innerHTML =
     meanValue !== undefined && meanValue !== null && String(meanValue).length
       ? `
@@ -435,7 +495,7 @@ function openFpiModal(foodName, meanValue) {
                 <thead>
                   <tr>
                     <th>Step</th>
-                    <th>${foodName} (g)</th>
+                    <th><span class="food-name-header">${foodName}</span> (g)</th>
                     <th>Protein (mg)</th>
                     <th>Cumulative dose (mg)</th>
                   </tr>
@@ -454,7 +514,7 @@ function openFpiModal(foodName, meanValue) {
                 <thead>
                   <tr>
                     <th>Step</th>
-                    <th>${foodName} (g)</th>
+                    <th><span class="food-name-header">${foodName}</span> (g)</th>
                     <th>Protein (mg)</th>
                     <th>Cumulative dose (mg)</th>
                   </tr>
