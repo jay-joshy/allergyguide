@@ -31,3 +31,9 @@ url = "/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/"
 src = "/topic_assets/chronic_rhinosinusitis/normal_sinus.png"
 title = "Chronic rhinosinusitis"
 text = "An approach to chronic rhinosinusitis with some research deep-dives"
+
+[title6]
+url = "/tools/food-protein-index/"
+src = "/images/food_protein_index.png"
+title = "Food protein index reference"
+text = "Searchable database with oral food challenge dose calculations"
