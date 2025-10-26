@@ -1,94 +1,134 @@
 {#
-This Template is for the topic homepage where all the conditions and topics are listesd 
+This Template is for the topic homepage where all the conditions and topics are listed
 #}
 
 {% extends "base.html" %}
 {% import "macros/get_topic_li.html" as topic_links %}
+{% import "macros/badges.html" as badges %}
 
 {%- block seo %}
-  {{- super() }}
-  {%- set title_addition = "" %}
+{{- super() }}
+{%- set title_addition = "" %}
 
-  {%- if page.title and config.title %}
-    {%- set title = page.title %}
-    {%- set title_addition = title_separator ~ config.title %}
-  {%- elif section.title and config.title %}
-    {%- set title = section.title %}
-    {%- set title_addition = title_separator ~ config.title %}
-  {%- elif page.title %}
-    {%- set title = page.title %}
-  {%- elif section.title %}
-    {%- set title = section.title %}
-  {%- else %}
-    {%- set title = config.title %}
-  {%- endif %}
+{%- if page.title and config.title %}
+{%- set title = page.title %}
+{%- set title_addition = title_separator ~ config.title %}
+{%- elif section.title and config.title %}
+{%- set title = section.title %}
+{%- set title_addition = title_separator ~ config.title %}
+{%- elif page.title %}
+{%- set title = page.title %}
+{%- elif section.title %}
+{%- set title = section.title %}
+{%- else %}
+{%- set title = config.title %}
+{%- endif %}
 
-  {%- if page.description %}
-    {%- set description = page.description %}
-  {%- elif section.description %}
-    {%- set description = section.description %}
-  {%- else %}
-    {%- set description = config.description %}
-  {%- endif %}
+{%- if page.description %}
+{%- set description = page.description %}
+{%- elif section.description %}
+{%- set description = section.description %}
+{%- else %}
+{%- set description = config.description %}
+{%- endif %}
 
-  {{- macros_seo::seo(config=config, title=title, title_addition=title_addition, description=description) }}
+{{- macros_seo::seo(
+config=config,
+title=title,
+title_addition=title_addition,
+description=description
+) }}
 {%- endblock seo %}
-
 {%- block content %}
 <div>
-  <span class="status-badge badge-not-started" style="font-size: 0.7rem; margin-left:1.1rem;margin-bottom:0rem;margin-top:0.5rem;  height: 1rem;">Not started</span>
-  <span class="status-badge badge-wip" style="font-size: 0.7rem; margin-bottom:0rem;margin-top:0.5rem;  height: 1rem;">Work in progress</span>
-  <span class="status-badge badge-ready" style="font-size: 0.7rem; margin-bottom:0rem;margin-top:0.5rem;  height: 1rem;">Ready</span>
-  <div class="two_columns_fancy">
-    <div class="column">
-      <u><h2>Hypersensitivity disorders</h2></u>
-      <ul>
-        {{ topic_links::get_page_li(page_path="topics/hypersensitivity/hypersensitivity_approach.md") }}
-      </ul>
-      <h5>Food</h5>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/hypersensitivity/foods/_index.md") }}
-      </ul>
-      <h5>Drugs</h5>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/hypersensitivity/drugs/_index.md") }}
-      </ul>
-      <h5>Airway and ENT</h5>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/hypersensitivity/airway_ent/_index.md") }}
-      </ul>
-      <h5>Dermatology</h5>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/hypersensitivity/dermatology/_index.md") }}
-      </ul>
-    </div>
-    <div class="column">
-      <u><h2>Hypersensitivity disorders continued</h2></u>
-      <h5>Anaphylaxis</h5>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/hypersensitivity/anaphylaxis/_index.md") }}
-      </ul>
-      <h5>Misc</h5>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/hypersensitivity/misc/_index.md") }}
-      </ul>
-      <u><h2>Basic physiology</h2></u>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/basic_physiology/_index.md") }}
-      </ul>
-      <u><h2>Immunology</h2></u>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/immunology/_index.md") }}
-      </ul>
-      <u><h2>Tests</h2></u>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/tests/_index.md") }}
-      </ul>
-      <u><h2>Other key topics</h2></u>
-      <ul>
-        {{ topic_links::get_section_li(section_path="topics/misc/_index.md") }}
-      </ul>
-    </div>
-  </div>
+	<nav class="status-legend" aria-label="Topic status legend">
+		<ul class="status-legend-list">
+			<li class="legend-item">
+				{{ badges::status_badge(status="not-started", msg="") }}
+				<span class="legend-text">Not started</span>
+			</li>
+			<li class="legend-item">
+				{{ badges::status_badge(status="wip", msg="") }}
+				<span class="legend-text">Work in progress</span>
+			</li>
+			<li class="legend-item">
+				{{ badges::status_badge(status="ready", msg="") }}
+				<span class="legend-text">Ready</span>
+			</li>
+		</ul>
+	</nav>
+	<div class="two_columns_fancy">
+		<div class="column">
+			<u><h2>Hypersensitivity disorders</h2></u>
+			<ul>
+				{{
+				topic_links::get_page_li(page_path="topics/hypersensitivity/hypersensitivity_approach.md")
+				}}
+			</ul>
+			<h5>Food</h5>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/hypersensitivity/foods/_index.md")
+				}}
+			</ul>
+			<h5>Drugs</h5>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/hypersensitivity/drugs/_index.md")
+				}}
+			</ul>
+			<h5>Airway and ENT</h5>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/hypersensitivity/airway_ent/_index.md")
+				}}
+			</ul>
+			<h5>Dermatology</h5>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/hypersensitivity/dermatology/_index.md")
+				}}
+			</ul>
+		</div>
+		<div class="column">
+			<u><h2>Hypersensitivity disorders continued</h2></u>
+			<h5>Anaphylaxis</h5>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/hypersensitivity/anaphylaxis/_index.md")
+				}}
+			</ul>
+			<h5>Misc</h5>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/hypersensitivity/misc/_index.md")
+				}}
+			</ul>
+			<u><h2>Basic physiology</h2></u>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/basic_physiology/_index.md")
+				}}
+			</ul>
+			<u><h2>Immunology</h2></u>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/immunology/_index.md")
+				}}
+			</ul>
+			<u><h2>Tests</h2></u>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/tests/_index.md")
+				}}
+			</ul>
+			<u><h2>Other key topics</h2></u>
+			<ul>
+				{{
+				topic_links::get_section_li(section_path="topics/misc/_index.md")
+				}}
+			</ul>
+		</div>
+	</div>
 </div>
 {%- endblock content %}
