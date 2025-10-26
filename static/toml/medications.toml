@@ -4,7 +4,7 @@
 # for example: [budesonide_inhaler] because the oral form is used for EoE.
 # similarly, [fluticasone-furoate_inhaler] - note the hyphenation used between the drug combos.
 draft = false # if false, the medication card will be rendered with a WIP sign
-categories = ["testcategory"] # check with the editors for the proper category
+categories = ["inhaler"] # check with the editors for the proper category
 brand_names = ["brandnameA", "brandnameB"]
 cost = [
   { province = "ON", price = "~$X CAD / Ymg tab" },
@@ -20,9 +20,9 @@ half_life = "~X hours"
 peak_action = "Optional" # how long it takes for the medication to have its intended or maximal effect
 routes = "Xmg tab; Xmg/ml liq" # include doses available for each route ie. "10/20mg tab; 2.5mg/ml liq"
 doses = [
-  { indication = "diseaseA", dose = "Zmg OD", notes = "ages 3-11" },           # ages should be listed as "ages X-Y", or "ages ≥X"
-  { indication = "diseaseA", dose = "Zmg OD", notes = "ages ≥12; CrCl < 30" }, # separate different notes with semi-colon
-  { indication = "diseaseB", dose = "Zmg BID", notes = "ages ≥18; >25kg" },    # just list weights out
+  { indication = "diseaseA", dose = "Zmg form OD", notes = "ages 3-11" },           # ages should be listed as "ages X-Y", or "ages ≥X"
+  { indication = "diseaseA", dose = "Zmg form OD", notes = "ages ≥12; CrCl < 30" }, # separate different notes with semi-colon
+  { indication = "diseaseB", dose = "Zmg form BID", notes = "ages ≥18; >25kg" },    # just list weights out
 ]
 age_group = "insert age group" # just list the ages it has been used in; this is a broad overview. you'll go into the specific ages for separate indications in the doses section
 pregnancy = "insert information, can link to data/links if need be"

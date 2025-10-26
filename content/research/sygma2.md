@@ -268,52 +268,139 @@ Adverse events were similar between groups. One asthma-related death in budesoni
 
 ## Risk of Bias 2 for primary outcome
 
-Outcome: low risk
+**Outcome: low risk**
 
-### Domain 1: Risk of Bias from the Randomization Process
+{% dropdown(header="Detailed risk of bias assessment") %}
 
-Outcome: low risk
+<h3 id="domain-1-risk-of-bias-from-the-randomization-process">Domain 1: Risk of Bias from the Randomization Process</h3>
+<p>Outcome: low risk</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Question</th>
+<th style="text-align:center">Author judgement</th>
+<th style="text-align:left">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1.1 Was the allocation sequence random?</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:left">A computer-generated IVRS/IWRS system was used for generation of randomization codes.</td>
+</tr>
+<tr>
+<td style="text-align:left">1.2 Was the allocation sequence concealed until participants were enrolled and assigned to interventions?</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:left">Randomization details were restricted to specific staff, preserving allocation concealment.</td>
+</tr>
+<tr>
+<td style="text-align:left">1.3 Did baseline differences between intervention groups suggest a problem with the randomization process?</td>
+<td style="text-align:center">No</td>
+<td style="text-align:left">Baseline demographics and clinical characteristics were quite balanced as noted above.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="domain-2-risk-of-bias-due-to-deviations-from-the-intended-interventions">Domain 2: Risk of bias due to deviations from the intended interventions</h3>
+<p>Outcome: low risk</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Question</th>
+<th style="text-align:center">Author judgement</th>
+<th style="text-align:left">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">2.1 Were participants aware of their assigned intervention during the trial?</td>
+<td style="text-align:center">No</td>
+<td style="text-align:left">Double-blind design. Puffers were identical between groups. A placebo was used for the maintenance in the budesonide-formoterol group.</td>
+</tr>
+<tr>
+<td style="text-align:left">2.2 Were carers and people delivering the interventions aware of participants&#39; assigned intervention during the trial?</td>
+<td style="text-align:center">No</td>
+<td style="text-align:left">See above.</td>
+</tr>
+<tr>
+<td style="text-align:left">2.6 Was an appropriate analysis used to estimate the effect of assignment to intervention?</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:left">Intention-to-treat analysis was used, including all randomized participants.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="domain-3-risk-of-bias-due-to-missing-outcome-data">Domain 3: Risk of bias due to missing outcome data</h3>
+<p>Outcome: low risk</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Question</th>
+<th style="text-align:center">Author judgement</th>
+<th style="text-align:left">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">3.1 Were data for this outcome available for all, or nearly all, participants randomized?</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:left">A total of 4215 patients underwent randomization, and 4176 (2089 in the budesonide-formoterol group and 2087 in the budesonide maintenance group) were included in the full analysis set. There was minimal loss to follow-up. &gt;95% of participant data was available.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="domain-4-risk-of-bias-in-measurement-of-the-outcome">Domain 4: Risk of bias in measurement of the outcome</h3>
+<p>Outcome: low risk</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Question</th>
+<th style="text-align:center">Author Judgement</th>
+<th style="text-align:left">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">4.1 Was the method of measuring the outcome inappropriate?</td>
+<td style="text-align:center">No</td>
+<td style="text-align:left">Definitions of outcomes were appropriate and clinically relevant.</td>
+</tr>
+<tr>
+<td style="text-align:left">4.2 Could measurement or ascertainment of the outcome have differed between intervention groups?</td>
+<td style="text-align:center">Probably No</td>
+<td style="text-align:left">Unlikely given the double-blinded nature of the study and pre-defined follow-up periods.</td>
+</tr>
+<tr>
+<td style="text-align:left">4.3 If N/PN/NI to 4.1 and 4.2: Were outcome assessors aware of the intervention received by study participants?</td>
+<td style="text-align:center">No</td>
+<td style="text-align:left">Double-blinded.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="domain-5-risk-of-bias-in-selection-of-the-reported-result">Domain 5: Risk of bias in selection of the reported result</h3>
+<p>Outcome: low risk</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Question</th>
+<th style="text-align:center">Author Judgement</th>
+<th style="text-align:left">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">5.1 Was the data analysed according to a pre-specified plan finalized before unblinded outcome data were available?</td>
+<td style="text-align:center">Probably Yes</td>
+<td style="text-align:left">A pre-specified analysis plan was followed. The protocol was amended after randomization to a non-inferiority design instead of superiority, but this change occurred while investigators were still blinded to outcome data.</td>
+</tr>
+<tr>
+<td style="text-align:left">5.2 Was the result likely selected from multiple eligible outcome measurements?</td>
+<td style="text-align:center">Probably no</td>
+<td style="text-align:left">The primary outcome, annualized severe exacerbation rate, was clearly defined in the protocol. While other outcomes (e.g. total number of severe exacerbations) were possible, results were similar across them.</td>
+</tr>
+<tr>
+<td style="text-align:left">5.3 Was the result likely selected from multiple eligible analyses?</td>
+<td style="text-align:center">Probably no</td>
+<td style="text-align:left">The original superiority analysis was replaced with a non-inferiority analysis after a pre-specified sample size review showed inadequate power; seems unlikely to be a post-hoc fishing expedition. Non-inferiority is a clinically relevant outcome to assess in the trial&#39;s context.</td>
+</tr>
+</tbody>
+</table>
 
-| Question                                                                                                   | Author judgement | Justification                                                                               |
-| :--------------------------------------------------------------------------------------------------------- | :--------------: | :------------------------------------------------------------------------------------------ |
-| 1.1 Was the allocation sequence random?                                                                    |       Yes        | A computer-generated IVRS/IWRS system was used for generation of randomization codes.       |
-| 1.2 Was the allocation sequence concealed until participants were enrolled and assigned to interventions?  |       Yes        | Randomization details were restricted to specific staff, preserving allocation concealment. |
-| 1.3 Did baseline differences between intervention groups suggest a problem with the randomization process? |        No        | Baseline demographics and clinical characteristics were quite balanced as noted above.      |
-
-### Domain 2: Risk of bias due to deviations from the intended interventions
-
-Outcome: low risk
-
-| Question                                                                                                               | Author judgement | Justification                                                                                                                          |
-| :--------------------------------------------------------------------------------------------------------------------- | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.1 Were participants aware of their assigned intervention during the trial?                                           |        No        | Double-blind design. Puffers were identical between groups. A placebo was used for the maintenance in the budesonide-formoterol group. |
-| 2.2 Were carers and people delivering the interventions aware of participants' assigned intervention during the trial? |        No        | See above.                                                                                                                             |
-| 2.6 Was an appropriate analysis used to estimate the effect of assignment to intervention?                             |       Yes        | Intention-to-treat analysis was used, including all randomized participants.                                                           |
-
-### Domain 3: Risk of bias due to missing outcome data
-
-Outcome: low risk
-
-| Question                                                                                  | Author judgement | Justification                                                                                                                                                                                                                                                          |
-| :---------------------------------------------------------------------------------------- | :--------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 3.1 Were data for this outcome available for all, or nearly all, participants randomized? |       yes        | A total of 4215 patients underwent randomization, and 4176 (2089 in the budesonide-formoterol group and 2087 in the budesonide maintenance group) were included in the full analysis set. There was minimal loss to follow-up. >95% of participant data was available. |
-
-### Domain 4: Risk of bias in measurement of the outcome
-
-Outcome: low risk
-
-| Question                                                                                                        | Author Judgement | Justification                                                                            |
-| :-------------------------------------------------------------------------------------------------------------- | :--------------: | :--------------------------------------------------------------------------------------- |
-| 4.1 Was the method of measuring the outcome inappropriate?                                                      |        No        | Definitions of outcomes were appropriate and clinically relevant.                        |
-| 4.2 Could measurement or ascertainment of the outcome have differed between intervention groups?                |   Probably No    | Unlikely given the double-blinded nature of the study and pre-defined follow-up periods. |
-| 4.3 If N/PN/NI to 4.1 and 4.2: Were outcome assessors aware of the intervention received by study participants? |        No        | Double-blinded.                                                                          |
-
-### Domain 5: Risk of bias in selection of the reported result
-
-Outcome: low risk
-
-| Question                                                                                                            | Author Judgement | Justification                                                                                                                                                                                                                                                                           |
-| :------------------------------------------------------------------------------------------------------------------ | :--------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5.1 Was the data analysed according to a pre-specified plan finalized before unblinded outcome data were available? |   Probably Yes   | A pre-specified analysis plan was followed. The protocol was amended after randomization to a non-inferiority design instead of superiority, but this change occurred while investigators were still blinded to outcome data.                                                           |
-| 5.2 Was the result likely selected from multiple eligible outcome measurements?                                     |   Probably no    | The primary outcome, annualized severe exacerbation rate, was clearly defined in the protocol. While other outcomes (e.g. total number of severe exacerbations) were possible, results were similar across them.                                                                        |
-| 5.3 Was the result likely selected from multiple eligible analyses?                                                 |   Probably no    | The original superiority analysis was replaced with a non-inferiority analysis after a pre-specified sample size review showed inadequate power; seems unlikely to be a post-hoc fishing expedition. Non-inferiority is a clinically relevant outcome to assess in the trial's context. |
+{% end %}
