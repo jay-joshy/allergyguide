@@ -363,7 +363,8 @@ function generateAsciiTable(doses, name, protein_per_g) {
 
   // Prepare rows and track max widths
   const rows = doses.map((mg, i) => {
-    const g = ((mg * 0.001) / protein_per_g).toFixed(2);
+    const g =
+      protein_per_g > 0 ? ((mg * 0.001) / protein_per_g).toFixed(2) : "0.00";
     cum += mg;
     return [(i + 1).toString(), g, mg.toString(), cum.toString()];
   });
@@ -483,7 +484,7 @@ function openFpiModal(foodName, meanValue) {
   els.body.innerHTML =
     meanValue !== undefined && meanValue !== null && String(meanValue).length
       ? `
-      <p>${meanValue} (g) protein per 100g</p>
+      <p><label><input id="fpi-protein-per-100g" class="protein-per-100g-input" type="number" min="0" step="0.01" value="${meanValue}"> (g) protein per 100g</label></p>
       <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
           <div>
             <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
@@ -539,7 +540,8 @@ function openFpiModal(foodName, meanValue) {
         const input = row.querySelector(".protein-mg-input");
         let mg = parseFloat(input && input.value) || 0;
         if (mg < 0) mg = 0;
-        const g = protein_per_g > 0 ? (mg * 0.001) / protein_per_g : 0;
+        const cur = parseFloat(els.modal.dataset.proteinPerG) || 0;
+        const g = cur > 0 ? (mg * 0.001) / cur : 0;
         row.querySelector(".g-dose").textContent = g.toFixed(2);
         cum += mg;
         row.querySelector(".cum-mg").textContent = cum;
@@ -553,6 +555,36 @@ function openFpiModal(foodName, meanValue) {
 
     // Initial calculation to ensure correctness
     recalc();
+  }
+
+  // Attach change handler to protein-per-100g input to recalc tables
+  const protein100Input = els.body.querySelector("#fpi-protein-per-100g");
+  if (protein100Input) {
+    const onProteinChange = () => {
+      let v = parseFloat(protein100Input.value);
+      if (!(v >= 0)) v = 0;
+      const perG = v > 0 ? v / 100 : 0;
+      els.modal.dataset.proteinPerG = String(perG);
+      // Recalculate both tables using latest value
+      [
+        els.body.querySelector("#fpi-table-five"),
+        els.body.querySelector("#fpi-table-seven"),
+      ].forEach((t) => {
+        if (!t) return;
+        let cum = 0;
+        t.querySelectorAll("tbody tr").forEach((row) => {
+          const input = row.querySelector(".protein-mg-input");
+          let mg = parseFloat(input && input.value) || 0;
+          if (mg < 0) mg = 0;
+          const g = perG > 0 ? (mg * 0.001) / perG : 0;
+          row.querySelector(".g-dose").textContent = g.toFixed(2);
+          cum += mg;
+          row.querySelector(".cum-mg").textContent = cum;
+        });
+      });
+    };
+    protein100Input.addEventListener("input", onProteinChange);
+    protein100Input.addEventListener("change", onProteinChange);
   }
 
   setupEditableTable(els.body.querySelector("#fpi-table-five"));
