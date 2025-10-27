@@ -6,7 +6,7 @@ const CONFIG = {
   VIRTUAL_SCROLL_THRESHOLD: 100,
 };
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
   const searchInput = document.getElementById("food-search");
   const clearBtn = document.getElementById("clear-search");
   const filterBtns = document.querySelectorAll(".filter-btn");
@@ -158,11 +158,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const debouncedSearch = debounce(updateDisplay, CONFIG.DEBOUNCE_DELAY);
 
   // Event listeners
-  searchInput.addEventListener("input", function () {
+  searchInput.addEventListener("input", function() {
     debouncedSearch();
   });
 
-  clearBtn.addEventListener("click", function () {
+  clearBtn.addEventListener("click", function() {
     searchInput.value = "";
 
     // Reset filter
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Optimized filter button handling
   filterBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function() {
       const newFilter = this.getAttribute("data-group");
 
       // Skip if same filter
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Enhanced keyboard navigation
-  searchInput.addEventListener("keydown", function (e) {
+  searchInput.addEventListener("keydown", function(e) {
     switch (e.key) {
       case "Escape":
         this.value = "";
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".food_protein_index").classList.add("initialized");
 
   // Modal open on food name click (delegated so it survives table re-renders)
-  tableBody.addEventListener("click", function (e) {
+  tableBody.addEventListener("click", function(e) {
     const cell = e.target.closest(".food-name");
     if (!cell || !tableBody.contains(cell)) return;
 
@@ -276,7 +276,7 @@ function ensureFpiModal() {
   header.appendChild(title);
 
   // Keep modal state in sync with title edits (do not rewrite the title content to avoid caret jumps)
-  title.addEventListener("input", function () {
+  title.addEventListener("input", function() {
     const els = ensureFpiModal();
     const name = title.textContent;
     els.modal.dataset.foodName = name;
@@ -286,7 +286,7 @@ function ensureFpiModal() {
   });
 
   // Prevent Enter from inserting a newline, and commit on Enter
-  title.addEventListener("keydown", function (e) {
+  title.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
       e.preventDefault();
       title.blur();
@@ -294,7 +294,7 @@ function ensureFpiModal() {
   });
 
   // Normalize and trim the title on blur to avoid stray whitespace/newlines
-  title.addEventListener("blur", function () {
+  title.addEventListener("blur", function() {
     let name = title.textContent.replace(/\s+/g, " ").trim();
     if (title.textContent !== name) {
       title.textContent = name;
@@ -325,7 +325,7 @@ function ensureFpiModal() {
 
   // Close interactions
   closeBtn.addEventListener("click", closeFpiModal);
-  backdrop.addEventListener("click", function (e) {
+  backdrop.addEventListener("click", function(e) {
     if (e.target === backdrop) closeFpiModal();
   });
   document.addEventListener("keydown", onEsc);
@@ -376,7 +376,7 @@ function generateAsciiTable(doses, name, protein_per_g) {
   });
 
   // Build ASCII table
-  let ascii = "";
+  let ascii = protein_per_g * 100 + " (g) protein per 100g\n";
   // Header
   ascii += headers.map((h, i) => pad(h, colWidths[i])).join(" | ") + "\n";
   // Separator
