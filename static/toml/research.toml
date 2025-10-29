@@ -30,15 +30,15 @@ study_quality.args = { headers = [
   "Severe ex. rate",
 ] }
 
-[liberty_csu_cupid]
-title = "SYGMA2"
-clinical_question = "Is PRN budesonide–formoterol noninferior to daily maintenance budesonide therapy in reducing severe asthma exacerbations for mild asthma?"
-study_type = "52 week double-blind, randomized, multi-center, phase 3, non-inferiority trial"
-population = "4176 patients with <span class='hl-yellow'>mild persistent asthma (≥12 years)</span> were analyzed, including those with previously controlled and uncontrolled symptoms on minimal therapy."
-intervention = "<span class='hl-yellow'>Twice-daily placebo + PRN budesonide–formoterol (200μg/6μg).</span>"
-comparison = "<span class='hl-yellow'>Regular BID budesonide (200μg) + as-needed terbutaline (0.5mg).</span>"
-outcomes = "At 52 weeks, the PRN budesonide–formoterol group had an <span class='hl-yellow'>annualized rate of severe exacerbations</span> of <span class='hl-green'>0.11 events/patient-year compared to 0.12 events/patient-year</span> in the budesonide group (RR 0.97; upper one-sided 95% CI, 1.16). <span class='hl-yellow'>ACQ-5 score</span> <span class='hl-green'>improved by 0.35 in the as-needed group versus 0.46 in the maintenance group</span> (Δ0.11 units; 95% CI, 0.07 to 0.15; p<0.001). <span class='hl-yellow'>Median daily inhaled glucocorticoid exposure</span> in the as-needed group was 66μg vs 267μg in the maintenance group."
-bottom_line = "For mild asthma, PRN budesonide–formoterol was noninferior to daily budesonide in preventing severe exacerbations, with a relatively smaller improvement in ACQ-5 and much less overall steroid exposure."
+[liberty_csu_cupid_a]
+title = "LIBERTY-CSU CUPID A"
+clinical_question = "Is Dupilumab effective for CSU refractory to high dose AH?"
+study_type = "Randomized, placebo-controlled, double-blind, phase 3 trial across 9 countries."
+population = "138 patients ages 6-80, CSU diagnosed at least 6 months prior, CSU symptomatic despite high dose AH, omalizumab-naive, no inducible urticaria. 97% ≥18 years old."
+intervention = "Adults and adolescents ≥60 kg: Dupilumab 600mg load and 300mg q2week thereafter if ≥60 kg. Adolescents <60 kg and children ≥30 kg: 400mg load and 200mg q2week thereafter. Children ≥15 kg and <30 kg: 600mg load, 300mg q4week thereafter. Total duration of therapy was 24 weeks for all."
+comparison = "Placebo with matching loading doses."
+outcomes = "At 24 weeks, the dupilumab group significantly better controlled CSU symptoms vs placebo: UAS7 ≤6, 46% vs 24% (OR 2.8, 95% CI 1.3 to 6.2, p<0.01); UAS7 of 0, 31% vs 13% (OR 2.9, 95% CI 1.2 to 7.2, p=0.02). UAS7 scores also had a mean score difference of -8.5 points (95% CI −13.2 to −3.9, p<0.001). Follow-up off-treatment UAS7 scores remained stable after 24 weeks to 32 weeks. There was no significant differences in safety profile between dupilumab and placebo (data pooled from CUPID A and B)."
+bottom_line = "In omalizumab-naive CSU patients uncontrolled with AH, dupilumab significantly reduces CSU symptoms."
 study_quality.type = "rob"
 study_quality.args = { headers = [
   "D1",
@@ -57,5 +57,5 @@ study_quality.args = { headers = [
     "green",
   ],
 ], outcomes = [
-  "Severe ex. rate",
+  "",
 ] }
