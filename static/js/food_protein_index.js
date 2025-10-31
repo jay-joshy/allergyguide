@@ -350,44 +350,63 @@ function pad(str, width, alignRight = false) {
  * @param {number} protein_per_g - Protein content in g per gram of food.
  * @returns {string} ASCII table string.
  */
-function generateAsciiTable(doses, name, protein_per_g) {
+function generateAsciiProtocol(doses, name, protein_per_g) {
   let cum = 0;
 
-  // Headers
-  const headers = [
-    "Step",
-    `${name} (g)`,
-    "Protein (mg)",
-    "Cumulative dose (mg)",
-  ];
+  // make easy format of challenge steps even without mono font
+  if (!name.includes("@")) {
+    let ascii = `Challenge protocol: ${name} (${protein_per_g * 100}g protein per 100g)\n---\n`;
+    let cum = 0;
 
-  // Prepare rows and track max widths
-  const rows = doses.map((mg, i) => {
-    const g =
-      protein_per_g > 0 ? ((mg * 0.001) / protein_per_g).toFixed(2) : "0.00";
-    cum += mg;
-    return [(i + 1).toString(), g, mg.toString(), cum.toString()];
-  });
+    doses.forEach((mg, i) => {
+      const g = protein_per_g > 0 ? ((mg * 0.001) / protein_per_g).toFixed(2) : "0.00";
+      cum += mg;
 
-  // Compute column widths
-  const colWidths = headers.map((h, i) => {
-    const maxRowWidth = Math.max(...rows.map((r) => r[i].length));
-    return Math.max(h.length, maxRowWidth);
-  });
+      ascii += `Step ${i + 1}: ${g}g (${mg}mg protein; ${cum}mg cumulative dose)\n`;
+    });
 
-  // Build ASCII table
-  let ascii = protein_per_g * 100 + " (g) protein per 100g\n";
-  // Header
-  ascii += headers.map((h, i) => pad(h, colWidths[i])).join(" | ") + "\n";
-  // Separator
-  ascii += colWidths.map((w) => "-".repeat(w)).join("-|-") + "\n";
-  // Rows
-  rows.forEach((row) => {
-    ascii +=
-      row.map((val, i) => pad(val, colWidths[i], true)).join(" | ") + "\n";
-  });
+    return ascii + "---"
+  }
 
-  return ascii;
+  // OLD TABLE LOGIC - only if you include @ in the name... a bit of a easter egg.
+  else {
+    // Headers
+    const headers = [
+      "Step",
+      `${name} (g)`,
+      "Protein (mg)",
+      "Cumulative dose (mg)",
+    ];
+
+    // Prepare rows and track max widths
+    const rows = doses.map((mg, i) => {
+      const g =
+        protein_per_g > 0 ? ((mg * 0.001) / protein_per_g).toFixed(2) : "0.00";
+      cum += mg;
+      return [(i + 1).toString(), g, mg.toString(), cum.toString()];
+    });
+
+    // Compute column widths
+    const colWidths = headers.map((h, i) => {
+      const maxRowWidth = Math.max(...rows.map((r) => r[i].length));
+      return Math.max(h.length, maxRowWidth);
+    });
+
+    // Build ASCII table
+    let ascii = protein_per_g * 100 + " (g) protein per 100g\n";
+    // Header
+    ascii += headers.map((h, i) => pad(h, colWidths[i])).join(" | ") + "\n";
+    // Separator
+    ascii += colWidths.map((w) => "-".repeat(w)).join("-|-") + "\n";
+    // Rows
+    rows.forEach((row) => {
+      ascii +=
+        row.map((val, i) => pad(val, colWidths[i], true)).join(" | ") + "\n";
+    });
+
+    return ascii;
+
+  }
 }
 
 function setFpiFoodName(name) {
@@ -427,7 +446,7 @@ function copyAscii(protocol, name, protein_per_g) {
         parseFloat(FPI_MODAL.modal.dataset.proteinPerG)) ||
       protein_per_g;
 
-    const tableString = generateAsciiTable(
+    const tableString = generateAsciiProtocol(
       doses,
       currentName,
       currentProteinPerG,
