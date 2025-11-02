@@ -180,6 +180,22 @@ Placeholder
 > Management
 '''
 
+[food-fpies]
+wip = true
+topic = "Food Protein-Induced Enterocolitis Syndrome"
+keywords = ["food", "non-ige mediated food allergy", "FPIES", "fpies"]
+content = '''
+# Food Protein-Induced Enterocolitis Syndrome (FPIES) to: 
+Based on clinical history, a diagnosis of FPIES is very likely. FPIES is a non-IgE mediated food allergy manifesting only by delayed gastrointestinal symptoms. Typically, it is rare to have FPIES to multiple foods (25% of children react to 2 foods and less than 10% react to ≥ 3 foods). There is no diagnostic test for FPIES beyond oral challenge, and diagnosis is usually based on clinical history. FPIES does not respond to epinephrine and there is no indication to carry an epinephrine auto-injector. The natural history of child-onset FPIES is excellent and most children will outgrow it within ~ 12 to 24 months.  
+
+Plan:
+> Two main options exist: 1) strict avoidance of ***, with consideration of oral challenge in ~1-2 years. However, with strict avoidance there is risk of development of an IgE mediated allergy. 2) A novel approach is the FPIES ladder to slowly reintroduce the food at home, starting with 1/64 teaspoon of the trigger food (using mini measuring teaspoons)
+- Family has elected to pursue: 
+- We provided guidance on how to use the ladder and sent a copy to the family. In case of mild symptoms, previous tolerated dose should be resumed for another 4 weeks. They should otherwise strictly avoid the culprit food
+> In case of accidental exposure or intractable nausea/emesis, Ondansetron 0.15 mg/kg can alleviate symptoms. Occasionally, moderate to severe dehydration may occur and requires IV rehydration, which may present as pallor, lethargy, or syncope - in this case, immediate medical attention should be sought
+> An explanatory letter to present to the emergency department physician in case of accidental exposure was sent to the family
+'''
+
 # DRUG
 # -----------------------------
 [drug-drug_reaction_approach]
@@ -238,12 +254,14 @@ wip = true
 topic = "Penicillin allergy"
 keywords = ["drug", "penicillin"]
 content = '''
-Placeholder
+# No amoxicillin allergy
+Clinical history is not suggestive of an amoxicillin allergy as:
 
-# Topic
-[Details]
-* Investigations
-> Management
+Additionally, the character of the rash is not in keeping with the urticaria expected in IgE-mediated allergy; the history was not concerning for serum sickness or severe cutaneous adverse drug reactions, such as Stevens Johnson Syndrome or Toxic Epidermal Necrolysis. Up to 95% of patients presenting with a rash following administration of an antibiotic do not in fact have a drug allergy, and rather the symptoms are most likely related to the infection itself rather than amoxicillin.
+
+The oral drug challenge in clinic today was well-tolerated. This type of testing does not exclude delayed hypersensitivities: we asked that the family monitor for rashes over the next several days, take photos and contact our office if one appears. 
+
+Future courses of penicillin may be given with no increased risk of allergic reaction compared to the general population for her age. 
 '''
 
 # AIRWAY AND ENT
@@ -266,12 +284,12 @@ treatment tried, technique, duration
 # Allergic rhinitis, sensitized to ***. Current symptom control:
 Ddx: non-allergic rhinits (irritant, occupational, vasomotor, gustatory), localized allergic rhinitis, sinusitis
 
-Recommendations:
+Plan:
 > Non-pharmacologically, discussed avoidance strategies including:
-> Use OTC sterile saline rinses prior to intra-nasal corticosteroids (INCS)
-> Start Ryaltris 2 sprays EN BID. Counseled on correct technique. While a combination anti-histamine/INCS spray offers quicker relief, consistent use over weeks provides the most symptomatic benefit
-> Start anti-histamine eye drops PRN
-> We briefly discussed immunotherapy (SCIT vs SLIT), and have provided a handout. They are welcome to contact our office if they wish to pursue it later
+> Use of OTC sterile saline rinses prior to intra-nasal corticosteroids (INCS)
+> Rx Ryaltris 2 sprays EN BID. Counseled on correct technique. While a combination anti-histamine/INCS spray offers quicker relief, consistent use over weeks provides the most symptomatic benefit
+> Rx anti-histamine eye drops PRN 
+> We briefly discussed immunotherapy (SCIT vs SLIT) as an option in the case of: medically refractory symptoms, desire for root-cause treatment or reduction of current pharmacotherapy. They are welcome to contact our office if they wish to pursue it later
 '''
 
 [airwayent-asthma]
@@ -452,12 +470,14 @@ current skin regimen
 treatments done (topical steroids, AH, etc.)
 current EASI score (>8yo)
 
-# Atopic dermatitis. Current control: 
+# Atopic dermatitis / Eczema. Current control: 
+Atopic dermatitis is a common chronic primary skin condition thought to be a result of a complex interplay of genetics, environmental irritants/allergens, and microbiota. For many patients, the eczema will improve as they get older. Skin testing for foods without a history to suggest an IgE-mediated allergic reaction is not indicated as many false positives occur. Of note: empiric elimination diets in the general atopic dermatitis population have been unsuccessful based on available evidence and any perceived improvement may be due to the waxing and waning nature of the condition. However, avoiding allergenic foods can potentially lead to the development of food allergy. From a primary prevention standpoint, maintaining allergenic foods in the diet is protective against food allergy. 
 
+Plan:
 > Regular moisturization (at least BID) is a crucial part of management; there is strong evidence it reduces disease severity and need for prescription creams. We reviewed options such as (but not limited to) Vaseline, CeraVe, or Cetaphil creams
 > For disease flares we suggest:
-  - Betaderm 0.1% ointment BID to body and Desonide 0.05% cream BID to face (or Protopic 0.1% ointment BID to face), until clear of ezcema; then switching to maintenance schedule
-  - Maintenance schedule: application of topicals 2-3x/weekly to eczema-prone areas; can consider taper to OTC moisturization with sustained control
+  - Betaderm 0.1% ointment BID to body and Desonide 0.05% cream BID (or Protopic 0.1% ointment BID, or Hydrocortisone 2.5% cream BID) to face, until clear of ezcema
+  - If eczema returns quickly, a maintenance schedule of topicals 2-3x/weekly to eczema-prone areas will be considered, with taper back to OTC moisturization with sustained control
 > If symptoms are refractory, we can consider systemic therapies such as Dupilimab and further investigate for mimickers such as allergic contact dermatitis, cutaneous T cell lymphoma, scabies, or immunodeficiency
 '''
 
@@ -589,7 +609,7 @@ Systemic reactions to stinging insects have a 30-60% risk of a subsequent potent
 
 > We counseled on sting avoidance techniques such as not eating/drinking outside, wearing shoes when walking in the grass and having nests professionally removed from the property
 > We have prescribed an epinephrine autoinjector and discussed its use
-> Venom immunotherapy (VIT) is indicated in the setting of anaphylaxis and skin or sIgE evidence of sensitization, and can reduce the risk of a systemic reaction to around 5% once maintenance dosing is achieved
+> Venom immunotherapy (VIT) is indicated in the setting of anaphylaxis and skin or sIgE evidence of sensitization, and can reduce the risk of a systemic reaction to below 5% once maintenance dosing is achieved
 '''
 
 [misc-chronic_cough]
@@ -790,8 +810,10 @@ keywords = ["immunotherapy", "SCIT", "subcutaneous"]
 content = '''
 Subcutaneous Immunotherapy (SCIT)
 > Typically there is 6-9 months of weekly build-up injections, followed by monthly maintenance injections.
-> Symptomatic benefit is expected within 1-2 years, with a total course of 3-5 years ideally and lasting benefit thereafter; premature discontinuation is associated with less lasting benefit.
-> Risks discussed: life-threatening anaphylaxis, and localized reactions. 
+> Symptomatic benefit is expected within 1-2 years, with a total course of 3-5 years ideally and lasting benefit thereafter for at least several years; premature discontinuation is associated with less lasting benefit. In the case of relapse post-completion, a repeat course of immunotherapy can be done.
+> Risks discussed: Localized reactions are common and can be treated with non-drowsy antihistamines; prophylactic use before injections is common. Anaphylaxis occurs in 0.1-4% of injections, while fatal anaphylaxis is estimated at 1 in 2.5 million injections. 
+> Contraindications: Development of moderate/severe/ uncontrolled asthma. Spirometry showing FEV1<70. Use of beta-blocker or significant cardiovascular comorbidity and lack of physiologic reserve. Dose escalation is contraindicated in pregnancy. If the patient becomes pregnant while on immunotherapy, our office should be contacted immediately to decide whether to continue or stop immunotherapy.
+> Safety considerations: Doses should be held during times of respiratory illness; once maintenance is reached, **NEW MAINTENANCE VIAL DOSES SHOULD BE INITIALLY REDUCED BY 50%**.
 > We have ordered a prescription; once the serum is available we will arrange a follow-up visit for the first injection
 '''
 
