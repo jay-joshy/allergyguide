@@ -146,13 +146,13 @@ exposed b4?
 repeat exposure since?
 consistency?
 
-# IgE / Non-IgE / non-immune reaction to:
-
-*** IgE
+# IgE-mediated food allergy to:
 > At this time, strict avoidance of:
-> Rx: epinephrine autoinjector x2. Counseled to keep on oneself at all times, how to use it, and use in case of two-system involvement (skin/mucous membrane, respiratory, cardiac, GI) or if symptoms are severe in one category, following exposure to known or possible allergen
+> Rx: epinephrine autoinjector x2, and anaphylaxis action plan reviewed.
 > Immunotherapy
 > Consider baseline Tryptase testing if severe reactions consistently
+
+*** Their symptoms are most consistent with oral allergy syndrome, which is a type of reaction that typically remains localized and does not progress to systemic illness/anaphylaxis. Symptoms are characterized by predominantly oral itch, scratchy throat, mild rash or swelling of the lips and occasionally abdominal upset after eating certain fruits, vegetables or tree nuts. It results from cross-reactivity between tree pollens and several fresh fruits, nuts, and vegetables, and usually disappears with cooked foods. The patients skin test was positive for ***, which cross reacts with ***. Therefore, her/his reaction to cherries may be attributable to oral allergy syndrome. We recommend
 
 *** IgE suspected but unclear testing
 > While history is consistent with IgE-mediated allergy, there is not current evidence of IgE sensitization on SPT - however, these tests are not 100% sensitive
@@ -163,8 +163,6 @@ consistency?
 > The clinical history is inconsistent with IgE-mediated food allergy, and skin testing was negative.
 > Recommended a slow introduction at home. Once they have tolerated the food consistently, they no longer need to carry their epinephrine autoinjector
 > However, given ongoing avoidance and concern around re-introduction we have arranged an oral challenge to liberate the patient from this label. They will continue to carry an epinephrine autoinjector until the challenge is completed
-
-*** Their symptoms are most consistent with oral allergy syndrome, which is a type of reaction that typically remains localized and does not progress to systemic illness/anaphylaxis. Symptoms are characterized by predominantly oral itch, scratchy throat, mild rash or swelling of the lips and occasionally abdominal upset after eating certain fruits, vegetables or tree nuts. It results from cross-reactivity between tree pollens and several fresh fruits, nuts, and vegetables, and usually disappears with cooked foods. The patients skin test was positive for ***, which cross reacts with ***. Therefore, her/his reaction to cherries may be attributable to oral allergy syndrome. We recommend
 '''
 
 [food-non_ige_food]
@@ -255,7 +253,7 @@ topic = "Penicillin allergy"
 keywords = ["drug", "penicillin"]
 content = '''
 # No amoxicillin allergy
-Clinical history is not suggestive of an amoxicillin allergy as:
+Clinical history is not suggestive of an penicillin allergy as:
 
 Additionally, the character of the rash is not in keeping with the urticaria expected in IgE-mediated allergy; the history was not concerning for serum sickness or severe cutaneous adverse drug reactions, such as Stevens Johnson Syndrome or Toxic Epidermal Necrolysis. Up to 95% of patients presenting with a rash following administration of an antibiotic do not in fact have a drug allergy, and rather the symptoms are most likely related to the infection itself rather than amoxicillin.
 
@@ -322,8 +320,8 @@ Recommendations:
 > Optimize exacerbating comorbid conditions: [smoking | obesity | obstructive sleep apnea | nasal polyps | allergic rhinitis | anxiety | de-conditioning | viruses | pollution exposure]
 > Pharmacologically:
   - Symbicort 200/6 1 puff PRN (up to 8 puffs/daily) for mild intermittent asthma or issues with adherence (as per the SYGMA2 trial)
-  - Symbicort 200/6 1-2 puffs BID; it can be used additionally PRN
-  - Triple therapy with: Breo Ellipta 100/25 or 200/25 mcg 1 puff daily
+  - Symbicort 200/6 1-2 puffs BID; it can be used additionally PRN, up to 8 puffs daily
+  - Triple therapy with: Trelegy Ellipta 200mcg 1 inh daily or Enerzair Breezhaler 160mcg 1 inh daily
   - If in exacerbation: prednisone 50mg PO OD x 5 days with a taper, vs present to the ED
 > Asthma action plan was reviewed alongside importance of medication adherence and technique
 > As they are well controlled, we discussed stepping down therapy to:
@@ -366,7 +364,6 @@ Recommendations:
 > High volume nasal saline rinses, avoidance of triggers
 > INCS + treatment of any underlying causes
 > Consider short course prednisone for symptom management (most evidence for CRSwNP or AFRS)
-> Consider oral antibiotics for acute exacerbations (controversial)
 > Consider biologics for CRSwNP if severe/failed first-line therapy
 
 Follow-up: ~3-4 months
@@ -446,8 +443,9 @@ AE-UK
   - Stared Blexten 40mg PO BID
 
 *** confirmed HAE
-=> acute mgment: C1-INH concentrate (Berinert), Bradykinin receptor antagonist Icatibant (FIRAZYR®), plasma kallikrein inhibition Lanadelumab (TAKHZYRO®), present to ED
-=> long term prophylaxis: C1-INH, ?androgrens but AEs
+> acute mgment: C1-INH concentrate (Berinert), Bradykinin receptor antagonist Icatibant (FIRAZYR®), plasma kallikrein inhibition Lanadelumab (TAKHZYRO®), present to ED
+> short-term prophylaxis:
+> long term prophylaxis: C1-INH, ?androgrens but AEs
 
 *** AAE ACEi supportive care, avoid ACEi and Entresto, ARBs ok in a pinch
 '''
@@ -473,7 +471,7 @@ current EASI score (>8yo)
 # Atopic dermatitis / Eczema. Current control: 
 Atopic dermatitis is a common chronic primary skin condition thought to be a result of a complex interplay of genetics, environmental irritants/allergens, and microbiota. For many patients, the eczema will improve as they get older. Skin testing for foods without a history to suggest an IgE-mediated allergic reaction is not indicated as many false positives occur. Of note: empiric elimination diets in the general atopic dermatitis population have been unsuccessful based on available evidence and any perceived improvement may be due to the waxing and waning nature of the condition. However, avoiding allergenic foods can potentially lead to the development of food allergy. From a primary prevention standpoint, maintaining allergenic foods in the diet is protective against food allergy. 
 
-Plan:
+Recommendations:
 > Regular moisturization (at least BID) is a crucial part of management; there is strong evidence it reduces disease severity and need for prescription creams. We reviewed options such as (but not limited to) Vaseline, CeraVe, or Cetaphil creams
 > For disease flares we suggest:
   - Betaderm 0.1% ointment BID to body and Desonide 0.05% cream BID (or Protopic 0.1% ointment BID, or Hydrocortisone 2.5% cream BID) to face, until clear of ezcema
@@ -525,18 +523,21 @@ Food triggers:
 Menstrual cycle:
 Medications:
 Venom:
+Exercise:
 Cofactors:
 Response to therapy:
 Tryptase or other investigations:
 
 # Anaphylaxis NYD
-> Baseline serum tryptase, PRN requisition in case of reaction to be drawn within 4 hours
-> SPT / sIgE to potential culprits
-> Exercise induced consideration, ie omega-5 gliadin
+Ddx: mast-cell disorders (MCAS, systemic mastocytosis, hereditary alpha tryptasemia), catamenial, food/environmental trigger, exercise induced anaphylaxis, cofactor induced, CSU flare, cholinergic urticaria, flushing disorders (pheo, carcinoid), idiopathic anaphylaxis if all else unclear
+
+* Baseline serum tryptase, PRN requisition in case of reaction to be drawn within 4 hours
+* SPT / sIgE to potential triggers
+* Specialized testing: HAT genetics, c-KIT, flushing workup, omega-5 gliadin 
 > Regular antihistamines vs PRN
+> Anti IgE therapy if refractory
 > Event diary
 > EpiPEN 
-
 '''
 
 [misc-eosinophilic_esophagitis]
@@ -545,9 +546,6 @@ topic = "Eosinophilic esophagitis"
 keywords = ["eoe", "eosinophilic esophagitis"]
 content = '''
 onset
-trigger
-
-
 Symptoms: [Dysphagia | Regurg | Solid/liquid | location | Heartburn | chest | pain | GERD]
 Food triggers, avoidance?
 Particular: dairy, wheat, soy, meats
@@ -561,8 +559,7 @@ Endoscopy:
 PPI trial:
 IgE mediated food allergy?
 
-The underlying etiology is not fully understood but felt to be food-related in many cases. Unfortunately, we do not have a testing modality to identify culprit foods.
-The goal of treatment is both histological and clinical improvement.
+The underlying etiology is not fully understood but felt to be food-related in many cases. Unfortunately, we do not have a testing modality to identify culprit foods. The goal of treatment is both histological and clinical improvement.
 
 > We have referred to GI / They should continue follow-up with their current GI; we defer to our colleagues regarding timing of repeat endoscopy
 > Start empiric 8-week trial of PPI: 40mg pantoprazole BID
@@ -599,7 +596,7 @@ treatment
   *** A skin test may be negative in the days or weeks after a sting reaction, which may be attributed to a refractory period of anergy; for these patients, the skin test should be repeated after 4–6 weeks
 
 ***non systemic reactions
-.The symptoms often last a few days to a week. The risk of a systemic reaction with a subsequent sting is about 5-10% which is only slightly higher than the general population (2-5%). Because of the low risk immunotherapy is not necessary but may be offered if the patient gets stung often and has frequent reactions as it will decrease the severity of the large local reactions.
+The symptoms often last a few days to a week. The risk of a systemic reaction with a subsequent sting is about 5-10% which is only slightly higher than the general population (2-5%). Because of the low risk immunotherapy is not necessary but may be offered if the patient gets stung often and has frequent reactions as it will decrease the severity of the large local reactions.
 
 ***confirmed venom allergy
 Systemic reactions to stinging insects have a 30-60% risk of a subsequent potentially life threatening reaction with another sting.
@@ -808,12 +805,12 @@ wip = true
 topic = "Subcutaneous Immunotherapy"
 keywords = ["immunotherapy", "SCIT", "subcutaneous"]
 content = '''
-Subcutaneous Immunotherapy (SCIT)
-> Typically there is 6-9 months of weekly build-up injections, followed by monthly maintenance injections.
-> Symptomatic benefit is expected within 1-2 years, with a total course of 3-5 years ideally and lasting benefit thereafter for at least several years; premature discontinuation is associated with less lasting benefit. In the case of relapse post-completion, a repeat course of immunotherapy can be done.
-> Risks discussed: Localized reactions are common and can be treated with non-drowsy antihistamines; prophylactic use before injections is common. Anaphylaxis occurs in 0.1-4% of injections, while fatal anaphylaxis is estimated at 1 in 2.5 million injections. 
-> Contraindications: Development of moderate/severe/ uncontrolled asthma. Spirometry showing FEV1<70. Use of beta-blocker or significant cardiovascular comorbidity and lack of physiologic reserve. Dose escalation is contraindicated in pregnancy. If the patient becomes pregnant while on immunotherapy, our office should be contacted immediately to decide whether to continue or stop immunotherapy.
-> Safety considerations: Doses should be held during times of respiratory illness; once maintenance is reached, **NEW MAINTENANCE VIAL DOSES SHOULD BE INITIALLY REDUCED BY 50%**.
+Subcutaneous Immunotherapy (SCIT) to: 
+> Typically there is 6-9 months of weekly build-up injections, followed by monthly maintenance injections
+> Symptomatic benefit is expected within 1-2 years, with a total course of 3-5 years ideally and lasting benefit thereafter for at least several years; premature discontinuation is associated with less lasting benefit. In the case of relapse post-completion, a repeat course of immunotherapy can be done
+> Risks discussed: Localized reactions are common and can be treated with non-drowsy antihistamines; prophylactic use before injections is common. Anaphylaxis occurs in 0.1-4% of injections, while fatal anaphylaxis is estimated at 1 in 2.5 million injections 
+> Contraindications: Development of moderate/severe/ uncontrolled asthma. Spirometry showing FEV1<70. Use of beta-blocker or significant cardiovascular comorbidity and lack of physiologic reserve. Dose escalation is contraindicated in pregnancy. If the patient becomes pregnant while on immunotherapy, our office should be contacted immediately to decide whether to continue or stop immunotherapy
+> Safety considerations: Doses should be held during times of respiratory illness; once maintenance is reached, **NEW MAINTENANCE VIAL DOSES SHOULD BE INITIALLY REDUCED BY 50%**
 > We have ordered a prescription; once the serum is available we will arrange a follow-up visit for the first injection
 '''
 
@@ -822,9 +819,9 @@ wip = true
 topic = "Sublingual immunotherapy"
 keywords = ["immunotherapy", "SLIT", "sublingual"]
 content = '''
-Sublingual immunotherapy (SLIT)
-> He is a candidate for [Acarizax (dust mite) | Itulatek (birch/tree) | Grastek (Timothy/grass) | Oralair (sweet vernal, orchard, perennial, rye, timothy, Kentucky blue) | Ragwitek (ragweed)].
-> Sublingual tablets are given daily at home, with a typical course for 3 years. Symptomatic relief is expected within 6-12 months with lasting benefit after completion of the full course. 
+Sublingual immunotherapy (SLIT) for:
+> They are a candidate for [Acarizax (dust mite) | Itulatek (birch/tree) | Grastek (Timothy/grass) | Oralair (sweet vernal, orchard, perennial, rye, timothy, Kentucky blue) | Ragwitek (ragweed)] SLIT
+> Sublingual tablets are given daily at home, with a typical course for 3 years. Symptomatic relief is expected within 6-12 months, with lasting benefit after completion of the full course. 
 > Risks discussed: oral pruritus, eosinophilic esophagitis. Anaphylaxis is exceedingly rare with SLIT
 > The first dose of each allergen must be give in clinic due to elevated risk of anaphylaxis 
 '''
