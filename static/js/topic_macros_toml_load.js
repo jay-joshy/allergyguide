@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function copyToClipboard(button) {
   // THIS IS A COMMENT THAT SHOULD SHOW UP.
   const codeBlock = button.nextElementSibling; // Get the sibling `.txt` div
-  const text = codeBlock.textContent || codeBlock.innerText;
+  let text = codeBlock.textContent || codeBlock.innerText;
 
   // Inject date into text if {{date}}
   if (text.includes("We assessed this patient today on ***")) {
