@@ -12,13 +12,13 @@ function copyToClipboard(button) {
   const text = codeBlock.textContent || codeBlock.innerText;
 
   // Inject date into text if {{date}}
-  if (text.substring("We assessed this patient today on ***")) {
+  if (text.includes("We assessed this patient today on ***")) {
     const today = new Date();
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     const formattedDate = today
       .toLocaleDateString('en-GB', options)
       .replace(/ /g, '-');
-    text.replace("We assessed this patient today on ***", "We assessed this patient today on " + formattedDate)
+    text = text.replace("We assessed this patient today on ***", "We assessed this patient today on " + formattedDate)
   }
 
   navigator.clipboard.writeText(text).then(() => {
