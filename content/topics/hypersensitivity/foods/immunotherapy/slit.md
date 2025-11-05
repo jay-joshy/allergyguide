@@ -1,5 +1,5 @@
 +++
-title = "Food Immunotherapy"
+title = "Sublingual Immunotherapy (SLIT)"
 description = "[description of md page]"
 date = 2025-01-01
 draft = false
@@ -20,17 +20,5 @@ status="not-started"
 </br>
 
 <div class="blur-container">
-
-## Summary:
-
-WIP
-
-# rough
-
-droplets
-
-- see ubc research
-- goal is not to eat but to reduce risk of anaphylaxis from cross contam
--
 
 </div>
