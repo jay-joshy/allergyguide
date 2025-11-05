@@ -51,4 +51,10 @@ Systemic reactions to stinging insects have a 30-60% risk of a subsequent potent
 > We have prescribed an epinephrine autoinjector and discussed its use
 > Venom immunotherapy (VIT) is indicated in the setting of anaphylaxis and skin or sIgE evidence of sensitization, and can reduce the risk of a systemic reaction to around 5% once maintenance dosing is achieved
 
+SC injections tips
+always confirm vial and dose with patients
+relax arm, pinch
+some don't aspirate, some do
+ice after might be nice
+
 </div>
