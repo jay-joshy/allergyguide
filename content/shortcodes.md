@@ -215,18 +215,25 @@ _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
 
 {% text_image(src="/images/example.png", alt="An image description", caption = "test caption") %}
 _Here is some text_ on the left.</br><kbd>CTRL+ALT+Delete</kbd>
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lacinia malesuada dolor, nec hendrerit nibh mattis vitae. Pellentesque mollis justo ac nisi accumsan molestie. Nulla vel sem velit. Quisque lacus erat, condimentum sit amet pellentesque eu, fringilla ut lacus. Vivamus sed fermentum ligula. Integer finibus nulla eu libero pulvinar vestibulum. Nunc sit amet ligula a ipsum fermentum pellentesque at vel mauris. Etiam vitae eros non ante congue tempor. Suspendisse ac tincidunt nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam felis magna, tempus ut arcu tincidunt, vehicula egestas sem. Suspendisse id luctus odio, ac pellentesque neque. Etiam massa lacus, posuere at maximus at, laoreet sit amet sapien. In hac habitasse platea dictumst. In ac vulputate est, nec ornare purus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
 {% end %}
 
 ```md
 {%/* text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") */%}
 
-_Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
+_Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd> Here's some more.
 
 {%/* end */%}
 ```
 
 {% text_image(text_position = "right", src="/images/example.png", alt="An image description", caption = "test caption") %}
+
 _Here is some text_ on the right.</br><kbd>CTRL+ALT+Delete</kbd>
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lacinia malesuada dolor, nec hendrerit nibh mattis vitae. Pellentesque mollis justo ac nisi accumsan molestie. Nulla vel sem velit. Quisque lacus erat, condimentum sit amet pellentesque eu, fringilla ut lacus. Vivamus sed fermentum ligula. Integer finibus nulla eu libero pulvinar vestibulum. Nunc sit amet ligula a ipsum fermentum pellentesque at vel mauris. Etiam vitae eros non ante congue tempor. Suspendisse ac tincidunt nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam felis magna, tempus ut arcu tincidunt, vehicula egestas sem. Suspendisse id luctus odio, ac pellentesque neque. Etiam massa lacus, posuere at maximus at, laoreet sit amet sapien. In hac habitasse platea dictumst. In ac vulputate est, nec ornare purus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
 {% end %}
 
 ## two_columns
