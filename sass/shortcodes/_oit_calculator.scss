@@ -1,0 +1,19 @@
+// SET UP COLOURS FOR DARK AND LIGHT MODE
+:root {
+  /* Dark mode colors */
+  --oit-text: white;
+  // ... and so on
+}
+
+:root.switch {
+  /* Dark mode colors */
+  --oit-text: black;
+  // ... and so on
+}
+
+// The rest:
+
+.oit_calculator {
+  // insert the rest of the styling here
+
+}
