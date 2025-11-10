@@ -63,14 +63,14 @@ There are limited 2nd line therapeutic options for CSU refractory to AH, and the
 **Population**:
 
 - **Inclusion Criteria**:
-  - Diagnosis of CSU > 6 months before screening, that is symptomatic despite H1-antihistamine therapy up to 4-fold
+  - Diagnosis of CSU >6 months before screening, symptomatic despite H1-antihistamine therapy up to 4-fold
   - Omalizumab-naive
   - UAS7 ≥16 and ISS7 ≥8 seven days before randomization
   - Ages 6 - 80 years, inclusive
 
 - **Relevant Exclusion Criteria**:
   - Chronic inducible urticaria
-  - Other diseases associated with hives or angioedema (ie. SLE, mastocytosis, HAE); active atopic dermatitis or other skin conditions potentially interfering with assessment
+  - Diseases associated with hives or angioedema (ie. SLE, mastocytosis, HAE); active atopic dermatitis or other skin conditions potentially interfering with assessment
   - Known immunodeficiency, malignancy, or other severe comorbidity (ie. short life expectancy, severe heart failure, severe CKD)
   - Exposure to another investigative drug; exposure to immunosuppressive / immunomodulating drugs within 4 weeks of screening visit (ie. systemic steroids)
   - Pregnancy
@@ -79,23 +79,23 @@ There are limited 2nd line therapeutic options for CSU refractory to AH, and the
 
 **Intervention**:
 
-Dupilumab plus background H1-antihistamine therapy:
+**Dupilumab** plus background H1-antihistamines:
 
-- Adults/adolescents ≥60kg: 600mg loading dose, then 300mg every 2 weeks
-- Adolescents <60kg and Children ≥30kg: 400mg loading dose, then 200mg every 2 weeks
-- Children ≥15 and <30kg: 600mg loading dose, then 300mg every 4 weeks
+- Adults/adolescents ≥60kg: 600mg loading dose, then 300mg q2 weeks
+- Adolescents <60kg and children ≥30kg: 400mg loading dose, then 200mg q2 weeks
+- Children ≥15 and <30kg: 600mg loading dose, then 300mg q4 weeks
 
 **Comparison**:
 
-Placebo (matched injections) plus background H1-antihistamine therapy
+**Placebo (matched injections)** plus background H1-antihistamines
 
 **Outcome**:
 
 - **Primary**: Change from baseline in ISS7 at week 24
 
-- **Relevant Secondary outcomes at week 24**:
+- **Relevant secondary outcomes at week 24**:
   - Change from baseline in UAS7, HSS7 and UCT at week 24
-  - Proportion of patients with UAS7 ≤6 (at least well-controlled symptoms)
+  - Proportion of patients with UAS7 ≤6 (well-controlled symptoms)
   - Proportion of patients with UAS7 of 0 (complete resolution)
   - Proportion of patients with ≥5-point reduction in ISS7 (minimally important difference)
 
@@ -103,15 +103,11 @@ Placebo (matched injections) plus background H1-antihistamine therapy
 
 ## Study Design
 
-<span class="hl-yellow">24-week, double-blind, randomized, placebo-controlled, multicenter, phase 3 trial</span> conducted across 9 countries. Included a 2- to 4-week screening period, 24-week treatment period, and 12-week post-treatment follow-up period.
+TODO! Add figure
 
-For
-each study, patients will be randomized 1:1 to dupilumab or placebo. The randomization
-will be first stratified by age (adults versus adolescents versus children in Study A and
-Study C, adults versus adolescents in Study B; up to approximately 5% of total sample
-size for children and approximately 5% of total sample size for adolescents in Study A and
-Study C; up to approximately 5% of total sample size for adolescents in Study B). In
-adults, randomization will be stratified further by country
+<span class="hl-yellow">24-week, double-blind, randomized, placebo-controlled, multicenter, phase 3 trial</span> conducted across 9 countries. Included a 2-4 week screening period, 24-week treatment period, and 12-week post-treatment follow-up.
+
+- randomization stratified by age
 
 • Screening period (2 to 4 weeks)
 • Randomized IMP treatment period (24 weeks)
