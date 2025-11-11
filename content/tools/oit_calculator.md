@@ -15,33 +15,30 @@ authors = ["Joshua Yu"]
 </br>
 </br>
 
-# TODO!
-
-- add liquid/solid data field to all CNF entries
--
-
 # OIT CALCULATOR README:
 
-## Rationale:
+## Background and rationale:
 
-There is wide variability in how OIT protocols are implemented across Canada and between individual physicians. OIT can be offered for most foods, and it is now often offered at-home. There is no easy, accessible resource to general EMR and patient friendly protocols for a variety of foods, and the current environment relies on time-intensive approaches with more room for human error to create protocols.
+Oral immunotherapy (OIT) is a novel approach to treating food allergies that is most effective / safe in younger populations. It involves a structured gradient introduction of a food through many 'steps', each corresponding to a particular protein count: the last step is the maintenance step, usually 300mg of food protein.
+
+There is wide variability in how OIT protocols are implemented across Canada and between individual physicians. That variability may manifest in the forms of the food that are used for OIT, how they are diluted, how many steps are taken in total, the protein content for each step, and others: there are many permutations. However, there is no easy, accessible resource to generate EMR and patient friendly protocols for a variety of foods that takes into account these basic variations in application, and the current practices rely on time-intensive and manual approaches to make protocols with more room for human error.
 
 ## Premises:
 
 ### Operational
 
 1. OIT can be offered at home or with in-clinic updosing. Either way, patients and healthcare workers require a **clearly laid out plan**.
-2. Foods for OIT can be liquids or solids, and depending on the starting protein dose dilutions are likely required. With solids diluted into liquids, we assume the solid contributes negligibly to the final volume. For example: if 1 ml of a solution of 0.2g of peanut powder in 40ml of liquid is given, we assume that only 0.2g * 1/40 = 0.005g is actually ingested.
+2. Foods for OIT can be liquids or solids, and depending on the starting protein dose, dilutions are likely required. With solids diluted into liquids, we assume the solid contributes negligibly to the final volume. For example: if 1 ml of a solution of 0.2g of peanut powder in 40ml of liquid is given, we assume that only 0.2g * 1/40 = 0.005g is actually ingested.
 3. There are four 'phenotypes' of OIT:
 
-- Food A with dilutions -> Food A without dilutions. Once weight of undiluted food is easily measurable. Ie. Steps 1-3 are peanut powder diluted in water, then steps 4 - maintenance are powder only.
+- Food A with initial dilutions before the direct food is given. The transition occurs once the weight of undiluted food is easily measurable. Ie. Steps 1-3 are peanut powder diluted in water, then steps 4 - maintenance are powder only.
 - Food A with dilutions all the way to maintenance dose. More useful if parents want something they can measure once and then more easily give for a few days, instead of weighing something every day.
-- Food A without any dilutions. Usually not feasible especially in the first low dose steps; can be done if compounded by pharmacy but not widely available.
+- Food A without any dilutions. Usually not feasible especially in the first low dose steps (weight would be very hard to measure); can be done if compounded by pharmacy but not widely available.
 - Food A -> Food B at some point. The formulation of food A could be either with dilutions only, mixed dilutions, or no dilutions. Ie. Steps 1-5 are cod powder diluted in water, then steps 6 - maintenance are cooked cod once weight of food is easily measurable. Another example is steps 1-2 are code powder diluted in water, 3-5 are powder only, and 6 onwards is cooked cod.
 
 Examples of the phenotypes in table form:
 
-#### Food A with dilutions -> Food A without dilutions
+#### Food A with initial dilutions
 
 Liquid X, 8g protein per 250ml
 
@@ -164,7 +161,7 @@ Food X: 10g of protein per 30g
 **OIT Protocol**
 Full set of doses and instructions for given food. Recall that:
 
-- Food A may be given either 1) diluted for all steps, 2) not diluted (neat) for all steps, or 3) diluted for the first few steps until the undiluted form is easily measurable with a kitchen scale
+- Food A may be given either 1) diluted for all steps, 2) not diluted (neat) for all steps, or 3) diluted initially for the first few steps until the undiluted form is easily measurable with a kitchen scale
 - Food A may OPTIONALLY transition to another form of the food, called Food B. For example, Salmon powder (Food A) diluted/undiluted/both for 7 steps before cooked salmon (Food B) is given for step 8 until maintenance
 
 Therefore, a complete OIT protocol must contain the following information which can be expressed in pseudocode as such:
@@ -181,9 +178,11 @@ Method enum:
 
 Protocol obj:
   food_a: food
+  food_a_strategy: dilute_initial | dilute all | dilute_none
+  di_threshold: float
   food_b: null | food
-  food_a_strategy: dilute_mix | dilute all | dilute_none
-  table_dm: [
+  food_b_threshold: float (positive number)
+  table_di: [
     [food, protein, Method, daily_amount, null | [food weight, liquid volume] ],
     ...
   ]
