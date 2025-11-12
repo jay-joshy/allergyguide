@@ -271,6 +271,8 @@ Rough outline:
 	<div class="dosing-strategy-container">
 	</div>
 	<div class="output-container">
+		<table></table>
+		<div class="warnings-container"></div>
 	</div>
 </div>
 ```
@@ -279,35 +281,167 @@ The top half of the screen is the settings-container, which will contain the set
 
 Within food-a-container:
 
-- top search bar that spans the width. This search bar is special: see [here](#food-a-search-mechanism) for details
+- top search bar that spans the width. This search bar is special: see [here](#food-a-search-mechanism) for details. Once a food is selected, the search bar is input is cleared, and then the rest of the container is populated
 - an editable bar right below that also spans the width, that contains the name of the selected food (which can be manually changed after)
-- a positive number input field for "Protein (g) per " either ml or g, depending on if the food is a solid or liquid
+- a positive number input field for "Protein (g) per " either 100ml or 100g serving, depending on if the food is a solid or liquid. Unit of ml vs g is automatically determined by the food form
 - a food form toggle button "Form: [ SOLID | LIQUID ]"
 - a food A strategy toggle button "Strategy: [ Initial dilution | Dilution only | No dilutions ]"
 - if Initial dilution is selected, there should be another input box for: "Threshold to stop diluting:" ml or g, depending on if the food is a solid or liquid
 
 Within food-b-container:
 
-- top search bar that spans the width with clear-food-b button after that will clear food-b from the protocol (ie. if there was any info entered after, it would be erased)
+- top search bar that spans the width with clear-food-b button after that will clear food-b from the protocol (ie. if there was any info entered after, it would be erased). Once a food is selected, the search bar is input is cleared, and then the rest of the container is populated
 - editable bar right below that also spans the width, that contains the name of the selected food (which can be manually changed after)
 - a positive number input field for "Protein (g) per " either ml or g, depending on if the food is a solid or liquid
 - a food form toggle button "Form: [ SOLID | LIQUID ]"
 - a food b threshold input: "Threshold to transition:" ml or g, depending on if the food is a solid or liquid
 
+Within dosing-strategy-container: a toggle bottom for "Dosing Strategy: [STANDARD | SLOW | RAPID]"
+
+Within output-container a table with the dosing schedule is displayed, and to the right a small div for any warnings that may arise. The table in rough looks like:
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 1 ml         | 0.2 g              | 46.7 ml           |
+| 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 18.7 ml           |
+| 3    | 5            | Dilution | 1 ml         | 0.2 g              | 9.3 ml            |
+| 4    | 10           | Dilution | 1 ml         | 0.2 g              | 4.7 ml            |
+| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 5.8 ml            |
+| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 5.8 ml            |
+| 7    | 80           | Direct   | 0.3 g        | n/a                | n/a               |
+| 8    | 120          | Direct   | 0.5 g        | n/a                | n/a               |
+| 9    | 160          | Direct   | 0.7 g        | n/a                | n/a               |
+| 10   | 240          | Direct   | 1 g          | n/a                | n/a               |
+| 11   | 300          | Direct   | 1.3 g        | n/a                | n/a               |
+
+- Editable column cells: protein (mg), daily amount, amount for mixture. With each edit, other row values should automatically update
+- The values should also automatically update with manual changes to the protein conc of the selected food(s)
+- To the left of each step number, there should be a (+) and a (-) to either copy the current step (ie add another one) before it, or delete the step.
+
+Within the output container there should also be two buttons: 1) to copy an ASCII representation of the protocol to paste into an EMR, and 2) a button to generate a printable PDF of the protocol.
+
 #### food-a-search mechanism
 
-#### Settings the user is exposed to
+When the user starts to type, they will see a dropdown of only the names of matching foods from a .json as follows:
 
-Search
+```json
+[
+  {
+    "Food": "Cheese souffle",
+    "Food Group": "Mixed Dishes",
+    "Mean value in 100g": 9.54,
+    "Type": "Solid"
+  },
+  {
+    "Food": "Chop suey, with meat, canned",
+    "Food Group": "Mixed Dishes",
+    "Mean value in 100g": 4.07,
+    "Type": "Solid"
+  },
+  ...
+]
+```
 
-#### UX
+The .json can be loaded in .js as: `fetch("/tool_assets/typed_foods_rough.json")` and etc.
 
-### Calculations
+The names are searched using fuzzysort.min.js, is case insensitive. The first search result is always "Custom: {Whatever the user has typed}" in case the user wants to make a custom food. The dropdown shows a **maximum of VIRTUAL_SCROLL_THRESHOLD items**; rest scrollable. There should be a slight debounce / delay (ie 150 ms) and a search limit of around 50.
 
-TODO!
-Function to calculate practical dilution strategy (which the user can edit specific steps after if they wish)
-get_protocol_dilution(type, protein_conc: float, protein_steps: list[float]) -> list[dict[str, float]]:
-Where: type is either "Solid" or "Liquid"; protein_conc is grams of protein per g of food; protein_steps is for example [1,2.5,5,10,...160, 240, 300]
+**The behaviour for food-b-search mechanism is the EXACT same, _EXCEPT that food-a-search can also search for pre-defined PROTOCOLS_**.
+This is where there's another JSON file to search through with the following structure (steps are omitted for brevity here, the numbers are not actually correct/valid), in particular the "name" field. When the protocol is chosen, the whole table / rest of the relevant settings are populated as per the protocol.
+
+```json
+[
+  {
+    "name": "Protocol: peanut powder",
+    "dosing_strategy": "STANDARD",
+    "food_a": {
+      "type": "SOLID",
+      "name": "Peanut Powder",
+      "protein_conc": 0.21
+    },
+    "food_a_strategy": "DILUTE_INITIAL",
+    "di_threshold": 0.2,
+    "food_b": {
+      "type": "SOLID",
+      "name": "Roasted Peanut",
+      "protein_conc": 0.25
+    },
+    "food_b_threshold": 0.45,
+    "table_di": [
+      {
+        "food": "Peanut Powder",
+        "protein": 1,
+        "method": "DILUTE",
+        "daily_amount": 0.005,
+        "mix_amount": 0.005,
+        "water_amount": 0.5
+      },
+      {
+        "food": "Peanut Powder",
+        "protein": 2.5,
+        "method": "DILUTE",
+        "daily_amount": 0.012,
+        "mix_amount": 0.012,
+        "water_amount": 1.2
+      },
+      {
+        "food": "Roasted Peanut",
+        "protein": 160,
+        "method": "DIRECT",
+        "daily_amount": 0.64
+      },
+      {
+        "food": "Roasted Peanut",
+        "protein": 240,
+        "method": "DIRECT",
+        "daily_amount": 0.96
+      },
+      {
+        "food": "Roasted Peanut",
+        "protein": 300,
+        "method": "DIRECT",
+        "daily_amount": 1.2
+      }
+    ],
+    "table_dn": [],
+    "table_da": []
+  },
+  {
+    "name": "Protocol: milk rapid",
+    "dosing_strategy": "RAPID",
+    "food_a": {
+      "type": "LIQUID",
+      "name": "Cow Milk",
+      "protein_conc": 0.004
+    },
+    "food_a_strategy": "DILUTE_NONE",
+    "di_threshold": 0.2,
+    "table_di": [],
+    "table_dn": [
+      {
+        "food": "Cow Milk",
+        "protein": 1,
+        "method": "DIRECT",
+        "daily_amount": 0.25
+      },
+      {
+        "food": "Cow Milk",
+        "protein": 2.5,
+        "method": "DIRECT",
+        "daily_amount": 0.63
+      },
+      {
+        "food": "Cow Milk",
+        "protein": 300,
+        "method": "DIRECT",
+        "daily_amount": 75
+      }
+    ],
+    "table_da": []
+  },
+  ... and so on
+]
+```
 
 ### Validation checks:
 
@@ -331,21 +465,89 @@ Next to the protocol table, there will be a rectangle labelled with "WARNINGS". 
 
 There is a LOT of state that requires accounting for. While we want the user to have freedom to tweak the protocol, it must be controlled: the worst-case scenario is a protocol that is created that is dangerous due to errors from the program due to a bug. There should be checks and asserts for various grades of problems that will be displayed to the user.
 
-User details
+## Sample user workflow
 
-- When searching for foods, custom should be an option - but it should also search though the CNF 2015 and automatically populate the rest. The protein count thereafter should also be editable. As reference, the CNF 2015 file is a .csv that looks like:
+User opens the webpage. They see a the two search bars for food A and optionally food B, and an unfilled table at the bottom
 
-```csv
-Food,Food Group,Mean value in 100g,StandardError,Type
-Cheese souffle,Mixed Dishes,9.54,0.0,Solid
-"Chop suey, with meat, canned",Mixed Dishes,4.07,0.0,Solid
-"Chinese dish, chow mein, chicken",Mixed Dishes,6.76,0.538,Solid
-"Vinegar, cider",Spices and Herbs,0.0,0.0,Liquid
-...
-```
+### Selection of pre-defined food
 
-- There should be an easy way to alter the dosing per step.
-- There should be an easy way to add or delete steps.
-- While there should be sensible defaults, elements of the dosing schedule such as the daily amount, amount to measure for dilutions if applicable, should be easily editable
-- There should also be an easy way to save the protocol (and its variations) and load it. Ie. a unique hash generated with each printed patient resource or EMR copy, that can be loaded.
-- On the backend, there should be the ability to add institution specific protocols (ie random person on internet cannot make a custom one). Ie. I can add "peanut bcch powder" which populates the tool with the different permutations of a specific peanut powder
+- After typing in the searchbar for food A, ie. peanut butter, they select "Peanut Butter"
+- The fields in food-a-container are automatically populated with relevant information + defaults. Specifically:
+  - Editable food name field is filled with "Peanut Butter", and protein (g) per 100g serving is filled (ie. 23), and form is "Solid". All this info comes from the JSON with the food profiles
+  - Strategy is default initial dilution, with a threshold to switch of 0.2 g. This means that when 0.2g OR MORE of peanut powder alone is enough to match one of the protein (mg) goals, the method switches from DILUTION to DIRECT.
+  - The default dosing Strategy is "STANDARD", which corresponds to the following (mg) amounts: 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300
+    - as you recall, Slow: 0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300. Rapid: 1, 2.5, 5, 10, 20, 40, 80, 160, 300. For now, to make this easier, assume that the slow and rapid are the SAME as the STANDARD - we will worry about implementation of this later.
+  - If the user were to toggle to "SLOW" or "RAPID", the table is 'recalculated'.
+  - The user should see the table populate automatically, and then have the option of editing specific steps - either deleting or adding rows, or altering the target protein (mg) amount, daily amount to give, and the amount of food to measure for a dilution if applicable. The other values in the row should deterministically update.
+  - Any warnings from Editing wiggles causing invalid protocols are displayed on a side panel next to the table
+  - There then is the option to copy the current protocol or view a PDF (implementation of this is a separate issue for later)
+
+### Selection of custom food
+
+- After typing in the searchbar for a custom food "magic butter" and selecting "Custom: magic butter"
+- The fields in food-a-container are populated with relevant information + defaults. Specifically:
+  - Editable food name field is filled with "magic butter", and protein (g) per 100g serving is left blank, and form is default "Solid".
+  - Strategy is default initial dilution, with a threshold to switch of 0.2 g.
+  - The default dosing Strategy is "STANDARD"
+
+### Selection of custom protocol
+
+- After typing in the searchbar for a built in protocol ie. "Protocol: peanut powder" and selecting it
+- The fields in food-a-container (and potentially food-b-container) are populated with relevant information. Specifically:
+  - Editable food name field is filled with specified food names, etc for protein concentration, form, strategy, thresholds, etc.
+  - The rest is as above: the protocol that is loaded remains editable
+
+## Code implementation details
+
+- The app will be built using a Zola shortcode, with separate files for: 1) the shortcode `oit_calculator.html`, 2) the typescript `oit_calculator.ts` (which I will manually compile into `oit_calculator.js`), and 3) `oit_calculator.scss`
+- We will use the decimal.js package and when displaying to the user round, but on the background keep several decimal points for precision
+- Canonical measurement units are grams for solids, mls for liquids.
+- smallest scale resolution for parents: 0.1 g on kitchen scale (red warning at <0.1 g).
+- smallest practical syringe volume: 0.2 ml
+- default minServingsForMix = 4 (dilution should make at least 4 daily servings)
+- Rounding: round to sensible digits for display: grams → 2 decimal places; ml → 1 decimal or integer depending on magnitude. But validation uses exact decimals.
+
+## DILUTION ASSUMPTIONS:
+
+- For solids diluted into liquids, assume that the solid DOES not contribute to final volume. This assumption DOES BREAK DOWN when the proportion of solid to water becomes larger (say > 1:10) -> which can be a red warning, usually to consider increasing the daily volume (which will increase the amount of dilution required)
+- Again, for initial implementation of this app assume only the STANDARD dosing strategy is used (the 11 steps). If it were to be dilutions the entire way through, there are different default daily volumes and amount of food-a to measure based on the protein concentration:
+
+### Calculations for dilutions
+
+Notation:
+
+- `P` = desired protein (mg) for a step
+- `C` = concentration mg per gram (solid) or mg per ml (liquid)
+- `m` = mass (g OR ml) of food required if used neat: `m = P / C` (if solids, g; if liquids, ml if C is mg/ml)
+
+  - Example solids: C = 233.333 mg/g, P=1 mg → m ≈ 0.004 g
+  - Example liquids: C = 4 mg/ml, P=20 mg → m = 20 / 4 = 5 ml
+
+Dilution decision:
+
+- If `m` < `minMeasurableMass` (e.g. 0.1 g) or `m` (if liquid) < `minMeasurableVolume` (0.2 ml), create a dilution:
+
+  - Choose a `mix_food_mass` (or `mix_food_volume`) that is measurable and yields a convenient `dailyAmount_ml` (0.5–5 ml typically).
+  - Let `mix_food_amount` produce `mixProteinMg = mix_food_amount * C` (mg).
+  - Choose `mixVolume_ml` so that `dailyAmount_ml = desiredDailyServingVolume` yields `P` mg: `dailyAmount_ml = P / (mixProteinMg / mixVolume_ml) = P * mixVolume_ml / mixProteinMg`.
+  - Solve for reasonable `mixVolume_ml`: pick `dailyAmount_ml` target (e.g. 1 ml), then `mixVolume_ml = dailyAmount_ml * mixProteinMg / P`.
+  - Or choose `mixFood` such that mixVolume is round and `servingsFromMix >= minServings` (>= 4). See algorithm below.
+
+Algorithmic approach for designing a mix:
+
+1. Choose allowable `mix_food_amount` candidates (e.g., 0.1 g, 0.2 g, 0.5 g, 1 g, 2 g). For liquids, ie. 0.5 ml, 1 ml, 2, 3, 4, 5, ... to 10 ml max
+
+2. For each candidate:
+
+   - `mixProteinMg = mix_food_amount * C`
+   - For target serving size candidates `[0.5, 1, 2, ... 10] ml` (or larger) compute `mixVolume_ml = P * candidateMixVolume / (mixProteinMg)`
+
+     - rearranged from `P = candidateDailyAmount * (mixProteinMg / mixVolume_ml)` -> `mixVolume_ml = candidateDailyAmount * mixProteinMg / P`
+   - Compute `servings = mixVolume_ml / candidateDailyAmount`
+   - Accept if:
+
+     - `mixFoodAmount >= minMeasurableMass` (0.1 g) or minMeasurableVolume
+     - `servings >= minServingsForMix` (4)
+     - `mixVolume_ml` reasonable (≤ 1000 ml)
+   - Prefer solution with smallest `mixFoodAmount` above threshold or smallest `dailyAmount_ml` in preferred range.
+3. If none pass, increase `mix_food_amount` or choose a direct measure (if impossible then raise red error: "dilution impossible — adjust inputs").
