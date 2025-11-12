@@ -1,9 +1,21 @@
 {% set data = load_data(path="static/tool_assets/cnf_extracted.csv") %}
 <div class="oit_calculator">
-	<!-- Search Bar -->
-	<div class="search-container">
-		<input type="text" id="food-search" placeholder="Search for foods..." class="search-input">
-		<button id="clear-search" class="clear-btn">Clear</button>
+	<div class=settings-container>
+		<div class="food-a-container">
+			<div class="search-container">
+				<input type="text" id="food-a-search" placeholder="Search for foods or protocols..." class="search-input">
+			</div>
+		</div>
+		<div class="food-b-container">
+			<div class="search-container">
+				<input type="text" id="food-b-search" placeholder="Optionally, load another food to transition to ..." class="search-input">
+				<button id="clear-food-b" class="clear-food-b">Clear</button>
+			</div>
+		</div>
+	</div>
+	<div class="dosing-strategy-container">
+	</div>
+	<div class="output-container">
 	</div>
 </div>
 

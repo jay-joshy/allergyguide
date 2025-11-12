@@ -15,13 +15,34 @@ authors = ["Joshua Yu"]
 </br>
 </br>
 
+{{ oit_calculator() }}
+
 # OIT CALCULATOR README:
 
 ## Background and rationale:
 
 Oral immunotherapy (OIT) is a novel approach to treating food allergies that is most effective / safe in younger populations. It involves a structured gradient introduction of a food through many 'steps', each corresponding to a particular protein count: the last step is the maintenance step, usually 300mg of food protein.
 
-There is wide variability in how OIT protocols are implemented across Canada and between individual physicians. That variability may manifest in the forms of the food that are used for OIT, how they are diluted, how many steps are taken in total, the protein content for each step, and others: there are many permutations. However, there is no easy, accessible resource to generate EMR and patient friendly protocols for a variety of foods that takes into account these basic variations in application, and the current practices rely on time-intensive and manual approaches to make protocols with more room for human error.
+The usual 'standard' progression of protein doses / steps is as follows, with 2-4 weeks between each step:
+
+| Step | Protein (mg) |
+| ---- | ------------ |
+| 1    | 1            |
+| 2    | 2.5          |
+| 3    | 5            |
+| 4    | 10           |
+| 5    | 20           |
+| 6    | 40           |
+| 7    | 80           |
+| 8    | 80           |
+| 9    | 120          |
+| 10   | 160          |
+| 11   | 240          |
+| 12   | 300          |
+
+That said, the goals of OIT can be achieved with many different protocols: as such, there is wide variability in how OIT is implemented across Canada and between individual physicians. That variability may manifest in different forms of food (powders, whole, liquid), if dilution is required for initial steps, how many steps are taken in total, the protein content for each step, and so on: there are many permutations. For example, for a very high-risk patient there may be a 'slow' dose progression starting from 0.5mg to 300mg in 20 steps instead of 12; there may also be a 'rush/rapid' strategy with less steps and larger dose differences between steps. While there is little evidence that specific dosing schedules are superior to others, the ability to create, edit, and adapt protocols for a patient’s specific situation is crucial.
+
+However, there is no easy, accessible resource to generate EMR and patient friendly protocols for a variety of foods that takes into account these basic variations in application, and the current practices rely on time-intensive and manual approaches to make protocols with more room for human error.
 
 ## Premises:
 
@@ -166,37 +187,149 @@ Full set of doses and instructions for given food. Recall that:
 
 Therefore, a complete OIT protocol must contain the following information which can be expressed in pseudocode as such:
 
-```
-Food obj:
-  type: liquid | solid
-  name: str
-  protein_conc: float (g protein per g of food)
+```ts
+enum Method {
+  Dilute = "DILUTE",
+  Direct = "DIRECT",
+}
 
-Method enum:
-  dilute
-  direct
+enum Type {
+  Liquid = "LIQUID",
+  Solid = "SOLID",
+}
 
-Protocol obj:
-  food_a: food
-  food_a_strategy: dilute_initial | dilute all | dilute_none
-  di_threshold: float
-  food_b: null | food
-  food_b_threshold: float (positive number)
-  table_di: [
-    [food, protein, Method, daily_amount, null | [food weight, liquid volume] ],
-    ...
-  ]
-  table_da: [
-    [food, protein, Method, daily_amount, null | [food weight, liquid volume] ],
-    ...
-  ]
-  table_dn: [
-    [food, protein, Method, daily_amount, null | [food weight, liquid volume] ],
-    ...
-  ]
+// Standard: 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300
+// Slow: 0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300
+// Rapid: 1, 2.5, 5, 10, 20, 40, 80, 160, 300
+enum DosingStrategy {
+  Standard = "STANDARD",
+  Slow = "SLOW",
+  Rapid = "RAPID",
+}
+
+enum FoodAStrategy {
+  Dilute_Initial = "DILUTE_INITIAL",
+  Dilute_None = "DILUTE_NONE",
+  Dilute_All = "DILUTE_ALL",
+}
+  
+class Food {
+  type: Type;
+  name: string;
+  protein_conc: number; // (g protein per g or ml of food)
+
+  get protein_g_from_total(total_g: number) {
+    return this.number * total_g;
+  }
+
+}
+
+class Row {
+  food: Food;
+  protein: number;
+  method: Method;
+  daily_amount: number;
+  mix_amount?: number;
+  water_amount?: number;
+}
+
+class Protocol {
+  dosing_strategy: DosingStrategy;
+  food_a: Food
+  food_a_strategy: FoodAStrategy; // default usually should be dilute_initial 
+  di_threshold: number = 0.2; // if dilute_initial strategy, then initial steps are diluted until the undiluted food_a is measurable at at least X grams. Default 0.2g
+  food_b?: Food;
+  food_b_threshold?: number = 0.5; // when food_b can be measured at this threshold, switch to food_b from food_a. Default 0.5g
+  // different permutations of food_a based on the strategy chosen that can easily be viewed
+  table_di: Row[];
+  table_dn: Row[];
+  table_da: Row[];
+}
 ```
 
 ## OIT calculator spec
+
+### GUI: designed for landscape on desktop, not phone for now
+
+Rough outline:
+
+```html
+<div class="oit_calculator">
+	<div class=settings-container>
+		<div class="food-a-container">
+			<div class="search-container">
+				<input type="text" id="food-a-search" placeholder="Search for foods or protocols..." class="search-input">
+			</div>
+		</div>
+		<div class="food-b-container">
+			<div class="search-container">
+				<input type="text" id="food-b-search" placeholder="Optionally, load another food to transition to ..." class="search-input">
+				<button id="clear-food-b" class="clear-food-b">Clear</button>
+			</div>
+		</div>
+	</div>
+	<div class="dosing-strategy-container">
+	</div>
+	<div class="output-container">
+	</div>
+</div>
+```
+
+The top half of the screen is the settings-container, which will contain the settings to select Food A and optionally Food B. These are in separate child containers, food-a-container and food-b-container. Both these containers have their own search bars to look through a repository of foods (name, protein content, and type (solid/liquid)).
+
+Within food-a-container:
+
+- top search bar that spans the width. This search bar is special: see [here](#food-a-search-mechanism) for details
+- an editable bar right below that also spans the width, that contains the name of the selected food (which can be manually changed after)
+- a positive number input field for "Protein (g) per " either ml or g, depending on if the food is a solid or liquid
+- a food form toggle button "Form: [ SOLID | LIQUID ]"
+- a food A strategy toggle button "Strategy: [ Initial dilution | Dilution only | No dilutions ]"
+- if Initial dilution is selected, there should be another input box for: "Threshold to stop diluting:" ml or g, depending on if the food is a solid or liquid
+
+Within food-b-container:
+
+- top search bar that spans the width with clear-food-b button after that will clear food-b from the protocol (ie. if there was any info entered after, it would be erased)
+- editable bar right below that also spans the width, that contains the name of the selected food (which can be manually changed after)
+- a positive number input field for "Protein (g) per " either ml or g, depending on if the food is a solid or liquid
+- a food form toggle button "Form: [ SOLID | LIQUID ]"
+- a food b threshold input: "Threshold to transition:" ml or g, depending on if the food is a solid or liquid
+
+#### food-a-search mechanism
+
+#### Settings the user is exposed to
+
+Search
+
+#### UX
+
+### Calculations
+
+TODO!
+Function to calculate practical dilution strategy (which the user can edit specific steps after if they wish)
+get_protocol_dilution(type, protein_conc: float, protein_steps: list[float]) -> list[dict[str, float]]:
+Where: type is either "Solid" or "Liquid"; protein_conc is grams of protein per g of food; protein_steps is for example [1,2.5,5,10,...160, 240, 300]
+
+### Validation checks:
+
+Next to the protocol table, there will be a rectangle labelled with "WARNINGS". Normally it will simply state "No problems found", but it will display validation checks that have failed in order for the physician to know if the protocol is invalid or potentially dangerous. These warnings are grouped into two levels: yellow and red.
+
+- yellow
+  - dilution errors:
+    - a single dilution makes less than 4 days of servings (ie. the daily dose is 1ml, but the instructions say to make 2ml of diluted solution)
+  - any of the steps are not in ascending order of protein content
+  - steps > 25 (it's a bit _too_ slow)
+  - the final dose is >300mg
+- red
+  - Too fast:
+    - Total steps < 6
+    - Once mg protein >10, any step that is more than an doubling (ie. 20 -> 60)
+  - Protein content provided is wrong (ie. looking at a single row, if the calculated protein content doesn't match the specified one for the step, this should be flagged)
+  - A calculation is impossible (ie in a dilution, the request is for 100mg protein but the amount measured is less even without dilution; dilution makes less than 1 serving size)
+  - if a step uses dilution and the amount measured to mix is <0.1g or <0.2cc (impractical, not easily measurable for parents)
+
+### Complexities
+
+There is a LOT of state that requires accounting for. While we want the user to have freedom to tweak the protocol, it must be controlled: the worst-case scenario is a protocol that is created that is dangerous due to errors from the program due to a bug. There should be checks and asserts for various grades of problems that will be displayed to the user.
 
 User details
 
@@ -204,10 +337,10 @@ User details
 
 ```csv
 Food,Food Group,Mean value in 100g,StandardError,Type
-Cheese souffle,Mixed Dishes,9.54,0.0,solid
-"Chop suey, with meat, canned",Mixed Dishes,4.07,0.0,solid
-"Chinese dish, chow mein, chicken",Mixed Dishes,6.76,0.538,solid
-"Vinegar, cider",Spices and Herbs,0.0,0.0,liquid
+Cheese souffle,Mixed Dishes,9.54,0.0,Solid
+"Chop suey, with meat, canned",Mixed Dishes,4.07,0.0,Solid
+"Chinese dish, chow mein, chicken",Mixed Dishes,6.76,0.538,Solid
+"Vinegar, cider",Spices and Herbs,0.0,0.0,Liquid
 ...
 ```
 
