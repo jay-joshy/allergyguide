@@ -425,7 +425,7 @@ The table in rough looks like:
 
 - Editable column cells: target protein (mg), daily amount, amount for mixture. With each edit, other row values should automatically update
 - The values should also automatically update with manual changes to the protein conc of the selected food(s)
-- To the left of each step number, there should be a (+) and a (-) to either copy the current step (ie add another one) before it, or delete the step.
+- To the left of each step number, there should be a (+) and a (-). (+) inserts a copy of the row before; (-) deletes the step.
 
 Within the output container there should also be two buttons: 1) to copy an ASCII representation of the protocol to paste into an EMR, and 2) a button to generate a printable PDF of the protocol.
 
@@ -510,7 +510,7 @@ User opens the webpage. They see a the two search bars for food A and optionally
 
 ### Selection of built-in protocol
 
-- After typing in the searchbar for a built-in protocol ie. "Protocol: peanut powder" and selecting it
+- After typing in the searchbar for a built-in protocol ie. "Protocol: peanut powder" and selecting it, the entire `Protocol` object will be populated
 - The fields in food-a-container (and potentially food-b-container) are populated with relevant information. Specifically:
   - Editable food name field is filled with specified food names, etc for protein concentration, form, strategy, thresholds, etc.
   - The rest is as above: the protocol that is loaded remains editable
