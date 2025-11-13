@@ -270,6 +270,8 @@ Example liquids: C = 4 mg/ml, P=20 mg → m = 20 / 4 = 5 ml
 
 Goal: choose a measurable mixFoodAmount and mixWaterAmount so that giving dailyAmount (ml) yields desired P mg, subject to constraints.
 
+**The function should be easily replaceable in the future in case an alternative algorithm is chosen**.
+
 Function arguments:
 
 - P (target protein (mg))
@@ -469,7 +471,7 @@ This is where there's another JSON file to search through with the following str
 - Form toggles: If the user toggles a food's form (SOLID ⇄ LIQUID) the app automatically converts existing daily and mix amounts to the other unit and recomputes the water to add to create the mix (the solid-in-liquid volume assumption changes accordingly).
 - Editing behavior for steps:
   - Editing target protein mg P:
-    - If step is DIRECT (undiluted): automatically update the daily amount.
+    - If step is DIRECT (undiluted): automatically update the daily amount. Vise versa, if the daily amount is edited, the target protein P should also change.
     - If step is DILUTE: keep daily amount and mix amount stable if possible; update the mixWaterAmount volume instead. If the new target is impossible with current mix amount, a red error will be shown.
 - Food A → B transition: If food_b_threshold cannot be satisfied, show red error, allow manual override.
 - No undo/redo implementation required
@@ -514,3 +516,14 @@ User opens the webpage. They see a the two search bars for food A and optionally
 - The fields in food-a-container (and potentially food-b-container) are populated with relevant information. Specifically:
   - Editable food name field is filled with specified food names, etc for protein concentration, form, strategy, thresholds, etc.
   - The rest is as above: the protocol that is loaded remains editable
+
+## MVP implementation
+
+- Rough GUI
+- Food JSON load + Food A search + "Custom: <text>" option.
+- Populate STANDARD dosing sequence (and calculate slow/rapid sequences too if later selected)
+- Render protocol table with DIRECT/DILUTE rows and computed daily/mix values.
+- Implement editable protein concentration, food type, food A strategy, diThreshold, etc.
+- Implement editable protein step target Mg, dailyAmount, and mixFoodAmount with deterministic recalculation of the
+- Implement validation with core yellow/red checks
+- Create rough scaffold for very basic copy-to-clipboard ASCII export and PDF export that can be implemented later
