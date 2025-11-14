@@ -34,11 +34,10 @@ A typical 'standard' progression of protein doses / steps is as follows, with 2-
 | 5    | 20           |
 | 6    | 40           |
 | 7    | 80           |
-| 8    | 80           |
-| 9    | 120          |
-| 10   | 160          |
-| 11   | 240          |
-| 12   | 300          |
+| 8    | 120          |
+| 9    | 160          |
+| 10   | 240          |
+| 11   | 300          |
 
 The goals of OIT can be achieved with many different protocols: there is substantial heterogeneity in how OIT is implemented across Canada and between individual physicians. That variability manifests in different forms of food (powders, whole, liquid), when dilution is used, how many total steps are taken, the protein target for each step, among others. For example, for a very high-risk patient there may be a 'slow' dose progression starting from 0.5mg to 300mg in 20 steps instead of 11; in the setting of anti-IgE biologics, the steps may be reduced in a 'rush/rapid' strategy. While there is little evidence that specific dosing schedules are superior to others, the ability to create, edit, and adapt protocols for a patient’s specific situation is clearly important.
 
@@ -202,13 +201,12 @@ enum FoodType {
 }
 
 enum DosingStrategy {
-  STANDARD = "STANDARD", // Mg steps: 1, 2.5, 5, 10, 20, 40, 80, 160, 300
+  STANDARD = "STANDARD", // Mg steps: 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300
   SLOW = "SLOW", // Mg steps: 0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300
   RAPID = "RAPID", // Mg steps: 1, 2.5, 5, 10, 20, 40, 80, 160, 300
 }
 
 interface Food {
-  id?: string;
   name: string;
   type: FoodType;
   // canonical: mg protein per canonical unit (g for solids, ml for liquids)
@@ -222,7 +220,7 @@ interface Step {
   dailyAmount: Decimal; // g or ml depending on context
   dailyAmountUnit: Unit;
   mixFoodAmount?: Decimal; // g or ml of food used in the mix (if DILUTE)
-  mixWaterAmount?: Decimal; // total volume of water to add to create diltuion (if DILUTE)
+  mixWaterAmount?: Decimal; // total volume of water to add to create dilution (if DILUTE)
   servings?: Decimal; // mixWaterAmount / dailyAmount IF solid; for liquids, (mixWaterAmount + mixFoodAmount) / dailyAmount
 }
 
@@ -265,6 +263,8 @@ Example liquids: C = 4 mg/ml, P=20 mg → m = 20 / 4 = 5 ml
 
 - food.type == "SOLID" and m < config.minMeasurableMass, then dilution is required
 - food.type == "LIQUID" and m < config.minMeasurableVolume, then dilution is required
+
+diThreshold refers to a threshold on the neat mass (m = P/C); i.e. once the required mass for a given P is ≥ threshold we switch to DIRECT
 
 #### If dilutions are required, how to calculate default daily volume, mixFoodAmount, mixWaterAmount?
 
@@ -324,15 +324,14 @@ Warning information should be internally represented as: { severity, code, messa
 - Y1 Dilution yields fewer than minServingsForMix servings. Message: "Dilution yields X servings (< configured minimum). Consider increasing mix food amount or mix volume."
 - Y2 Steps not strictly ascending by targetMg. Message: "Steps must be ascending — check step N vs step N-1."
 - Y3 Total steps exceed maxSteps (default 25). Message: "Protocol has N steps (> maxSteps)."
-- Y4 Measured values produce unwieldy display precision (e.g., grams < 0.01 g). Message: "Measured value is very small; consider different formulation or larger mix."
 
 ### Red
 
 - R1 Too few steps (total steps < 6). Message: "Protocol has only N steps (<6). This is very rapid."
-- R2 Doubling violation: after P > 10 mg, any step increases by >2×. Message: "Step increase from A mg → B mg (X% increase) at step N; this is very rapid."
-- R3 Protein mismatch: computed protein from provided measured amounts does not equal declared targetMg beyond tolerance. Message: "Row N computed protein X mg ≠ declared Y mg."
-- R4 Dilution impossible: no valid dilution candidate meets measurement constraints. Message: "Unable to create a measurable dilution for P mg with current constraints."
-- R5 Measured mixFoodAmount or mixWaterAmount below instrument resolution (e.g., mixFoodAmount < 0.1 g, mixWaterAmount < 0.2 ml). Message: "Measured powder/volume below instrument resolution — impractical to prepare."
+- R2 Protein mismatch: computed protein from provided measured amounts does not equal declared targetMg beyond tolerance. Message: "Row N computed protein X mg ≠ declared Y mg."
+- R3 Dilution impossible: no valid dilution candidate meets measurement constraints. Precision threshold for R3 Protein mismatch: abs(delta) > 0.5 mg => R3. Message: "Unable to create a measurable dilution for P mg with current constraints."
+- R4 Measured mixFoodAmount or mixWaterAmount below instrument resolution (e.g., mixFoodAmount < 0.1 g, mixWaterAmount < 0.2 ml). Message: "Measured powder/volume below instrument resolution — impractical to prepare."
+- TODO later: doubling violation
 
 ## OIT calculator technical implementation
 
@@ -459,20 +458,111 @@ The .json can be loaded in .js as: `fetch("/tool_assets/typed_foods_rough.json")
 This is where there's another JSON file to search through with the following structure (steps are omitted for brevity here, the numbers are not actually correct/valid), in particular the "name" field. When the protocol is chosen, the whole table / rest of the relevant settings are populated as per the protocol.
 
 ```json
+{
+  "dosingStrategy": "STANDARD",
+  "foodA": {
+    "name": "Peanut Powder",
+    "type": "SOLID",
+    "mgPerUnit": "250"
+  },
+  "foodAStrategy": "DILUTE_INITIAL",
+  "diThreshold": "0.2",
+  "foodB": null,
+  "foodBThreshold": null,
+  "config": {
+    "minMeasurableMass": "0.5",
+    "minMeasurableVolume": "0.5",
+    "minServingsForMix": 3
+  },
+  "steps": [
+    {
+      "stepIndex": 1,
+      "targetMg": "1",
+      "method": "DILUTE",
+      "dailyAmount": "2",
+      "dailyAmountUnit": "ml",
+      "mixFoodAmount": "0.10",
+      "mixWaterAmount": "50",
+      "servings": "20"
+    },
+    {
+      "stepIndex": 2,
+      "targetMg": "2.5",
+      "method": "DILUTE",
+      "dailyAmount": "2",
+      "dailyAmountUnit": "ml",
+      "mixFoodAmount": "0.10",
+      "mixWaterAmount": "20",
+      "servings": "10"
+    },
+    {
+      "stepIndex": 3,
+      "targetMg": "5",
+      "method": "DILUTE",
+      "dailyAmount": "2",
+      "dailyAmountUnit": "ml",
+      "mixFoodAmount": "0.20",
+      "mixWaterAmount": "20",
+      "servings": "10"
+    },
+    {
+      "stepIndex": 4,
+      "targetMg": "10",
+      "method": "DILUTE",
+      "dailyAmount": "2",
+      "dailyAmountUnit": "ml",
+      "mixFoodAmount": "0.40",
+      "mixWaterAmount": "20",
+      "servings": "10"
+    },
+    {
+      "stepIndex": 5,
+      "targetMg": "40",
+      "method": "DIRECT",
+      "dailyAmount": "0.16",
+      "dailyAmountUnit": "g",
+      "mixFoodAmount": null,
+      "mixWaterAmount": null,
+      "servings": null
+    },
+    {
+      "stepIndex": 6,
+      "targetMg": "80",
+      "method": "DIRECT",
+      "dailyAmount": "0.32",
+      "dailyAmountUnit": "g",
+      "mixFoodAmount": null,
+      "mixWaterAmount": null,
+      "servings": null
+    }
+  ]
+}
 ```
 
 ### Design decisions and invariants
 
-- Canonical units: while in the food.json and in the UX, food protein content is expressed as grams of protein per 100g or 100ml, internally **the canonical protein concentration is always:**
+- Canonical units: while in the food.json and in the UX, food protein content is expressed as grams of protein per 100g or 100ml, internally **the canonical protein concentration is always converted to:**
   - Solids: mgPerG (mg protein per gram)
   - Liquids: mgPerMl (mg protein per millilitre)
+  - There should be a function `mgPer100ToMgPerUnit(uiValue, unit)` that will do this
+- Units & serialization: will store Decimal fields as strings in JSON that holds state (and reconstructing with `new Decimal(str)`).
+- foodBThreshold applies to neat mass (m) - i.e. once the required mass for a given P is ≥ threshold we switch to DIRECT food B
 - Precision: Use Decimal (decimal.js) for all calculations; format for display only.
 - Warnings: Non-blocking; show yellow and red warnings with recommended fixes. Red warnings should be acknowledged to export/print (but do not block edits).
-- Form toggles: If the user toggles a food's form (SOLID ⇄ LIQUID) the app automatically converts existing daily and mix amounts to the other unit and recomputes the water to add to create the mix (the solid-in-liquid volume assumption changes accordingly).
-- Editing behavior for steps:
+
+### Editing a protocol: behaviours
+
+- Form toggles: If the user toggles a food's form (SOLID ⇄ LIQUID) the app automatically converts existing daily and mix amounts to the other unit and recomputes the water to add to create the mix (the solid-in-liquid volume assumption changes accordingly). **WE ASSUME THAT 1 GRAM ~= 1 ML IN VOLUME, AND VISE VERSA**.
+- Editing behaviour for steps:
   - Editing target protein mg P:
     - If step is DIRECT (undiluted): automatically update the daily amount. Vise versa, if the daily amount is edited, the target protein P should also change.
     - If step is DILUTE: keep daily amount and mix amount stable if possible; update the mixWaterAmount volume instead. If the new target is impossible with current mix amount, a red error will be shown.
+  - Editing mixFoodAmount
+    - if step is DIRECT: N/A - if DIRECT is the method, no dilution is used
+    - if step is DILUTE: Recompute mixWaterAmount to keep P constant and dailyAmount unchanged
+  - Editing dailyAmount
+    - if step is DIRECT: the target protein P for the step changes
+    - if step is DILUTE: keep mixFoodAmount fixed; update mixWaterAmount
 - Food A → B transition: If food_b_threshold cannot be satisfied, show red error, allow manual override.
 - No undo/redo implementation required
 - No locked rows options required
@@ -486,6 +576,12 @@ This is where there's another JSON file to search through with the following str
   - ml → 1 decimal or integer depending on magnitude
   - Validation and comparisons use raw Decimal values
 - Use a single JS module that initializes the calculator for a given container element; make state serializable to JSON for copying into EMR or making a PDF.
+
+### Functions to consider adding:
+
+- generateDefaultProtocol(food: Food, strategy: DosingStrategy, settings): Protocol
+- computeNeatMass(P: Decimal, food: Food): Decimal
+- validateProtocol(protocol: Protocol): Warning[]
 
 ## UI Flow
 
