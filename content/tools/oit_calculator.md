@@ -50,6 +50,7 @@ However, there is no easy, accessible resource to generate customizable EMR and 
 3. At initial steps, the amount of protein is so small that often the food requires dilution first.
 
 - With solids diluted into liquids, we assume the solid contributes negligibly to the final volume as long as the ratio between grams of food and ml of water is <1:10. For example: if 1 ml of a solution of 0.2g of peanut powder in 40ml of liquid is given, we assume that only 0.2g * 1/40 = 0.005g is actually ingested
+  - If the user violates this assumption (ie. ratio is 1:1) we **will allow it** but show a warning.
 - With liquids diluted into liquids, we assume the liquid contributes to the final volume. For example: if 1 ml of a solution of made of 0.2 ml of milk + 39.8 ml of water is given, only 0.2 ml * (1/(0.2+39.8)) = 0.005ml of actual milk is given
 
 4. There are four 'phenotypes' of OIT:
@@ -452,7 +453,7 @@ When the user starts to type, they will see a dropdown of only the names of matc
 ]
 ```
 
-The .json can be loaded in .js as: `fetch("/tool_assets/typed_foods_rough.json")`. The names are searched using fuzzysort.min.js, case insensitive. The first search result is always "Custom: {Whatever the user has typed}" in case the user wants to make a custom food. The dropdown shows a **maximum of VIRTUAL_SCROLL_THRESHOLD items**; rest scrollable. There should be a slight debounce / delay (ie 150 ms) and a search limit of around 50.
+The .json can be loaded in .js as: `fetch("/tool_assets/typed_foods_rough.json")`. The names are searched using fuzzysort.min.js, case insensitive. The first search result is always "Custom: {Whatever the user has typed}" in case the user wants to make a custom food. The dropdown shows a **maximum of VIRTUAL_SCROLL_THRESHOLD items**; rest scrollable. There should be a slight debounce / delay (ie 150 ms) and a search limit of around 50 as defaults for now.
 
 **The behaviour for food-b-search mechanism is the EXACT same, _EXCEPT that food-a-search can also search for pre-defined PROTOCOLS_**.
 This is where there's another JSON file to search through with the following structure (steps are omitted for brevity here, the numbers are not actually correct/valid), in particular the "name" field. When the protocol is chosen, the whole table / rest of the relevant settings are populated as per the protocol.
@@ -546,9 +547,11 @@ This is where there's another JSON file to search through with the following str
   - Liquids: mgPerMl (mg protein per millilitre)
   - There should be a function `mgPer100ToMgPerUnit(uiValue, unit)` that will do this
 - Units & serialization: will store Decimal fields as strings in JSON that holds state (and reconstructing with `new Decimal(str)`).
+- Use Decimal everywhere for arithmetic. Never convert to JS number for arithmetic. Format to number/strings only for display/export.
 - foodBThreshold applies to neat mass (m) - i.e. once the required mass for a given P is ≥ threshold we switch to DIRECT food B
 - Precision: Use Decimal (decimal.js) for all calculations; format for display only.
 - Warnings: Non-blocking; show yellow and red warnings with recommended fixes. Red warnings should be acknowledged to export/print (but do not block edits).
+- We will NOT store acknowledgment state
 
 ### Editing a protocol: behaviours
 
@@ -571,7 +574,7 @@ This is where there's another JSON file to search through with the following str
 
 - Fetch JSON datasets once on init; keep in-memory for search and protocol load.
 - Keep all logic client-side (no PHI persistence).
-- Display formatting:
+- Display formatting (not for validation or serialization):
   - grams → 2 decimal places for display
   - ml → 1 decimal or integer depending on magnitude
   - Validation and comparisons use raw Decimal values
@@ -580,8 +583,27 @@ This is where there's another JSON file to search through with the following str
 ### Functions to consider adding:
 
 - generateDefaultProtocol(food: Food, strategy: DosingStrategy, settings): Protocol
+- addFoodBProtocol(protocol: Protocol, foodB: Food, foodBThreshold: { unit: Unit; amount: Decimal } ): Protocol
 - computeNeatMass(P: Decimal, food: Food): Decimal
 - validateProtocol(protocol: Protocol): Warning[]
+- applyEditOnStep(protocol: Protocol, stepIndex: number, changes: Partial<Step>): Protocol;
+- function protocolToJSON(protocol: Protocol): any; // convert Decimal to string
+- function protocolFromJSON(json: any): Protocol; // rehydrate Decimal
+- findDilutionCandidates(P: Decimal, food: Food, config: ProtocolConfig, options?: {
+  mixFoodCandidates?: Decimal[], dailyAmountCandidates?: Decimal[]
+  }): Candidate[];
+
+```ts
+interface Candidate {
+  mixFoodAmount: Decimal;
+  dailyAmount: Decimal;
+  mixWaterAmount: Decimal;
+  mixTotalVolume: Decimal;
+  mixProteinMg: Decimal;
+  servings: Decimal;
+  valid: boolean;
+}
+```
 
 ## UI Flow
 
