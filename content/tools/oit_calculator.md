@@ -178,8 +178,6 @@ Food X: 10g of protein per 30g
 | 11   | 240          | Direct | 0.72 g       | n/a                | n/a               |
 | 12   | 300          | Direct | 0.9 g        | n/a                | n/a               |
 
-4. Different phenotypes of how OIT is offered suit different patients and families: flexibility to switch easily is an advantage
-
 ## Defining an OIT protocol - what information is required?
 
 Recall that:
@@ -206,6 +204,7 @@ enum DosingStrategy {
   SLOW = "SLOW", // Mg steps: 0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300
   RAPID = "RAPID", // Mg steps: 1, 2.5, 5, 10, 20, 40, 80, 160, 300
 }
+// more strategies could be added later if required
 
 interface Food {
   name: string;
@@ -222,7 +221,6 @@ interface Step {
   dailyAmountUnit: Unit;
   mixFoodAmount?: Decimal; // g or ml of food used in the mix (if DILUTE)
   mixWaterAmount?: Decimal; // total volume of water to add to create dilution (if DILUTE)
-  servings?: Decimal; // mixWaterAmount / dailyAmount IF solid; for liquids, (mixWaterAmount + mixFoodAmount) / dailyAmount
 }
 
 interface Protocol {
@@ -297,7 +295,7 @@ Process:
   - Therefore:
   - mixTotalVolume = dailyAmount * (mixProteinMg / P)
   - mixWaterAmount = dailyAmount * (mixProteinMg / P) - mixFoodAmount if food.type is liquid, else: mixWaterAmount = dailyAmount * (mixProteinMg / P)
-- servings = mixTotalVolume / dailyAmount
+- servings = mixTotalVolume / dailyAmount. Ie. mixWaterAmount / dailyAmount IF solid; for liquids, (mixWaterAmount + mixFoodAmount) / dailyAmount
 - Accept candidate if:
   - mixFoodAmount >= minMeasurableMass or minMeasurableVolume depending on food type
   - servings >= minServingsForMix (default 3)
@@ -324,7 +322,6 @@ Warning information should be internally represented as: { severity, code, messa
 
 - Y1 Dilution yields fewer than minServingsForMix servings. Message: "Dilution yields X servings (< configured minimum). Consider increasing mix food amount or mix volume."
 - Y2 Steps not strictly ascending by targetMg. Message: "Steps must be ascending — check step N vs step N-1."
-- Y3 Total steps exceed maxSteps (default 25). Message: "Protocol has N steps (> maxSteps)."
 
 ### Red
 
@@ -334,17 +331,20 @@ Warning information should be internally represented as: { severity, code, messa
 - R4 Measured mixFoodAmount or mixWaterAmount below instrument resolution (e.g., mixFoodAmount < 0.1 g, mixWaterAmount < 0.2 ml). Message: "Measured powder/volume below instrument resolution — impractical to prepare."
 - TODO later: doubling violation
 
-## OIT calculator technical implementation
+## OIT calculator technical spec
 
 Generate editable, clinician-facing OIT protocols that handle solids and liquids, dilution calculations, Food A → Food B transitions, and validation warnings (yellow and red severity). Protocols must be reproducible, transparent, and include checks/asserts for potentially dangerous configurations.
 
 ### Platform
 
 - Tool will be hosted on a webpage on a website built with Zola, the static site generator that uses HTML, JS (will implement code in TS then compile to JS), and SCSS
-- No PHI will be collected; tool is open-sourced too
+- No PHI will be collected
 - Files:
   - oit_calculator.html (shortcode wrapper / markup)
-  - oit_calculator.ts → compiled to oit_calculator.js
+  - oit_calculator.ts
+  - oit_calculator_core.ts
+  - oit_calculator_state.ts
+  - oit_calculator_ui.ts
   - oit_calculator.scss → compiled CSS
   - typed_foods_rough.json and protocols.json in static/tool_assets/ (can be accessed ie. by `fetch("/tool_assets/typed_foods_rough.json")`)
 - The zola project already has decimal.js included, as well as fuzzysort.min.js
@@ -409,23 +409,17 @@ Within dosing-strategy-container: a toggle bottom for "Dosing Strategy: [STANDAR
 
 Within output-container a table with the dosing schedule is displayed, and to the right a small div for a sidebar containing any warnings that may arise. Normally it will simply state "No problems found", but it will display validation checks that have failed in order for the physician to know if the protocol is invalid or potentially dangerous. See [here](#validation-of-table).
 
-The table in rough looks like:
+The table in rough (steps omitted for brevity) looks like:
 
 | Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
 | ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
 | 1    | 1            | Dilution | 1 ml         | 0.2 g              | 46.7 ml           |
 | 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 18.7 ml           |
-| 3    | 5            | Dilution | 1 ml         | 0.2 g              | 9.3 ml            |
-| 4    | 10           | Dilution | 1 ml         | 0.2 g              | 4.7 ml            |
-| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 5.8 ml            |
-| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 5.8 ml            |
-| 7    | 80           | Direct   | 0.3 g        | n/a                | n/a               |
-| 8    | 120          | Direct   | 0.5 g        | n/a                | n/a               |
-| 9    | 160          | Direct   | 0.7 g        | n/a                | n/a               |
+| ...  | ...          | ...      | ...          | ...                | ...               |
 | 10   | 240          | Direct   | 1 g          | n/a                | n/a               |
 | 11   | 300          | Direct   | 1.3 g        | n/a                | n/a               |
 
-- Editable column cells: target protein (mg), daily amount, amount for mixture. With each edit, other row values should automatically update
+- Editable column cells: target protein (mg), daily amount, amount for mixture. With each edit, other row values should automatically update (see [edit behaviour](#editing-a-protocol-behaviours))
 - The values should also automatically update with manual changes to the protein conc of the selected food(s)
 - To the left of each step number, there should be a (+) and a (-). (+) inserts a copy of the row before; (-) deletes the step.
 
@@ -433,7 +427,7 @@ Within the output container there should also be two buttons: 1) to copy an ASCI
 
 #### food-a-search mechanism
 
-When the user starts to type, they will see a dropdown of only the names of matching foods from a .json as follows:
+When the user starts to type, they will see a dropdown of the names of matching foods from a .json as follows:
 
 ```json
 [
@@ -453,91 +447,75 @@ When the user starts to type, they will see a dropdown of only the names of matc
 ]
 ```
 
-The .json can be loaded in .js as: `fetch("/tool_assets/typed_foods_rough.json")`. The names are searched using fuzzysort.min.js, case insensitive. The first search result is always "Custom: {Whatever the user has typed}" in case the user wants to make a custom food. The dropdown shows a **maximum of VIRTUAL_SCROLL_THRESHOLD items**; rest scrollable. There should be a slight debounce / delay (ie 150 ms) and a search limit of around 50 as defaults for now.
+The .json can be loaded in .js as: `fetch("/tool_assets/typed_foods_rough.json")`. The names are searched using fuzzysort.min.js, case insensitive. The first search result is always "Custom: <Whatever the user has typed>" in case the user wants to make a custom food. The dropdown shows a **maximum of VIRTUAL_SCROLL_THRESHOLD items**; rest scrollable. There should be a slight debounce / delay (ie 150 ms) and a search limit of around 50 as defaults for now.
 
 **The behaviour for food-b-search mechanism is the EXACT same, _EXCEPT that food-a-search can also search for pre-defined PROTOCOLS_**.
 This is where there's another JSON file to search through with the following structure (steps are omitted for brevity here, the numbers are not actually correct/valid), in particular the "name" field. When the protocol is chosen, the whole table / rest of the relevant settings are populated as per the protocol.
 
+Example (steps omitted for brevity):
+
 ```json
-{
-  "dosingStrategy": "STANDARD",
-  "foodA": {
-    "name": "Peanut Powder",
-    "type": "SOLID",
-    "mgPerUnit": "250"
+[
+  {
+    "dosingStrategy": "STANDARD",
+    "foodA": {
+      "name": "Peanut Powder",
+      "type": "SOLID",
+      "mgPerUnit": "250"
+    },
+    "foodAStrategy": "DILUTE_INITIAL",
+    "diThreshold": "0.2",
+    "foodB": null,
+    "foodBThreshold": null,
+    "config": {
+      "minMeasurableMass": "0.5",
+      "minMeasurableVolume": "0.5",
+      "minServingsForMix": 3
+    },
+    "steps": [
+      {
+        "stepIndex": 1,
+        "targetMg": "1",
+        "method": "DILUTE",
+        "dailyAmount": "2",
+        "dailyAmountUnit": "ml",
+        "mixFoodAmount": "0.10",
+        "mixWaterAmount": "50",
+      },
+      {
+        "stepIndex": 2,
+        "targetMg": "2.5",
+        "method": "DILUTE",
+        "dailyAmount": "2",
+        "dailyAmountUnit": "ml",
+        "mixFoodAmount": "0.10",
+        "mixWaterAmount": "20",
+      },
+      ...
+      {
+        "stepIndex": 5,
+        "targetMg": "40",
+        "method": "DIRECT",
+        "dailyAmount": "0.16",
+        "dailyAmountUnit": "g",
+        "mixFoodAmount": null,
+        "mixWaterAmount": null,
+        "servings": null
+      },
+      {
+        "stepIndex": 6,
+        "targetMg": "80",
+        "method": "DIRECT",
+        "dailyAmount": "0.32",
+        "dailyAmountUnit": "g",
+        "mixFoodAmount": null,
+        "mixWaterAmount": null,
+        "servings": null
+      }
+    ]
   },
-  "foodAStrategy": "DILUTE_INITIAL",
-  "diThreshold": "0.2",
-  "foodB": null,
-  "foodBThreshold": null,
-  "config": {
-    "minMeasurableMass": "0.5",
-    "minMeasurableVolume": "0.5",
-    "minServingsForMix": 3
-  },
-  "steps": [
-    {
-      "stepIndex": 1,
-      "targetMg": "1",
-      "method": "DILUTE",
-      "dailyAmount": "2",
-      "dailyAmountUnit": "ml",
-      "mixFoodAmount": "0.10",
-      "mixWaterAmount": "50",
-      "servings": "20"
-    },
-    {
-      "stepIndex": 2,
-      "targetMg": "2.5",
-      "method": "DILUTE",
-      "dailyAmount": "2",
-      "dailyAmountUnit": "ml",
-      "mixFoodAmount": "0.10",
-      "mixWaterAmount": "20",
-      "servings": "10"
-    },
-    {
-      "stepIndex": 3,
-      "targetMg": "5",
-      "method": "DILUTE",
-      "dailyAmount": "2",
-      "dailyAmountUnit": "ml",
-      "mixFoodAmount": "0.20",
-      "mixWaterAmount": "20",
-      "servings": "10"
-    },
-    {
-      "stepIndex": 4,
-      "targetMg": "10",
-      "method": "DILUTE",
-      "dailyAmount": "2",
-      "dailyAmountUnit": "ml",
-      "mixFoodAmount": "0.40",
-      "mixWaterAmount": "20",
-      "servings": "10"
-    },
-    {
-      "stepIndex": 5,
-      "targetMg": "40",
-      "method": "DIRECT",
-      "dailyAmount": "0.16",
-      "dailyAmountUnit": "g",
-      "mixFoodAmount": null,
-      "mixWaterAmount": null,
-      "servings": null
-    },
-    {
-      "stepIndex": 6,
-      "targetMg": "80",
-      "method": "DIRECT",
-      "dailyAmount": "0.32",
-      "dailyAmountUnit": "g",
-      "mixFoodAmount": null,
-      "mixWaterAmount": null,
-      "servings": null
-    }
-  ]
-}
+  ...
+]
 ```
 
 ### Design decisions and invariants
@@ -570,6 +548,10 @@ This is where there's another JSON file to search through with the following str
 - No undo/redo implementation required
 - No locked rows options required
 
+### What happens if a new food is loaded?
+
+- The protocol resets and is recalculated
+
 ### Other misc specs
 
 - Fetch JSON datasets once on init; keep in-memory for search and protocol load.
@@ -579,6 +561,8 @@ This is where there's another JSON file to search through with the following str
   - ml → 1 decimal or integer depending on magnitude
   - Validation and comparisons use raw Decimal values
 - Use a single JS module that initializes the calculator for a given container element; make state serializable to JSON for copying into EMR or making a PDF.
+
+### Architecture
 
 ### Functions to consider adding:
 
@@ -607,7 +591,7 @@ interface Candidate {
 
 ## UI Flow
 
-User opens the webpage. They see a the two search bars for food A and optionally food B, and an unfilled table at the bottom with an empty warnings sidebar
+User opens the webpage. They see a the two search bars for food A and optionally food B, and an unfilled table at the bottom with an empty warnings sidebar.
 
 ### Selection of pre-defined food
 
@@ -615,9 +599,9 @@ User opens the webpage. They see a the two search bars for food A and optionally
 - The fields in food-a-container are automatically populated with relevant information + defaults. Specifically:
   - Editable food name field is filled with "Peanut Butter", and protein (g) per 100g serving is filled (ie. 23), and form is "Solid". All this info comes from the JSON with the food profiles
   - Strategy is default initial dilution, with a threshold to switch of 0.2 g.
-  - The default dosing Strategy is "STANDARD", which corresponds to the following (mg) amounts: 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300
+  - The default dosing Strategy is "STANDARD"
   - If the user were to toggle to "SLOW" or "RAPID", the table is 'recalculated' for the new dosing strategy.
-  - the table should populate automatically with the default settings, and then have the option of editing. For example, changing the protein concentration of the food, deleting or adding rows, altering the target protein (mg) amount, daily amount to give, and the amount of food to measure for a dilution if applicable. The other values in the row should deterministically update.
+  - the table should populate automatically with the default settings, and then have the option of editing
   - There then is the option to copy the current protocol or view a PDF (implementation of this is a separate issue for later)
 
 ### Selection of custom food
@@ -630,7 +614,7 @@ User opens the webpage. They see a the two search bars for food A and optionally
 
 ### Selection of built-in protocol
 
-- After typing in the searchbar for a built-in protocol ie. "Protocol: peanut powder" and selecting it, the entire `Protocol` object will be populated
+- After typing in the food-A searchbar for a built-in protocol ie. "Protocol: peanut powder" and selecting it, the entire `Protocol` object will be populated
 - The fields in food-a-container (and potentially food-b-container) are populated with relevant information. Specifically:
   - Editable food name field is filled with specified food names, etc for protein concentration, form, strategy, thresholds, etc.
   - The rest is as above: the protocol that is loaded remains editable
