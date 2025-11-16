@@ -605,7 +605,7 @@ User opens the webpage. They see a the two search bars for food A and optionally
 
 - After typing in the searchbar for a custom food "magic butter" and selecting "Custom: magic butter"
 - The fields in food-a-container are populated with relevant information + defaults. Specifically:
-  - Editable food name field is filled with "magic butter", and protein (g) per 100g serving is left blank, and form is default "Solid".
+  - Editable food name field is filled with "magic butter", form is default "Solid", and protein (g) per 100g serving is defaulted at 10g.
   - Strategy is default initial dilution, with a threshold to switch of 0.2 g.
   - The default dosing Strategy is "STANDARD"
 
@@ -615,14 +615,3 @@ User opens the webpage. They see a the two search bars for food A and optionally
 - The fields in food-a-container (and potentially food-b-container) are populated with relevant information. Specifically:
   - Editable food name field is filled with specified food names, etc for protein concentration, form, strategy, thresholds, etc.
   - The rest is as above: the protocol that is loaded remains editable
-
-## MVP implementation
-
-- Rough GUI
-- Food JSON load + Food A search + "Custom: <text>" option.
-- Populate STANDARD dosing sequence (and calculate slow/rapid sequences too if later selected)
-- Render protocol table with DIRECT/DILUTE rows and computed daily/mix values.
-- Implement editable protein concentration, food type, food A strategy, diThreshold, etc.
-- Implement editable protein step target Mg, dailyAmount, and mixFoodAmount with deterministic recalculation of the
-- Implement validation with core yellow/red checks
-- Create rough scaffold for very basic copy-to-clipboard ASCII export and PDF export that can be implemented later
