@@ -20,37 +20,17 @@
         "food": "Peanut Powder",
         "protein": 1,
         "method": "DILUTE",
-        "daily_amount": 0.005,
-        "mix_amount": 0.005,
-        "water_amount": 0.5
-      },
-      {
-        "food": "Peanut Powder",
-        "protein": 2.5,
-        "method": "DILUTE",
-        "daily_amount": 0.012,
-        "mix_amount": 0.012,
-        "water_amount": 1.2
+        "daily_amount": 0.2,
+        "mix_amount": 1,
+        "water_amount": 2.5
       },
       {
         "food": "Peanut Powder",
         "protein": 5,
         "method": "DILUTE",
-        "daily_amount": 0.024,
-        "mix_amount": 0.024,
-        "water_amount": 2.4
-      },
-      {
-        "food": "Peanut Powder",
-        "protein": 10,
-        "method": "DIRECT",
-        "daily_amount": 0.048
-      },
-      {
-        "food": "Peanut Powder",
-        "protein": 20,
-        "method": "DIRECT",
-        "daily_amount": 0.095
+        "daily_amount": 1,
+        "mix_amount": 0.2,
+        "water_amount": 0.5
       },
       {
         "food": "Peanut Powder",
@@ -66,7 +46,7 @@
       },
       {
         "food": "Roasted Peanut",
-        "protein": 120,
+        "protein": 80,
         "method": "DIRECT",
         "daily_amount": 0.48
       },
