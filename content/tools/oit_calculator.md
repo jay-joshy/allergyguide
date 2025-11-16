@@ -321,7 +321,7 @@ Warning information should be internally represented as: { severity, code, messa
 ### Yellow
 
 - Y1 Dilution yields fewer than minServingsForMix servings. Message: "Dilution yields X servings (< configured minimum). Consider increasing mix food amount or mix volume."
-- Y2 Steps not strictly ascending by targetMg. Message: "Steps must be ascending — check step N vs step N-1."
+- Y2 Subsequent steps not >= the previous step by targetMg. Message: "Steps must be ascending or equal — check step N vs step N-1."
 
 ### Red
 
@@ -342,9 +342,6 @@ Generate editable, clinician-facing OIT protocols that handle solids and liquids
 - Files:
   - oit_calculator.html (shortcode wrapper / markup)
   - oit_calculator.ts
-  - oit_calculator_core.ts
-  - oit_calculator_state.ts
-  - oit_calculator_ui.ts
   - oit_calculator.scss → compiled CSS
   - typed_foods_rough.json and protocols.json in static/tool_assets/ (can be accessed ie. by `fetch("/tool_assets/typed_foods_rough.json")`)
 - The zola project already has decimal.js included, as well as fuzzysort.min.js
@@ -364,7 +361,7 @@ Rough outline:
 
 ```html
 <div class="oit_calculator">
-	<div class=settings-container>
+	<div class="settings-container">
 		<div class="food-a-container">
 			<div class="search-container">
 				<input type="text" id="food-a-search" placeholder="Search for foods or protocols..." class="search-input">
@@ -393,19 +390,19 @@ Within food-a-container:
 - top search bar that spans the width. This search bar is special: see [here](#food-a-search-mechanism) for details. Once a food is selected, the search bar is input is cleared, and then the rest of the container is populated
 - an editable bar right below that also spans the width, that contains the name of the selected food (which can be manually changed after)
 - a positive number input field for "Protein (g) per " either 100ml or 100g serving, depending on if the food is a solid or liquid. Unit of ml vs g is automatically determined by the food form
-- a food form toggle button "Form: [ SOLID | LIQUID ]"
-- a food A strategy toggle button "Strategy: [ Initial dilution | Dilution only | No dilutions ]"
+- a food form toggle/switch button "Form: [ SOLID | LIQUID ]". Both these options should be displayed (one must be selected at all times).
+- a food A strategy toggle/switch button "Strategy: [ Initial dilution | Dilution only | No dilutions ]". All these options should be displayed in a three button toggle (where one button must be selected at all times).
 - if Initial dilution is selected, there should be another input box for: "Threshold to stop diluting:" ml or g, depending on if the food is a solid or liquid
 
-Within food-b-container:
+**Food B section is only visible/accessible once food A is selected**. Within food-b-container:
 
 - top search bar that spans the width with clear-food-b button after that will clear food-b from the protocol (ie. if there was any info entered after, it would be erased). Once a food is selected, the search bar is input is cleared, and then the rest of the container is populated
 - editable bar right below that also spans the width, that contains the name of the selected food (which can be manually changed after)
 - a positive number input field for "Protein (g) per " either ml or g, depending on if the food is a solid or liquid
-- a food form toggle button "Form: [ SOLID | LIQUID ]"
+- a food form toggle/switch button as before
 - a food b threshold input: "Threshold to transition:" ml or g, depending on if the food is a solid or liquid
 
-Within dosing-strategy-container: a toggle bottom for "Dosing Strategy: [STANDARD | SLOW | RAPID]"
+Within dosing-strategy-container: a toggle/switch bottom for "Dosing Strategy: [STANDARD | SLOW | RAPID]". One option must be selected at all times. All options should be visible and the currently selected one highlighted in some way.
 
 Within output-container a table with the dosing schedule is displayed, and to the right a small div for a sidebar containing any warnings that may arise. Normally it will simply state "No problems found", but it will display validation checks that have failed in order for the physician to know if the protocol is invalid or potentially dangerous. See [here](#validation-of-table).
 
@@ -562,15 +559,13 @@ Example (steps omitted for brevity):
   - Validation and comparisons use raw Decimal values
 - Use a single JS module that initializes the calculator for a given container element; make state serializable to JSON for copying into EMR or making a PDF.
 
-### Architecture
-
 ### Functions to consider adding:
 
 - generateDefaultProtocol(food: Food, strategy: DosingStrategy, settings): Protocol
 - addFoodBProtocol(protocol: Protocol, foodB: Food, foodBThreshold: { unit: Unit; amount: Decimal } ): Protocol
+- renderProtocol(protocol: Protocol)
 - computeNeatMass(P: Decimal, food: Food): Decimal
 - validateProtocol(protocol: Protocol): Warning[]
-- applyEditOnStep(protocol: Protocol, stepIndex: number, changes: Partial<Step>): Protocol;
 - function protocolToJSON(protocol: Protocol): any; // convert Decimal to string
 - function protocolFromJSON(json: any): Protocol; // rehydrate Decimal
 - findDilutionCandidates(P: Decimal, food: Food, config: ProtocolConfig, options?: {
@@ -592,6 +587,8 @@ interface Candidate {
 ## UI Flow
 
 User opens the webpage. They see a the two search bars for food A and optionally food B, and an unfilled table at the bottom with an empty warnings sidebar.
+
+**Food B section is only visible/accessible once food A is selected**
 
 ### Selection of pre-defined food
 
