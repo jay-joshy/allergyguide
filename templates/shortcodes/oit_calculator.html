@@ -1,26 +1,35 @@
-{% set data = load_data(path="static/tool_assets/cnf_extracted.csv") %}
 <div class="oit_calculator">
-	<div class=settings-container>
-		<div class="food-a-container">
-			<div class="search-container">
-				<input type="text" id="food-a-search" placeholder="Search for foods or protocols..." class="search-input">
-			</div>
-		</div>
-		<div class="food-b-container">
-			<div class="search-container">
-				<input type="text" id="food-b-search" placeholder="Optionally, load another food to transition to ..." class="search-input">
-				<button id="clear-food-b" class="clear-food-b">Clear</button>
-			</div>
-		</div>
-	</div>
-	<div class="dosing-strategy-container">
-	</div>
-	<div class="output-container">
-		<table></table>
-		<div class="warnings-container"></div>
-	</div>
+    <div class="settings-container">
+        <div class="food-a-container">
+            <div class="search-container">
+                <input
+                    type="text"
+                    id="food-a-search"
+                    placeholder="Search for foods or protocols..."
+                    class="search-input"
+                />
+            </div>
+        </div>
+        <div class="food-b-container">
+            <div class="search-container">
+                <input
+                    type="text"
+                    id="food-b-search"
+                    placeholder="Optionally, load another food to transition to ..."
+                    class="search-input"
+                />
+                <button id="clear-food-b" class="clear-food-b">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="dosing-strategy-container"></div>
+    <div class="output-container">
+        <table></table>
+        <div class="warnings-container"></div>
+    </div>
 </div>
 
 <!-- Load external scripts -->
+<script src="/js/decimal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.1.0/fuzzysort.min.js"></script>
 <script src="/js/oit_calculator.js"></script>
