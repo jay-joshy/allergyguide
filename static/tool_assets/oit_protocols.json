@@ -5,68 +5,68 @@
     "food_a": {
       "type": "SOLID",
       "name": "Peanut Powder",
-      "protein_conc": 0.21
+      "protein_conc": "0.21"
     },
     "food_a_strategy": "DILUTE_INITIAL",
-    "di_threshold": 0.2,
+    "di_threshold": "0.2",
     "food_b": {
       "type": "SOLID",
       "name": "Roasted Peanut",
-      "protein_conc": 0.25
+      "protein_conc": "0.25"
     },
-    "food_b_threshold": 0.45,
+    "food_b_threshold": "0.45",
     "table_di": [
       {
         "food": "Peanut Powder",
-        "protein": 1,
+        "protein": "1",
         "method": "DILUTE",
-        "daily_amount": 0.2,
-        "mix_amount": 1,
-        "water_amount": 2.5
+        "daily_amount": "0.2",
+        "mix_amount": "1",
+        "water_amount": "2.5"
       },
       {
         "food": "Peanut Powder",
-        "protein": 5,
+        "protein": "5",
         "method": "DILUTE",
-        "daily_amount": 1,
-        "mix_amount": 0.2,
-        "water_amount": 0.5
+        "daily_amount": "1",
+        "mix_amount": "0.2",
+        "water_amount": "0.5"
       },
       {
         "food": "Peanut Powder",
-        "protein": 40,
+        "protein": "40",
         "method": "DIRECT",
-        "daily_amount": 0.19
+        "daily_amount": "0.19"
       },
       {
         "food": "Peanut Powder",
-        "protein": 80,
+        "protein": "80",
         "method": "DIRECT",
-        "daily_amount": 0.381
+        "daily_amount": "0.381"
       },
       {
         "food": "Roasted Peanut",
-        "protein": 80,
+        "protein": "80",
         "method": "DIRECT",
-        "daily_amount": 0.48
+        "daily_amount": "0.48"
       },
       {
         "food": "Roasted Peanut",
-        "protein": 160,
+        "protein": "160",
         "method": "DIRECT",
-        "daily_amount": 0.64
+        "daily_amount": "0.64"
       },
       {
         "food": "Roasted Peanut",
-        "protein": 240,
+        "protein": "240",
         "method": "DIRECT",
-        "daily_amount": 0.96
+        "daily_amount": "0.96"
       },
       {
         "food": "Roasted Peanut",
-        "protein": 300,
+        "protein": "300",
         "method": "DIRECT",
-        "daily_amount": 1.2
+        "daily_amount": "1.2"
       }
     ],
     "table_dn": [],
@@ -78,65 +78,65 @@
     "food_a": {
       "type": "LIQUID",
       "name": "Cow Milk",
-      "protein_conc": 0.004
+      "protein_conc": "0.004"
     },
     "food_a_strategy": "DILUTE_NONE",
-    "di_threshold": 0.2,
+    "di_threshold": "0.2",
     "table_di": [],
     "table_dn": [
       {
         "food": "Cow Milk",
-        "protein": 1,
+        "protein": "1",
         "method": "DIRECT",
-        "daily_amount": 0.25
+        "daily_amount": "0.25"
       },
       {
         "food": "Cow Milk",
-        "protein": 2.5,
+        "protein": "2.5",
         "method": "DIRECT",
-        "daily_amount": 0.63
+        "daily_amount": "0.63"
       },
       {
         "food": "Cow Milk",
-        "protein": 5,
+        "protein": "5",
         "method": "DIRECT",
-        "daily_amount": 1.25
+        "daily_amount": "1.25"
       },
       {
         "food": "Cow Milk",
-        "protein": 10,
+        "protein": "10",
         "method": "DIRECT",
-        "daily_amount": 2.5
+        "daily_amount": "2.5"
       },
       {
         "food": "Cow Milk",
-        "protein": 20,
+        "protein": "20",
         "method": "DIRECT",
-        "daily_amount": 5
+        "daily_amount": "5"
       },
       {
         "food": "Cow Milk",
-        "protein": 40,
+        "protein": "40",
         "method": "DIRECT",
-        "daily_amount": 10
+        "daily_amount": "10"
       },
       {
         "food": "Cow Milk",
-        "protein": 80,
+        "protein": "80",
         "method": "DIRECT",
-        "daily_amount": 20
+        "daily_amount": "20"
       },
       {
         "food": "Cow Milk",
-        "protein": 160,
+        "protein": "160",
         "method": "DIRECT",
-        "daily_amount": 40
+        "daily_amount": "40"
       },
       {
         "food": "Cow Milk",
-        "protein": 300,
+        "protein": "300",
         "method": "DIRECT",
-        "daily_amount": 75
+        "daily_amount": "75"
       }
     ],
     "table_da": []

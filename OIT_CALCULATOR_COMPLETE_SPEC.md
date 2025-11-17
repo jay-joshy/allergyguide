@@ -81,7 +81,7 @@ Oral immunotherapy involves gradually increasing exposure to allergenic foods to
 
 ```
 1. User searches for Food A (or loads protocol template). Defaults for dilution strategy, threshold, and dosing strategy are set and table is rendered.
-2. User can configure Food A settings:
+2. User can configure Food A settings and have the table update:
    - Food name
    - Protein concentration (in the UI, expressed as g of protein per 100 grams or ml serving size of food)
    - Food type (solid/liquid)
@@ -103,6 +103,7 @@ Oral immunotherapy involves gradually increasing exposure to allergenic foods to
 Oral immunotherapy (OIT) is an emerging approach to treating IgE-mediated food allergies. It involves a structured progressive introduction of a food through many steps, each corresponding to a particular protein target. A common maintenance dose is 300 mg of food protein. While many protocols are used (standard, slow, rapid), clinicians need a flexible, reproducible way to generate patient-friendly and EMR-friendly protocols that minimize manual work and error.
 
 A typical standard progression of protein doses/steps is:
+
 - 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300 mg (2–4 weeks between steps)
 
 ### 2.5 Important Facts about OIT
@@ -111,17 +112,19 @@ A typical standard progression of protein doses/steps is:
 - The protein content of each food is required. Examples:
   - Peanut butter: ~23 g protein per 100 g (≈ 230 mg protein per g)
   - Milk: ~9 g protein per 250 ml (≈ 36 mg protein per ml)
-- At initial steps, doses are often too small to measure and require dilution.
+- At initial steps, doses are often too small to measure on a scale and require dilution.
 
 Dilution assumptions:
-- Solid-in-liquid: The solid contributes negligibly to final volume as long as the ratio between grams of food and ml of water is < 1:10. If this assumption is violated, allow it but show a warning.
+
+- Solid-in-liquid: we assume that solid contributes negligibly to final volume. If the ratio between grams of food and ml of water is > 1:10 show a warning.
 - Liquid-in-liquid: Volumes are additive.
 
 Phenotypes supported:
-1) Food A with initial dilutions then direct. 
-2) Food A with dilutions throughout.
-3) Food A without any dilutions (often impractical early unless compounded).
-4) Food A → Food B at some point (Food A may be diluted/undiluted/mixed before transition).
+
+1. Food A with initial dilutions then direct.
+2. Food A with dilutions throughout.
+3. Food A without any dilutions (often impractical early unless compounded).
+4. Food A → Food B at some point (Food A may be diluted/undiluted before transition).
 
 ## 3. Project Structure
 
@@ -149,8 +152,7 @@ allergyguide/
 │   └── oit_calculator.md            # Page that embeds calculator
 │
 └── Documentation files:
-    ├── OIT_CALCULATOR_COMPLETE_SPEC.md  # This file
-    └── OIT_CALCULATOR_README.md         # lay reference
+    └── OIT_CALCULATOR_COMPLETE_SPEC.md  # This file
 ```
 
 ---
@@ -266,7 +268,7 @@ interface Protocol {
   foodAStrategy: FoodAStrategy; // When to dilute Food A
   diThreshold: Decimal; // When to stop diluting Food A (g or ml)
   foodB?: Food; // Optional second food
-  foodBThreshold?: { unit: Unit; amount: Decimal }; // Threshold to switch to Food B, expressed as unit + amount 
+  foodBThreshold?: { unit: Unit; amount: Decimal }; // Threshold to switch to Food B, expressed as unit + amount
   steps: Step[]; // Array of protocol steps
   config: ProtocolConfig; // Measurement constraints
 }
@@ -362,7 +364,7 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
   - Liquids: mg per millilitre (mg/ml)
   - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 g/ml) to canonical mg/unit.
 - Precision: Use Decimal for all arithmetic; format only for display/export.
-- Serialization: Store Decimal fields as strings in JSON state and rehydrate on load.
+- Serialization: Store Decimal fields as strings in JSON state for protocols and rehydrate on load.
 - foodBThreshold applies to neat mass (m = P/C). Once m ≥ threshold, switch to DIRECT Food B and duplicate the preceding protein dose at the transition step.
 - Red/yellow warnings are non-blocking. Red warnings must be acknowledged prior to export/print but do not block edits.
 - When toggling a food’s form (SOLID ⇄ LIQUID), convert amounts assuming 1 g ≈ 1 ml and recompute water for mixes.
@@ -518,9 +520,9 @@ For liquid foods in water, volumes are additive:
 
 5. IMPORTANT - Extra Step Creation:
    - When Food B is added, the protocol length increases by 1
-   - The first Food B step uses the same protein as the previous directFood A step
+   - The first Food B step uses the same target protein as the previous Food A step
    - Example: 11 Food A steps → Add Food B → 12 total steps
-     - Step 5: 80mg Food A, Step 6: 80mg Food B (REPEATED step), ... Step 12: 300mg Food B
+     - ..., Step 5: 80mg Food A, Step 6: 80mg Food B (REPEATED step), ... Step 12: 300mg Food B
    - This is mainly for safety given new form of food - at transition, we pause at the same dose.
 ```
 
@@ -647,7 +649,6 @@ for (i = 1; i < steps.length; i++):
   - Fuzzy search both foods and protocols
   - Debounced (≈150ms)
   - Shows dropdown with results
-  - Highlights matching text
   - Supports custom food creation
 
 **Food B Search:**
@@ -658,7 +659,7 @@ for (i = 1; i < steps.length; i++):
 - Functionality:
   - Fuzzy search foods only (not protocols)
   - Same search behavior as Food A
-  - Clearing resets to Food A only
+  - Clearing resets to Food A only and recalculates protocol
 
 **Dropdown Results:**
 
@@ -720,8 +721,8 @@ for (i = 1; i < steps.length; i++):
 
 **Special Rows:**
 
-- "Food A: [Name]" header row (blue background)
-- "Food B: [Name]" header row (blue background)
+- "[Name]" header row (blue background)
+- "[Name]" header row (blue background)
   - Appears BEFORE first Food B step
 
 **Editable Cells:**
@@ -964,6 +965,7 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 ### 8.3 UI Flow Scenarios
 
 Selection of pre-defined food
+
 - After typing in the searchbar for Food A (e.g., "peanut butter"), select a food.
 - The fields in food-a-container populate:
   - Name populated from database; protein (g) per 100 g/ml prefilled; form inferred from Type; strategy defaults to Initial dilution with threshold 0.2 g (or 0.2 ml for liquids).
@@ -971,14 +973,17 @@ Selection of pre-defined food
   - The table populates automatically with default settings; then it is fully editable.
 
 Selection of custom food
+
 - Choose "Custom: <typed text>" from Food A search.
 - Name is set to the typed string; default protein per 100 g/ml is 10 g; default form = Solid; strategy defaults to Initial dilution with 0.2 g threshold; dosing strategy = STANDARD.
 
 Selection of built-in protocol
+
 - Choose an entry prefixed with "Protocol:" in Food A search.
 - The entire Protocol object (foods, concentrations, strategies, thresholds, steps) is loaded and rendered; remains fully editable.
 
 What happens if a new food is loaded?
+
 - Loading a new Food A resets and recalculates the entire protocol using the current dosing strategy and default Food A strategy/thresholds.
 - Adding or changing Food B regenerates steps at and after the transition (with the duplicate transition dose); clearing Food B removes Food B steps and headers.
 
@@ -988,12 +993,12 @@ What happens if a new food is loaded?
 
 **Critical Errors (Red):**
 
-| Code | Description         | Condition                         | Impact                     |
-| ---- | ------------------- | --------------------------------- | -------------------------- |
-| R1   | Too few steps       | steps.length < 6                  | Very rapid escalation      |
-| R2   | Protein mismatch    | abs(calculated - target) > 0.5 mg (absolute tolerance) | Dilution calculation error |
+| Code | Description         | Condition                                                                                                         | Impact                     |
+| ---- | ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| R1   | Too few steps       | steps.length < 6                                                                                                  | Very rapid escalation      |
+| R2   | Protein mismatch    | abs(calculated - target) > 0.5 mg (absolute tolerance)                                                            | Dilution calculation error |
 | R3   | Dilution impossible | No valid dilution candidate meets constraints (instrument thresholds, servings, max water, and protein tolerance) | Cannot achieve target      |
-| R4   | Below resolution    | Amount < instrument minimum       | Cannot measure accurately  |
+| R4   | Below resolution    | Amount < instrument minimum                                                                                       | Cannot measure accurately  |
 
 **Cautions (Yellow):**
 
@@ -1167,24 +1172,24 @@ Of note, some of the doses in the protocol templates are _intentionally wrong_.
   "food_a": {
     "type": "SOLID",
     "name": "Peanut Powder",
-    "protein_conc": 0.21
+    "protein_conc": "0.21"
   },
   "food_a_strategy": "DILUTE_INITIAL",
-  "di_threshold": 0.2,
+  "di_threshold": "0.2",
   "food_b": {
     "type": "SOLID",
     "name": "Roasted Peanut",
-    "protein_conc": 0.25
+    "protein_conc": "0.25"
   },
-  "food_b_threshold": 0.45,
+  "food_b_threshold": "0.45",
   "table_di": [
     {
       "food": "Peanut Powder",
-      "protein": 1,
+      "protein": "1",
       "method": "DILUTE",
-      "daily_amount": 0.2,
-      "mix_amount": 1,
-      "water_amount": 2.5
+      "daily_amount": "0.2",
+      "mix_amount": "1",
+      "water_amount": "2.5"
     },
     ...
 ]
@@ -1505,6 +1510,7 @@ Example: Solid X, 7 g protein per 30 g
 | 11   | 300          | Direct   | 1.3 g        | n/a                | n/a               |
 
 Notes:
+
 - For solid-in-liquid dilutions, solid volume is assumed negligible if food:water < 1:10; otherwise show a warning but allow.
 
 ### C.2 Food A with dilutions until maintenance
