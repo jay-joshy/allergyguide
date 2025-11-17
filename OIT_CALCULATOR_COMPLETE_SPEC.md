@@ -98,6 +98,31 @@ Oral immunotherapy involves gradually increasing exposure to allergenic foods to
 
 ---
 
+### 2.4 Background and Rationale
+
+Oral immunotherapy (OIT) is an emerging approach to treating IgE-mediated food allergies. It involves a structured progressive introduction of a food through many steps, each corresponding to a particular protein target. A common maintenance dose is 300 mg of food protein. While many protocols are used (standard, slow, rapid), clinicians need a flexible, reproducible way to generate patient-friendly and EMR-friendly protocols that minimize manual work and error.
+
+A typical standard progression of protein doses/steps is:
+- 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300 mg (2–4 weeks between steps)
+
+### 2.5 Important Facts about OIT
+
+- Foods for OIT can be liquids or solids.
+- The protein content of each food is required. Examples:
+  - Peanut butter: ~23 g protein per 100 g (≈ 230 mg protein per g)
+  - Milk: ~9 g protein per 250 ml (≈ 36 mg protein per ml)
+- At initial steps, doses are often too small to measure and require dilution.
+
+Dilution assumptions:
+- Solid-in-liquid: The solid contributes negligibly to final volume as long as the ratio between grams of food and ml of water is < 1:10. If this assumption is violated, allow it but show a warning.
+- Liquid-in-liquid: Volumes are additive.
+
+Phenotypes supported:
+1) Food A with initial dilutions then direct. 
+2) Food A with dilutions throughout.
+3) Food A without any dilutions (often impractical early unless compounded).
+4) Food A → Food B at some point (Food A may be diluted/undiluted/mixed before transition).
+
 ## 3. Project Structure
 
 ```
@@ -241,7 +266,7 @@ interface Protocol {
   foodAStrategy: FoodAStrategy; // When to dilute Food A
   diThreshold: Decimal; // When to stop diluting Food A (g or ml)
   foodB?: Food; // Optional second food
-  foodBThreshold?: Decimal; // When to switch to Food B (g or ml)
+  foodBThreshold?: { unit: Unit; amount: Decimal }; // Threshold to switch to Food B, expressed as unit + amount 
   steps: Step[]; // Array of protocol steps
   config: ProtocolConfig; // Measurement constraints
 }
@@ -330,6 +355,18 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 
 ---
 
+## 5.4 Design Decisions & Invariants
+
+- Canonical units:
+  - Solids: mg per gram (mg/g)
+  - Liquids: mg per millilitre (mg/ml)
+  - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 g/ml) to canonical mg/unit.
+- Precision: Use Decimal for all arithmetic; format only for display/export.
+- Serialization: Store Decimal fields as strings in JSON state and rehydrate on load.
+- foodBThreshold applies to neat mass (m = P/C). Once m ≥ threshold, switch to DIRECT Food B and duplicate the preceding protein dose at the transition step.
+- Red/yellow warnings are non-blocking. Red warnings must be acknowledged prior to export/print but do not block edits.
+- When toggling a food’s form (SOLID ⇄ LIQUID), convert amounts assuming 1 g ≈ 1 ml and recompute water for mixes.
+
 ## 6. Core Algorithms
 
 ### 6.1 Dilution Calculation Algorithm
@@ -356,35 +393,36 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 
 2. For each combination of (mixFoodAmount, dailyAmount):
    
-   a. Calculate required protein in mixture:
-      mixProteinMg = P / dailyAmount
-   
-   b. Calculate mixture total volume:
-      - Solid: mixTotalVolume ≈ dailyAmount × servings (solid volume negligible)
-      - Liquid: mixTotalVolume = mixFoodVolume + mixWaterVolume
-   
-   c. Calculate required water:
-      mixWaterAmount = mixTotalVolume - mixFoodVolume
+   a. Compute mixture parameters:
+      - mixProteinMg = mixFoodAmount × food.mgPerUnit
+      - mixTotalVolume = dailyAmount × (mixProteinMg / P)
+      - For solids: mixWaterAmount = mixTotalVolume (solid volume negligible if food:water < 1:10; if violated, still allow but emit a warning)
+      - For liquids: mixWaterAmount = mixTotalVolume − mixFoodAmount
    
    d. Calculate servings:
       servings = mixTotalVolume / dailyAmount
-   
-   e. Validate constraints:
-      - mixFoodAmount ≥ config.minMeasurableMass (or Volume)
-      - dailyAmount ≥ config.minMeasurableVolume
-      - mixWaterAmount ≤ MAX_MIX_WATER
-      - mixWaterAmount ≥ config.minMeasurableVolume
-      - servings ≥ config.minServingsForMix
-      - Calculated protein matches target (within 0.5 mg)
-   
-   f. If valid, add to candidates array
+
+   e. Accept candidate if:
+      - mixFoodAmount ≥ minMeasurableMass (SOLID) or ≥ minMeasurableVolume (LIQUID)
+      - servings ≥ minServingsForMix (default 3)
+      - mixWaterAmount ≤ 250 ml (practical cap)
+
+   f. Check target consistency:
+      - calculatedProtein = (mixFoodAmount × food.mgPerUnit × dailyAmount) / mixTotalVolume
+      - abs(calculatedProtein − P) ≤ 0.5 mg
+
+   g. If valid, add to candidates
 
 3. Rank candidates by:
-   - Primary: Smallest mixFoodAmount
-   - Secondary: Smallest dailyAmount
-   - Tertiary: Smallest mixTotalVolume
+   - Smallest mixFoodAmount (≥ instrument threshold), then
+   - Smallest dailyAmount, then
+   - Smallest mixTotalVolume
 
 4. Return ranked candidates (best first)
+
+Edge cases:
+- If mixTotalVolume < dailyAmount (impossible), flag R3 and retry with larger mixFoodAmount values (up to a practical limit).
+- If no valid solution is found, raise R3 (Dilution impossible).
 ```
 
 **Special Case - Solid Dilutions:**
@@ -448,7 +486,7 @@ For liquid foods in water, volumes are additive:
 
 **Purpose:** Add Food B transition to existing protocol.
 
-**Function:** `addFoodBToProtocol(protocol: Protocol, foodB: Food, threshold: Decimal)`
+**Function:** `addFoodBToProtocol(protocol: Protocol, foodB: Food, threshold: { unit: Unit; amount: Decimal })`
 
 **Algorithm:**
 
@@ -457,7 +495,7 @@ For liquid foods in water, volumes are additive:
    - Iterate through protocol.steps
    - For each step using Food A:
      * Calculate neatMassA = step.targetMg / protocol.foodA.mgPerUnit
-     * If neatMassA ≥ threshold: transitionIndex = step.stepIndex
+     * If neatMassA ≥ threshold.amount: transitionIndex = step.stepIndex  // threshold.unit provides context; threshold applies to neat mass (m = P/C)
      * Break on first match
 
 2. If no transition found (all doses < threshold):
@@ -512,13 +550,13 @@ for each step with method = DILUTE:
     warnings.push({
       severity: "red",
       code: "R2",
-      message: `Step ${step.stepIndex}: Protein mismatch. Target ${targetMg}mg but calculated ${calculatedProtein}mg.`,
+      message: `Row ${step.stepIndex} computed protein ${calculatedProtein} mg ≠ declared ${targetMg} mg.`,
       stepIndex: step.stepIndex
     });
   }
 
 // R3: Dilution impossible (no valid candidates found)
-// This is detected during step generation, not validation
+// Raise a red warning when no dilution candidate satisfies constraints for a DILUTE step.
 
 // R4: Below measurement resolution
 for each step with method = DILUTE:
@@ -528,7 +566,7 @@ for each step with method = DILUTE:
     warnings.push({
       severity: "red",
       code: "R4",
-      message: `Step ${step.stepIndex}: Amount below instrument resolution.`,
+      message: "Measured powder/volume below instrument resolution — impractical to prepare.",
       stepIndex: step.stepIndex
     });
   }
@@ -539,7 +577,7 @@ for each step with method = DILUTE:
     warnings.push({
       severity: "yellow",
       code: "Y1",
-      message: `Step ${step.stepIndex}: Only ${servings} servings. Consider increasing mix amounts.`,
+      message: `Dilution yields ${servings} servings (< configured minimum). Consider increasing mix food amount or mix volume.`,
       stepIndex: step.stepIndex
     });
   }
@@ -550,7 +588,7 @@ for (i = 1; i < steps.length; i++):
     warnings.push({
       severity: "yellow",
       code: "Y2",
-      message: `Step ${i+1}: Protein decreased from previous step.`,
+      message: `Steps must be ascending or equal — check step ${i+1} vs step ${i}.`,
       stepIndex: i + 1
     });
   }
@@ -607,7 +645,7 @@ for (i = 1; i < steps.length; i++):
 - Placeholder: "Search for foods or protocols..."
 - Functionality:
   - Fuzzy search both foods and protocols
-  - Debounced (300ms)
+  - Debounced (≈150ms)
   - Shows dropdown with results
   - Highlights matching text
   - Supports custom food creation
@@ -624,13 +662,13 @@ for (i = 1; i < steps.length; i++):
 
 **Dropdown Results:**
 
-- Shows up to 10 results
+- Shows up to VIRTUAL_SCROLL_THRESHOLD items; remaining results are virtualized/scrollable (search limit ~50)
 - Format:
   ```
   [Food Name] - Type: Solid | Liquid - Protein: 25.6 g/100g
   ```
 - Protocol results prefixed with "Protocol: "
-- Custom option at top if no exact match
+- Always include "Custom: <typed text>" as the first result to allow creating a custom food entry
 
 #### 7.2.2 Food Settings
 
@@ -695,9 +733,8 @@ for (i = 1; i < steps.length; i++):
 
 **Action Buttons:**
 
-- "+" button: Insert step after current
-- "-" button: Remove current step
-- Hover effects: scale(1.1)
+- Place (+) and (−) immediately to the left of the step number (no separate Actions column).
+- Clicking (+) inserts a copy of the current row after current (ie. if you press + on step 5, then step 5 remains the same, and a copy of step 5 is inserted after it); clicking (−) deletes the step.
 
 **CRITICAL - Unit Display:**
 
@@ -706,6 +743,7 @@ for (i = 1; i < steps.length; i++):
 - Unit is determined by the current food's type property
 - Daily amount for dilutions always uses "ml"
 - Daily amount for direct dosing uses food's unit (g or ml)
+- Display formatting (for UI only): grams → 2 decimal places; ml → 1 decimal place (or integer when appropriate)
 
 #### 7.2.5 Warnings Sidebar
 
@@ -910,6 +948,40 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 
 ---
 
+### 8.3 Editing behaviors
+
+- Form toggles: If you toggle a food's form (SOLID ⇄ LIQUID) the app converts existing daily and mix amounts using 1 g ≈ 1 ml and recomputes water (solid-in-liquid volume assumption changes accordingly).
+- Editing target protein (P):
+  - DIRECT: updating P updates daily amount; editing daily amount updates P.
+  - DILUTE: keep dailyAmount and mixFoodAmount constant if possible; update mixWaterAmount. If impossible with current mixFoodAmount, show red error.
+- Editing mixFoodAmount (DILUTE): recompute mixWaterAmount to keep P and dailyAmount unchanged.
+- Editing dailyAmount:
+  - DIRECT: updates target protein P for the step.
+  - DILUTE: keep mixFoodAmount fixed; update mixWaterAmount.
+- Food A → B transition: If foodBThreshold cannot be satisfied, show a red error (allow manual override).
+- No undo/redo and no locked rows required.
+
+### 8.3 UI Flow Scenarios
+
+Selection of pre-defined food
+- After typing in the searchbar for Food A (e.g., "peanut butter"), select a food.
+- The fields in food-a-container populate:
+  - Name populated from database; protein (g) per 100 g/ml prefilled; form inferred from Type; strategy defaults to Initial dilution with threshold 0.2 g (or 0.2 ml for liquids).
+  - Dosing Strategy defaults to STANDARD. Toggling to SLOW or RAPID recalculates the table.
+  - The table populates automatically with default settings; then it is fully editable.
+
+Selection of custom food
+- Choose "Custom: <typed text>" from Food A search.
+- Name is set to the typed string; default protein per 100 g/ml is 10 g; default form = Solid; strategy defaults to Initial dilution with 0.2 g threshold; dosing strategy = STANDARD.
+
+Selection of built-in protocol
+- Choose an entry prefixed with "Protocol:" in Food A search.
+- The entire Protocol object (foods, concentrations, strategies, thresholds, steps) is loaded and rendered; remains fully editable.
+
+What happens if a new food is loaded?
+- Loading a new Food A resets and recalculates the entire protocol using the current dosing strategy and default Food A strategy/thresholds.
+- Adding or changing Food B regenerates steps at and after the transition (with the duplicate transition dose); clearing Food B removes Food B steps and headers.
+
 ## 9. Validation System
 
 ### 9.1 Validation Rules
@@ -919,8 +991,8 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 | Code | Description         | Condition                         | Impact                     |
 | ---- | ------------------- | --------------------------------- | -------------------------- |
 | R1   | Too few steps       | steps.length < 6                  | Very rapid escalation      |
-| R2   | Protein mismatch    | abs(calculated - target) > 0.5 mg | Dilution calculation error |
-| R3   | Dilution impossible | No valid candidates found         | Cannot achieve target      |
+| R2   | Protein mismatch    | abs(calculated - target) > 0.5 mg (absolute tolerance) | Dilution calculation error |
+| R3   | Dilution impossible | No valid dilution candidate meets constraints (instrument thresholds, servings, max water, and protein tolerance) | Cannot achieve target      |
 | R4   | Below resolution    | Amount < instrument minimum       | Cannot measure accurately  |
 
 **Cautions (Yellow):**
@@ -1069,7 +1141,7 @@ function exportASCII() {
 ```typescript
 async function loadDatabases() {
   const foodsResponse = await fetch(
-    "/static/tool_assets/typed_foods_rough.json",
+    "/tool_assets/typed_foods_rough.json",
   );
   foodsDatabase = await foodsResponse.json();
 
@@ -1120,8 +1192,9 @@ Of note, some of the doses in the protocol templates are _intentionally wrong_.
 
 **Notes:**
 
-- `protein_conc` is in decimal form (0.21 = 21% = 21g/100g)
-- Protocols may include pre-calculated table data
+- `protein_conc` is in decimal form (0.21 = 21% = 21 g/100 g)
+- Decimal numeric fields in protocol JSON are serialized as strings and must be rehydrated to Decimal in-app
+- Protocols may include pre-calculated table data (used for display only)
 - Protocol loading regenerates steps from scratch using current algorithms
 
 ---
@@ -1392,3 +1465,124 @@ User Action → Event Listener → Update State → Recalculate → Re-render �
 - Food B: Roasted Peanut (25% protein, solid)
 - Food B Threshold: 0.45 g
 - Dosing Strategy: Standard
+
+## Appendix C: Phenotype Examples and Numeric Tables
+
+This appendix provides explicit numeric examples for the four phenotypes supported by the calculator. These tables align with clinical usage and help validate calculations.
+
+### C.1 Food A with initial dilutions
+
+Example: Liquid X, 8 g protein per 250 ml
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 1 ml         | 1 ml               | 31 ml             |
+| 2    | 2.5          | Dilution | 1 ml         | 1 ml               | 11.8 ml           |
+| 3    | 5            | Dilution | 1 ml         | 1 ml               | 5.4 ml            |
+| 4    | 10           | Direct   | 0.3 ml       | n/a                | n/a               |
+| 5    | 20           | Direct   | 0.6 ml       | n/a                | n/a               |
+| 6    | 40           | Direct   | 1.3 ml       | n/a                | n/a               |
+| 7    | 80           | Direct   | 2.5 ml       | n/a                | n/a               |
+| 8    | 120          | Direct   | 3.8 ml       | n/a                | n/a               |
+| 9    | 160          | Direct   | 5 ml         | n/a                | n/a               |
+| 10   | 240          | Direct   | 7.5 ml       | n/a                | n/a               |
+| 11   | 300          | Direct   | 9.4 ml       | n/a                | n/a               |
+
+Example: Solid X, 7 g protein per 30 g
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 1 ml         | 0.2 g              | 46.7 ml           |
+| 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 18.7 ml           |
+| 3    | 5            | Dilution | 1 ml         | 0.2 g              | 9.3 ml            |
+| 4    | 10           | Dilution | 1 ml         | 0.2 g              | 4.7 ml            |
+| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 5.8 ml            |
+| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 5.8 ml            |
+| 7    | 80           | Direct   | 0.3 g        | n/a                | n/a               |
+| 8    | 120          | Direct   | 0.5 g        | n/a                | n/a               |
+| 9    | 160          | Direct   | 0.7 g        | n/a                | n/a               |
+| 10   | 240          | Direct   | 1 g          | n/a                | n/a               |
+| 11   | 300          | Direct   | 1.3 g        | n/a                | n/a               |
+
+Notes:
+- For solid-in-liquid dilutions, solid volume is assumed negligible if food:water < 1:10; otherwise show a warning but allow.
+
+### C.2 Food A with dilutions until maintenance
+
+Example: Y powder, 1 g protein per 15 g
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 0.5 ml       | 0.2 g              | 6.7 ml            |
+| 2    | 2.5          | Dilution | 0.5 ml       | 0.2 g              | 2.7 ml            |
+| 3    | 5            | Dilution | 1 ml         | 0.2 g              | 2.7 ml            |
+| 4    | 10           | Dilution | 1 ml         | 0.2 g              | 1.3 ml            |
+| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 1.7 ml            |
+| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 1.7 ml            |
+| 7    | 80           | Dilution | 4 ml         | 0.5 g              | 1.7 ml            |
+| 8    | 120          | Dilution | 4 ml         | 2.0 g              | 4.4 ml            |
+| 9    | 160          | Dilution | 4 ml         | 2.5 g              | 4.2 ml            |
+| 10   | 240          | Dilution | 4 ml         | 4.0 g              | 4.4 ml            |
+| 11   | 300          | Dilution | 4 ml         | 5.0 g              | 4.4 ml            |
+
+### C.3 Food A without any dilutions
+
+Example: X powder, 21 g protein per 100 g
+
+| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture (mL) |
+| ---- | ------------ | ------ | ------------ | ------------------ | ---------------------- |
+| 1    | 1            | Direct | 0.005 g      | n/a                | n/a                    |
+| 2    | 2.5          | Direct | 0.012 g      | n/a                | n/a                    |
+| 3    | 5            | Direct | 0.024 g      | n/a                | n/a                    |
+| 4    | 10           | Direct | 0.048 g      | n/a                | n/a                    |
+| 5    | 20           | Direct | 0.095 g      | n/a                | n/a                    |
+| 6    | 40           | Direct | 0.19 g       | n/a                | n/a                    |
+| 7    | 80           | Direct | 0.381 g      | n/a                | n/a                    |
+| 8    | 120          | Direct | 0.571 g      | n/a                | n/a                    |
+| 9    | 160          | Direct | 0.762 g      | n/a                | n/a                    |
+| 10   | 240          | Direct | 1.143 g      | n/a                | n/a                    |
+| 11   | 300          | Direct | 1.429 g      | n/a                | n/a                    |
+
+Example: X milk, 1 g protein per 250 ml
+
+| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture (mL) |
+| ---- | ------------ | ------ | ------------ | ------------------ | ---------------------- |
+| 1    | 1            | Direct | 0.3 ml       | n/a                | n/a                    |
+| 2    | 2.5          | Direct | 0.6 ml       | n/a                | n/a                    |
+| 3    | 5            | Direct | 1.3 ml       | n/a                | n/a                    |
+| 4    | 10           | Direct | 2.5 ml       | n/a                | n/a                    |
+| 5    | 20           | Direct | 5.0 ml       | n/a                | n/a                    |
+| 6    | 40           | Direct | 10.0 ml      | n/a                | n/a                    |
+| 7    | 80           | Direct | 20.0 ml      | n/a                | n/a                    |
+| 8    | 120          | Direct | 30.0 ml      | n/a                | n/a                    |
+| 9    | 160          | Direct | 40.0 ml      | n/a                | n/a                    |
+| 10   | 240          | Direct | 60.0 ml      | n/a                | n/a                    |
+| 11   | 300          | Direct | 75.0 ml      | n/a                | n/a                    |
+
+### C.4 Food A → Food B transition
+
+With this approach, the same dose is repeated at the transition point. For example, step 7 and 8 contain the same amount of protein.
+
+Powder X: 20 g of protein per 30 g
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 1 ml         | 0.2 g              | 133 ml            |
+| 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 53 ml             |
+| 3    | 5            | Dilution | 2 ml         | 0.2 g              | 53 ml             |
+| 4    | 10           | Dilution | 1 ml         | 0.4 g              | 27 ml             |
+| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 17 ml             |
+| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 17 ml             |
+| 7    | 80           | Dilution | 4 ml         | 0.5 g              | 17 ml             |
+
+After step 7 is complete, transition to:
+
+Food X: 10 g of protein per 30 g
+
+| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | ------ | ------------ | ------------------ | ----------------- |
+| 8    | 80           | Direct | 0.24 g       | n/a                | n/a               |
+| 9    | 120          | Direct | 0.36 g       | n/a                | n/a               |
+| 10   | 160          | Direct | 0.48 g       | n/a                | n/a               |
+| 11   | 240          | Direct | 0.72 g       | n/a                | n/a               |
+| 12   | 300          | Direct | 0.9 g        | n/a                | n/a               |
