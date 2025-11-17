@@ -1,5 +1,7 @@
 <div class="oit_calculator">
+    <!-- Food Selection and Settings -->
     <div class="settings-container">
+        <!-- Food A Container -->
         <div class="food-a-container">
             <div class="search-container">
                 <input
@@ -7,25 +9,45 @@
                     id="food-a-search"
                     placeholder="Search for foods or protocols..."
                     class="search-input"
+                    autocomplete="off"
                 />
             </div>
+            <!-- Food A settings will be dynamically inserted here -->
         </div>
+
+        <!-- Food B Container -->
         <div class="food-b-container">
+            <h3>Optional Transition Food</h3>
             <div class="search-container">
                 <input
                     type="text"
                     id="food-b-search"
-                    placeholder="Optionally, load another food to transition to ..."
+                    placeholder="Search for another food to transition to..."
                     class="search-input"
+                    autocomplete="off"
                 />
                 <button id="clear-food-b" class="clear-food-b">Clear</button>
             </div>
+            <!-- Food B settings will be dynamically inserted here -->
         </div>
     </div>
-    <div class="dosing-strategy-container"></div>
+
+    <!-- Dosing Strategy Selection -->
+    <div class="dosing-strategy-container">
+        <!-- Dosing strategy buttons will be dynamically inserted here -->
+    </div>
+
+    <!-- Protocol Output -->
     <div class="output-container">
-        <table></table>
-        <div class="warnings-container"></div>
+        <!-- Export buttons will be dynamically inserted here -->
+        <table>
+            <!-- Protocol table will be dynamically generated -->
+        </table>
+
+        <!-- Warnings Sidebar -->
+        <div class="warnings-container">
+            <div class="no-warnings">✓ No warnings</div>
+        </div>
     </div>
 </div>
 
