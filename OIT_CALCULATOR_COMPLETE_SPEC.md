@@ -19,7 +19,6 @@
 11. [Data Files](#data-files)
 12. [Compilation & Deployment](#compilation--deployment)
 13. [Testing Criteria](#testing-criteria)
-14. [Future Enhancements](#future-enhancements)
 
 ---
 
@@ -79,34 +78,35 @@ Oral immunotherapy involves gradually increasing exposure to allergenic foods to
 
 ### 2.3 Workflow
 
+Selecting a pre-defined food or custom food
+
 ```
-1. User searches for Food A (or loads protocol template). Defaults for dilution strategy, threshold, and dosing strategy are set and table is rendered.
-2. User can configure Food A settings and have the table update:
+1. User searches for Food A. Defaults for dilution strategy, threshold, and dosing strategy are set and table is rendered. Defaults for custom food protein concentration and form are assumed.
+2. User can configure Food A settings and have the table update automatically:
    - Food name
-   - Protein concentration (in the UI, expressed as g of protein per 100 grams or ml serving size of food)
+   - Protein concentration (in the UI, expressed as g of protein per 100 (grams or ml) serving size of food)
    - Food type (solid/liquid)
    - Dilution strategy (initial/all/none)
    - Dilution threshold (when to stop diluting)
-3. [Optional] User adds Food B for transition:
+3. User can edit dosing strategy (Standard/Slow/Rapid). Standard dosing is default
+4. [Optional] User adds Food B for transition:
    - Search for Food B
    - Once selected, table is re-rendered with a default transition threshold (this is editable)
-4. User can edit dosing strategy (Standard/Slow/Rapid). Standard dosing is default
-5. System generates protocol table with validation
+5. In general: on each edit of the table, steps, or settings, the table is revalidated and potential warnings are displayed
 6. User reviews warnings and edits as needed
 7. User exports protocol to clipboard
 ```
 
+Selecting a protocol
+
+```
+1. User searches for a protocol within a pre-defined dataset. Table is rendered and validated.
+2. As above, user is able to edit and tweak the protocol after as they see fit
+```
+
 ---
 
-### 2.4 Background and Rationale
-
-Oral immunotherapy (OIT) is an emerging approach to treating IgE-mediated food allergies. It involves a structured progressive introduction of a food through many steps, each corresponding to a particular protein target. A common maintenance dose is 300 mg of food protein. While many protocols are used (standard, slow, rapid), clinicians need a flexible, reproducible way to generate patient-friendly and EMR-friendly protocols that minimize manual work and error.
-
-A typical standard progression of protein doses/steps is:
-
-- 1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300 mg (2–4 weeks between steps)
-
-### 2.5 Important Facts about OIT
+### 2.4 Important Facts about OIT
 
 - Foods for OIT can be liquids or solids.
 - The protein content of each food is required. Examples:
@@ -116,7 +116,7 @@ A typical standard progression of protein doses/steps is:
 
 Dilution assumptions:
 
-- Solid-in-liquid: we assume that solid contributes negligibly to final volume. If the ratio between grams of food and ml of water is > 1:10 show a warning.
+- Solid-in-liquid: we assume that solid contributes negligibly to final volume.
 - Liquid-in-liquid: Volumes are additive.
 
 Phenotypes supported:
@@ -124,7 +124,7 @@ Phenotypes supported:
 1. Food A with initial dilutions then direct.
 2. Food A with dilutions throughout.
 3. Food A without any dilutions (often impractical early unless compounded).
-4. Food A → Food B at some point (Food A may be diluted/undiluted before transition).
+4. Food A → Food B at some point (Food A may be diluted/undiluted before transition). Food B is assumed to always be given directly without dilution.
 
 ## 3. Project Structure
 
@@ -342,6 +342,7 @@ const DEFAULT_CONFIG = {
   minMeasurableMass: new Decimal(0.2), // 0.2 g (scale resolution)
   minMeasurableVolume: new Decimal(0.5), // 0.5 ml (syringe resolution)
   minServingsForMix: new Decimal(3), // Minimum 3 servings per mix
+  protein_tolerance: new Decimal(0.5)
 };
 ```
 
@@ -359,7 +360,7 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 
 ## 5.4 Design Decisions & Invariants
 
-- Canonical units:
+- Canonical units (of note: in the UI the unit asked for is g of protein per either 100ml or 100g):
   - Solids: mg per gram (mg/g)
   - Liquids: mg per millilitre (mg/ml)
   - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 g/ml) to canonical mg/unit.
@@ -377,7 +378,7 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 
 **Input:**
 
-- `P`: Target protein (mg)
+- `P`: Target protein (mg) for a step; the protein contained per daily dose
 - `food`: Food object with protein concentration
 - `config`: Measurement constraints
 
@@ -385,42 +386,76 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 
 - Array of valid `Candidate` objects, ranked by optimality
 
+**Other**
+All dilution math uses Decimal.js with precision 20 and rounding ROUND_HALF_UP. Internally food.mgPerUnit is mg protein per 1 gram (SOLID) or per 1 milliliter (LIQUID). For a candidate defined by mixFoodAmount and dailyAmount, compute totalMixProtein = mixFoodAmount × food.mgPerUnit. servings = totalMixProtein / P, mixTotalVolume = dailyAmount × servings. For SOLID assume solid volume negligible. Accept candidate only if measurable constraints hold and the actual protein delivered = (totalMixProtein / mixTotalVolume) × dailyAmount is within PROTEIN_TOLERANCE_MG (default 0.5 mg) of target P. Candidate ranking: smallest mixFoodAmount, then smallest dailyAmount, then smallest mixTotalVolume.
+
 **Algorithm:**
 
 ```
-1. Determine candidate sets based on food type:
-   - Solid: mixFoodCandidates = SOLID_MIX_CANDIDATES
-   - Liquid: mixFoodCandidates = LIQUID_MIX_CANDIDATES
-   - Both: dailyAmountCandidates = DAILY_AMOUNT_CANDIDATES
+// Inputs: P (mg), food.mgPerUnit (mg per g or mg per ml), config
+// Candidates to iterate: mixFoodCandidates (g for SOLID / ml for LIQUID) and dailyAmountCandidates (ml)
 
-2. For each combination of (mixFoodAmount, dailyAmount):
-   
-   a. Compute mixture parameters:
-      - mixProteinMg = mixFoodAmount × food.mgPerUnit
-      - mixTotalVolume = dailyAmount × (mixProteinMg / P)
-      - For solids: mixWaterAmount = mixTotalVolume (solid volume negligible if food:water < 1:10; if violated, still allow but emit a warning)
-      - For liquids: mixWaterAmount = mixTotalVolume − mixFoodAmount
-   
-   d. Calculate servings:
-      servings = mixTotalVolume / dailyAmount
+function findDilutionCandidates(P, food, config) -> Candidate[] {
+  const candidates = []
+  const mixCandidates = food.type === SOLID ? SOLID_MIX_CANDIDATES : LIQUID_MIX_CANDIDATES
+  for each mixFood in mixCandidates:
+    for each dailyAmount in DAILY_AMOUNT_CANDIDATES:
+      // Desired concentration in mg per ml
+      C_required = P.dividedBy(dailyAmount)  // mg/ml
 
-   e. Accept candidate if:
-      - mixFoodAmount ≥ minMeasurableMass (SOLID) or ≥ minMeasurableVolume (LIQUID)
-      - servings ≥ minServingsForMix (default 3)
-      - mixWaterAmount ≤ 250 ml (practical cap)
+      // For SOLID:
+      if food.type === SOLID:
+        // We compute servings required to deliver total protein in the mix
+        // mixFood (g) * food.mgPerUnit (mg/g) = total protein in mix (mg)
+        totalMixProtein = mixFood.times(food.mgPerUnit)
+        // servings = total protein / P (number of daily doses the mix supports)
+        servings = totalMixProtein.dividedBy(P)
+        if servings < config.minServingsForMix: continue
 
-   f. Check target consistency:
-      - calculatedProtein = (mixFoodAmount × food.mgPerUnit × dailyAmount) / mixTotalVolume
-      - abs(calculatedProtein − P) ≤ 0.5 mg
+        // mixTotalVolume: approximate as dailyAmount * servings (ml)
+        mixTotalVolume = dailyAmount.times(servings)
 
-   g. If valid, add to candidates
+        // mixWaterAmount: assume solid volume negligible -> mixWater ~= mixTotalVolume
+        mixWaterAmount = mixTotalVolume
 
-3. Rank candidates by:
-   - Smallest mixFoodAmount (≥ instrument threshold), then
-   - Smallest dailyAmount, then
-   - Smallest mixTotalVolume
+        // Validate measurable constraints
+        if mixFood < config.minMeasurableMass: continue
+        if dailyAmount < config.minMeasurableVolume: continue
+        if mixWaterAmount > MAX_MIX_WATER: continue
+        if mixWaterAmount < config.minMeasurableVolume: continue
 
-4. Return ranked candidates (best first)
+        // Calculate actual protein delivered per dailyAmount and check tolerance
+        // actualProteinPerMl = totalMixProtein / mixTotalVolume  (mg/ml)
+        actualProteinPerMl = totalMixProtein.dividedBy(mixTotalVolume)
+        actualProteinDelivered = actualProteinPerMl.times(dailyAmount)
+        if actualProteinDelivered.minus(P).abs().greaterThan(PROTEIN_TOLERANCE_MG): continue
+
+        candidates.push({mixFoodAmount: mixFood, mixWaterAmount, dailyAmount, mixTotalVolume, servings})
+
+      // For LIQUID:
+      else:
+        // mixFood is ml of food; compute totalMixProtein = mixFood * food.mgPerUnit (mg)
+        totalMixProtein = mixFood.times(food.mgPerUnit)
+        servings = totalMixProtein.dividedBy(P)
+        if servings < config.minServingsForMix: continue
+        mixTotalVolume = dailyAmount.times(servings)
+        mixWaterAmount = mixTotalVolume.minus(mixFood)
+        if mixWaterAmount.lessThan(0): continue  // invalid
+        if mixFood < config.minMeasurableVolume: continue
+        if dailyAmount < config.minMeasurableVolume: continue
+        if mixWaterAmount.greaterThan(MAX_MIX_WATER): continue
+        if mixWaterAmount.lessThan(config.minMeasurableVolume): continue
+
+        actualProteinPerMl = totalMixProtein.dividedBy(mixTotalVolume)
+        actualProteinDelivered = actualProteinPerMl.times(dailyAmount)
+        if actualProteinDelivered.minus(P).abs().greaterThan(PROTEIN_TOLERANCE_MG): continue
+
+        candidates.push({mixFoodAmount: mixFood, mixWaterAmount, dailyAmount, mixTotalVolume, servings})
+
+  // Rank candidates: smallest mixFoodAmount, then smallest dailyAmount, then smallest mixTotalVolume
+  sortCandidates(candidates)
+  return candidates
+}
 
 Edge cases:
 - If mixTotalVolume < dailyAmount (impossible), flag R3 and retry with larger mixFoodAmount values (up to a practical limit).
@@ -428,7 +463,7 @@ Edge cases:
 ```
 
 **Special Case - Solid Dilutions:**
-For solid foods in liquid, assume solid volume is negligible when solid:liquid ratio < 1:10. If this assumption is not met, emit warning, but do not exclude candidate:
+For solid foods in liquid, assume solid volume is negligible. If this assumption is not met, emit warning, but do not exclude candidate:
 
 - Mix total volume ≈ water volume
 - Example: 0.2 g powder in 10 ml water ≈ 10 ml total
@@ -508,6 +543,8 @@ For liquid foods in water, volumes are additive:
    - targetProteinValues = steps[transitionIndex..end].map(s => s.targetMg)
 
 4. Regenerate post-transition steps with Food B:
+   - insert an extra step immediately after transitionIndex-1 that is Food B at the same targetMg as step transitionIndex-1
+     - For example: If transitionIndex is 8 (1-based), and step 7 is the last Food A step with 80 mg target protein, then new step 8 = 80 mg Food B, then 9 onward are Food B with the rest of targets.
    - For each target protein in targetProteinValues:
      * Generate step using Food B (same algorithm as generateDefaultProtocol)
      * Food B Strategy is always going to be DIRECT / DILUTE_NONE.
@@ -522,7 +559,7 @@ For liquid foods in water, volumes are additive:
    - When Food B is added, the protocol length increases by 1
    - The first Food B step uses the same target protein as the previous Food A step
    - Example: 11 Food A steps → Add Food B → 12 total steps
-     - ..., Step 5: 80mg Food A, Step 6: 80mg Food B (REPEATED step), ... Step 12: 300mg Food B
+     - ..., Step 5: 80mg Food A, Step 6: 80mg Food B, ... Step 12: 300mg Food B
    - This is mainly for safety given new form of food - at transition, we pause at the same dose.
 ```
 
@@ -729,7 +766,7 @@ for (i = 1; i < steps.length; i++):
 
 - Input elements with class "editable"
 - Width: 90px
-- Debounced updates (300ms)
+- Debounced updates (150ms)
 - Recalculates protocol on blur
 
 **Action Buttons:**
@@ -851,6 +888,7 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 
 - **FR-1.1:** User can search foods by name (fuzzy matching)
 - **FR-1.2:** User can search protocols by name in the food A search-bar
+  - if a protocol is loaded, it is loaded AS IS. That is: steps are NOT regenerated from scratch. If a built in protocol has only 3 steps with incorrect doses for P, it WILL be loaded as such (but warnings will appear)
 - **FR-1.3:** User can create custom food with name, protein, type
 - **FR-1.4:** Search shows dropdown with up to 10 results
 - **FR-1.5:** Selecting food populates settings
@@ -879,10 +917,16 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 
 #### FR-4: Protocol Editing
 
-- **FR-4.1:** User can edit protein targets (recalculates step)
-- **FR-4.2:** User can edit daily amounts (recalculates dilution)
-- **FR-4.3:** User can edit mix food amounts (recalculates water)
-- **FR-4.4:** Water amounts auto-update (non-editable)
+- Editing target protein (P):
+  - DIRECT: updating P updates daily amount; editing daily amount updates P.
+  - DILUTE: keep dailyAmount and mixFoodAmount constant if possible; update mixWaterAmount. If impossible with current mixFoodAmount, show red error.
+- Editing mixFoodAmount (DILUTE): recompute mixWaterAmount to keep P and dailyAmount unchanged.
+- Editing dailyAmount:
+  - DIRECT: updates target protein P for the step.
+  - DILUTE: keep mixFoodAmount fixed; update mixWaterAmount.
+- No undo/redo and no locked rows required.
+- mixWaterAmount is not manually editable for the user
+
 - **FR-4.5:** User can add steps between existing steps
 - **FR-4.6:** User can remove steps (minimum 1 step)
 - **FR-4.7:** Changes trigger immediate validation
@@ -892,14 +936,14 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 - **FR-5.1:** User can change food name
 - **FR-5.2:** User can change protein concentration
 - **FR-5.3:** User can toggle food type (solid/liquid)
-  - Triggers unit conversion
-  - Recalculates entire protocol, preserving existing protein targets
+  - Form toggles: If you toggle a food's form (SOLID ⇄ LIQUID) the app converts existing daily and mix amounts using 1 g ≈ 1 ml and recomputes water (solid-in-liquid volume assumption changes accordingly).
+  - Recalculates entire protocol (method and mix parameters), but preserving existing target mg protein targets
 - **FR-5.4:** User can change dilution strategy
   - Preserves existing protein targets
   - Recalculates methods and dilutions
 - **FR-5.5:** User can change dosing strategy
   - Clicking Standard/Slow/Rapid button triggers immediate recalculation
-  - Resets to default protein targets for that strategy
+  - Resets all targetMg to default protein targets for that strategy
   - Changes step count (11/19/9) * though for Food A -> Food B transition, recall that the step number does increase by 1
   - Regenerates entire protocol from scratch
   - Preserves Food A/B configuration
@@ -919,7 +963,7 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 **Search Interactions:**
 
 1. User types in search box
-2. After 300ms delay, dropdown appears with results
+2. After 150ms delay, dropdown appears with results
 3. User clicks result or presses Enter
 4. Dropdown closes, settings populate
 5. Protocol table updates
@@ -928,7 +972,7 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 
 1. User modifies setting (toggle, input, etc.)
 2. Setting updates immediately (visual feedback)
-3. Protocol recalculates (300ms debounce for inputs)
+3. Protocol recalculates (150ms debounce for inputs)
 4. Table re-renders
 5. Warnings update
 
@@ -948,19 +992,6 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 4. Table and warnings update
 
 ---
-
-### 8.3 Editing behaviors
-
-- Form toggles: If you toggle a food's form (SOLID ⇄ LIQUID) the app converts existing daily and mix amounts using 1 g ≈ 1 ml and recomputes water (solid-in-liquid volume assumption changes accordingly).
-- Editing target protein (P):
-  - DIRECT: updating P updates daily amount; editing daily amount updates P.
-  - DILUTE: keep dailyAmount and mixFoodAmount constant if possible; update mixWaterAmount. If impossible with current mixFoodAmount, show red error.
-- Editing mixFoodAmount (DILUTE): recompute mixWaterAmount to keep P and dailyAmount unchanged.
-- Editing dailyAmount:
-  - DIRECT: updates target protein P for the step.
-  - DILUTE: keep mixFoodAmount fixed; update mixWaterAmount.
-- Food A → B transition: If foodBThreshold cannot be satisfied, show a red error (allow manual override).
-- No undo/redo and no locked rows required.
 
 ### 8.3 UI Flow Scenarios
 
@@ -1172,14 +1203,14 @@ Of note, some of the doses in the protocol templates are _intentionally wrong_.
   "food_a": {
     "type": "SOLID",
     "name": "Peanut Powder",
-    "protein_conc": "0.21"
+    "mgPerUnit": "210"
   },
   "food_a_strategy": "DILUTE_INITIAL",
   "di_threshold": "0.2",
   "food_b": {
     "type": "SOLID",
     "name": "Roasted Peanut",
-    "protein_conc": "0.25"
+    "mgPerUnit": "250"
   },
   "food_b_threshold": "0.45",
   "table_di": [
@@ -1197,10 +1228,8 @@ Of note, some of the doses in the protocol templates are _intentionally wrong_.
 
 **Notes:**
 
-- `protein_conc` is in decimal form (0.21 = 21% = 21 g/100 g)
 - Decimal numeric fields in protocol JSON are serialized as strings and must be rehydrated to Decimal in-app
-- Protocols may include pre-calculated table data (used for display only)
-- Protocol loading regenerates steps from scratch using current algorithms
+- Protocols include pre-calculated table data (used for display only)
 
 ---
 
@@ -1272,32 +1301,16 @@ In any markdown file:
 
 ### 13.1 Unit Test Cases
 
-**Test 1: Dilution Calculation**
-
-```
-Input:
-  P = 1 mg
-  food = { type: SOLID, mgPerUnit: 210 (21%) }
-  config = { minMeasurableMass: 0.2 g, minMeasurableVolume: 0.5 ml }
-
-Expected Output:
-  Candidate with:
-    mixFoodAmount = 0.2 g
-    dailyAmount = 1 ml
-    mixWaterAmount ~= 10 ml
-    servings ~= 10
-```
-
 **Test 2: Food B Transition with Extra Step**
 
 ```
 Input:
-  11-step protocol (Food A ending at 300mg)
+  Standard 11-step protocol (Food A ending at 300mg)
   Add Food B with threshold = 0.45 g
 
-Expected Output:
+Example Output:
   12 total steps (protocol becomes 1 step longer)
-  Steps 1-7: Food A (through 80mg)
+  Steps 1-7: Food A (1, 2.5, 5, 10, 20, 40, 80mg)
   Steps 8-12: Food B (80mg, 120mg, 160mg, 240mg, 300mg). 
   
 Key: First Food B step duplicates the previous Food A step's protein target.
@@ -1355,59 +1368,6 @@ Then click RAPID:
 6. Verify: Red warning R4 appears
 ```
 
-### 13.3 Manual Testing Checklist
-
-- [ ] Search finds foods by partial name
-- [ ] Search finds protocols by name
-- [ ] Custom food creation works
-- [ ] All three dosing strategies generate correct step counts
-- [ ] Dosing strategy buttons immediately recalculate protocol
-- [ ] Dilution calculations are accurate (verify with calculator)
-- [ ] Food B adds exactly 1 extra step
-- [ ] First Food B step duplicates previous Food A protein dose
-- [ ] Food B header appears before first Food B step
-- [ ] Mix amounts show correct units (g for solid, ml for liquid)
-- [ ] Daily amounts show ml for dilutions, food unit for direct
-- [ ] Water amounts auto-calculate correctly
-- [ ] Editing protein recalculates step
-- [ ] Editing daily amount recalculates dilution
-- [ ] button adds step after current
-- [ ] button removes step
-- [ ] Warnings update in real-time
-- [ ] ASCII export copies to clipboard
-- [ ] Dark/light mode styling works
-
----
-
-## 14. Future Enhancements
-
-### 15.1 Planned Features
-
-**P1 - High Priority:**
-
-- [ ] PDF export with formatted layout
-
-**P2 - Medium Priority:**
-
-- [ ] Protocol comparison view
-- [ ] Patient progress tracking
-- [ ] Print-friendly CSS improvements
-- [ ] Undo/redo functionality
-
-**P3 - Low Priority:**
-
-- [ ] Multi-language support (i18n)
-
-### 15.2 Technical Debt
-
-- [ ] Add comprehensive unit tests
-- [ ] Add TypeScript strict mode
-- [ ] Refactor large functions (>100 lines)
-- [ ] Add JSDoc comments for all public functions
-- [ ] Improve error handling (try-catch blocks)
-- [ ] Add logging for debugging
-- [ ] Optimize re-render performance (memoization)
-
 ---
 
 ## Appendix A: Quick Reference
@@ -1464,10 +1424,10 @@ User Action → Event Listener → Update State → Recalculate → Re-render �
 
 **Settings:**
 
-- Food A: Peanut Powder (21% protein, solid)
+- Food A: Peanut Powder (210mg protein per g, solid)
 - Dilution Strategy: Initial dilution only
 - Dilution Threshold: 0.2 g
-- Food B: Roasted Peanut (25% protein, solid)
+- Food B: Roasted Peanut (250mg protein per g, solid)
 - Food B Threshold: 0.45 g
 - Dosing Strategy: Standard
 
@@ -1511,7 +1471,7 @@ Example: Solid X, 7 g protein per 30 g
 
 Notes:
 
-- For solid-in-liquid dilutions, solid volume is assumed negligible if food:water < 1:10; otherwise show a warning but allow.
+- For solid-in-liquid dilutions, solid volume is assumed negligible; otherwise show a warning but allow.
 
 ### C.2 Food A with dilutions until maintenance
 
