@@ -28,8 +28,8 @@ The OIT Calculator is a TypeScript-based web application designed to help genera
 
 **Key Capabilities:**
 
-- Generate protocols with 3 dosing strategies
-- Automatic dilution calculations for unmeasurable doses
+- Generate protocols for OIT
+- Automatic dilution calculations
 - Support for solid and liquid foods
 - Food A → Food B transitions at configurable thresholds
 - Real-time validation with color-coded warnings
@@ -47,7 +47,7 @@ Oral immunotherapy involves gradually increasing exposure to allergenic foods to
 1. Easily select appropriate foods and protein concentrations
 2. Choose dosing strategies based on patient risk
 3. Calculate dilutions when doses are too small to measure
-4. Transition from processed forms (e.g., powder) to whole foods
+4. Transition from one form of a food (e.g., peanut powder) to another food (ie. whole peanuts)
 5. Validate protocols for safety issues
 6. Export protocols for patient charts
 7. Easy customization of protocol tables
@@ -62,7 +62,7 @@ Oral immunotherapy involves gradually increasing exposure to allergenic foods to
 
 **Dilution Methods:**
 
-- **DILUTE**: Mix food with water to achieve measurable doses
+- **DILUTE**: Typically done when the target protein (mg) is very small (ie. the corresponding amount of food would be hard to measure with a scale or syringe). A more measureable amount of food is diluted with water, and a portion of the diluted mix is given to achieve the target protein dose.
 - **DIRECT**: Patient consumes food directly (neat/undiluted)
 
 **Food A Strategy** (how long to dilute):
@@ -82,7 +82,7 @@ Selecting a pre-defined food or custom food
 
 ```
 1. User searches for Food A. Defaults for dilution strategy, threshold, and dosing strategy are set and table is rendered. Defaults for custom food protein concentration and form are assumed.
-2. User can configure Food A settings and have the table update automatically:
+2. User can configure Food A settings and have the table update automatically (see [editing behaviour](#fr-4-protocol-editing-key-section)):
    - Food name
    - Protein concentration (in the UI, expressed as g of protein per 100 (grams or ml) serving size of food)
    - Food type (solid/liquid)
@@ -92,7 +92,7 @@ Selecting a pre-defined food or custom food
 4. [Optional] User adds Food B for transition:
    - Search for Food B
    - Once selected, table is re-rendered with a default transition threshold (this is editable)
-5. In general: on each edit of the table, steps, or settings, the table is revalidated and potential warnings are displayed
+5. In general: on each edit of the table, steps, or settings, table is revalidated and potential warnings are displayed
 6. User reviews warnings and edits as needed
 7. User exports protocol to clipboard
 ```
@@ -100,23 +100,17 @@ Selecting a pre-defined food or custom food
 Selecting a protocol
 
 ```
-1. User searches for a protocol within a pre-defined dataset. Table is rendered and validated.
+1. User searches for a protocol within a pre-defined dataset. The exact specified protocol is rendered and validated.
 2. As above, user is able to edit and tweak the protocol after as they see fit
 ```
 
 ---
 
-### 2.4 Important Facts about OIT
-
-- Foods for OIT can be liquids or solids.
-- The protein content of each food is required. Examples:
-  - Peanut butter: ~23 g protein per 100 g (≈ 230 mg protein per g)
-  - Milk: ~9 g protein per 250 ml (≈ 36 mg protein per ml)
-- At initial steps, doses are often too small to measure on a scale and require dilution.
+### 2.4 Misc
 
 Dilution assumptions:
 
-- Solid-in-liquid: we assume that solid contributes negligibly to final volume.
+- Solid-in-liquid: for simplicity we assume that solid contributes negligibly to final volume.
 - Liquid-in-liquid: Volumes are additive.
 
 Phenotypes supported:
@@ -175,6 +169,7 @@ allergyguide/
    - Purpose: Arbitrary-precision decimal arithmetic
    - Why: Prevents floating-point errors in dose calculations (safety critical)
    - Location: `/static/js/decimal.js`
+   - Should use precision 20 and rounding ROUND_HALF_UP
    - Example: `0.1 + 0.2 = 0.3` (not 0.30000000000000004)
 
 2. **fuzzysort** (v3.1.0+)
@@ -249,26 +244,26 @@ interface Step {
   stepIndex: number; // 1-based step number
   targetMg: Decimal; // Target protein dose (mg)
   method: Method; // DILUTE or DIRECT
-  dailyAmount: Decimal; // Amount patient consumes daily
+  dailyAmount: Decimal; // Amount patient consumes daily. The protein in dailyAmount should very closely match targetMg
   dailyAmountUnit: Unit; // "g" or "ml"
   mixFoodAmount?: Decimal; // Food amount in mixture (for DILUTE only)
   mixWaterAmount?: Decimal; // Water amount in mixture (for DILUTE only)
-  servings?: Decimal; // Number of servings mixture provides
+  servings?: Decimal; // Number of servings mixture provides. May be fractional 
 }
 
 interface ProtocolConfig {
-  minMeasurableMass: Decimal; // Minimum scale can measure (g). Usually we say 0.2g, easy for parents.
-  minMeasurableVolume: Decimal; // Minimum syringe can measure (ml). Usually we say 0.5ml, easy for parents with small syringe.
-  minServingsForMix: Decimal; // Minimum servings per mixture
+  minMeasurableMass: Decimal; // Minimum a scale should measure (g). Usually we say 0.20g, easy for parents. Inclusive (≥)
+  minMeasurableVolume: Decimal; // Minimum syringe can measure (ml). Usually we say 0.5ml, easy for parents with small syringe. Inclusive (≥)
+  minServingsForMix: Decimal; // Minimum servings per mixture. inclusive (≥)
 }
 
 interface Protocol {
   dosingStrategy: DosingStrategy; // STANDARD/SLOW/RAPID
   foodA: Food; // Primary food
   foodAStrategy: FoodAStrategy; // When to dilute Food A
-  diThreshold: Decimal; // When to stop diluting Food A (g or ml)
+  diThreshold: Decimal; // At what neat amount (g or ml) of food A do we switch to simply giving it directly? Inclusive
   foodB?: Food; // Optional second food
-  foodBThreshold?: { unit: Unit; amount: Decimal }; // Threshold to switch to Food B, expressed as unit + amount
+  foodBThreshold?: { unit: Unit; amount: Decimal }; // At what neat amount (g or ml) of food B do we switch from food A to food B?
   steps: Step[]; // Array of protocol steps
   config: ProtocolConfig; // Measurement constraints
 }
@@ -339,10 +334,10 @@ const MAX_MIX_WATER = 250; // Maximum water in mixture (ml)
 
 // Default configuration
 const DEFAULT_CONFIG = {
-  minMeasurableMass: new Decimal(0.2), // 0.2 g (scale resolution)
-  minMeasurableVolume: new Decimal(0.5), // 0.5 ml (syringe resolution)
-  minServingsForMix: new Decimal(3), // Minimum 3 servings per mix
-  protein_tolerance: new Decimal(0.5)
+  minMeasurableMass: new Decimal(0.2), // 0.2 g (scale resolution) inclusive (≥)
+  minMeasurableVolume: new Decimal(0.5), // 0.5 ml (syringe resolution) inclusive (≥)
+  minServingsForMix: new Decimal(3), // Minimum 3 servings per mix inc.lusive (≥)
+  PROTEIN_TOLERANCE_MG: new Decimal(0.5)
 };
 ```
 
@@ -363,12 +358,45 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 - Canonical units (of note: in the UI the unit asked for is g of protein per either 100ml or 100g):
   - Solids: mg per gram (mg/g)
   - Liquids: mg per millilitre (mg/ml)
-  - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 g/ml) to canonical mg/unit.
+  - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 (g or ml) to canonical mg/unit.
 - Precision: Use Decimal for all arithmetic; format only for display/export.
 - Serialization: Store Decimal fields as strings in JSON state for protocols and rehydrate on load.
-- foodBThreshold applies to neat mass (m = P/C). Once m ≥ threshold, switch to DIRECT Food B and duplicate the preceding protein dose at the transition step.
 - Red/yellow warnings are non-blocking. Red warnings must be acknowledged prior to export/print but do not block edits.
 - When toggling a food’s form (SOLID ⇄ LIQUID), convert amounts assuming 1 g ≈ 1 ml and recompute water for mixes.
+
+## 5.5 Food B threshold and transition behaviour
+
+foodBThreshold applies to neat mass of _food B_ (m = P/C). Once m ≥ threshold (ie. it has reached a measurable dose), continue food A for one more step, then switch to DIRECT Food B and duplicate the preceding food A protein dose at the transition step. This guarentees that the first food B step `n` will have a neat mass that is greater or equal to threshold, and that food B protein target at step `n` is the same as the protein target of food A at step `n-1`. From there, the rest of the protein targets will be done with food B.
+
+Example:
+Food A - Powder X: 667mg of protein per g. Being given as dilution only for now.
+Food B - Whole food X: 333 mg of protein per g. foodBThreshold is set as 0.2 g; this corresponds to a target protein of 67mg.
+
+Therefore, once Food A reaches a step that EXCEEDS the target protein set my foodBThreshold (67mg), which is step 7 (`n-1`) in the example below, then food A will stop and food B will start. Importantly, food B's first step `n` will start at the exact same protein target as step `n-1`, which is 80mg in the example:
+
+FOOD A:
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 1 ml         | 0.2 g              | 133 ml            |
+| 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 53 ml             |
+| 3    | 5            | Dilution | 2 ml         | 0.2 g              | 53 ml             |
+| 4    | 10           | Dilution | 1 ml         | 0.4 g              | 27 ml             |
+| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 17 ml             |
+| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 17 ml             |
+| 7    | 80           | Dilution | 4 ml         | 0.5 g              | 17 ml             |
+
+After step 7 is complete, transition to:
+
+FOOD B
+
+| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | ------ | ------------ | ------------------ | ----------------- |
+| 8    | 80           | Direct | 0.24 g       | n/a                | n/a               |
+| 9    | 120          | Direct | 0.36 g       | n/a                | n/a               |
+| 10   | 160          | Direct | 0.48 g       | n/a                | n/a               |
+| 11   | 240          | Direct | 0.72 g       | n/a                | n/a               |
+| 12   | 300          | Direct | 0.9 g        | n/a                | n/a               |
 
 ## 6. Core Algorithms
 
@@ -387,7 +415,11 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
 - Array of valid `Candidate` objects, ranked by optimality
 
 **Other**
-All dilution math uses Decimal.js with precision 20 and rounding ROUND_HALF_UP. Internally food.mgPerUnit is mg protein per 1 gram (SOLID) or per 1 milliliter (LIQUID). For a candidate defined by mixFoodAmount and dailyAmount, compute totalMixProtein = mixFoodAmount × food.mgPerUnit. servings = totalMixProtein / P, mixTotalVolume = dailyAmount × servings. For SOLID assume solid volume negligible. Accept candidate only if measurable constraints hold and the actual protein delivered = (totalMixProtein / mixTotalVolume) × dailyAmount is within PROTEIN_TOLERANCE_MG (default 0.5 mg) of target P. Candidate ranking: smallest mixFoodAmount, then smallest dailyAmount, then smallest mixTotalVolume.
+
+- Internally food.mgPerUnit is mg protein per 1 gram (SOLID) or per 1 milliliter (LIQUID).
+- For a candidate defined by mixFoodAmount and dailyAmount, compute totalMixProtein = mixFoodAmount × food.mgPerUnit. servings = totalMixProtein / P, mixTotalVolume = dailyAmount × servings.
+- For SOLID assume solid volume negligible.
+- Accept candidate only if measurable constraints hold and the actual protein delivered = (totalMixProtein / mixTotalVolume) × dailyAmount is within PROTEIN_TOLERANCE_MG (default 0.5 mg) of target P. Candidate ranking: smallest mixFoodAmount, then smallest dailyAmount, then smallest mixTotalVolume.
 
 **Algorithm:**
 
@@ -663,13 +695,13 @@ for (i = 1; i < steps.length; i++):
 │  │ Export: [ASCII] [PDF]       │  │              │  │
 │  │                             │  │  Warnings    │  │
 │  │  Protocol Table             │  │  Sidebar     │  │
-│  │  ┌────┬──────┬────┬─────┐   │  │              │  │
-│  │  │Step│Protein│...│ +/- │   │  │  [Red/Yellow │  │
-│  │  ├────┼──────┼────┼─────┤   │  │   warnings]  │  │
-│  │  │ 1  │ 1mg  │... │ + - │   │  │              │  │
-│  │  │ 2  │ 2.5mg│... │ + - │   │  │              │  │
-│  │  │... │ ...  │... │ ... │   │  │              │  │
-│  │  └────┴──────┴────┴─────┘   │  │              │  │
+│  │  ┌─────┬────┬───────┬────┐  │  │              │  │
+│  │  │ +/- │Step│Protein│... │  │  │  [Red/Yellow │  │
+│  │  │─────┼────┼───────┼────│  │  │   warnings]  │  │
+│  │  │ + - │ 1  │ 1mg   │... │  │  │              │  │
+│  │  │ + - │ 2  │ 2.5mg │... │  │  │              │  │
+│  │  │ ... │... │ ...   │... │  │  │              │  │
+│  │  └─────┴────┴───────┴────┘  │  │              │  │
 │  └─────────────────────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────┘
 ```
@@ -915,14 +947,17 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
   - Header "Food B: [Name]" appears before first Food B step
 - **FR-3.6:** User can clear Food B to revert to Food A only
 
-#### FR-4: Protocol Editing
+NOTE: If a built-in protocol is loaded that has a Food A and a food B with custom target values, the loaded targets should be kept. use the existing target sequence for the post-transition portion. The validation check still runs.
+
+#### FR-4: Protocol Editing **KEY SECTION**
 
 - Editing target protein (P):
-  - DIRECT: updating P updates daily amount; editing daily amount updates P.
+  - For DIRECT steps: Editing targetMg recalculates dailyAmount.
   - DILUTE: keep dailyAmount and mixFoodAmount constant if possible; update mixWaterAmount. If impossible with current mixFoodAmount, show red error.
+    - recompute servings = (mixFoodAmount × mgPerUnit) / targetMg; if servings < minServingsForMix OR mixWaterAmount > MAX_MIX_WATER, show Y/R as appropriate and still update dailyAmount = mixTotalVolume / servings (preserve mixFoodAmount). If constraints make it impossible (mixTotalVolume < dailyAmount), show R3
 - Editing mixFoodAmount (DILUTE): recompute mixWaterAmount to keep P and dailyAmount unchanged.
 - Editing dailyAmount:
-  - DIRECT: updates target protein P for the step.
+  - DIRECT: Recalculates target protein P for the step.
   - DILUTE: keep mixFoodAmount fixed; update mixWaterAmount.
 - No undo/redo and no locked rows required.
 - mixWaterAmount is not manually editable for the user
@@ -1437,22 +1472,6 @@ This appendix provides explicit numeric examples for the four phenotypes support
 
 ### C.1 Food A with initial dilutions
 
-Example: Liquid X, 8 g protein per 250 ml
-
-| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
-| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
-| 1    | 1            | Dilution | 1 ml         | 1 ml               | 31 ml             |
-| 2    | 2.5          | Dilution | 1 ml         | 1 ml               | 11.8 ml           |
-| 3    | 5            | Dilution | 1 ml         | 1 ml               | 5.4 ml            |
-| 4    | 10           | Direct   | 0.3 ml       | n/a                | n/a               |
-| 5    | 20           | Direct   | 0.6 ml       | n/a                | n/a               |
-| 6    | 40           | Direct   | 1.3 ml       | n/a                | n/a               |
-| 7    | 80           | Direct   | 2.5 ml       | n/a                | n/a               |
-| 8    | 120          | Direct   | 3.8 ml       | n/a                | n/a               |
-| 9    | 160          | Direct   | 5 ml         | n/a                | n/a               |
-| 10   | 240          | Direct   | 7.5 ml       | n/a                | n/a               |
-| 11   | 300          | Direct   | 9.4 ml       | n/a                | n/a               |
-
 Example: Solid X, 7 g protein per 30 g
 
 | Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
@@ -1508,22 +1527,6 @@ Example: X powder, 21 g protein per 100 g
 | 9    | 160          | Direct | 0.762 g      | n/a                | n/a                    |
 | 10   | 240          | Direct | 1.143 g      | n/a                | n/a                    |
 | 11   | 300          | Direct | 1.429 g      | n/a                | n/a                    |
-
-Example: X milk, 1 g protein per 250 ml
-
-| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture (mL) |
-| ---- | ------------ | ------ | ------------ | ------------------ | ---------------------- |
-| 1    | 1            | Direct | 0.3 ml       | n/a                | n/a                    |
-| 2    | 2.5          | Direct | 0.6 ml       | n/a                | n/a                    |
-| 3    | 5            | Direct | 1.3 ml       | n/a                | n/a                    |
-| 4    | 10           | Direct | 2.5 ml       | n/a                | n/a                    |
-| 5    | 20           | Direct | 5.0 ml       | n/a                | n/a                    |
-| 6    | 40           | Direct | 10.0 ml      | n/a                | n/a                    |
-| 7    | 80           | Direct | 20.0 ml      | n/a                | n/a                    |
-| 8    | 120          | Direct | 30.0 ml      | n/a                | n/a                    |
-| 9    | 160          | Direct | 40.0 ml      | n/a                | n/a                    |
-| 10   | 240          | Direct | 60.0 ml      | n/a                | n/a                    |
-| 11   | 300          | Direct | 75.0 ml      | n/a                | n/a                    |
 
 ### C.4 Food A → Food B transition
 
