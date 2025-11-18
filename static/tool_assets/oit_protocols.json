@@ -5,14 +5,14 @@
     "food_a": {
       "type": "SOLID",
       "name": "Peanut Powder",
-      "protein_conc": "0.21"
+      "mgPerUnit": "210"
     },
     "food_a_strategy": "DILUTE_INITIAL",
     "di_threshold": "0.2",
     "food_b": {
       "type": "SOLID",
       "name": "Roasted Peanut",
-      "protein_conc": "0.25"
+      "mgPerUnit": "250"
     },
     "food_b_threshold": "0.45",
     "table_di": [
@@ -78,7 +78,7 @@
     "food_a": {
       "type": "LIQUID",
       "name": "Cow Milk",
-      "protein_conc": "0.004"
+      "mgPerUnit": "80"
     },
     "food_a_strategy": "DILUTE_NONE",
     "di_threshold": "0.2",
