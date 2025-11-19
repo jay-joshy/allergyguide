@@ -253,7 +253,7 @@ interface Step {
 
 interface ProtocolConfig {
   minMeasurableMass: Decimal; // Minimum a scale should measure (g). Usually we say 0.20g, easy for parents. Inclusive (≥)
-  minMeasurableVolume: Decimal; // Minimum syringe can measure (ml). Usually we say 0.5ml, easy for parents with small syringe. Inclusive (≥)
+  minMeasurableVolume: Decimal; // Minimum syringe can measure (ml). Usually we say 0.2ml, easy for parents with small syringe. Inclusive (≥)
   minServingsForMix: Decimal; // Minimum servings per mixture. inclusive (≥)
 }
 
@@ -335,7 +335,7 @@ const MAX_MIX_WATER = 250; // Maximum water in mixture (ml)
 // Default configuration
 const DEFAULT_CONFIG = {
   minMeasurableMass: new Decimal(0.2), // 0.2 g (scale resolution) inclusive (≥)
-  minMeasurableVolume: new Decimal(0.5), // 0.5 ml (syringe resolution) inclusive (≥)
+  minMeasurableVolume: new Decimal(0.2), // 0.2 ml (syringe resolution) inclusive (≥)
   minServingsForMix: new Decimal(3), // Minimum 3 servings per mix inc.lusive (≥)
   PROTEIN_TOLERANCE_MG: new Decimal(0.5)
 };
