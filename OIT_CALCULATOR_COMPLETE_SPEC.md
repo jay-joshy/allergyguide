@@ -361,42 +361,8 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
   - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 (g or ml) to canonical mg/unit.
 - Precision: Use Decimal for all arithmetic; format only for display/export.
 - Serialization: Store Decimal fields as strings in JSON state for protocols and rehydrate on load.
-- Red/yellow warnings are non-blocking. Red warnings must be acknowledged prior to export/print but do not block edits.
+- Red/yellow warnings are non-blocking
 - When toggling a food’s form (SOLID ⇄ LIQUID), convert amounts assuming 1 g ≈ 1 ml and recompute water for mixes.
-
-## 5.5 Food B threshold and transition behaviour
-
-foodBThreshold applies to neat mass of _food B_ (m = P/C). Once m ≥ threshold (ie. it has reached a measurable dose), continue food A for one more step, then switch to DIRECT Food B and duplicate the preceding food A protein dose at the transition step. This guarentees that the first food B step `n` will have a neat mass that is greater or equal to threshold, and that food B protein target at step `n` is the same as the protein target of food A at step `n-1`. From there, the rest of the protein targets will be done with food B.
-
-Example:
-Food A - Powder X: 667mg of protein per g. Being given as dilution only for now.
-Food B - Whole food X: 333 mg of protein per g. foodBThreshold is set as 0.2 g; this corresponds to a target protein of 67mg.
-
-Therefore, once Food A reaches a step that EXCEEDS the target protein set my foodBThreshold (67mg), which is step 7 (`n-1`) in the example below, then food A will stop and food B will start. Importantly, food B's first step `n` will start at the exact same protein target as step `n-1`, which is 80mg in the example:
-
-FOOD A:
-
-| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
-| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
-| 1    | 1            | Dilution | 1 ml         | 0.2 g              | 133 ml            |
-| 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 53 ml             |
-| 3    | 5            | Dilution | 2 ml         | 0.2 g              | 53 ml             |
-| 4    | 10           | Dilution | 1 ml         | 0.4 g              | 27 ml             |
-| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 17 ml             |
-| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 17 ml             |
-| 7    | 80           | Dilution | 4 ml         | 0.5 g              | 17 ml             |
-
-After step 7 is complete, transition to:
-
-FOOD B
-
-| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture |
-| ---- | ------------ | ------ | ------------ | ------------------ | ----------------- |
-| 8    | 80           | Direct | 0.24 g       | n/a                | n/a               |
-| 9    | 120          | Direct | 0.36 g       | n/a                | n/a               |
-| 10   | 160          | Direct | 0.48 g       | n/a                | n/a               |
-| 11   | 240          | Direct | 0.72 g       | n/a                | n/a               |
-| 12   | 300          | Direct | 0.9 g        | n/a                | n/a               |
 
 ## 6. Core Algorithms
 
@@ -419,9 +385,23 @@ FOOD B
 - Internally food.mgPerUnit is mg protein per 1 gram (SOLID) or per 1 milliliter (LIQUID).
 - For a candidate defined by mixFoodAmount and dailyAmount, compute totalMixProtein = mixFoodAmount × food.mgPerUnit. servings = totalMixProtein / P, mixTotalVolume = dailyAmount × servings.
 - For SOLID assume solid volume negligible.
-- Accept candidate only if measurable constraints hold and the actual protein delivered = (totalMixProtein / mixTotalVolume) × dailyAmount is within PROTEIN_TOLERANCE_MG (default 0.5 mg) of target P. Candidate ranking: smallest mixFoodAmount, then smallest dailyAmount, then smallest mixTotalVolume.
+- Accept candidate only if measurable constraints hold and the actual protein delivered = (totalMixProtein / mixTotalVolume) × dailyAmount is within PROTEIN_TOLERANCE_MG (default 0.5 mg) of target P.
+- Candidate ranking: smallest mixFoodAmount, then smallest dailyAmount, then smallest mixTotalVolume.
+  - Use Decimal.compare strictly; if all keys equal, fallback to the candidate with smallest mixWaterAmount, then deterministic stable insertion order
 
 **Algorithm:**
+
+**Special Case - Solid Dilutions:**
+For solid foods in liquid, assume solid volume is negligible.
+
+- Mix total volume ≈ water volume
+- Example: 0.2 g powder in 10 ml water ≈ 10 ml total
+
+**Special Case - Liquid Dilutions:**
+For liquid foods in water, volumes are additive:
+
+- Mix total volume = food volume + water volume
+- Example: 2 ml milk + 8 ml water = 10 ml total
 
 ```
 // Inputs: P (mg), food.mgPerUnit (mg per g or mg per ml), config
@@ -490,21 +470,8 @@ function findDilutionCandidates(P, food, config) -> Candidate[] {
 }
 
 Edge cases:
-- If mixTotalVolume < dailyAmount (impossible), flag R3 and retry with larger mixFoodAmount values (up to a practical limit).
 - If no valid solution is found, raise R3 (Dilution impossible).
 ```
-
-**Special Case - Solid Dilutions:**
-For solid foods in liquid, assume solid volume is negligible. If this assumption is not met, emit warning, but do not exclude candidate:
-
-- Mix total volume ≈ water volume
-- Example: 0.2 g powder in 10 ml water ≈ 10 ml total
-
-**Special Case - Liquid Dilutions:**
-For liquid foods in water, volumes are additive:
-
-- Mix total volume = food volume + water volume
-- Example: 2 ml milk + 8 ml water = 10 ml total
 
 ### 6.2 Protocol Generation Algorithm
 
@@ -533,14 +500,8 @@ For liquid foods in water, volumes are additive:
    c. If needsDilution:
       - Call findDilutionCandidates(P, food, config)
       - Select best candidate
-      - Create step with:
-        * method = DILUTE
-        * dailyAmount = candidate.dailyAmount
-        * dailyAmountUnit = "ml"
-        * mixFoodAmount = candidate.mixFoodAmount
-        * mixWaterAmount = candidate.mixWaterAmount
-        * servings = candidate.servings
-   
+      - Create Step 
+ 
    d. Else (direct dosing):
       - Create step with:
         * method = DIRECT
@@ -557,43 +518,55 @@ For liquid foods in water, volumes are additive:
 
 **Function:** `addFoodBToProtocol(protocol: Protocol, foodB: Food, threshold: { unit: Unit; amount: Decimal })`
 
-**Algorithm:**
+**Assumptions**:
 
-```
-1. Find transition point:
-   - Iterate through protocol.steps
-   - For each step using Food A:
-     * Calculate neatMassA = step.targetMg / protocol.foodA.mgPerUnit
-     * If neatMassA ≥ threshold.amount: transitionIndex = step.stepIndex  // threshold.unit provides context; threshold applies to neat mass (m = P/C)
-     * Break on first match
+- protocol.steps is an ordered array of Step objects already containing targetMg (Decimal) for every step
+- foodB exists and has mgPerUnit (mg per g or mg per ml) and type (SOLID/LIQUID)Food B dosing is DIRECT (no dilution) when transition happens
+- Food B dosing is DIRECT (no dilution) when transition happens
+- we also have access to:
+  - foodBThreshold is { unit: "g" | "ml", amount: Decimal } - it is the neat mass of food B that we deem easily measurable.
+  - foodB.mgPerUnit
 
-2. If no transition found (all doses < threshold):
-   - Emit yellow warning, no need to use Food B.
+**Algorithm**
 
-3. Split protocol at transition:
-   - stepsBeforeTransition = steps[0..transitionIndex-1]
-   - targetProteinValues = steps[transitionIndex..end].map(s => s.targetMg)
+1. Calculate the mg of protein foodBThreshold corresponds to: foodBThreshold * foodB.mgPerUnit (mg). Term this `foodBmgThreshold`
+2. Scanning through the steps of food A, once food A reaches a step `n` whose target protein is >= `foodBmgThreshold`, then step `n+1` will be food B. Importantly step `n+1` (food B's first step) will have the SAME protein target as step `n`.
+3. Then append the remaining targets (the original sequence after n) but treat them as Food-B (direct dosing). Net result: protocol length increases by 1; the first Food-B step duplicates the previous Food-A protein target.
 
-4. Regenerate post-transition steps with Food B:
-   - insert an extra step immediately after transitionIndex-1 that is Food B at the same targetMg as step transitionIndex-1
-     - For example: If transitionIndex is 8 (1-based), and step 7 is the last Food A step with 80 mg target protein, then new step 8 = 80 mg Food B, then 9 onward are Food B with the rest of targets.
-   - For each target protein in targetProteinValues:
-     * Generate step using Food B (same algorithm as generateDefaultProtocol)
-     * Food B Strategy is always going to be DIRECT / DILUTE_NONE.
-   
-5. Combine:
-   - newSteps = stepsBeforeTransition + regeneratedSteps
-   - protocol.steps = newSteps
-   - protocol.foodB = foodB
-   - protocol.foodBThreshold = threshold
+- the remaining post-transition targets come from the original protocol.steps target sequence
 
-5. IMPORTANT - Extra Step Creation:
-   - When Food B is added, the protocol length increases by 1
-   - The first Food B step uses the same target protein as the previous Food A step
-   - Example: 11 Food A steps → Add Food B → 12 total steps
-     - ..., Step 5: 80mg Food A, Step 6: 80mg Food B, ... Step 12: 300mg Food B
-   - This is mainly for safety given new form of food - at transition, we pause at the same dose.
-```
+4. If there is no step of Food A where the target protein is >= `foodBmgThreshold`, then food B will not be added to the protocol and a yellow warning should be emitted to lower the threshold.
+
+**Example**:
+Food A - Powder X: 667mg of protein per g. Being given as dilution only for now.
+Food B - Whole food X: 333 mg of protein per g. foodBThreshold is set as 0.2 g; this corresponds to a protein content of 67mg.
+
+Once Food A reaches a step >= the target protein set by foodBThreshold (67mg), which is step 7 (`n`) in the example below, then food A will stop and food B will start. Importantly, food B's first step `n+1` will start at the exact same protein target as step `n`, which is 80mg in the example:
+
+FOOD A:
+
+| Step | Protein (mg) | Method   | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | -------- | ------------ | ------------------ | ----------------- |
+| 1    | 1            | Dilution | 1 ml         | 0.2 g              | 133 ml            |
+| 2    | 2.5          | Dilution | 1 ml         | 0.2 g              | 53 ml             |
+| 3    | 5            | Dilution | 2 ml         | 0.2 g              | 53 ml             |
+| 4    | 10           | Dilution | 1 ml         | 0.4 g              | 27 ml             |
+| 5    | 20           | Dilution | 1 ml         | 0.5 g              | 17 ml             |
+| 6    | 40           | Dilution | 2 ml         | 0.5 g              | 17 ml             |
+| 7    | 80           | Dilution | 4 ml         | 0.5 g              | 17 ml             |
+
+After step 7 is complete, transition to FOOD B:
+
+| Step | Protein (mg) | Method | Daily amount | Amount for mixture | Water for mixture |
+| ---- | ------------ | ------ | ------------ | ------------------ | ----------------- |
+| 8    | 80           | Direct | 0.24 g       | n/a                | n/a               |
+| 9    | 120          | Direct | 0.36 g       | n/a                | n/a               |
+| 10   | 160          | Direct | 0.48 g       | n/a                | n/a               |
+| 11   | 240          | Direct | 0.72 g       | n/a                | n/a               |
+| 12   | 300          | Direct | 0.9 g        | n/a                | n/a               |
+
+**Editing behaviour**
+Recompute the transition whenever any of these change: foodB selection, foodBThreshold, any targetMg in steps 1..current_transition_index. If user manually edited post-transition targets, preserve them until the next “recompute” event.
 
 ### 6.4 Validation Algorithm
 
@@ -626,8 +599,7 @@ for each step with method = DILUTE:
     });
   }
 
-// R3: Dilution impossible (no valid candidates found)
-// Raise a red warning when no dilution candidate satisfies constraints for a DILUTE step.
+// R3: TBD
 
 // R4: Below measurement resolution
 for each step with method = DILUTE:
@@ -672,38 +644,35 @@ for (i = 1; i < steps.length; i++):
 ### 7.1 Layout Structure
 
 ```
-┌─────────────────────────────────────────────────────┐
-│  OIT Calculator                                     │
-│                                                     │
-│  ┌────────────────────┐  ┌────────────────────┐     │
-│  │ Food A Search      │  │ Food B Search      │     │
-│  │ [Search input...]  │  │ [Search input...]  │     │
-│  │                    │  │ [Clear Button]     │     │
-│  │ Food A Settings:   │  │                    │     │
-│  │ - Name             │  │ Food B Settings:   │     │
-│  │ - Protein conc.    │  │ - Name             │     │
-│  │ - Form (S/L)       │  │ - Protein conc.    │     │
-│  │ - Dilution strat.  │  │ - Form (S/L)       │     │
-│  │ - Threshold        │  │ - Threshold        │     │
-│  └────────────────────┘  └────────────────────┘     │
-│                                                     │
-│  ┌────────────────────────────────────────────┐     │
-│  │ Dosing Strategy: [Standard] [Slow] [Rapid] │     │
-│  └────────────────────────────────────────────┘     │
-│                                                     │
-│  ┌─────────────────────────────┐  ┌──────────────┐  │
-│  │ Export: [ASCII] [PDF]       │  │              │  │
-│  │                             │  │  Warnings    │  │
-│  │  Protocol Table             │  │  Sidebar     │  │
-│  │  ┌─────┬────┬───────┬────┐  │  │              │  │
-│  │  │ +/- │Step│Protein│... │  │  │  [Red/Yellow │  │
-│  │  │─────┼────┼───────┼────│  │  │   warnings]  │  │
-│  │  │ + - │ 1  │ 1mg   │... │  │  │              │  │
-│  │  │ + - │ 2  │ 2.5mg │... │  │  │              │  │
-│  │  │ ... │... │ ...   │... │  │  │              │  │
-│  │  └─────┴────┴───────┴────┘  │  │              │  │
-│  └─────────────────────────────┘  └──────────────┘  │
-└─────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────┐
+│ OIT Calculator                                    │
+│ ┌────────────────────┐  ┌────────────────────┐    │
+│ │ Food A Search      │  │ Food B Search      │    │
+│ │ [Search input...]  │  │ [Search input...]  │    │
+│ │                    │  │ [Clear Button]     │    │
+│ │ Food A Settings:   │  │                    │    │
+│ │ - Name             │  │ Food B Settings:   │    │
+│ │ - Protein conc.    │  │ - Name             │    │
+│ │ - Form (S/L)       │  │ - Protein conc.    │    │
+│ │ - Dilution strat.  │  │ - Form (S/L)       │    │
+│ │ - Threshold        │  │ - Threshold        │    │
+│ └────────────────────┘  └────────────────────┘    │
+│ ┌────────────────────────────────────────────┐    │
+│ │ Dosing Strategy: [Standard] [Slow] [Rapid] │    │
+│ └────────────────────────────────────────────┘    │
+│ ┌─────────────────────────────┐  ┌──────────────┐ │
+│ │ Export: [ASCII] [PDF]       │  │              │ │
+│ │                             │  │  Warnings    │ │
+│ │  Protocol Table             │  │  Sidebar     │ │
+│ │  ┌─────┬────┬───────┬────┐  │  │              │ │
+│ │  │ +/- │Step│Protein│... │  │  │  [Red/Yellow │ │
+│ │  │─────┼────┼───────┼────│  │  │   warnings]  │ │
+│ │  │ + - │ 1  │ 1mg   │... │  │  │              │ │
+│ │  │ + - │ 2  │ 2.5mg │... │  │  │              │ │
+│ │  │ ... │... │ ...   │... │  │  │              │ │
+│ │  └─────┴────┴───────┴────┘  │  │              │ │
+│ └─────────────────────────────┘  └──────────────┘ │
+└───────────────────────────────────────────────────┘
 ```
 
 ### 7.2 Component Specifications
@@ -727,15 +696,15 @@ for (i = 1; i < steps.length; i++):
 - Button: "Clear" to remove Food B
 - Functionality:
   - Fuzzy search foods only (not protocols)
-  - Same search behavior as Food A
+  - Same search behavior as Food A, supports custom food creation
   - Clearing resets to Food A only and recalculates protocol
 
 **Dropdown Results:**
 
-- Shows up to VIRTUAL_SCROLL_THRESHOLD items; remaining results are virtualized/scrollable (search limit ~50)
+- Shows up top 10 items in dropdown; remaining results up to 50 are virtualized/scrollable
 - Format:
   ```
-  [Food Name] - Type: Solid | Liquid - Protein: 25.6 g/100g
+  [Food Name] - [Solid | Liquid] - Protein: 25.6 g/100 [g or ml]
   ```
 - Protocol results prefixed with "Protocol: "
 - Always include "Custom: <typed text>" as the first result to allow creating a custom food entry
@@ -768,10 +737,8 @@ for (i = 1; i < steps.length; i++):
 
 **Expected Behavior:**
 
-- Clicking a strategy button immediately regenerates the protocol
-- Protocol resets to default steps for that strategy
-- Step count changes (Standard=11, Slow=19, Rapid=9); _however, if Food B already selected, there will be one extra step_
-- Protein targets update to match strategy
+- Clicking a strategy button immediately regenerates the entire protocol and resets steps to default steps for that strategy
+- Step count changes (Standard=11, Slow=19, Rapid=9); _however, if Food B already selected, there will be one extra step - see [here](#63-food-b-addition-algorithm)_
 - All dilution parameters recalculated
 - Table re-renders completely
 - This is DIFFERENT from Food A strategy changes (which preserve custom targets)
@@ -780,18 +747,18 @@ for (i = 1; i < steps.length; i++):
 
 **Columns:**
 
-1. Step # (non-editable, bold)
-2. Protein (mg) (editable input)
-3. Method (DILUTE/DIRECT, non-editable)
-4. Daily amount (editable input + unit)
-5. Amount for mixture (editable input + unit) [dilution only]
-6. Amount of water (non-editable, auto-calculated) [dilution only]
-7. Actions (+ and - buttons)
+1. Actions (+ and - buttons)
+2. Step # (non-editable, bold)
+3. Protein (mg) (editable input)
+4. Method (DILUTE/DIRECT, non-editable)
+5. Daily amount (editable input + unit)
+6. Amount for mixture (editable input + unit) [dilution only]
+7. Amount of water (non-editable, auto-calculated) [dilution only]
 
 **Special Rows:**
 
-- "[Name]" header row (blue background)
-- "[Name]" header row (blue background)
+- "[Name]" header row
+- "[Name]" header row
   - Appears BEFORE first Food B step
 
 **Editable Cells:**
@@ -806,14 +773,18 @@ for (i = 1; i < steps.length; i++):
 - Place (+) and (−) immediately to the left of the step number (no separate Actions column).
 - Clicking (+) inserts a copy of the current row after current (ie. if you press + on step 5, then step 5 remains the same, and a copy of step 5 is inserted after it); clicking (−) deletes the step.
 
+- Inserting duplicates all editable fields of the current row including method and mix values.
+- Deleting last step: disallow deletion if it would leave zero steps — enforce minimum 1 step.
+- After insert/delete, reindex stepIndex and run full validation.
+
 **CRITICAL - Unit Display:**
 
-- For SOLID foods: "Amount for mixture" must display with "g" (grams)
-- For LIQUID foods: "Amount for mixture" must display with "ml" (milliliters)
+- Display formatting (for UI only): grams → 2 decimal places; ml → 1 decimal place (or integer when appropriate)
+- For SOLID foods: "Amount for mixture" must display with "g" (grams). Resolution for UI is up to 0.01g
+- For LIQUID foods: "Amount for mixture" must display with "ml" (milliliters). Resolution for UI is up to 0.1ml
 - Unit is determined by the current food's type property
 - Daily amount for dilutions always uses "ml"
 - Daily amount for direct dosing uses food's unit (g or ml)
-- Display formatting (for UI only): grams → 2 decimal places; ml → 1 decimal place (or integer when appropriate)
 
 #### 7.2.5 Warnings Sidebar
 
@@ -847,12 +818,6 @@ for (i = 1; i < steps.length; i++):
 └─────────────────────────┘
 ```
 
-**Properties:**
-
-- Sticky positioning (stays visible on scroll)
-- Max height: calc(100vh - 2rem)
-- Scrollable if content overflows
-
 **Expected Behavior:**
 
 - Updates automatically when protocol changes
@@ -869,19 +834,6 @@ for (i = 1; i < steps.length; i++):
 - ASCII export includes all protocol details
 - Success message shown after clipboard copy
 - PDF button gracefully indicates future feature
-
-**ASCII Format:**
-
-```
-OIT Protocol
-
-Food A: Peanut Powder (21% protein)
-Dosing Strategy: STANDARD
-
-Step 1 | 1.0 mg | DILUTE | 0.5 ml daily | Mix: 0.2 g + 10 ml water (20 servings)
-Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
-...
-```
 
 ### 7.3 Styling Specifications
 
@@ -905,7 +857,6 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 
 **Typography:**
 
-- Font: System fonts (San Francisco, Segoe UI, Roboto)
 - Base size: 1rem (16px)
 - Headings: 1.1rem (bold)
 - Small text: 0.85-0.9rem
@@ -920,78 +871,65 @@ Step 2 | 2.5 mg | DILUTE | 1.0 ml daily | Mix: 0.5 g + 10 ml water (10 servings)
 
 - **FR-1.1:** User can search foods by name (fuzzy matching)
 - **FR-1.2:** User can search protocols by name in the food A search-bar
-  - if a protocol is loaded, it is loaded AS IS. That is: steps are NOT regenerated from scratch. If a built in protocol has only 3 steps with incorrect doses for P, it WILL be loaded as such (but warnings will appear)
 - **FR-1.3:** User can create custom food with name, protein, type
-- **FR-1.4:** Search shows dropdown with up to 10 results
-- **FR-1.5:** Selecting food populates settings
-- **FR-1.6:** Selecting protocol loads complete protocol
+- **FR-1.4:** Selecting a food populates settings with defaults
+- **FR-1.5:** Selecting a protocol loads complete protocol
+  - if a protocol is selected, it is loaded AS IS. That is: steps are NOT regenerated from scratch. If a built-in protocol has only 3 steps with incorrect doses for P, it WILL be loaded as such (but warnings will appear)
 
 #### FR-2: Protocol Generation
 
 - **FR-2.1:** System generates steps based on dosing strategy
-- **FR-2.2:** System calculates dilutions automatically
-- **FR-2.3:** System switches from DILUTE to DIRECT at threshold
-- **FR-2.4:** System validates all steps for safety
-- **FR-2.5:** Protocol updates in real-time when settings change
+- **FR-2.2:** System calculates dilutions automatically if dilution is set
 
 #### FR-3: Food B Transition
 
+See [here](#63-food-b-addition-algorithm)
+
 - **FR-3.1:** User can add optional Food B
 - **FR-3.2:** System finds transition point based on threshold
-- **FR-3.3:** System regenerates remaining steps with Food B
-- **FR-3.4:** System maintains protein targets across transition
-- **FR-3.5:** System adds 1 extra step when Food B added
-  - Creates dose continuity by duplicating last Food A protein dose
-  - Example: 11 steps → 12 steps (last Food A + new Food B at same dose)
-  - Step 5: 80mg Food A, Step 6: 80mg Food B, ... Step 12: 300mg Food B
-  - Header "Food B: [Name]" appears before first Food B step
-- **FR-3.6:** User can clear Food B to revert to Food A only
+- **FR-3.3:** System recalculates remaining steps with Food B
+- **FR-3.4:** User can clear Food B to revert to Food A only
 
-NOTE: If a built-in protocol is loaded that has a Food A and a food B with custom target values, the loaded targets should be kept. use the existing target sequence for the post-transition portion. The validation check still runs.
+NOTE: If a built-in protocol is loaded that has both a Food A and a food B with custom target values, the loaded targets should be kept. use the existing target sequence for the post-transition portion. The validation check still runs.
 
-#### FR-4: Protocol Editing **KEY SECTION**
+#### FR-4: Step editing behaviour
 
-- Editing target protein (P):
-  - For DIRECT steps: Editing targetMg recalculates dailyAmount.
-  - DILUTE: keep dailyAmount and mixFoodAmount constant if possible; update mixWaterAmount. If impossible with current mixFoodAmount, show red error.
+- **FR-4.1:** when editing target protein (P):
+  - DIRECT steps: Editing targetMg recalculates dailyAmount.
+  - DILUTE steps: keep dailyAmount and mixFoodAmount constant if possible; update mixWaterAmount
     - recompute servings = (mixFoodAmount × mgPerUnit) / targetMg; if servings < minServingsForMix OR mixWaterAmount > MAX_MIX_WATER, show Y/R as appropriate and still update dailyAmount = mixTotalVolume / servings (preserve mixFoodAmount). If constraints make it impossible (mixTotalVolume < dailyAmount), show R3
-- Editing mixFoodAmount (DILUTE): recompute mixWaterAmount to keep P and dailyAmount unchanged.
-- Editing dailyAmount:
+- **FR-4.2:** when editing daily amount:
   - DIRECT: Recalculates target protein P for the step.
-  - DILUTE: keep mixFoodAmount fixed; update mixWaterAmount.
-- No undo/redo and no locked rows required.
-- mixWaterAmount is not manually editable for the user
-
-- **FR-4.5:** User can add steps between existing steps
-- **FR-4.6:** User can remove steps (minimum 1 step)
-- **FR-4.7:** Changes trigger immediate validation
+  - DILUTE: keep mixFoodAmount fixed; update mixWaterAmount
+- **FR-4.3:** when editing mixFoodAmount (only for dilutions): recompute mixWaterAmount to keep P and dailyAmount unchanged.
+- **FR-4.4:** User can add steps between existing steps
+- **FR-4.5:** User can remove steps (minimum 1 step)
+- **FR-4.6:** Changes trigger immediate validation
 
 #### FR-5: Settings Modification
 
 - **FR-5.1:** User can change food name
 - **FR-5.2:** User can change protein concentration
-- **FR-5.3:** User can toggle food type (solid/liquid)
-  - Form toggles: If you toggle a food's form (SOLID ⇄ LIQUID) the app converts existing daily and mix amounts using 1 g ≈ 1 ml and recomputes water (solid-in-liquid volume assumption changes accordingly).
-  - Recalculates entire protocol (method and mix parameters), but preserving existing target mg protein targets
+- **FR-5.3:** User can toggle food type (solid/liquid), with recalculations if method is DILUTION
+  - Form toggles: If you toggle a food's form (SOLID ⇄ LIQUID) the app converts existing daily and mix amounts using 1 g ≈ 1 ml and recomputes water (solid-in-liquid volume assumption changes accordingly). Ie. if step X has targetMg of 10mg, and mixAmount is 0.5g, waterAmount is 10ml, then once it is switched to liquid the mixAmount becomes 0.5ml, waterAmount becomes 9.5ml. Vise versa.
+  - Recalculates entire protocol (method and mix parameters), but preserves existing target mg protein targets
 - **FR-5.4:** User can change dilution strategy
   - Preserves existing protein targets
-  - Recalculates methods and dilutions
+  - Recalculates methods and dilutions for all steps, but preserves existing target mg protein targets
 - **FR-5.5:** User can change dosing strategy
-  - Clicking Standard/Slow/Rapid button triggers immediate recalculation
-  - Resets all targetMg to default protein targets for that strategy
-  - Changes step count (11/19/9) * though for Food A -> Food B transition, recall that the step number does increase by 1
-  - Regenerates entire protocol from scratch
+  - Clicking Standard/Slow/Rapid button triggers immediate recalculation and RESET of step # and protein targets
+  - Changes step count (11/19/9). However, edge case if food B already selected; food B is added again with its associated settings preserved
   - Preserves Food A/B configuration
-- **FR-5.6:** User can adjust thresholds
-  - Recalculates DILUTE/DIRECT methods
-  - Updates transition points
+  - Loaded protocols are treated like a blank canvas: changing dosing strategy regenerates and overwrites loaded targets
+- **FR-5.6:** User can adjust thresholds for dilution of food A, and for foodBThreshold
+  - Recalculates DILUTE/DIRECT methods upon edits of food A threshold
+  - Updates transition points for foodBThreshold as noted [here](#63-food-b-addition-algorithm)
 
 #### FR-6: Export
 
 - **FR-6.1:** ASCII export copies formatted text to clipboard
-- **FR-6.2:** User receives confirmation message
-- **FR-6.3:** Export includes all protocol details
-- **FR-6.4:** PDF export shows "Not yet implemented" message
+- **FR-6.2:** Export includes all protocol details
+- **FR-6.3:** PDF export shows "Not yet implemented" message
 
 ### 8.2 User Interactions
 
@@ -1112,7 +1050,7 @@ Protocol looks good to go!
 ### 10.1 ASCII Export Format
 
 ```
-OIT Protocol - Generated [Date]
+OIT Protocol
 
 ========================================
 FOOD INFORMATION
@@ -1160,9 +1098,7 @@ NOTES
 ```typescript
 function exportASCII() {
   const protocol = currentProtocol;
-  const date = new Date().toLocaleDateString();
-
-  let text = `OIT Protocol - Generated ${date}\n\n`;
+  let text = `OIT Protocol\n\n`;
 
   // Food information
   text += "========================================\n";
@@ -1334,52 +1270,16 @@ In any markdown file:
 
 ## 13. Testing Criteria
 
-### 13.1 Unit Test Cases
+### 13.1 Integration Test Cases
 
-**Test 2: Food B Transition with Extra Step**
-
-```
-Input:
-  Standard 11-step protocol (Food A ending at 300mg)
-  Add Food B with threshold = 0.45 g
-
-Example Output:
-  12 total steps (protocol becomes 1 step longer)
-  Steps 1-7: Food A (1, 2.5, 5, 10, 20, 40, 80mg)
-  Steps 8-12: Food B (80mg, 120mg, 160mg, 240mg, 300mg). 
-  
-Key: First Food B step duplicates the previous Food A step's protein target.
-```
-
-**Test 3: Dosing Strategy Change**
-
-```
-Input:
-  Protocol with STANDARD (11 steps)
-  Click SLOW button
-
-Expected Output:
-  Protocol immediately regenerates with 19 steps
-  Protein targets: [0.5, 1, 1.5, 2.5, ..., 300]
-  Methods recalculated for each step
-  Table updates automatically
-  Food A/B configuration preserved
-  
-Then click RAPID:
-  Protocol regenerates with 9 steps
-  Protein targets: [1, 2.5, 5, 10, 20, 40, 80, 160, 300]
-```
-
-### 13.2 Integration Test Cases
-
-**Test 4: Loading protocol**
+**Test 1: Loading protocol**
 
 ```
 1. Load "Protocol: peanut powder"
 2. Verify: protocol rendered matches the expected protocol (even if there are errors within the protocol (ie. the dosing numbers are incorrect))
 ```
 
-**Test 5: Solid/Liquid Unit Display**
+**Test 2: Solid/Liquid Unit Display**
 
 ```
 1. Load peanut powder (solid)
@@ -1392,7 +1292,7 @@ Then click RAPID:
 8. Verify: Units revert to "g" for mix amounts
 ```
 
-**Test 6: Validation Warnings**
+**Test 3: Validation Warnings**
 
 ```
 1. Create protocol with 4 steps
@@ -1419,7 +1319,9 @@ Protocols: allergyguide/static/tool_assets/oit_protocols.json
 Decimal.js: allergyguide/static/js/decimal.js
 ```
 
-### A.2 Key Functions
+Of note, in the TS module, food data and protocols should be accessed through `tool_assets/typed_foods_rough.json` and `tool_assets/oit_protocols.json`; do not include `static/`
+
+### A.2 Key Functions to consider
 
 ```typescript
 generateDefaultProtocol(food, config) -> Protocol
