@@ -361,7 +361,7 @@ let fuzzySortPreparedProtocols: any[] = []; // Preprocessed for search
   - Provide a function mgPer100ToMgPerUnit(uiValue, unit) to convert UI entries (g protein per 100 (g or ml) to canonical mg/unit.
 - Precision: Use Decimal for all arithmetic; format only for display/export.
 - Serialization: Store Decimal fields as strings in JSON state for protocols and rehydrate on load.
-- Red/yellow warnings are non-blocking
+- BOTH red and yellow warnings are non-blocking
 - When toggling a food’s form (SOLID ⇄ LIQUID), convert amounts assuming 1 g ≈ 1 ml and recompute water for mixes.
 
 ## 6. Core Algorithms
@@ -566,7 +566,13 @@ After step 7 is complete, transition to FOOD B:
 | 12   | 300          | Direct | 0.9 g        | n/a                | n/a               |
 
 **Editing behaviour**
-Recompute the transition whenever any of these change: foodB selection, foodBThreshold, any targetMg in steps 1..current_transition_index. If user manually edited post-transition targets, preserve them until the next “recompute” event.
+Recompute the transition whenever any of these change:
+
+- foodB selection
+- foodBThreshold
+- any targetMg in steps 1..current_transition_index: If user manually edited post-transition targets, preserve them until the next “recompute” event.
+- Food A mgPerUnit changes
+- Dosing strategy change
 
 ### 6.4 Validation Algorithm
 
@@ -924,6 +930,10 @@ NOTE: If a built-in protocol is loaded that has both a Food A and a food B with 
 - **FR-5.6:** User can adjust thresholds for dilution of food A, and for foodBThreshold
   - Recalculates DILUTE/DIRECT methods upon edits of food A threshold
   - Updates transition points for foodBThreshold as noted [here](#63-food-b-addition-algorithm)
+
+#### What triggers recomputation of Food B transition
+
+-
 
 #### FR-6: Export
 
@@ -1392,7 +1402,7 @@ Example: Solid X, 7 g protein per 30 g
 
 Notes:
 
-- For solid-in-liquid dilutions, solid volume is assumed negligible; otherwise show a warning but allow.
+- For solid-in-liquid dilutions, solid volume is assumed negligible
 
 ### C.2 Food A with dilutions until maintenance
 
