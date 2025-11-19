@@ -121,6 +121,8 @@ interface ProtocolData {
   };
   food_b_threshold?: string;
   table_di: any[];
+  table_dn: any[];
+  table_da: any[];
 }
 
 // ============================================
@@ -1396,9 +1398,19 @@ function selectProtocol(protocolData: ProtocolData): void {
     config: DEFAULT_CONFIG,
   };
 
-  // Load steps from table_di
-  for (let i = 0; i < protocolData.table_di.length; i++) {
-    const row = protocolData.table_di[i];
+  // load steps from the relevant table (table_di, table_dn, or table_da
+  let tableToLoad;
+  if (protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
+    tableToLoad = protocolData.table_di;
+  } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_NONE) {
+    tableToLoad = protocolData.table_dn;
+  } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_ALL) {
+    tableToLoad = protocolData.table_da;
+  }
+
+  // Load steps from relevant table
+  for (let i = 0; i < tableToLoad.length; i++) {
+    const row = tableToLoad[i];
     const step: Step = {
       stepIndex: i + 1,
       targetMg: new Decimal(row.protein),
