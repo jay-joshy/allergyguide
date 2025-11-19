@@ -70,6 +70,8 @@ interface ProtocolConfig {
   minMeasurableVolume: any; // Decimal
   minServingsForMix: any; // Decimal
   PROTEIN_TOLERANCE_MG: any; // Decimal
+  DEFAULT_FOOD_A_DILUTION_THRESHOLD: any; // Decimal
+  DEFAULT_FOOD_B_THRESHOLD: any; // Decimal
 }
 
 interface Protocol {
@@ -356,7 +358,7 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
   const dosingStrategy = DosingStrategy.STANDARD;
   const foodAStrategy = FoodAStrategy.DILUTE_INITIAL;
   const unit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-  const diThreshold = new Decimal(0.2);
+  const diThreshold = DEFAULT_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD;
 
   const targetProteins = DOSING_STRATEGIES[dosingStrategy];
   const steps: Step[] = [];
@@ -1411,7 +1413,7 @@ function selectFoodB(foodData: FoodData): void {
 
   const threshold = {
     unit: food.type === FoodType.SOLID ? ("g" as Unit) : ("ml" as Unit),
-    amount: new Decimal(0.2),
+    amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
   };
 
   addFoodBToProtocol(currentProtocol, food, threshold);
@@ -1441,7 +1443,7 @@ function selectCustomFood(name: string, inputId: string): void {
     if (!currentProtocol) return;
     const threshold = {
       unit: "g" as Unit,
-      amount: new Decimal(0.2),
+      amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
     };
     addFoodBToProtocol(currentProtocol, food, threshold);
     renderFoodSettings();
@@ -1977,6 +1979,8 @@ async function initializeCalculator(): Promise<void> {
     minMeasurableVolume: new Decimal(0.2),
     minServingsForMix: new Decimal(3),
     PROTEIN_TOLERANCE_MG: new Decimal(0.5),
+    DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
+    DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
   };
 
   // Load databases
