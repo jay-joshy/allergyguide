@@ -861,6 +861,8 @@ function renderFoodSettings(): void {
           id="food-a-protein"
           value="${mgPerUnitToMgPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
           step="0.1"
+          min="0"
+          oninput="this.value = Math.abs(this.value)"
         />
         <span>g per 100 ${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
@@ -889,6 +891,8 @@ function renderFoodSettings(): void {
           id="food-a-threshold"
           value="${formatAmount(currentProtocol.diThreshold, currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml")}"
           step="0.1"
+          min="0"
+          oninput="this.value = Math.abs(this.value)"
         />
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
@@ -922,6 +926,8 @@ function renderFoodSettings(): void {
             id="food-b-protein"
             value="${mgPerUnitToMgPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
             step="0.1"
+            min="0"
+            oninput="this.value = Math.abs(this.value)"
           />
           <span>g per 100 ${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
         </div>
@@ -939,6 +945,8 @@ function renderFoodSettings(): void {
             id="food-b-threshold"
             value="${formatAmount(currentProtocol.foodBThreshold!.amount, currentProtocol.foodBThreshold!.unit)}"
             step="0.1"
+            min="0"
+            oninput="this.value = Math.abs(this.value)"
           />
           <span>${currentProtocol.foodBThreshold!.unit}</span>
         </div>
@@ -1061,6 +1069,8 @@ function renderProtocolTable(): void {
           data-field="targetMg"
           value="${formatNumber(step.targetMg, 1)}"
           step="0.1"
+          min="0"
+          oninput="this.value = Math.abs(this.value)"
         />
       </td>
     `;
@@ -1080,6 +1090,8 @@ function renderProtocolTable(): void {
           data-field="dailyAmount"
           value="${formatAmount(step.dailyAmount, step.dailyAmountUnit)}"
           step="0.1"
+          min="0"
+          oninput="this.value = Math.abs(this.value)"
         />
         <span> ${step.dailyAmountUnit}</span>
       </td>
@@ -1097,6 +1109,8 @@ function renderProtocolTable(): void {
             data-field="mixFoodAmount"
             value="${formatAmount(step.mixFoodAmount!, mixUnit)}"
             step="0.01"
+            min="0"
+            oninput="this.value = Math.abs(this.value)"
           />
           <span> ${mixUnit}</span>
         </td>
