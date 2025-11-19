@@ -783,6 +783,7 @@ function removeStep(stepIndex: number): void {
 }
 
 function toggleFoodType(isFoodB: boolean): void {
+  console.log(`toggleFoodType called with isFoodB=${isFoodB}`);
   if (!currentProtocol) return;
 
   const food = isFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
@@ -794,27 +795,29 @@ function toggleFoodType(isFoodB: boolean): void {
 
   for (const step of currentProtocol.steps) {
     const stepIsFoodB =
-      currentProtocol.foodB && step.stepIndex > foodAStepCount;
+      !!currentProtocol.foodB && step.stepIndex > foodAStepCount;
     if (stepIsFoodB !== isFoodB) continue;
-
     if (step.method === Method.DILUTE) {
       // Convert mixFoodAmount assuming 1g ≈ 1ml (value stays the same)
-      // Recalculate water based on new type
+      // Ensure dailyAmountUnit is always "ml" for dilutions
+      step.dailyAmountUnit = "ml";
+
+      // Recalculate servings and water based on new food type
       const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
-      const servings = totalMixProtein.dividedBy(step.targetMg);
-      const mixTotalVolume = step.dailyAmount.times(servings);
+      step.servings = totalMixProtein.dividedBy(step.targetMg);
 
       if (food.type === FoodType.SOLID) {
         // Switched to solid (was liquid)
         // For solid: water = total volume (solid volume negligible)
+        const mixTotalVolume = step.dailyAmount.times(step.servings);
         step.mixWaterAmount = mixTotalVolume;
       } else {
         // Switched to liquid (was solid)
         // For liquid: water = total - food
+
+        const mixTotalVolume = step.dailyAmount.times(step.servings);
         step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
       }
-
-      step.servings = servings;
     } else {
       // DIRECT - just update unit
       step.dailyAmountUnit = food.type === FoodType.SOLID ? "g" : "ml";
@@ -1838,7 +1841,7 @@ async function initializeCalculator(): Promise<void> {
   // Initialize Decimal config
   DEFAULT_CONFIG = {
     minMeasurableMass: new Decimal(0.2),
-    minMeasurableVolume: new Decimal(0.5),
+    minMeasurableVolume: new Decimal(0.2),
     minServingsForMix: new Decimal(3),
     PROTEIN_TOLERANCE_MG: new Decimal(0.5),
   };
