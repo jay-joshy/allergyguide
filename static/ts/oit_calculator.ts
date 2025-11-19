@@ -62,6 +62,7 @@ interface Step {
   mixFoodAmount?: any; // Decimal
   mixWaterAmount?: any; // Decimal
   servings?: any; // Decimal
+  food: "A" | "B"; // Tracks which food this step belongs to
 }
 
 interface ProtocolConfig {
@@ -333,6 +334,7 @@ function generateStepForTarget(
       mixFoodAmount: best.mixFoodAmount,
       mixWaterAmount: best.mixWaterAmount,
       servings: best.servings,
+      food: "A",
     };
   } else {
     return {
@@ -341,6 +343,7 @@ function generateStepForTarget(
       method: Method.DIRECT,
       dailyAmount: neatMass,
       dailyAmountUnit: unit,
+      food: "A",
     };
   }
 }
@@ -375,6 +378,7 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
         method: Method.DIRECT,
         dailyAmount: neatMass,
         dailyAmountUnit: unit,
+        food: "A",
       });
     }
   }
@@ -392,12 +396,9 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
 function getFoodAStepCount(protocol: Protocol): number {
   if (!protocol.foodB) return protocol.steps.length;
 
-  // Find first Food B step by checking when food changes or duplicate target (transition)
-  for (let i = 1; i < protocol.steps.length; i++) {
-    const prevTargetMg = protocol.steps[i - 1].targetMg;
-    const currentTargetMg = protocol.steps[i].targetMg;
-    // Food B starts when we have duplicate target (transition)
-    if (currentTargetMg.equals(prevTargetMg)) {
+  // Find first Food B step by checking the food property
+  for (let i = 0; i < protocol.steps.length; i++) {
+    if (protocol.steps[i].food === "B") {
       return i;
     }
   }
@@ -449,6 +450,7 @@ function addFoodBToProtocol(
     method: Method.DIRECT,
     dailyAmount: firstBNeatMass,
     dailyAmountUnit: foodBUnit,
+    food: "B",
   });
 
   // Remaining Food B steps
@@ -460,6 +462,7 @@ function addFoodBToProtocol(
       method: Method.DIRECT,
       dailyAmount: neatMass,
       dailyAmountUnit: foodBUnit,
+      food: "B",
     });
   }
 
@@ -494,8 +497,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
 
   // Check each step
   for (const step of protocol.steps) {
-    const foodAStepCount = getFoodAStepCount(protocol);
-    const isStepFoodB = protocol.foodB && step.stepIndex > foodAStepCount;
+    const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
 
     if (step.method === Method.DILUTE) {
@@ -606,15 +608,16 @@ function recalculateProtocol(): void {
 function recalculateStepMethods(): void {
   if (!currentProtocol) return;
 
-  // Preserve existing targets but recalculate methods
+  // Preserve existing targets and food properties but recalculate methods
   const preservedTargets = currentProtocol.steps.map((s) => s.targetMg);
+  const preservedFoods = currentProtocol.steps.map((s) => s.food);
   const foodBStartIndex = getFoodAStepCount(currentProtocol);
 
   const steps: Step[] = [];
 
   for (let i = 0; i < preservedTargets.length; i++) {
     const targetMg = preservedTargets[i];
-    const isStepFoodB = currentProtocol.foodB && i >= foodBStartIndex;
+    const isStepFoodB = preservedFoods[i] === "B";
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
     const foodAStrategy = isStepFoodB
       ? FoodAStrategy.DILUTE_NONE
@@ -630,6 +633,7 @@ function recalculateStepMethods(): void {
     );
 
     if (step) {
+      step.food = preservedFoods[i]; // Preserve the original food property
       steps.push(step);
     }
   }
@@ -648,8 +652,7 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
   step.targetMg = new Decimal(newTargetMg);
 
   // Determine which food
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
-  const isStepFoodB = currentProtocol.foodB && stepIndex > foodAStepCount;
+  const isStepFoodB = step.food === "B";
   const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
   if (step.method === Method.DIRECT) {
@@ -681,8 +684,7 @@ function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
 
   step.dailyAmount = new Decimal(newDailyAmount);
 
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
-  const isStepFoodB = currentProtocol.foodB && stepIndex > foodAStepCount;
+  const isStepFoodB = step.food === "B";
   const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
   if (step.method === Method.DIRECT) {
@@ -717,8 +719,7 @@ function updateStepMixFoodAmount(
 
   step.mixFoodAmount = new Decimal(newMixFoodAmount);
 
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
-  const isStepFoodB = currentProtocol.foodB && stepIndex > foodAStepCount;
+  const isStepFoodB = step.food === "B";
   const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
   // Recalculate water to keep P and dailyAmount unchanged
@@ -745,11 +746,12 @@ function addStepAfter(stepIndex: number): void {
 
   // Duplicate the step
   const newStep: Step = {
-    stepIndex: stepIndex + 1,
+    stepIndex: step.stepIndex + 1,
     targetMg: step.targetMg,
     method: step.method,
     dailyAmount: step.dailyAmount,
     dailyAmountUnit: step.dailyAmountUnit,
+    food: step.food,
   };
 
   if (step.method === Method.DILUTE) {
@@ -793,11 +795,8 @@ function toggleFoodType(isFoodB: boolean): void {
   food.type = food.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
 
   // Convert all relevant steps
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
-
   for (const step of currentProtocol.steps) {
-    const stepIsFoodB =
-      !!currentProtocol.foodB && step.stepIndex > foodAStepCount;
+    const stepIsFoodB = step.food === "B";
     if (stepIsFoodB !== isFoodB) continue;
     if (step.method === Method.DILUTE) {
       // Convert mixFoodAmount assuming 1g ≈ 1ml (value stays the same)
@@ -1021,8 +1020,7 @@ function renderProtocolTable(): void {
   let lastWasFootA = true;
 
   for (const step of currentProtocol.steps) {
-    const isStepFoodB =
-      currentProtocol.foodB && step.stepIndex > foodAStepCount;
+    const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
     // Add food header if transitioning
@@ -1424,6 +1422,7 @@ function selectProtocol(protocolData: ProtocolData): void {
               ? "g"
               : "ml"
             : "g",
+      food: row.food === foodA.name ? "A" : "B",
     };
 
     if (row.method === "DILUTE") {
@@ -1812,8 +1811,7 @@ function exportASCII(): void {
   let currentFood = currentProtocol.foodA.name;
 
   for (const step of currentProtocol.steps) {
-    const isStepFoodB =
-      currentProtocol.foodB && step.stepIndex > foodAStepCount;
+    const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
     // Add food header
