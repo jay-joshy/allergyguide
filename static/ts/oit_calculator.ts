@@ -1315,6 +1315,7 @@ function selectFoodA(foodData: FoodData): void {
   renderDosingStrategy();
   renderProtocolTable();
   updateWarnings();
+  updateFoodBDisabledState();
 
   (document.getElementById("food-a-search") as HTMLInputElement).value = "";
 }
@@ -1448,6 +1449,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   renderDosingStrategy();
   renderProtocolTable();
   updateWarnings();
+  updateFoodBDisabledState();
 
   (document.getElementById("food-a-search") as HTMLInputElement).value = "";
 }
@@ -1465,6 +1467,49 @@ function clearFoodB(): void {
   renderFoodSettings();
   renderProtocolTable();
   updateWarnings();
+}
+
+/**
+ * Updates the disabled state of the Food B section based on whether Food A is set
+ */
+function updateFoodBDisabledState(): void {
+  const foodBContainer = document.querySelector(
+    ".food-b-container",
+  ) as HTMLElement;
+  if (!foodBContainer) return;
+
+  const hasFoodA = currentProtocol && currentProtocol.foodA;
+
+  if (hasFoodA) {
+    foodBContainer.classList.remove("disabled");
+    const searchInput = document.getElementById(
+      "food-b-search",
+    ) as HTMLInputElement;
+    const clearBtn = document.getElementById(
+      "clear-food-b",
+    ) as HTMLButtonElement;
+    if (searchInput) {
+      searchInput.disabled = false;
+    }
+    if (clearBtn) {
+      clearBtn.disabled = false;
+    }
+  } else {
+    foodBContainer.classList.add("disabled");
+    const searchInput = document.getElementById(
+      "food-b-search",
+    ) as HTMLInputElement;
+    const clearBtn = document.getElementById(
+      "clear-food-b",
+    ) as HTMLButtonElement;
+    if (searchInput) {
+      searchInput.disabled = true;
+      searchInput.value = "";
+    }
+    if (clearBtn) {
+      clearBtn.disabled = true;
+    }
+  }
 }
 
 // ============================================
@@ -1901,6 +1946,9 @@ async function initializeCalculator(): Promise<void> {
   if (clearFoodBBtn) {
     clearFoodBBtn.addEventListener("click", clearFoodB);
   }
+
+  // Set initial disabled state for Food B section
+  updateFoodBDisabledState();
 
   console.log("OIT Calculator initialized");
 }
