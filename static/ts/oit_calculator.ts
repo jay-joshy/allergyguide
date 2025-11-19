@@ -881,7 +881,7 @@ function renderFoodSettings(): void {
         currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
           ? `
       <div class="setting-row threshold-setting">
-        <label>Switch to direct dosing when neat amount ≥</label>
+        <label>Directly dose when neat amount ≥</label>
         <input
           type="number"
           id="food-a-threshold"
@@ -931,7 +931,7 @@ function renderFoodSettings(): void {
           </div>
         </div>
         <div class="setting-row threshold-setting">
-          <label>Switch to Food B when Food A neat amount ≥</label>
+          <label>Transition when amount of food ≥</label>
           <input
             type="number"
             id="food-b-threshold"
