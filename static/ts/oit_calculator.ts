@@ -162,6 +162,10 @@ let fuzzySortPreparedProtocols: any[] = [];
 let searchDebounceTimer: number | null = null;
 let editDebounceTimer: number | null = null;
 
+// Dropdown navigation state
+let currentDropdownIndex: number = -1;
+let currentDropdownInputId: string = "";
+
 // ============================================
 // UTILITY FUNCTIONS
 // ============================================
@@ -1248,9 +1252,14 @@ function showSearchDropdown(
   const dropdown = document.createElement("div");
   dropdown.className = "search-dropdown";
 
+  // Reset dropdown navigation state
+  currentDropdownIndex = -1;
+  currentDropdownInputId = inputId;
+
   // Always add custom option first
   const customItem = document.createElement("div");
   customItem.className = "search-result-item";
+  customItem.setAttribute("data-index", "0");
   customItem.innerHTML = `<strong>Custom:</strong> ${query || "New food"}`;
   customItem.addEventListener("click", () => {
     selectCustomFood(query || "New Food", inputId);
@@ -1260,9 +1269,11 @@ function showSearchDropdown(
 
   // Add search results
   const displayResults = results.slice(0, 50);
-  for (const result of displayResults) {
+  for (let i = 0; i < displayResults.length; i++) {
+    const result = displayResults[i];
     const item = document.createElement("div");
     item.className = "search-result-item";
+    item.setAttribute("data-index", String(i + 1));
 
     if (result.obj.name) {
       // Protocol result
@@ -1300,6 +1311,64 @@ function hideSearchDropdown(inputId: string): void {
   const dropdown = container.querySelector(".search-dropdown");
   if (dropdown) {
     dropdown.remove();
+  }
+  currentDropdownIndex = -1;
+  currentDropdownInputId = "";
+}
+
+function navigateDropdown(direction: "up" | "down"): void {
+  if (!currentDropdownInputId) return;
+
+  const input = document.getElementById(
+    currentDropdownInputId,
+  ) as HTMLInputElement;
+  if (!input) return;
+
+  const container = input.parentElement!;
+  const dropdown = container.querySelector(".search-dropdown");
+  if (!dropdown) return;
+
+  const items = Array.from(dropdown.querySelectorAll(".search-result-item"));
+  if (items.length === 0) return;
+
+  // Remove current highlight
+  if (currentDropdownIndex >= 0 && currentDropdownIndex < items.length) {
+    items[currentDropdownIndex].classList.remove("highlighted");
+  }
+
+  // Update index
+  if (direction === "down") {
+    currentDropdownIndex = (currentDropdownIndex + 1) % items.length;
+  } else {
+    currentDropdownIndex =
+      currentDropdownIndex <= 0 ? items.length - 1 : currentDropdownIndex - 1;
+  }
+
+  // Add new highlight
+  items[currentDropdownIndex].classList.add("highlighted");
+
+  // Scroll into view
+  items[currentDropdownIndex].scrollIntoView({
+    block: "nearest",
+    behavior: "smooth",
+  });
+}
+
+function selectHighlightedDropdownItem(): void {
+  if (!currentDropdownInputId || currentDropdownIndex < 0) return;
+
+  const input = document.getElementById(
+    currentDropdownInputId,
+  ) as HTMLInputElement;
+  if (!input) return;
+
+  const container = input.parentElement!;
+  const dropdown = container.querySelector(".search-dropdown");
+  if (!dropdown) return;
+
+  const items = Array.from(dropdown.querySelectorAll(".search-result-item"));
+  if (currentDropdownIndex < items.length) {
+    (items[currentDropdownIndex] as HTMLElement).click();
   }
 }
 
@@ -1930,6 +1999,25 @@ async function initializeCalculator(): Promise<void> {
       }, 150);
     });
 
+    foodASearchInput.addEventListener("keydown", (e) => {
+      const dropdown =
+        foodASearchInput.parentElement?.querySelector(".search-dropdown");
+      if (!dropdown) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        navigateDropdown("down");
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        navigateDropdown("up");
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        selectHighlightedDropdownItem();
+      } else if (e.key === "Escape") {
+        hideSearchDropdown("food-a-search");
+      }
+    });
+
     foodASearchInput.addEventListener("blur", () => {
       setTimeout(() => hideSearchDropdown("food-a-search"), 200);
     });
@@ -1950,6 +2038,25 @@ async function initializeCalculator(): Promise<void> {
         const results = performSearch(query, "protocol");
         showSearchDropdown("food-b-search", results, query);
       }, 150);
+    });
+
+    foodBSearchInput.addEventListener("keydown", (e) => {
+      const dropdown =
+        foodBSearchInput.parentElement?.querySelector(".search-dropdown");
+      if (!dropdown) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        navigateDropdown("down");
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        navigateDropdown("up");
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        selectHighlightedDropdownItem();
+      } else if (e.key === "Escape") {
+        hideSearchDropdown("food-b-search");
+      }
     });
 
     foodBSearchInput.addEventListener("blur", () => {
