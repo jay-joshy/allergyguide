@@ -786,6 +786,7 @@ function toggleFoodType(isFoodB: boolean): void {
   if (!currentProtocol) return;
 
   const food = isFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
+  const wasLiquid = food.type === FoodType.LIQUID;
   food.type = food.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
 
   // Convert all relevant steps
@@ -797,17 +798,19 @@ function toggleFoodType(isFoodB: boolean): void {
     if (stepIsFoodB !== isFoodB) continue;
 
     if (step.method === Method.DILUTE) {
-      // Convert mixFoodAmount assuming 1g ≈ 1ml
+      // Convert mixFoodAmount assuming 1g ≈ 1ml (value stays the same)
       // Recalculate water based on new type
       const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
       const servings = totalMixProtein.dividedBy(step.targetMg);
       const mixTotalVolume = step.dailyAmount.times(servings);
 
       if (food.type === FoodType.SOLID) {
-        // Now solid - water = total volume
+        // Switched to solid (was liquid)
+        // For solid: water = total volume (solid volume negligible)
         step.mixWaterAmount = mixTotalVolume;
       } else {
-        // Now liquid - water = total - food
+        // Switched to liquid (was solid)
+        // For liquid: water = total - food
         step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
       }
 
@@ -1189,9 +1192,9 @@ function performSearch(query: string, searchType: "food" | "protocol"): any[] {
   if (!query.trim()) return [];
 
   if (searchType === "protocol") {
-    // Search protocols only
-    const results = fuzzysort.go(query, fuzzySortPreparedProtocols, {
-      key: "name",
+    // Search foods only (for Food B)
+    const results = fuzzysort.go(query, fuzzySortPreparedFoods, {
+      key: "Food",
       limit: 50,
       threshold: -10000,
     });
