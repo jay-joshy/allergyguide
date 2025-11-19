@@ -1,54 +1,54 @@
 // SET UP COLOURS FOR DARK AND LIGHT MODE
 :root {
-    /* Dark mode colors */
-    --oit-bg: #1a1a1a;
-    --oit-bg-secondary: #2a2a2a;
-    --oit-bg-hover: #3a3a3a;
-    --oit-text: #e0e0e0;
-    --oit-text-secondary: #b0b0b0;
-    --oit-border: #404040;
-    --oit-input-bg: #2a2a2a;
-    --oit-input-border: #505050;
-    --oit-button-primary: #4a90e2;
-    --oit-button-primary-hover: #5a9ff2;
-    --oit-button-active: #2a70c2;
-    --oit-warning-yellow-bg: #3a3000;
-    --oit-warning-yellow-border: #6a6000;
-    --oit-warning-yellow-text: #f0d000;
-    --oit-warning-red-bg: #3a0000;
-    --oit-warning-red-border: #6a0000;
-    --oit-warning-red-text: #f05050;
-    --oit-success-bg: #003a00;
-    --oit-success-border: #006a00;
-    --oit-success-text: #50f050;
-    --oit-table-header-bg: #2a2a2a;
-    --oit-table-row-hover: #3a3a3a;
+    /* Dark mode colors - Warm Orange Theme */
+    --oit-bg: #1a1412;
+    --oit-bg-secondary: #2a1f1a;
+    --oit-bg-hover: #3a2a22;
+    --oit-text: #f5e6d3;
+    --oit-text-secondary: #d4b896;
+    --oit-border: #4a3a2a;
+    --oit-input-bg: #2a1f1a;
+    --oit-input-border: #5a4a3a;
+    --oit-button-primary: #e8752d;
+    --oit-button-primary-hover: #f5883d;
+    --oit-button-active: #d6631d;
+    --oit-warning-yellow-bg: #3a2f00;
+    --oit-warning-yellow-border: #6a5500;
+    --oit-warning-yellow-text: #f0d050;
+    --oit-warning-red-bg: #3a1000;
+    --oit-warning-red-border: #6a2000;
+    --oit-warning-red-text: #ff7050;
+    --oit-success-bg: #1a3000;
+    --oit-success-border: #3a6000;
+    --oit-success-text: #90f050;
+    --oit-table-header-bg: #2a1f1a;
+    --oit-table-row-hover: #3a2a22;
 }
 
 :root.switch {
-    /* Light mode colors */
-    --oit-bg: #ffffff;
-    --oit-bg-secondary: #f5f5f5;
-    --oit-bg-hover: #e8e8e8;
-    --oit-text: #2a2a2a;
-    --oit-text-secondary: #606060;
-    --oit-border: #d0d0d0;
+    /* Light mode colors - Warm Orange Theme */
+    --oit-bg: #fffbf7;
+    --oit-bg-secondary: #fff0e6;
+    --oit-bg-hover: #ffe4d1;
+    --oit-text: #3a2410;
+    --oit-text-secondary: #6a4a30;
+    --oit-border: #d4b896;
     --oit-input-bg: #ffffff;
-    --oit-input-border: #c0c0c0;
-    --oit-button-primary: #4a90e2;
-    --oit-button-primary-hover: #5a9ff2;
-    --oit-button-active: #2a70c2;
+    --oit-input-border: #c4a886;
+    --oit-button-primary: #e8752d;
+    --oit-button-primary-hover: #f5883d;
+    --oit-button-active: #d6631d;
     --oit-warning-yellow-bg: #fffbf0;
-    --oit-warning-yellow-border: #f0d000;
-    --oit-warning-yellow-text: #8a6000;
-    --oit-warning-red-bg: #fff0f0;
-    --oit-warning-red-border: #f05050;
-    --oit-warning-red-text: #a00000;
-    --oit-success-bg: #f0fff0;
-    --oit-success-border: #50d050;
-    --oit-success-text: #006a00;
-    --oit-table-header-bg: #f5f5f5;
-    --oit-table-row-hover: #f9f9f9;
+    --oit-warning-yellow-border: #f0c050;
+    --oit-warning-yellow-text: #8a5500;
+    --oit-warning-red-bg: #fff5f0;
+    --oit-warning-red-border: #ff7050;
+    --oit-warning-red-text: #b02000;
+    --oit-success-bg: #f5fff0;
+    --oit-success-border: #70d050;
+    --oit-success-text: #2a6000;
+    --oit-table-header-bg: #fff0e6;
+    --oit-table-row-hover: #fff7f0;
 }
 
 // Main Container
