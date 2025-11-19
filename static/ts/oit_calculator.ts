@@ -858,6 +858,7 @@ function renderFoodSettings(): void {
         <label>Protein:</label>
         <input
           type="number"
+          min="0"
           id="food-a-protein"
           value="${mgPerUnitToMgPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
           step="0.1"
@@ -887,6 +888,7 @@ function renderFoodSettings(): void {
         <input
           type="number"
           id="food-a-threshold"
+          min="0"
           value="${formatAmount(currentProtocol.diThreshold, currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml")}"
           step="0.1"
         />
@@ -920,6 +922,7 @@ function renderFoodSettings(): void {
           <input
             type="number"
             id="food-b-protein"
+            min="0"
             value="${mgPerUnitToMgPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
             step="0.1"
           />
@@ -939,6 +942,7 @@ function renderFoodSettings(): void {
             id="food-b-threshold"
             value="${formatAmount(currentProtocol.foodBThreshold!.amount, currentProtocol.foodBThreshold!.unit)}"
             step="0.1"
+            min="0"
           />
           <span>${currentProtocol.foodBThreshold!.unit}</span>
         </div>
@@ -1061,6 +1065,7 @@ function renderProtocolTable(): void {
           data-field="targetMg"
           value="${formatNumber(step.targetMg, 1)}"
           step="0.1"
+          min="0"
         />
       </td>
     `;
@@ -1080,6 +1085,7 @@ function renderProtocolTable(): void {
           data-field="dailyAmount"
           value="${formatAmount(step.dailyAmount, step.dailyAmountUnit)}"
           step="0.1"
+          min="0"
         />
         <span> ${step.dailyAmountUnit}</span>
       </td>
@@ -1095,6 +1101,7 @@ function renderProtocolTable(): void {
             type="number"
             data-step="${step.stepIndex}"
             data-field="mixFoodAmount"
+            min="0"
             value="${formatAmount(step.mixFoodAmount!, mixUnit)}"
             step="0.01"
           />
