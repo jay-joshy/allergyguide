@@ -886,9 +886,8 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${
-        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-          ? `
+      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+      ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -901,8 +900,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-          : ""
-      }
+      : ""
+    }
     </div>
   `;
 
@@ -1466,7 +1465,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-        protocolData.dosing_strategy as keyof typeof DosingStrategy
+      protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
@@ -1830,15 +1829,19 @@ function attachExportEventListeners(): void {
 
   const pdfBtn = document.getElementById("export-pdf");
   if (pdfBtn) {
-    pdfBtn.addEventListener("click", () => {
-      alert("PDF export not yet implemented");
-    });
+    pdfBtn.addEventListener("click", exportPDF);
   }
 }
 
 // ============================================
 // EXPORT FUNCTIONS
 // ============================================
+
+// TODO!
+function exportPDF(): void {
+  alert("PDF export not yet implemented");
+
+}
 
 function exportASCII(): void {
   if (!currentProtocol) return;
