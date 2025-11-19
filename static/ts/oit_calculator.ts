@@ -413,6 +413,10 @@ function addFoodBToProtocol(
   // Calculate foodBmgThreshold
   const foodBmgThreshold = threshold.amount.times(foodB.mgPerUnit);
 
+  // Set Food B in protocol (even if no transition point found, so threshold changes can be detected)
+  protocol.foodB = foodB;
+  protocol.foodBThreshold = threshold;
+
   // Find transition point
   let transitionIndex = -1;
   for (let i = 0; i < protocol.steps.length; i++) {
@@ -425,6 +429,7 @@ function addFoodBToProtocol(
   if (transitionIndex === -1) {
     // No transition point found - emit warning
     console.warn("No transition point found for Food B");
+    // TODO! emit warning
     return;
   }
 
@@ -476,10 +481,6 @@ function addFoodBToProtocol(
   for (let i = 0; i < protocol.steps.length; i++) {
     protocol.steps[i].stepIndex = i + 1;
   }
-
-  // Set Food B in protocol
-  protocol.foodB = foodB;
-  protocol.foodBThreshold = threshold;
 }
 
 function validateProtocol(protocol: Protocol): Warning[] {
