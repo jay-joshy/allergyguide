@@ -853,7 +853,7 @@ function renderFoodSettings(): void {
         value="${currentProtocol.foodA.name}"
       />
       <div class="setting-row">
-        <label>Protein concentration:</label>
+        <label>Protein:</label>
         <input
           type="number"
           id="food-a-protein"
@@ -914,7 +914,7 @@ function renderFoodSettings(): void {
           value="${currentProtocol.foodB.name}"
         />
         <div class="setting-row">
-          <label>Protein concentration:</label>
+          <label>Protein:</label>
           <input
             type="number"
             id="food-b-protein"
@@ -1762,7 +1762,7 @@ function exportASCII(): void {
     currentProtocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
   const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
   text += `Food A: ${currentProtocol.foodA.name} (${foodAType})\n`;
-  text += `Protein Concentration: ${formatNumber(currentProtocol.foodA.mgPerUnit, 1)} mg/${foodAUnit}\n`;
+  text += `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit, 1)} mg/${foodAUnit}\n`;
 
   const strategyName = {
     [FoodAStrategy.DILUTE_INITIAL]: "Initial dilution only",
@@ -1781,7 +1781,7 @@ function exportASCII(): void {
     const foodBUnit =
       currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
     text += `\nFood B: ${currentProtocol.foodB.name} (${foodBType})\n`;
-    text += `Protein Concentration: ${formatNumber(currentProtocol.foodB.mgPerUnit, 1)} mg/${foodBUnit}\n`;
+    text += `Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit, 1)} mg/${foodBUnit}\n`;
     if (currentProtocol.foodBThreshold) {
       text += `Transition Threshold: ${formatAmount(currentProtocol.foodBThreshold.amount, currentProtocol.foodBThreshold.unit)} ${currentProtocol.foodBThreshold.unit}\n`;
     }
