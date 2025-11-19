@@ -1436,6 +1436,7 @@ function selectCustomFood(name: string, inputId: string): void {
     renderDosingStrategy();
     renderProtocolTable();
     updateWarnings();
+    updateFoodBDisabledState();
   } else {
     if (!currentProtocol) return;
     const threshold = {
