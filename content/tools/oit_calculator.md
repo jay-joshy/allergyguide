@@ -12,7 +12,4 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-</br>
-</br>
-
 {{ oit_calculator() }}

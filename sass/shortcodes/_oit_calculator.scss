@@ -329,8 +329,14 @@
 
     // Output Container
     .output-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .bottom-section {
         display: grid;
-        grid-template-columns: 1fr 350px;
+        grid-template-columns: auto 350px;
         gap: 2rem;
         align-items: start;
 
@@ -343,8 +349,8 @@
     .export-buttons {
         display: flex;
         gap: 1rem;
-        margin-bottom: 1.5rem;
         flex-wrap: wrap;
+        align-items: flex-start;
     }
 
     .btn-export {
@@ -533,9 +539,7 @@
         padding: 1.5rem;
         border-radius: 8px;
         border: 1px solid var(--oit-border);
-        position: sticky;
-        top: 1rem;
-        max-height: calc(100vh - 2rem);
+        max-height: 400px;
         overflow-y: auto;
 
         h3 {
@@ -654,6 +658,10 @@
 
         .output-container {
             gap: 1rem;
+        }
+
+        .bottom-section {
+            grid-template-columns: 1fr;
         }
 
         table {

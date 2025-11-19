@@ -1123,11 +1123,11 @@ function renderProtocolTable(): void {
 
   tableContainer.innerHTML = html;
 
-  // Add export buttons before table
-  const outputContainer = document.querySelector(
-    ".output-container",
+  // Add export buttons to bottom section
+  const bottomSection = document.querySelector(
+    ".bottom-section",
   ) as HTMLElement;
-  let exportButtons = outputContainer.querySelector(".export-buttons");
+  let exportButtons = bottomSection.querySelector(".export-buttons");
   if (!exportButtons) {
     const exportHTML = `
       <div class="export-buttons">
@@ -1135,7 +1135,7 @@ function renderProtocolTable(): void {
         <button class="btn-export" id="export-pdf">Export PDF</button>
       </div>
     `;
-    outputContainer.insertAdjacentHTML("afterbegin", exportHTML);
+    bottomSection.insertAdjacentHTML("afterbegin", exportHTML);
   }
 
   attachTableEventListeners();
