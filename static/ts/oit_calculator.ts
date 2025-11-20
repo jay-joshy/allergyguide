@@ -592,6 +592,31 @@ function validateProtocol(protocol: Protocol): Warning[] {
         });
       }
 
+      // R9: if in dilution, no negatives!!
+      if (step.dailyAmount.lessThanOrEqualTo(0)) {
+        warnings.push({
+          severity: "red",
+          code: "R9",
+          message: `Step ${step.stepIndex}: Daily amount cannot be <= 0 ml`,
+          stepIndex: step.stepIndex,
+        });
+      }
+      if (step.mixFoodAmount.lessThanOrEqualTo(0)) {
+        warnings.push({
+          severity: "red",
+          code: "R9",
+          message: `Step ${step.stepIndex}: Amount of food to mix cannot be <= 0 ${getMeasuringUnit(food)}`,
+          stepIndex: step.stepIndex,
+        });
+      }
+      if (step.mixWaterAmount.lessThan(0)) {
+        warnings.push({
+          severity: "red",
+          code: "R9",
+          message: `Step ${step.stepIndex}: Amount of water to mix cannot be < 0 ml`,
+          stepIndex: step.stepIndex,
+        });
+      }
 
       // Y3: for dilutions, noted below resolution of measurement tools
       if (food.type === FoodType.SOLID &&
@@ -631,7 +656,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       };
 
       // Y1: Low servings
-      if (step.servings!.lessThan(protocol.config.minServingsForMix)) {
+      if (step.servings!.lessThan(protocol.config.minServingsForMix) && step.servings!.moreThan(new Decimal(1))) {
         warnings.push({
           severity: "yellow",
           code: "Y1",
