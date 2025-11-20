@@ -200,6 +200,14 @@ function formatAmount(value: any, unit: Unit): string {
   }
 }
 
+function getMeasuringUnit(food: Food): Unit {
+  if (food.type === FoodType.LIQUID) {
+    return "ml"
+  } else {
+    return "g"
+  }
+}
+
 // ============================================
 // CORE ALGORITHMS
 // ============================================
