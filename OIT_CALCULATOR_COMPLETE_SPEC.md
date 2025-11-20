@@ -1012,14 +1012,32 @@ What happens if a new food is loaded?
 | R1   | Too few steps       | steps.length < 6                                                                                                  | Very rapid escalation      |
 | R2   | Protein mismatch    | abs(calculated - target) > 0.5 mg (absolute tolerance)                                                            | Dilution calculation error |
 | R3   | Dilution impossible | No valid dilution candidate meets constraints (instrument thresholds, servings, max water, and protein tolerance) | Cannot achieve target      |
-| R4   | Below resolution    | Amount < instrument minimum                                                                                       | Cannot measure accurately  |
 
 **Cautions (Yellow):**
 
-| Code | Description   | Condition                           | Impact                       |
-| ---- | ------------- | ----------------------------------- | ---------------------------- |
-| Y1   | Low servings  | servings < minServingsForMix        | Mix may not last long enough |
-| Y2   | Non-ascending | step[i].protein < step[i-1].protein | Unusual dose decrease        |
+| Code | Description      | Condition                           | Impact                       |
+| ---- | ---------------- | ----------------------------------- | ---------------------------- |
+| Y1   | Low servings     | servings < minServingsForMix        | Mix may not last long enough |
+| Y2   | Non-ascending    | step[i].protein < step[i-1].protein | Unusual dose decrease        |
+| Y3   | Below resolution | Amount < instrument minimum         | Cannot measure accurately    |
+
+TODO!
+
+- Implement R3 during dilution generation. For example, around line 386 in the function generateDefaultProtocol() notes a warning should be emitted if no working dilution can be found.
+- Impl new R and Y rules as below (most have already been added)
+
+### Yellow
+
+- Y4: in a step, if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20, emit warning. Description: there is too much solid:liquid, solid may contribute to total volume non-negligibly. Consider increasing dailyamount (the waterAmount will automatically update)
+- Y5: in addFoodBToProtocol (around line 444), if no transition point can be found a warning should be emitted, with a suggestion to decrease the threshold for food B.
+
+### Red
+
+- R5: if in dilution servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
+- R6: Mix total volume < dailyAmount (impossible) for dilutions
+- R7: zero or negative mgPerUnit for food A or food B
+- R8: Step targetMg zero or negative
+- R9: for dilutions, a negative field
 
 ### 9.2 Validation Timing
 
@@ -1222,22 +1240,7 @@ Of note, some of the doses in the protocol templates are _intentionally wrong_.
 
 ```bash
 cd allergyguide
-tsc static/ts/oit_calculator.ts \
-  --target ES2017 \
-  --lib ES2017,DOM \
-  --outDir static/js \
-  --skipLibCheck
-```
-
-**Watch Mode (Development):**
-
-```bash
-tsc static/ts/oit_calculator.ts \
-  --target ES2017 \
-  --lib ES2017,DOM \
-  --outDir static/js \
-  --skipLibCheck \
-  --watch
+tsc static/ts/oit_calculator.ts --target ES2017 --lib ES2017,DOM --outDir static/js --skipLibCheck
 ```
 
 **Output:**
