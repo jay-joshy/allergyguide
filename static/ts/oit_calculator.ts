@@ -1364,7 +1364,7 @@ function updateWarnings(): void {
 
   if (warnings.length === 0) {
     container.innerHTML = `
-      <div class="no-warnings">✓ No Issues Found<br>Protocol looks good to go!</div>
+      <div class="no-warnings">✓ Protocol valid. See here for the issues we check for.<br></div>
     `;
     return;
   }
@@ -1379,7 +1379,7 @@ function updateWarnings(): void {
       <div class="warning-section red-warnings">
         <h4>Critical Issues (Red)</h4>
         <ul>
-          ${redWarnings.map((w) => `<li><strong>${escapeHtml(w.code)}:</strong> ${w.message}</li>`).join("")}
+          ${redWarnings.map((w) => `<li><strong>${w.message}</strong></li>`).join("")}
         </ul>
       </div>
     `;
@@ -1390,7 +1390,7 @@ function updateWarnings(): void {
       <div class="warning-section yellow-warnings">
         <h4>Cautions (Yellow)</h4>
         <ul>
-          ${yellowWarnings.map((w) => `<li><strong>${escapeHtml(w.code)}:</strong> ${w.message}</li>`).join("")}
+          ${yellowWarnings.map((w) => `<li>${w.message}</li>`).join("")}
         </ul>
       </div>
     `;
