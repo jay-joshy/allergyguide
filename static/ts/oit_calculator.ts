@@ -6,6 +6,10 @@
 declare const Decimal: any;
 declare const fuzzysort: any;
 declare const AsciiTable: any;
+declare const jspdf: any;
+interface jsPDF {
+  autoTable: (...args: any[]) => void;
+}
 
 // Configure Decimal.js
 if (typeof Decimal !== "undefined") {
@@ -2106,11 +2110,38 @@ function attachCustomNoteListener(): void {
 
 // TODO!
 function exportPDF(): void {
-  alert("PDF export not yet implemented");
   if (!currentProtocol) return;
-  let text = `- DILUTE steps: Mix food with water, give patient specified daily amount
-  - DIRECT steps: Patient consumes food directly (neat/undiluted)
-  - Always verify calculations before clinical use`;
+
+  const { jsPDF } = jspdf;
+  const doc: any = new jsPDF({
+    unit: "pt",
+    format: "letter",
+  });
+
+  // Populate PDF
+  // Table for Food A and Food B should have headers of: "Step", "Protein", "Method", "Daily Amount", "Mix Details", "Interval"
+  // Interval should just say "2-4 weeks" for each row
+  // ------------------------------------------
+
+  // Add title
+  doc.setFontSize(18);
+  doc.text("PDF created with jsPDF", 40, 50);
+
+  // Output PDF as data URL and open in new tab
+  // ------------------------------------------
+  const dataUrl = doc.output("dataurlstring");
+  const w = window.open("", "_blank");
+  if (w) {
+    w.document.write(
+      `<iframe src="${dataUrl}" style="width:100%; height:100%; border:none;"></iframe>`
+    );
+  } else {
+    alert("Popup blocked. Please allow popups to view the PDF.");
+  }
+
+  // let text = `- DILUTE steps: Mix food with water, give patient specified daily amount
+  // - DIRECT steps: Patient consumes food directly (neat/undiluted)
+  // - Always verify calculations before clinical use`;
 }
 
 function exportASCII(): void {
