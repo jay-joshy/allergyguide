@@ -126,6 +126,7 @@ interface ProtocolData {
   table_di: any[];
   table_dn: any[];
   table_da: any[];
+  custom_note?: string;
 }
 
 // ============================================
@@ -2102,6 +2103,10 @@ function exportASCII(): void {
     "- DILUTE steps: Mix food with water, give patient specified daily amount\n";
   text += "- DIRECT steps: Patient consumes food directly (neat/undiluted)\n";
   text += "- Always verify calculations before clinical use\n";
+  // TODO! add custom note from user input if available
+  if (customNote) {
+    text += `- Custom Note: ${customNote}\n`;
+  }
 
   // Copy to clipboard
   navigator.clipboard
