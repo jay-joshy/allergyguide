@@ -131,7 +131,7 @@ interface ProtocolData {
 }
 
 // ============================================
-// CONSTANTS
+// CONSTANTS / DEFAULTS
 // ============================================
 
 const DOSING_STRATEGIES: { [key: string]: number[] } = {
@@ -151,6 +151,15 @@ const DAILY_AMOUNT_CANDIDATES = [0.5, 1, 2, 3, 4, 5, 10];
 const MAX_MIX_WATER = 250;
 
 let DEFAULT_CONFIG: ProtocolConfig;
+
+DEFAULT_CONFIG = {
+  minMeasurableMass: new Decimal(0.2),
+  minMeasurableVolume: new Decimal(0.2),
+  minServingsForMix: new Decimal(3),
+  PROTEIN_TOLERANCE_MG: new Decimal(0.5),
+  DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
+  DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
+};
 
 // ============================================
 // GLOBAL STATE
@@ -2209,16 +2218,6 @@ async function loadDatabases(): Promise<void> {
 // ============================================
 
 async function initializeCalculator(): Promise<void> {
-  // Initialize Decimal config
-  DEFAULT_CONFIG = {
-    minMeasurableMass: new Decimal(0.2),
-    minMeasurableVolume: new Decimal(0.2),
-    minServingsForMix: new Decimal(3),
-    PROTEIN_TOLERANCE_MG: new Decimal(0.5),
-    DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
-    DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
-  };
-
   // Load databases
   await loadDatabases();
 
