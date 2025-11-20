@@ -500,13 +500,15 @@ function addFoodBToProtocol(
 function validateProtocol(protocol: Protocol): Warning[] {
   const warnings: Warning[] = [];
 
+  // NON STEP SETTINGS
+  // -----------------
   // R1: Too few steps
-  if (protocol.steps.length < 6) {
+  if (protocol.steps.length < 5) {
     warnings.push({
       severity: "red",
       code: "R1",
       message:
-        "Protocol has fewer than 6 steps. Very rapid escalation may be unsafe.",
+        "Protocol < 5 steps, which is quite rapid for a full OIT protocol.",
     });
   }
 
