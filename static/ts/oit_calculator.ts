@@ -140,7 +140,7 @@ const DOSING_STRATEGIES: { [key: string]: number[] } = {
     0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220,
     260, 300,
   ],
-  RAPID: [1, 2.5, 5, 10, 20, 40, 80, 160, 300],
+  RAPID: [5, 10, 20, 40, 80, 160, 300],
 };
 
 const SOLID_MIX_CANDIDATES = [
@@ -1174,7 +1174,7 @@ function renderDosingStrategy(): void {
   ) as HTMLElement;
 
   const html = `
-    <h3>Dosing Strategy</h3>
+    <h3>Dosing Strategy (resets all steps on change)</h3>
     <div class="setting-row">
       <div class="toggle-group">
         <button class="toggle-btn ${currentProtocol.dosingStrategy === DosingStrategy.STANDARD ? "active" : ""}" data-strategy="STANDARD">Standard</button>
