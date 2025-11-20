@@ -70,7 +70,8 @@
       }
     ],
     "table_dn": [],
-    "table_da": []
+    "table_da": [],
+    "custom_note": "This is a custom note about the wrong protocl here"
   },
   {
     "name": "Protocol: milk rapid",

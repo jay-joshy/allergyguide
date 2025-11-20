@@ -83,7 +83,6 @@ interface Protocol {
   foodBThreshold?: { unit: Unit; amount: any }; // Decimal
   steps: Step[];
   config: ProtocolConfig;
-  custom_note?: string;
 }
 
 interface Warning {
@@ -1675,6 +1674,11 @@ function selectProtocol(protocolData: ProtocolData): void {
     config: DEFAULT_CONFIG,
   };
 
+  // Load custom note if it exists in global
+  if (protocolData.custom_note) {
+    customNote = protocolData.custom_note;
+  }
+
   // load steps from the relevant table (table_di, table_dn, or table_da
   let tableToLoad;
   if (protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
@@ -2055,11 +2059,6 @@ function attachCustomNoteListener(): void {
       const temp = document.createElement("div");
       temp.textContent = rawValue;
       customNote = temp.textContent || "";
-
-      // Update protocol if it exists
-      if (currentProtocol) {
-        currentProtocol.custom_note = customNote;
-      }
     }, 300);
   });
 }
