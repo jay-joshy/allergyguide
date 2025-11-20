@@ -663,7 +663,19 @@ function validateProtocol(protocol: Protocol): Warning[] {
           message: `Step ${step.stepIndex}: Only ${formatNumber(step.servings, 1)} servings (< ${DEFAULT_CONFIG.minServingsForMix} - impractical). Consider increasing mix amounts.`,
           stepIndex: step.stepIndex,
         });
-      }
+      };
+
+      // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20 (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give 
+      if (food.type === FoodType.SOLID &&
+        (step.mixFoodAmount.dividedBy(step.mixWaterAmount)).greaterThan(new Decimal(0.05))) {
+        warnings.push({
+          severity: "yellow",
+          code: "Y4",
+          message: `Step ${step.stepIndex}: at ${formatNumber(step.mixFoodAmount, 2)} g of food in ${formatNumber(step.mixWaterAmount, 1)} ml of water, the ratio of food:water is >1:20. The assumption that the food contributes non-negligibly to the total volume of dilution is likely violated. Consider increasing the Daily Amount`,
+          stepIndex: step.stepIndex,
+        });
+
+      };
     }
     // FOR DIRECT
     else if (step.method === Method.DIRECT) {
