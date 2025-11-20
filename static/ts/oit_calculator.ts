@@ -685,9 +685,13 @@ function validateProtocol(protocol: Protocol): Warning[] {
         });
       }
 
-      // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20 (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give 
-      if (food.type === FoodType.SOLID &&
-        (step.mixFoodAmount.dividedBy(step.mixWaterAmount)).greaterThan(new Decimal(0.05))) {
+      // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20 (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give
+      if (
+        food.type === FoodType.SOLID &&
+        step.mixFoodAmount
+          .dividedBy(step.mixWaterAmount)
+          .greaterThan(new Decimal(0.05))
+      ) {
         warnings.push({
           severity: "yellow",
           code: "Y4",
