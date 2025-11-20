@@ -1005,39 +1005,40 @@ What happens if a new food is loaded?
 
 ### 9.1 Validation Rules
 
-**Critical Errors (Red):**
+### Red Warnings (Critical Issues)
 
-| Code | Description         | Condition                                                                                                         | Impact                     |
-| ---- | ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| R1   | Too few steps       | steps.length < 6                                                                                                  | Very rapid escalation      |
-| R2   | Protein mismatch    | abs(calculated - target) > 0.5 mg (absolute tolerance)                                                            | Dilution calculation error |
-| R3   | Dilution impossible | No valid dilution candidate meets constraints (instrument thresholds, servings, max water, and protein tolerance) | Cannot achieve target      |
+| Code | Description                            | Condition                      | Impact                                                    |
+| ---- | -------------------------------------- | ------------------------------ | --------------------------------------------------------- |
+| R1   | Too few steps                          | `steps.length < 5`             | Protocol is too rapid for full OIT                        |
+| R2   | Protein mismatch (Dilution)            | `                              | calculatedProtein - targetMg                              |
+| R2   | Protein mismatch (Direct)              | `                              | calculatedProtein - targetMg                              |
+| R5   | Insufficient protein in mix            | `servings < 1`                 | Mix doesn't contain enough protein to deliver target dose |
+| R6   | Impossible dilution volume             | `mixTotalVolume < dailyAmount` | Cannot consume more than total mix volume                 |
+| R7   | Invalid protein concentration (Food A) | `foodA.mgPerUnit <= 0`         | Food cannot be used for OIT                               |
+| R7   | Invalid protein concentration (Food B) | `foodB.mgPerUnit <= 0`         | Food cannot be used for OIT                               |
+| R8   | Invalid target protein                 | `targetMg <= 0`                | Target dose must be positive                              |
+| R9   | Invalid daily amount                   | `dailyAmount <= 0`             | Daily dose must be positive                               |
+| R9   | Invalid mix food amount                | `mixFoodAmount <= 0`           | Food amount must be positive                              |
+| R9   | Invalid mix water amount               | `mixWaterAmount < 0`           | Water amount cannot be negative                           |
 
-**Cautions (Yellow):**
+### Yellow Warnings (Practical Issues)
 
-| Code | Description      | Condition                           | Impact                       |
-| ---- | ---------------- | ----------------------------------- | ---------------------------- |
-| Y1   | Low servings     | servings < minServingsForMix        | Mix may not last long enough |
-| Y2   | Non-ascending    | step[i].protein < step[i-1].protein | Unusual dose decrease        |
-| Y3   | Below resolution | Amount < instrument minimum         | Cannot measure accurately    |
+| Code | Description                                  | Condition                                             | Impact                                              |
+| ---- | -------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------- |
+| Y1   | Low servings                                 | `servings < minServingsForMix` AND `servings > 1`     | Mix may not last long enough; impractical           |
+| Y2   | Non-ascending steps                          | `step[i].targetMg < step[i-1].targetMg`               | Doses should increase or stay equal                 |
+| Y3   | Impractical measurement (solid food in mix)  | `mixFoodAmount < minMeasurableMass` (dilution)        | Too small to measure accurately                     |
+| Y3   | Impractical measurement (liquid food in mix) | `mixFoodAmount < minMeasurableVolume` (dilution)      | Too small to measure accurately                     |
+| Y3   | Impractical measurement (daily amount)       | `dailyAmount < minMeasurableVolume` (dilution)        | Too small to measure accurately                     |
+| Y3   | Impractical measurement (water amount)       | `mixWaterAmount < minMeasurableVolume` (dilution)     | Too small to measure accurately                     |
+| Y3   | Impractical measurement (solid direct)       | `dailyAmount < minMeasurableMass` (direct)            | Too small to measure accurately                     |
+| Y3   | Impractical measurement (liquid direct)      | `dailyAmount < minMeasurableVolume` (direct)          | Too small to measure accurately                     |
+| Y4   | High food-to-water ratio                     | `mixFoodAmount / mixWaterAmount > 0.05` (>1:20 ratio) | Volume assumption violated; may underestimate doses |
 
 TODO!
 
 - Implement R3 during dilution generation. For example, around line 386 in the function generateDefaultProtocol() notes a warning should be emitted if no working dilution can be found.
-- Impl new R and Y rules as below (most have already been added)
-
-### Yellow
-
-- Y4: in a step, if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20, emit warning. Description: there is too much solid:liquid, solid may contribute to total volume non-negligibly. Consider increasing dailyamount (the waterAmount will automatically update)
 - Y5: in addFoodBToProtocol (around line 444), if no transition point can be found a warning should be emitted, with a suggestion to decrease the threshold for food B.
-
-### Red
-
-- R5: if in dilution servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
-- R6: Mix total volume < dailyAmount (impossible) for dilutions
-- R7: zero or negative mgPerUnit for food A or food B
-- R8: Step targetMg zero or negative
-- R9: for dilutions, a negative field
 
 ### 9.2 Validation Timing
 
