@@ -513,21 +513,21 @@ function validateProtocol(protocol: Protocol): Warning[] {
   }
 
   // R7: zero or negative mgPerUnit for food A 
-  if (protocol.foodA.mgPerUnit <= 0) {
+  if (protocol.foodA.mgPerUnit.lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: "red",
       code: "R7",
       message:
-        `${protocol.foodA.name} cannot have a negative or zero protein concentration to be considered for OIT`,
+        `${protocol.foodA.name} protein concentration must be > 0 to be considered for OIT`,
     });
   }
   // R7: zero or negative mgPerUnit for food B
-  if (protocol.foodB?.mgPerUnit <= 0) {
+  if (protocol.foodB?.mgPerUnit.lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: "red",
       code: "R7",
       message:
-        `${protocol.foodB?.name} cannot have a negative or zero protein concentration to be considered for OIT`,
+        `${protocol.foodB?.name} protein concentration must be > 0 to be considered for OIT`,
     });
   }
 
@@ -539,7 +539,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
     const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
 
     // R8: Step targetMg zero or negative
-    if (step.targetMg <= 0) {
+    if (step.targetMg.lessThanOrEqualTo(new Decimal(0))) {
       warnings.push({
         severity: "red",
         code: "R8",
@@ -572,7 +572,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // R5: if in dilution, servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
-      if (step.servings < 1) {
+      if (step.servings.lessThan(new Decimal(1))) {
         const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
         warnings.push({
           severity: "red",
@@ -583,7 +583,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // R6: if in dilution, Mix total volume < dailyAmount (impossible)
-      if (mixTotalVolume < step.dailyAmount) {
+      if (mixTotalVolume.lessThan(step.dailyAmount)) {
         warnings.push({
           severity: "red",
           code: "R6",
