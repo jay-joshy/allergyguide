@@ -2229,14 +2229,9 @@ function exportASCII(): void {
   }
 
   // Copy to clipboard
-  navigator.clipboard
-    .writeText(text)
-    .then(() => {
-      alert("Protocol copied to clipboard!");
-    })
-    .catch(() => {
-      alert("Failed to copy to clipboard. Please copy manually:\n\n" + text);
-    });
+  navigator.clipboard.writeText(text).catch(() => {
+    alert("Failed to copy to clipboard. Please copy manually:\n\n" + text);
+  });
 }
 
 // ============================================
