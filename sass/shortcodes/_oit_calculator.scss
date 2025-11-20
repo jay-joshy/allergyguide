@@ -352,6 +352,13 @@
         }
     }
 
+    // Export Container (wraps buttons and custom note)
+    .export-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
     // Export Buttons
     .export-buttons {
         display: flex;
@@ -379,6 +386,45 @@
 
         &:active {
             transform: translateY(0);
+        }
+    }
+
+    // Custom Note Section
+    .custom-note-container {
+        margin-top: 1.5rem;
+        width: 100%;
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--oit-text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+    }
+
+    .custom-note-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--oit-text-primary);
+        background-color: var(--oit-bg-primary);
+        border: 0.1rem solid var(--oit-button-primary);
+        border-radius: 6px;
+        resize: vertical;
+        transition:
+            border-color 0.2s,
+            box-shadow 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: var(--oit-button-primary);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        &::placeholder {
+            color: var(--oit-text-secondary);
         }
     }
 
@@ -712,6 +758,11 @@
             position: static;
             max-height: none;
         }
+
+        .custom-note-textarea {
+            max-width: 100%;
+            font-size: 0.9rem;
+        }
     }
 
     // Print Styles
@@ -720,7 +771,7 @@
         .food-a-settings,
         .food-b-settings,
         .dosing-strategy-container,
-        .export-buttons,
+        .export-container,
         .warnings-container,
         .actions-cell {
             display: none !important;

@@ -83,6 +83,7 @@ interface Protocol {
   foodBThreshold?: { unit: Unit; amount: any }; // Decimal
   steps: Step[];
   config: ProtocolConfig;
+  custom_note?: string;
 }
 
 interface Warning {
@@ -107,6 +108,7 @@ interface FoodData {
   Type: string;
 }
 
+// For loading of protocols from JSON file
 interface ProtocolData {
   name: string;
   dosing_strategy: string;
@@ -160,6 +162,7 @@ let foodsDatabase: FoodData[] = [];
 let protocolsDatabase: ProtocolData[] = [];
 let fuzzySortPreparedFoods: any[] = [];
 let fuzzySortPreparedProtocols: any[] = [];
+let customNote: string = "";
 
 // Debounce timers
 let searchDebounceTimer: number | null = null;
@@ -1325,12 +1328,23 @@ function renderProtocolTable(): void {
   const bottomSection = document.querySelector(
     ".bottom-section",
   ) as HTMLElement;
-  let exportButtons = bottomSection.querySelector(".export-buttons");
-  if (!exportButtons) {
+  let exportContainer = bottomSection.querySelector(".export-container");
+  if (!exportContainer) {
     const exportHTML = `
-      <div class="export-buttons">
-        <button class="btn-export" id="export-ascii">Export ASCII</button>
-        <button class="btn-export" id="export-pdf">Export PDF</button>
+      <div class="export-container">
+        <div class="export-buttons">
+          <button class="btn-export" id="export-ascii">Export ASCII</button>
+          <button class="btn-export" id="export-pdf">Export PDF</button>
+        </div>
+        <div class="custom-note-container">
+          <label for="custom-note">Notes:</label>
+          <textarea
+            id="custom-note"
+            class="custom-note-textarea"
+            placeholder="Add any custom notes or instructions for this protocol..."
+            rows="10"
+          >${escapeHtml(customNote)}</textarea>
+        </div>
       </div>
     `;
     bottomSection.insertAdjacentHTML("afterbegin", exportHTML);
@@ -1338,6 +1352,7 @@ function renderProtocolTable(): void {
 
   attachTableEventListeners();
   attachExportEventListeners();
+  attachCustomNoteListener();
 }
 
 function updateWarnings(): void {
@@ -2018,6 +2033,37 @@ function attachExportEventListeners(): void {
   }
 }
 
+function attachCustomNoteListener(): void {
+  const textarea = document.getElementById(
+    "custom-note",
+  ) as HTMLTextAreaElement;
+  if (!textarea) return;
+
+  // Set initial value
+  textarea.value = customNote;
+
+  // Handle input with debouncing
+  let noteDebounceTimer: number | null = null;
+  textarea.addEventListener("input", (e) => {
+    if (noteDebounceTimer !== null) {
+      clearTimeout(noteDebounceTimer);
+    }
+
+    noteDebounceTimer = window.setTimeout(() => {
+      const rawValue = (e.target as HTMLTextAreaElement).value;
+      // Sanitize the input by creating a temporary element
+      const temp = document.createElement("div");
+      temp.textContent = rawValue;
+      customNote = temp.textContent || "";
+
+      // Update protocol if it exists
+      if (currentProtocol) {
+        currentProtocol.custom_note = customNote;
+      }
+    }, 300);
+  });
+}
+
 // ============================================
 // EXPORT FUNCTIONS
 // ============================================
@@ -2107,9 +2153,8 @@ function exportASCII(): void {
     "- DILUTE steps: Mix food with water, give patient specified daily amount\n";
   text += "- DIRECT steps: Patient consumes food directly (neat/undiluted)\n";
   text += "- Always verify calculations before clinical use\n";
-  // TODO! add custom note from user input if available
-  if (customNote) {
-    text += `- Custom Note: ${customNote}\n`;
+  if (customNote && customNote.trim()) {
+    text += `\nCustom Note:\n${customNote.trim()}\n`;
   }
 
   // Copy to clipboard
