@@ -656,7 +656,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       };
 
       // Y1: Low servings
-      if (step.servings!.lessThan(protocol.config.minServingsForMix) && step.servings!.moreThan(new Decimal(1))) {
+      if (step.servings!.lessThan(protocol.config.minServingsForMix) && step.servings!.greaterThan(new Decimal(1))) {
         warnings.push({
           severity: "yellow",
           code: "Y1",
