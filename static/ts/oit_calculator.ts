@@ -2,9 +2,10 @@
 // OIT CALCULATOR - COMPLETE IMPLEMENTATION
 // ============================================
 
-// Declare global Decimal from decimal.js
+// Declare global Decimal from decimal.js + other CDN packages
 declare const Decimal: any;
 declare const fuzzysort: any;
+declare const AsciiTable: any;
 
 // Configure Decimal.js
 if (typeof Decimal !== "undefined") {
@@ -1109,9 +1110,8 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${
-        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-          ? `
+      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+      ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -1124,8 +1124,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-          : ""
-      }
+      : ""
+    }
     </div>
   `;
 
@@ -1701,7 +1701,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-        protocolData.dosing_strategy as keyof typeof DosingStrategy
+      protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
@@ -2156,6 +2156,9 @@ function exportASCII(): void {
   text += "========================================\n";
   text += "PROTOCOL STEPS\n";
   text += "========================================\n\n";
+  const table = new AsciiTable('Protocol');
+  const header = ['Step', 'Protein', 'Method', 'Daily Amount', 'Amount for mix', 'Water for mix'];
+  const rows: string[][] = []
 
   const foodAStepCount = getFoodAStepCount(currentProtocol);
   let currentFood = currentProtocol.foodA.name;
