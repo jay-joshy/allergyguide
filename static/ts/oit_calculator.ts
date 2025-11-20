@@ -2108,7 +2108,6 @@ function attachCustomNoteListener(): void {
 // EXPORT FUNCTIONS
 // ============================================
 
-// TODO!
 function exportPDF(): void {
   if (!currentProtocol) return;
 
@@ -2118,30 +2117,222 @@ function exportPDF(): void {
     format: "letter",
   });
 
-  // Populate PDF
-  // Table for Food A and Food B should have headers of: "Step", "Protein", "Method", "Daily Amount", "Mix Details", "Interval"
-  // Interval should just say "2-4 weeks" for each row
-  // ------------------------------------------
+  let yPosition = 40;
 
   // Add title
   doc.setFontSize(18);
-  doc.text("PDF created with jsPDF", 40, 50);
+  doc.setFont(undefined, "bold");
+  doc.text("Oral Immunotherapy Protocol", 40, yPosition);
+  yPosition += 30;
+
+  // Get food information
+  const foodAType =
+    currentProtocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
+  const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
+  const foodAStepCount = getFoodAStepCount(currentProtocol);
+  const totalSteps = currentProtocol.steps.length;
+
+  // Build Food A table data
+  const foodARows: any[] = [];
+  for (let i = 0; i < foodAStepCount; i++) {
+    const step = currentProtocol.steps[i];
+    const food = currentProtocol.foodA;
+
+    let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
+    let mixDetails = "N/A";
+
+    if (step.method === Method.DILUTE) {
+      const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
+      mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
+    }
+
+    foodARows.push([
+      step.stepIndex,
+      `${formatNumber(step.targetMg, 1)} mg`,
+      step.method,
+      dailyAmountStr,
+      mixDetails,
+      "2-4 weeks",
+    ]);
+  }
+
+  // Food A section
+  doc.setFontSize(14);
+  doc.setFont(undefined, "bold");
+  doc.text(`${currentProtocol.foodA.name}`, 40, yPosition);
+  yPosition += 20;
+
+  doc.setFontSize(10);
+  doc.setFont(undefined, "normal");
+  doc.text(
+    `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodAUnit} serving.`,
+    40,
+    yPosition,
+  );
+  yPosition += 15;
+
+  // Food A table
+  (doc as any).autoTable({
+    startY: yPosition,
+    head: [
+      ["Step", "Protein", "Method", "Daily Amount", "How to make mix", "Interval"],
+    ],
+    body: foodARows,
+    theme: "grid",
+    headStyles: { fillColor: [66, 139, 202], fontStyle: "bold" },
+    margin: { left: 40, right: 40 },
+    styles: { fontSize: 9, cellPadding: 5 },
+    columnStyles: {
+      0: { cellWidth: 40 },
+      1: { cellWidth: 70 },
+      2: { cellWidth: 60 },
+      3: { cellWidth: 90 },
+      4: { cellWidth: 180 },
+      5: { cellWidth: 80 },
+    },
+  });
+
+  yPosition = (doc as any).lastAutoTable.finalY + 20;
+
+  // Food B section (if exists)
+  if (currentProtocol.foodB && foodAStepCount < totalSteps) {
+    const foodBType =
+      currentProtocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
+    const foodBUnit =
+      currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
+
+    // Build Food B table data
+    const foodBRows: any[] = [];
+    for (let i = foodAStepCount; i < totalSteps; i++) {
+      const step = currentProtocol.steps[i];
+      const food = currentProtocol.foodB;
+
+      let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
+      let mixDetails = "N/A";
+
+      if (step.method === Method.DILUTE) {
+        const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
+        mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
+      }
+
+      foodBRows.push([
+        step.stepIndex,
+        `${formatNumber(step.targetMg, 1)} mg`,
+        step.method,
+        dailyAmountStr,
+        mixDetails,
+        "2-4 weeks",
+      ]);
+    }
+
+    // Check if we need a new page
+    if (yPosition > 650) {
+      doc.addPage();
+      yPosition = 40;
+    }
+
+    yPosition += 10;
+    doc.setFontSize(14);
+    doc.setFont(undefined, "bold");
+    doc.text(`${currentProtocol.foodB.name}`, 40, yPosition);
+    yPosition += 20;
+
+    doc.setFontSize(10);
+    doc.setFont(undefined, "normal");
+    doc.text(
+      `Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodBUnit} serving`,
+      40,
+      yPosition,
+    );
+    yPosition += 15;
+
+    // Food B table
+    (doc as any).autoTable({
+      startY: yPosition,
+      head: [
+        [
+          "Step",
+          "Protein",
+          "Method",
+          "Daily Amount",
+          "How to make mix",
+          "Interval",
+        ],
+      ],
+      body: foodBRows,
+      theme: "grid",
+      headStyles: { fillColor: [66, 139, 202], fontStyle: "bold" },
+      margin: { left: 40, right: 40 },
+      styles: { fontSize: 9, cellPadding: 5 },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 60 },
+        3: { cellWidth: 90 },
+        4: { cellWidth: 180 },
+        5: { cellWidth: 80 },
+      },
+    });
+
+    yPosition = (doc as any).lastAutoTable.finalY + 20;
+  }
+
+  // Custom notes section
+  if (customNote && customNote.trim()) {
+    // Check if we need a new page
+    if (yPosition > 650) {
+      doc.addPage();
+      yPosition = 40;
+    }
+
+    doc.setFontSize(14);
+    doc.setFont(undefined, "bold");
+    doc.text("Notes", 40, yPosition);
+    yPosition += 15;
+
+    doc.setFontSize(10);
+    doc.setFont(undefined, "normal");
+
+    // Split notes into lines that fit the page width
+    const maxWidth = 520; // page width minus margins
+    const lines = doc.splitTextToSize(customNote.trim(), maxWidth);
+
+    for (const line of lines) {
+      if (yPosition > 730) {
+        doc.addPage();
+        yPosition = 40;
+      }
+      doc.text(line, 40, yPosition);
+      yPosition += 14;
+    }
+  }
+
+  // Add footer with disclaimer
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setFont(undefined, "italic");
+    doc.setTextColor(100);
+    doc.text(
+      "",
+      40,
+      760,
+    );
+    doc.text("Always verify calculations before clinical use.", 40, 772);
+    doc.setTextColor(0);
+  }
 
   // Output PDF as data URL and open in new tab
-  // ------------------------------------------
   const dataUrl = doc.output("dataurlstring");
   const w = window.open("", "_blank");
   if (w) {
     w.document.write(
-      `<iframe src="${dataUrl}" style="width:100%; height:100%; border:none;"></iframe>`
+      `<iframe src="${dataUrl}" style="width:100%; height:100%; border:none;"></iframe>`,
     );
   } else {
     alert("Popup blocked. Please allow popups to view the PDF.");
   }
-
-  // let text = `- DILUTE steps: Mix food with water, give patient specified daily amount
-  // - DIRECT steps: Patient consumes food directly (neat/undiluted)
-  // - Always verify calculations before clinical use`;
 }
 
 function exportASCII(): void {
