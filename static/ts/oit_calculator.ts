@@ -528,29 +528,49 @@ function validateProtocol(protocol: Protocol): Warning[] {
         });
       }
 
-      // R4: Below resolution
-      if (
-        (food.type === FoodType.SOLID &&
-          step.mixFoodAmount!.lessThan(protocol.config.minMeasurableMass)) ||
-        (food.type === FoodType.LIQUID &&
-          step.mixFoodAmount!.lessThan(protocol.config.minMeasurableVolume)) ||
-        step.dailyAmount.lessThan(protocol.config.minMeasurableVolume) ||
-        step.mixWaterAmount!.lessThan(protocol.config.minMeasurableVolume)
-      ) {
+      // Y3: Below resolution of measurement tools
+      if (food.type === FoodType.SOLID &&
+        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableMass)) {
         warnings.push({
-          severity: "red",
-          code: "R4",
-          message: `Step ${step.stepIndex}: Measured powder/volume below instrument resolution — impractical to prepare.`,
+          severity: "yellow",
+          code: "Y3",
+          message: `Step ${step.stepIndex}: Measuring ${step.mixFoodAmount} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
-      }
+
+      };
+      if (food.type === FoodType.LIQUID &&
+        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableVolume)) {
+        warnings.push({
+          severity: "yellow",
+          code: "Y3",
+          message: `Step ${step.stepIndex}: Measuring ${step.mixFoodAmount} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          stepIndex: step.stepIndex,
+        });
+      };
+      if (step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
+        warnings.push({
+          severity: "yellow",
+          code: "Y3",
+          message: `Step ${step.stepIndex}: Measuring a daily amount of ${step.dailyAmount} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          stepIndex: step.stepIndex,
+        });
+      };
+      if (step.mixWaterAmount!.lessThan(protocol.config.minMeasurableVolume)) {
+        warnings.push({
+          severity: "yellow",
+          code: "Y3",
+          message: `Step ${step.stepIndex}: Measuring ${step.mixWaterAmount} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          stepIndex: step.stepIndex,
+        });
+      };
 
       // Y1: Low servings
       if (step.servings!.lessThan(protocol.config.minServingsForMix)) {
         warnings.push({
           severity: "yellow",
           code: "Y1",
-          message: `Step ${step.stepIndex}: Only ${formatNumber(step.servings, 1)} servings (< configured minimum). Consider increasing mix amounts.`,
+          message: `Step ${step.stepIndex}: Only ${formatNumber(step.servings, 1)} servings (< ${DEFAULT_CONFIG.minServingsForMix} - impractical). Consider increasing mix amounts.`,
           stepIndex: step.stepIndex,
         });
       }
@@ -1840,6 +1860,7 @@ function attachExportEventListeners(): void {
 // TODO!
 function exportPDF(): void {
   alert("PDF export not yet implemented");
+  if (!currentProtocol) return;
 
 }
 
