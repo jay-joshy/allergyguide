@@ -66,10 +66,10 @@ interface Step {
 }
 
 interface ProtocolConfig {
-  minMeasurableMass: any; // Decimal
+  minMeasurableMass: any; // Decimal.
   minMeasurableVolume: any; // Decimal
   minServingsForMix: any; // Decimal
-  PROTEIN_TOLERANCE_MG: any; // Decimal
+  PROTEIN_TOLERANCE_MG: any; // Decimal. Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: any; // Decimal
   DEFAULT_FOOD_B_THRESHOLD: any; // Decimal
 }
