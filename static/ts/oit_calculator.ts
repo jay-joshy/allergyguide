@@ -512,11 +512,44 @@ function validateProtocol(protocol: Protocol): Warning[] {
     });
   }
 
-  // Check each step
+  // R7: zero or negative mgPerUnit for food A 
+  if (protocol.foodA.mgPerUnit <= 0) {
+    warnings.push({
+      severity: "red",
+      code: "R7",
+      message:
+        `${protocol.foodA.name} cannot have a negative or zero protein concentration to be considered for OIT`,
+    });
+  }
+  // R7: zero or negative mgPerUnit for food B
+  if (protocol.foodB?.mgPerUnit <= 0) {
+    warnings.push({
+      severity: "red",
+      code: "R7",
+      message:
+        `${protocol.foodB?.name} cannot have a negative or zero protein concentration to be considered for OIT`,
+    });
+  }
+
+
+  // STEP VALIDATION ONE BY ONE
+  // --------------------------
   for (const step of protocol.steps) {
     const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
 
+    // R8: Step targetMg zero or negative
+    if (step.targetMg <= 0) {
+      warnings.push({
+        severity: "red",
+        code: "R8",
+        message: `Step ${step.stepIndex}: A target protein of ${formatNumber(step.targetMg, 1)} mg is NOT valid. It must be >0.`,
+        stepIndex: step.stepIndex,
+      });
+
+    }
+
+    // FOR DILUTION STEPS
     if (step.method === Method.DILUTE) {
       // R2: Protein mismatch
       const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
@@ -538,7 +571,29 @@ function validateProtocol(protocol: Protocol): Warning[] {
         });
       }
 
-      // Y3: Below resolution of measurement tools
+      // R5: if in dilution, servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
+      if (step.servings < 1) {
+        const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
+        warnings.push({
+          severity: "red",
+          code: "R5",
+          message: `Step ${step.stepIndex}: ${formatNumber(step.mixFoodAmount, 2)} ${getMeasuringUnit(food)} of food only makes ${formatNumber(totalMixProtein, 1)} mg of total protein. However, target protein is ${formatNumber(step.targetMg, 1)} mg.`,
+          stepIndex: step.stepIndex,
+        });
+      }
+
+      // R6: if in dilution, Mix total volume < dailyAmount (impossible)
+      if (mixTotalVolume < step.dailyAmount) {
+        warnings.push({
+          severity: "red",
+          code: "R6",
+          message: `Step ${step.stepIndex}: Total volume of dilution is ${formatNumber(mixTotalVolume, 1)} ml; however, daily amount is ${formatNumber(step.dailyAmount, 1)} ml, which is impossible`,
+          stepIndex: step.stepIndex,
+        });
+      }
+
+
+      // Y3: for dilutions, noted below resolution of measurement tools
       if (food.type === FoodType.SOLID &&
         step.mixFoodAmount!.lessThan(protocol.config.minMeasurableMass)) {
         warnings.push({
@@ -584,6 +639,42 @@ function validateProtocol(protocol: Protocol): Warning[] {
           stepIndex: step.stepIndex,
         });
       }
+    }
+    // FOR DIRECT
+    else if (step.method === Method.DIRECT) {
+      // R2: Protein mismatch
+      const calculatedProtein = step.dailyAmount
+        .times(food.mgPerUnit)
+      const delta = calculatedProtein.minus(step.targetMg).abs();
+
+      if (delta.greaterThan(0.5)) {
+        warnings.push({
+          severity: "red",
+          code: "R2",
+          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg.`,
+          stepIndex: step.stepIndex,
+        });
+      }
+
+      // Y3: for direct, noted below resolution of measurement tools
+      if (food.type === FoodType.SOLID &&
+        step.dailyAmount.lessThan(protocol.config.minMeasurableMass)) {
+        warnings.push({
+          severity: "yellow",
+          code: "Y3",
+          message: `Step ${step.stepIndex}: Measuring ${step.dailyAmount} g of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} g`,
+          stepIndex: step.stepIndex,
+        });
+      };
+      if (food.type === FoodType.LIQUID &&
+        step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
+        warnings.push({
+          severity: "yellow",
+          code: "Y3",
+          message: `Step ${step.stepIndex}: Measuring ${step.dailyAmount} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
+          stepIndex: step.stepIndex,
+        });
+      };
     }
   }
 
