@@ -2108,61 +2108,38 @@ function attachCustomNoteListener(): void {
 function exportPDF(): void {
   alert("PDF export not yet implemented");
   if (!currentProtocol) return;
+  let text = `- DILUTE steps: Mix food with water, give patient specified daily amount
+  - DIRECT steps: Patient consumes food directly (neat/undiluted)
+  - Always verify calculations before clinical use`;
 }
 
 function exportASCII(): void {
   if (!currentProtocol) return;
 
-  let text = "OIT Protocol\n\n";
+  let text = "";
+  let foodAInfo = "";
+  let foodBInfo = "";
 
-  text += "========================================\n";
-  text += "FOOD INFORMATION\n";
-  text += "========================================\n\n";
-
+  // get food A and B? info
   const foodAType =
     currentProtocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
   const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-  text += `Food A: ${currentProtocol.foodA.name} (${foodAType})\n`;
-  text += `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit, 1)} mg/${foodAUnit}\n`;
-
-  const strategyName = {
-    [FoodAStrategy.DILUTE_INITIAL]: "Initial dilution only",
-    [FoodAStrategy.DILUTE_ALL]: "Dilution throughout",
-    [FoodAStrategy.DILUTE_NONE]: "No dilutions",
-  }[currentProtocol.foodAStrategy];
-  text += `Dilution Strategy: ${strategyName}\n`;
-
-  if (currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
-    text += `Dilution Threshold: ${formatAmount(currentProtocol.diThreshold, foodAUnit)} ${foodAUnit}\n`;
-  }
-
+  foodAInfo += `${currentProtocol.foodA.name} (${foodAType}). Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit, 1)} mg/${foodAUnit}`;
   if (currentProtocol.foodB) {
     const foodBType =
       currentProtocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
     const foodBUnit =
       currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-    text += `\nFood B: ${currentProtocol.foodB.name} (${foodBType})\n`;
-    text += `Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit, 1)} mg/${foodBUnit}\n`;
-    if (currentProtocol.foodBThreshold) {
-      text += `Transition Threshold: ${formatAmount(currentProtocol.foodBThreshold.amount, currentProtocol.foodBThreshold.unit)} ${currentProtocol.foodBThreshold.unit}\n`;
-    }
+    foodBInfo += `${currentProtocol.foodB.name} (${foodBType}). Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit, 1)} mg/${foodBUnit}`;
   }
 
-  text += "\n========================================\n";
-  text += "DOSING STRATEGY\n";
-  text += "========================================\n";
-  text += `${currentProtocol.dosingStrategy} (${currentProtocol.steps.length} steps)\n\n`;
-
-  text += "========================================\n";
-  text += "PROTOCOL STEPS\n";
-  text += "========================================\n\n";
-
+  // GENERATE TABLES
   const totalSteps = currentProtocol.steps.length;
   const foodAStepCount = getFoodAStepCount(currentProtocol);
 
   // Create separate tables for each food
-  const foodATable = new AsciiTable();
-  const foodBTable = new AsciiTable();
+  const foodATable = new AsciiTable(foodAInfo);
+  const foodBTable = new AsciiTable(foodBInfo);
   foodATable.setHeading(
     "Step",
     "Protein",
@@ -2178,6 +2155,7 @@ function exportASCII(): void {
     "Mix Details",
   );
 
+  // Iterate over steps and build rows for each table
   for (const step of currentProtocol.steps) {
     const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
@@ -2207,25 +2185,22 @@ function exportASCII(): void {
     );
   }
 
+  // ADD TABLES
   if (foodAStepCount > 0) {
-    text += `--- ${currentProtocol.foodA.name} ---\n`;
     text += foodATable.toString() + "\n\n";
   }
 
   if (foodAStepCount < totalSteps) {
-    text += `--- ${currentProtocol.foodB?.name} ---\n`;
+    text += `--- TRANSITION TO: ---\n`;
     text += foodBTable.toString() + "\n\n";
   }
 
-  text += "========================================\n";
-  text += "NOTES\n";
-  text += "========================================\n";
-  text +=
-    "- DILUTE steps: Mix food with water, give patient specified daily amount\n";
-  text += "- DIRECT steps: Patient consumes food directly (neat/undiluted)\n";
-  text += "- Always verify calculations before clinical use\n";
+  // ADD CUSTOM NOTES IF PROVIDED
   if (customNote && customNote.trim()) {
-    text += `\nCustom Note:\n${customNote.trim()}\n`;
+    text += "========================================\n";
+    text += "NOTES\n";
+    text += "========================================\n";
+    text += `${customNote.trim()}`;
   }
 
   // Copy to clipboard
