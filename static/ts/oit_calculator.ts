@@ -152,8 +152,8 @@ const DOSING_STRATEGIES: { [key: string]: number[] } = {
 const SOLID_MIX_CANDIDATES = [
   0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
 ];
-const LIQUID_MIX_CANDIDATES = [0.5, 1, 2, 3, 4, 5, 10];
-const DAILY_AMOUNT_CANDIDATES = [0.5, 1, 2, 3, 4, 5, 10];
+const LIQUID_MIX_CANDIDATES = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10];
+const DAILY_AMOUNT_CANDIDATES = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12];
 const MAX_MIX_WATER = 250;
 
 let DEFAULT_CONFIG: ProtocolConfig;
