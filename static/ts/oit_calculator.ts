@@ -159,13 +159,13 @@ const MAX_MIX_WATER = 250;
 let DEFAULT_CONFIG: ProtocolConfig;
 
 DEFAULT_CONFIG = {
-  minMeasurableMass: new Decimal(0.2),
-  minMeasurableVolume: new Decimal(0.2),
-  minServingsForMix: new Decimal(3),
-  PROTEIN_TOLERANCE_MG: new Decimal(0.5),
-  DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
-  DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
-  MAX_SOLID_CONCENTRATION: new Decimal(0.05),
+  minMeasurableMass: new Decimal(0.2), // assume that most scales for parents only have resolution of 0.01g
+  minMeasurableVolume: new Decimal(0.2), // assume that syringes used has resolution of 0.1ml
+  minServingsForMix: new Decimal(3), // want the mixture to last at least 3 days
+  PROTEIN_TOLERANCE_MG: new Decimal(0.5), // max difference between target protein and actual protein in daily amount
+  DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2), // at what point to switch to direct from dilution
+  DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2), // at what point to switch to food B
+  MAX_SOLID_CONCENTRATION: new Decimal(0.05), // highest w/v ratio acceptable to assume weight of solid in liquid doesn't contribute to volume
 };
 
 // ============================================
