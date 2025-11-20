@@ -52,7 +52,7 @@ In patients with CSU refractory to H1-antihistamines, does dupilumab (an anti-IL
 
 {% admonition(type="tip", icon="question", title="Why should we care?") %}
 
-There are limited 2nd line therapeutic options for CSU refractory to AH, and therefore an need for more effective therapies. Prior to this trial, there was only case report data on dupilumab's efficacy for CSU.
+There are limited 2nd line therapeutic options for CSU refractory to AH, and therefore a need for more therapeutic options. Prior to this trial, there was only case report data on dupilumab's efficacy for CSU.
 
 {% end %}
 
@@ -105,25 +105,17 @@ There are limited 2nd line therapeutic options for CSU refractory to AH, and the
 
 TODO! Add figure
 
-<span class="hl-yellow">24-week, double-blind, randomized, placebo-controlled, multicenter, phase 3 trial</span> conducted across 9 countries. Included a 2-4 week screening period, 24-week treatment period, and 12-week post-treatment follow-up.
+<span class="hl-yellow">24-week, double-blind, randomized, placebo-controlled, multicenter, phase 3 trial</span> conducted across 9 countries.
 
-- randomization stratified by age
-
-• Screening period (2 to 4 weeks)
-• Randomized IMP treatment period (24 weeks)
-• Post IMP treatment period (12 weeks)
+- 2-4 week screening period
+- 24-week treatment period
+- 12-week post-treatment follow-up
 
 ### How were outcomes assessed?
 
-UAS score calculated daily in e-diary from screening visit (2-4w before intervention) to EOS
-UCT done day 0, week 12, week 24, week 36
-
-Insert tabs with the different scores
-All patient reported
-ISS7 UAS7 HSS7 UCT at specified intervals
-
-ISS7 5 MICD
-UAS7 absolute change of 10 in UAS7 score is considered the MCID
+- Daily UAS scores calculated daily in e-diary from screening visit
+- UCT at day 0, week 12, week 24, week 36
+- From daily UAS scores, ISS7 HSS7 UAS7 determined at beginning, week 12, week 24, and week 36
 
 {% tabs() %}
 
@@ -132,16 +124,9 @@ UAS7 absolute change of 10 in UAS7 score is considered the MCID
 
 <ul>
   <li>The <b>Itch Severity Score (ISS)</b> represents severity of itch on a scale ranging from 0 (none) to 3 (intense)</li>
+  <ul><li>0 = none; 1 = present, not bothersome; 2 = bothersome, does not interfere with activity/sleep; 3 = intense, interferes with activity/sleep</li></ul>
   <li>The <b>ISS7</b> score is the sum of daily ISS scores recorded by a participant at the same time each day over 7 days, with an overall scale of 0 (no impact) to 21 (severe impact)</li>
-
-ISS
-0 = none
-1 = present, not bothersome
-2 = bothersome, does not interfere with activity/sleep
-3 = intense, interferes with activity/sleep
-
-MID: 5.0 point within-group reduction in the weekly score6
-
+  <li>MID: 5.0 point reduction in weekly score</li>
 </ul>
 
 <!-- TAB -->HHS7
@@ -161,6 +146,7 @@ MID: 5.0–5.5-point within-group reduction in the weekly score6
   <li>The <b>Urticaria Activity Score (UAS)</b> is a composite of the <b>HSS</b> and <b>ISS</b> for a given day, ranging from 0 to 6 points a day</li>
   <li>The <b>UAS7</b> score is the sum of UAS scores over a 7 day period, with an overall scale of 0 (no urticaria) to 42 (severe urticaria)</li>
   <li>In general, a score >=28 represents severe disease activity</li>
+
 UAS7:
 0 = urticaria free
 1‐6 = well-controlled
@@ -178,11 +164,9 @@ MID 9.5–10.5-point within-group reduction of UAS7
 <ul>
   <li>The <b>Urticaria Control Test (UCT)</b> is a four item QoL assessment over the past 4 weeks</li>
   <li>The overall score is the sum of all 4 individual item scores with a range of 0 (no disease control) to 16 (complete disease control)</li>
+  <ul><li>UCT=16, complete control; UCT ≥12, well-controlled</li></ul>
+  <li>MID: 3-point within-patient increase in UCT scores</li>
 </ul>
-
-UCT = 16, complete control
-UCT ≥12, well-controlled
-MID: 3-point within-patient increase in UCT scores
 
 {% json_to_table() %}
 
@@ -281,16 +265,16 @@ not.
 Of patients assigned to each group:
 
 - Dupilumab:
-  - 6 discontinued, leaving 63 completing treatment: of the 70 initialy, 63 followed up post treatment
+  - 6 discontinued, leaving 63 completing treatment: of the 70 initially, 63 followed up post treatment
 - Placebo
   - 18 disconitnued, 50 completed study treatment
   - 55 completed post intervention followup
 
 ### Primary Outcome
 
-It doesn't really make sense for this article/education sense to separate the primary and secondary outcomes - at least to me, some of the 2' outomces are just as important as the 1' (UAS7 vs ISS7) and it seems purely semantic...
+It doesn't really make sense for this article/education sense to separate the primary and secondary outcomes - at least to me, some of the 2' outcomes are just as important as the 1' (UAS7 vs ISS7) and it seems purely semantic...
 
-How best to diplay the figures? Probably .png, or just tables until the time course data?
+How best to display the figures? Probably .png, or just tables until the time course data?
 
 **ISS7 (Itch Severity) at Week 24**:
 
@@ -328,6 +312,10 @@ Rescue medications, including H1-AH and oral corticosteroids, were used by 4 (5.
 
 Dropdown for some other secondary outcomes? like IgE
 Median percent change from baseline in total serum IgE concentration was −48.2% for the dupilumab group at week 24 versus −6.3% for the placebo group. Figure E3
+
+While not a pre-pre-specified outcome, when you chart UAS7, ISS7, and HHS7 over time:
+Fig 2
+Notably takes about 1 month before a MID is achieved for UAS7 with -10
 
 #### Adverse Events
 
