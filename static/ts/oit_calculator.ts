@@ -624,7 +624,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${step.mixFoodAmount} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, 2)} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
 
@@ -634,7 +634,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${step.mixFoodAmount} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, 1)} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       };
@@ -642,7 +642,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring a daily amount of ${step.dailyAmount} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, 1)} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       };
@@ -650,7 +650,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${step.mixWaterAmount} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, 1)} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       };
@@ -687,7 +687,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${step.dailyAmount} g of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} g`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, 2)} g of food is impractical. Aim for >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
       };
@@ -696,7 +696,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${step.dailyAmount} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, 1)} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       };
