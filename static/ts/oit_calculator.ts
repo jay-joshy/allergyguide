@@ -2156,36 +2156,68 @@ function exportASCII(): void {
   text += "========================================\n";
   text += "PROTOCOL STEPS\n";
   text += "========================================\n\n";
-  const table = new AsciiTable('Protocol');
-  const header = ['Step', 'Protein', 'Method', 'Daily Amount', 'Amount for mix', 'Water for mix'];
-  const rows: string[][] = []
 
+  const totalSteps = currentProtocol.steps.length;
   const foodAStepCount = getFoodAStepCount(currentProtocol);
-  let currentFood = currentProtocol.foodA.name;
+
+  // Create separate tables for each food
+  const foodATable = new AsciiTable();
+  const foodBTable = new AsciiTable();
+  foodATable.setHeading(
+    "Step",
+    "Protein",
+    "Method",
+    "Daily Amount",
+    "Mix Details",
+  );
+  foodBTable.setHeading(
+    "Step",
+    "Protein",
+    "Method",
+    "Daily Amount",
+    "Mix Details",
+  );
 
   for (const step of currentProtocol.steps) {
     const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
-    // Add food header
-    if (food.name !== currentFood) {
-      text += `\n--- ${food.name} ---\n\n`;
-      currentFood = food.name;
+    // Create table for this step
+    let table: typeof AsciiTable;
+    if (!isStepFoodB) {
+      table = foodATable;
+    } else {
+      table = foodBTable;
     }
 
-    text += `Step ${step.stepIndex} | ${formatNumber(step.targetMg, 1)} mg | ${step.method} | `;
-    text += `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit} daily`;
+    let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
+    let mixDetails = "N/A"; // default unless dilution
 
     if (step.method === Method.DILUTE) {
       const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-      text += ` | Mix: ${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + `;
-      text += `${formatAmount(step.mixWaterAmount!, "ml")} ml water (${formatNumber(step.servings!, 1)} servings)`;
+      mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
     }
 
-    text += "\n";
+    table.addRow(
+      step.stepIndex,
+      `${formatNumber(step.targetMg, 1)} mg`,
+      step.method,
+      dailyAmountStr,
+      mixDetails,
+    );
   }
 
-  text += "\n========================================\n";
+  if (foodAStepCount > 0) {
+    text += `--- ${currentProtocol.foodA.name} ---\n`;
+    text += foodATable.toString() + "\n\n";
+  }
+
+  if (foodAStepCount < totalSteps) {
+    text += `--- ${currentProtocol.foodB?.name} ---\n`;
+    text += foodBTable.toString() + "\n\n";
+  }
+
+  text += "========================================\n";
   text += "NOTES\n";
   text += "========================================\n";
   text +=
