@@ -72,6 +72,7 @@ interface ProtocolConfig {
   PROTEIN_TOLERANCE_MG: any; // Decimal. Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: any; // Decimal
   DEFAULT_FOOD_B_THRESHOLD: any; // Decimal
+  MAX_SOLID_CONCENTRATION: any; // Decimal - max g/ml ratio for solid dilutions (default 0.05). We assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
 }
 
 interface Protocol {
@@ -159,6 +160,7 @@ DEFAULT_CONFIG = {
   PROTEIN_TOLERANCE_MG: new Decimal(0.5),
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
   DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
+  MAX_SOLID_CONCENTRATION: new Decimal(0.05),
 };
 
 // ============================================
@@ -250,6 +252,18 @@ function findDilutionCandidates(
   const mixCandidates =
     food.type === FoodType.SOLID ? SOLID_MIX_CANDIDATES : LIQUID_MIX_CANDIDATES;
 
+  // Calculate minimum dailyAmount for preferred concentration (solids only)
+  // For ratio = mixFood / mixWaterAmount < MAX_SOLID_CONCENTRATION
+  // Recall: mixWaterAmount = mixTotalVolume = dailyAmount × servings
+  // & servings = (mixFood × mgPerUnit) / P
+  // => ratio = P / (dailyAmount × mgPerUnit)
+  // => MAX_SOLID_CONCENTRATION > P / (dailyAmount × mgPerUnit)
+  // =>dailyAmount > P / (MAX_SOLID_CONCENTRATION × mgPerUnit)
+  const minDailyForLowConcentration =
+    food.type === FoodType.SOLID
+      ? P.dividedBy(config.MAX_SOLID_CONCENTRATION.times(food.mgPerUnit))
+      : null;
+
   for (const mixFoodValue of mixCandidates) {
     const mixFood = new Decimal(mixFoodValue);
 
@@ -329,6 +343,20 @@ function findDilutionCandidates(
 
   // Sort candidates
   candidates.sort((a, b) => {
+    // For SOLID: prioritize candidates meeting the low concentration constraint
+    if (food.type === FoodType.SOLID && minDailyForLowConcentration) {
+      const aMeetsRatio = a.dailyAmount.greaterThanOrEqualTo(
+        minDailyForLowConcentration,
+      );
+      const bMeetsRatio = b.dailyAmount.greaterThanOrEqualTo(
+        minDailyForLowConcentration,
+      );
+
+      if (aMeetsRatio && !bMeetsRatio) return -1;
+      if (!aMeetsRatio && bMeetsRatio) return 1;
+    }
+
+    // Then apply existing sort criteria
     let cmp = a.mixFoodAmount.comparedTo(b.mixFoodAmount);
     if (cmp !== 0) return cmp;
     cmp = a.dailyAmount.comparedTo(b.dailyAmount);
