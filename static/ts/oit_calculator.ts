@@ -172,6 +172,23 @@ let currentDropdownInputId: string = "";
 // UTILITY FUNCTIONS
 // ============================================
 
+/**
+ * Escapes HTML special characters to prevent XSS (Cross-Site Scripting) attacks.
+ * This function MUST be used whenever user input (food names, search queries, etc.)
+ * is inserted into HTML content via innerHTML or template literals.
+ *
+ * @param unsafe - The untrusted string that may contain HTML/JS code
+ * @returns A safe string with HTML entities escaped
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function mgPer100ToMgPerUnit(uiValue: number, unit: Unit): any {
   // Convert g protein per 100 (g or ml) to mg protein per 1 (g or ml)
   // uiValue is in g per 100, we need mg per 1
@@ -202,9 +219,9 @@ function formatAmount(value: any, unit: Unit): string {
 
 function getMeasuringUnit(food: Food): Unit {
   if (food.type === FoodType.LIQUID) {
-    return "ml"
+    return "ml";
   } else {
-    return "g"
+    return "g";
   }
 }
 
@@ -512,13 +529,12 @@ function validateProtocol(protocol: Protocol): Warning[] {
     });
   }
 
-  // R7: zero or negative mgPerUnit for food A 
+  // R7: zero or negative mgPerUnit for food A
   if (protocol.foodA.mgPerUnit.lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: "red",
       code: "R7",
-      message:
-        `${protocol.foodA.name} protein concentration must be > 0 to be considered for OIT`,
+      message: `${escapeHtml(protocol.foodA.name)} protein concentration must be > 0 to be considered for OIT`,
     });
   }
   // R7: zero or negative mgPerUnit for food B
@@ -526,11 +542,9 @@ function validateProtocol(protocol: Protocol): Warning[] {
     warnings.push({
       severity: "red",
       code: "R7",
-      message:
-        `${protocol.foodB?.name} protein concentration must be > 0 to be considered for OIT`,
+      message: `${escapeHtml(protocol.foodB?.name || "")} protein concentration must be > 0 to be considered for OIT`,
     });
   }
-
 
   // STEP VALIDATION ONE BY ONE
   // --------------------------
@@ -546,7 +560,6 @@ function validateProtocol(protocol: Protocol): Warning[] {
         message: `Step ${step.stepIndex}: A target protein of ${formatNumber(step.targetMg, 1)} mg is NOT valid. It must be >0.`,
         stepIndex: step.stepIndex,
       });
-
     }
 
     // FOR DILUTION STEPS
@@ -619,25 +632,28 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // Y3: for dilutions, noted below resolution of measurement tools
-      if (food.type === FoodType.SOLID &&
-        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableMass)) {
+      if (
+        food.type === FoodType.SOLID &&
+        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableMass)
+      ) {
         warnings.push({
           severity: "yellow",
           code: "Y3",
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, 2)} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
-
-      };
-      if (food.type === FoodType.LIQUID &&
-        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableVolume)) {
+      }
+      if (
+        food.type === FoodType.LIQUID &&
+        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableVolume)
+      ) {
         warnings.push({
           severity: "yellow",
           code: "Y3",
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, 1)} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
-      };
+      }
       if (step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
         warnings.push({
           severity: "yellow",
@@ -645,7 +661,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
           message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, 1)} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
-      };
+      }
       if (step.mixWaterAmount!.lessThan(protocol.config.minMeasurableVolume)) {
         warnings.push({
           severity: "yellow",
@@ -653,17 +669,20 @@ function validateProtocol(protocol: Protocol): Warning[] {
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, 1)} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
-      };
+      }
 
       // Y1: Low servings
-      if (step.servings!.lessThan(protocol.config.minServingsForMix) && step.servings!.greaterThan(new Decimal(1))) {
+      if (
+        step.servings!.lessThan(protocol.config.minServingsForMix) &&
+        step.servings!.greaterThan(new Decimal(1))
+      ) {
         warnings.push({
           severity: "yellow",
           code: "Y1",
           message: `Step ${step.stepIndex}: Only ${formatNumber(step.servings, 1)} servings (< ${DEFAULT_CONFIG.minServingsForMix} - impractical). Consider increasing mix amounts.`,
           stepIndex: step.stepIndex,
         });
-      };
+      }
 
       // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20 (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give 
       if (food.type === FoodType.SOLID &&
@@ -674,14 +693,12 @@ function validateProtocol(protocol: Protocol): Warning[] {
           message: `Step ${step.stepIndex}: at ${formatNumber(step.mixFoodAmount, 2)} g of food in ${formatNumber(step.mixWaterAmount, 1)} ml of water, the ratio of food:water is >1:20. The assumption that the food contributes non-negligibly to the total volume of dilution is likely violated. Consider increasing the Daily Amount`,
           stepIndex: step.stepIndex,
         });
-
-      };
+      }
     }
     // FOR DIRECT
     else if (step.method === Method.DIRECT) {
       // R2: Protein mismatch
-      const calculatedProtein = step.dailyAmount
-        .times(food.mgPerUnit)
+      const calculatedProtein = step.dailyAmount.times(food.mgPerUnit);
       const delta = calculatedProtein.minus(step.targetMg).abs();
 
       if (delta.greaterThan(0.5)) {
@@ -694,24 +711,28 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // Y3: for direct, noted below resolution of measurement tools
-      if (food.type === FoodType.SOLID &&
-        step.dailyAmount.lessThan(protocol.config.minMeasurableMass)) {
+      if (
+        food.type === FoodType.SOLID &&
+        step.dailyAmount.lessThan(protocol.config.minMeasurableMass)
+      ) {
         warnings.push({
           severity: "yellow",
           code: "Y3",
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, 2)} g of food is impractical. Aim for >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
-      };
-      if (food.type === FoodType.LIQUID &&
-        step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
+      }
+      if (
+        food.type === FoodType.LIQUID &&
+        step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)
+      ) {
         warnings.push({
           severity: "yellow",
           code: "Y3",
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, 1)} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
-      };
+      }
     }
   }
 
@@ -1016,7 +1037,7 @@ function renderFoodSettings(): void {
         type="text"
         class="food-name-input"
         id="food-a-name"
-        value="${currentProtocol.foodA.name}"
+        value="${escapeHtml(currentProtocol.foodA.name)}"
       />
       <div class="setting-row">
         <label>Protein:</label>
@@ -1044,8 +1065,9 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-      ? `
+      ${
+        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+          ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -1058,8 +1080,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-      : ""
-    }
+          : ""
+      }
     </div>
   `;
 
@@ -1078,7 +1100,7 @@ function renderFoodSettings(): void {
           type="text"
           class="food-name-input"
           id="food-b-name"
-          value="${currentProtocol.foodB.name}"
+          value="${escapeHtml(currentProtocol.foodB.name)}"
         />
         <div class="setting-row">
           <label>Protein:</label>
@@ -1195,14 +1217,14 @@ function renderProtocolTable(): void {
     if (isStepFoodB && lastWasFootA) {
       html += `
         <tr class="food-section-header">
-          <td colspan="6">${currentProtocol.foodB!.name}</td>
+          <td colspan="6">${escapeHtml(currentProtocol.foodB!.name)}</td>
         </tr>
       `;
       lastWasFootA = false;
     } else if (!isStepFoodB && step.stepIndex === 1) {
       html += `
         <tr class="food-section-header">
-          <td colspan="6">${currentProtocol.foodA.name}</td>
+          <td colspan="6">${escapeHtml(currentProtocol.foodA.name)}</td>
         </tr>
       `;
     }
@@ -1338,7 +1360,7 @@ function updateWarnings(): void {
       <div class="warning-section red-warnings">
         <h4>Critical Issues (Red)</h4>
         <ul>
-          ${redWarnings.map((w) => `<li><strong>${w.code}:</strong> ${w.message}</li>`).join("")}
+          ${redWarnings.map((w) => `<li><strong>${escapeHtml(w.code)}:</strong> ${w.message}</li>`).join("")}
         </ul>
       </div>
     `;
@@ -1349,7 +1371,7 @@ function updateWarnings(): void {
       <div class="warning-section yellow-warnings">
         <h4>Cautions (Yellow)</h4>
         <ul>
-          ${yellowWarnings.map((w) => `<li><strong>${w.code}:</strong> ${w.message}</li>`).join("")}
+          ${yellowWarnings.map((w) => `<li><strong>${escapeHtml(w.code)}:</strong> ${w.message}</li>`).join("")}
         </ul>
       </div>
     `;
@@ -1419,7 +1441,7 @@ function showSearchDropdown(
   const customItem = document.createElement("div");
   customItem.className = "search-result-item";
   customItem.setAttribute("data-index", "0");
-  customItem.innerHTML = `<strong>Custom:</strong> ${query || "New food"}`;
+  customItem.innerHTML = `<strong>Custom:</strong> ${escapeHtml(query || "New food")}`;
   customItem.addEventListener("click", () => {
     selectCustomFood(query || "New Food", inputId);
     hideSearchDropdown(inputId);
@@ -1436,7 +1458,7 @@ function showSearchDropdown(
 
     if (result.obj.name) {
       // Protocol result
-      item.innerHTML = `<strong>Protocol:</strong> ${result.obj.name}`;
+      item.innerHTML = `<strong>Protocol:</strong> ${escapeHtml(result.obj.name)}`;
       item.addEventListener("click", () => {
         selectProtocol(result.obj);
         hideSearchDropdown(inputId);
@@ -1445,8 +1467,8 @@ function showSearchDropdown(
       // Food result
       const foodData = result.obj as FoodData;
       item.innerHTML = `
-        ${foodData.Food}
-        <span class="food-type"> - ${foodData.Type} - Protein: ${foodData["Mean value in 100g"].toFixed(1)} g/100 ${foodData.Type === "Solid" ? "g" : "ml"}</span>
+        ${escapeHtml(foodData.Food)}
+        <span class="food-type"> - ${escapeHtml(foodData.Type)} - Protein: ${foodData["Mean value in 100g"].toFixed(1)} g/100 ${foodData.Type === "Solid" ? "g" : "ml"}</span>
       `;
       item.addEventListener("click", () => {
         if (inputId === "food-a-search") {
@@ -1623,7 +1645,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-      protocolData.dosing_strategy as keyof typeof DosingStrategy
+        protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
@@ -1999,7 +2021,6 @@ function attachExportEventListeners(): void {
 function exportPDF(): void {
   alert("PDF export not yet implemented");
   if (!currentProtocol) return;
-
 }
 
 function exportASCII(): void {
