@@ -23,6 +23,10 @@
     --oit-success-text: #90f050;
     --oit-table-header-bg: #2a1f1a;
     --oit-table-row-hover: #3a2a22;
+    --oit-warning-highlight-red: rgba(255, 50, 50, 0.08);
+    --oit-warning-highlight-red-hover: rgba(255, 50, 50, 0.12);
+    --oit-warning-highlight-yellow: rgba(255, 193, 7, 0.08);
+    --oit-warning-highlight-yellow-hover: rgba(255, 193, 7, 0.12);
 }
 
 :root.switch {
@@ -49,6 +53,10 @@
     --oit-success-text: #2a6000;
     --oit-table-header-bg: #fff0e6;
     --oit-table-row-hover: #fff7f0;
+    --oit-warning-highlight-red: rgba(255, 50, 50, 0.12);
+    --oit-warning-highlight-red-hover: rgba(255, 50, 50, 0.18);
+    --oit-warning-highlight-yellow: rgba(255, 193, 7, 0.12);
+    --oit-warning-highlight-yellow-hover: rgba(255, 193, 7, 0.18);
 }
 
 // Main Container
@@ -466,6 +474,48 @@
 
                 &:last-child {
                     border-bottom: none;
+                }
+
+                &.warning-highlight-red {
+                    background-color: var(--oit-warning-highlight-red);
+                    box-shadow:
+                        0 0 0 2px var(--oit-warning-red-border),
+                        0 0 12px rgba(255, 50, 50, 0.3);
+
+                    &:hover {
+                        background-color: var(
+                            --oit-warning-highlight-red-hover
+                        );
+                        box-shadow:
+                            0 0 0 2px var(--oit-warning-red-border),
+                            0 0 16px rgba(255, 50, 50, 0.4);
+                    }
+
+                    td {
+                        color: var(--oit-warning-red-text);
+                        font-weight: bold;
+                    }
+
+                    input.editable {
+                        color: var(--oit-warning-red-text);
+                        font-weight: bold;
+                    }
+                }
+
+                &.warning-highlight-yellow {
+                    background-color: var(--oit-warning-highlight-yellow);
+                    box-shadow:
+                        0 0 0 2px var(--oit-warning-yellow-border),
+                        0 0 12px rgba(255, 193, 7, 0.25);
+
+                    &:hover {
+                        background-color: var(
+                            --oit-warning-highlight-yellow-hover
+                        );
+                        box-shadow:
+                            0 0 0 2px var(--oit-warning-yellow-border),
+                            0 0 16px rgba(255, 193, 7, 0.35);
+                    }
                 }
             }
 

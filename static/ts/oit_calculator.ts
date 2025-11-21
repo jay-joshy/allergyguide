@@ -1280,6 +1280,19 @@ function renderProtocolTable(): void {
   const foodAStepCount = getFoodAStepCount(currentProtocol);
   let lastWasFootA = true;
 
+  // Get warnings to check for step highlights
+  const warnings = validateProtocol(currentProtocol);
+  const stepWarnings = new Map<number, "red" | "yellow">();
+  for (const warning of warnings) {
+    if (warning.stepIndex !== undefined) {
+      const existing = stepWarnings.get(warning.stepIndex);
+      // Red takes precedence over yellow
+      if (!existing || (warning.severity === "red" && existing === "yellow")) {
+        stepWarnings.set(warning.stepIndex, warning.severity);
+      }
+    }
+  }
+
   for (const step of currentProtocol.steps) {
     const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
@@ -1300,7 +1313,10 @@ function renderProtocolTable(): void {
       `;
     }
 
-    html += `<tr>`;
+    // Add warning class if this step has warnings
+    const warningClass = stepWarnings.get(step.stepIndex);
+    const rowClass = warningClass ? `warning-highlight-${warningClass}` : "";
+    html += `<tr class="${rowClass}">`;
 
     // Actions + Step number
     html += `
