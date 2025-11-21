@@ -1899,6 +1899,7 @@ function attachSettingsEventListeners(): void {
         // Clamp value between 0 and 150
         if (value < 0) value = 0;
         if (value > 150) value = 150;
+        if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
         const unit: Unit =
           currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
@@ -1947,6 +1948,7 @@ function attachSettingsEventListeners(): void {
         // Clamp value between 0 and 150
         if (value < 0) value = 0;
         if (value > 150) value = 150;
+        if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
         const unit: Unit =
           currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
@@ -2056,9 +2058,15 @@ function attachTableEventListeners(): void {
       const target = e.target as HTMLInputElement;
       const stepIndex = parseInt(target.getAttribute("data-step")!);
       const field = target.getAttribute("data-field")!;
-      const value = parseFloat(target.value);
+      let value = parseFloat(target.value);
 
       if (isNaN(value)) return;
+
+      // Clamp value to >= 0
+      if (value < 0) {
+        value = 0;
+        target.value = value.toString();
+      }
 
       if (field === "targetMg") {
         updateStepTargetMg(stepIndex, value);
