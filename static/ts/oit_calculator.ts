@@ -60,7 +60,7 @@ type Unit = "g" | "ml";
 interface Food {
   name: string;
   type: FoodType;
-  mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool.
+  mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
 }
 
 interface Step {
