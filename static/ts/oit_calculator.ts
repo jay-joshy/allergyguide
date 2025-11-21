@@ -509,7 +509,7 @@ function addFoodBToProtocol(
   if (transitionIndex === -1) {
     // No transition point found - emit warning
     console.warn("No transition point found for Food B");
-    // TODO! emit warning
+    // warning is picked up by validation system
     return;
   }
 
@@ -1135,8 +1135,9 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-      ? `
+      ${
+        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+          ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -1149,8 +1150,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-      : ""
-    }
+          : ""
+      }
     </div>
   `;
 
@@ -1726,7 +1727,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-      protocolData.dosing_strategy as keyof typeof DosingStrategy
+        protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
