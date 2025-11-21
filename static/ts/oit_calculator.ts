@@ -9,11 +9,11 @@
 // ============================================
 
 // CDN packages - ? TODO! switch to a more modern ascii exporter
-// Have had some difficulty downloading and using jspdf and autotable outside of CDN 
+// Have had some difficulty downloading and using jspdf and autotable outside of CDN
 declare const AsciiTable: any;
 declare const jspdf: any;
 
-// Imports 
+// Imports
 import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
 
@@ -152,27 +152,29 @@ interface ProtocolData {
 const SOLID_RESOLUTION: number = 2;
 const LIQUID_RESOLUTION: number = 1;
 
-// Dosing step target quick options  
+// Dosing step target quick options
 // TODO! Clarify other options
 const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
-  STANDARD: [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300].map(num => new Decimal(num)),
+  STANDARD: [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300].map(
+    (num) => new Decimal(num),
+  ),
   SLOW: [
     0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220,
     260, 300,
-  ].map(num => new Decimal(num)),
-  RAPID: [5, 10, 20, 40, 80, 160, 300].map(num => new Decimal(num)),
+  ].map((num) => new Decimal(num)),
+  RAPID: [5, 10, 20, 40, 80, 160, 300].map((num) => new Decimal(num)),
 };
 
 // Default candidate options for various parameters used to calculate optimal dilutions
 const SOLID_MIX_CANDIDATES = [
   0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
-].map(num => new Decimal(num));
+].map((num) => new Decimal(num));
 const LIQUID_MIX_CANDIDATES = [
   0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10,
-].map(num => new Decimal(num));
+].map((num) => new Decimal(num));
 const DAILY_AMOUNT_CANDIDATES = [
   0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
-].map(num => new Decimal(num));
+].map((num) => new Decimal(num));
 const MAX_MIX_WATER = new Decimal(500);
 
 let DEFAULT_CONFIG: ProtocolConfig;
@@ -444,9 +446,9 @@ function findDilutionCandidates(
 /**
  * Generates a step for a target protein amount.
  * @param {Decimal} targetMg - The target protein amount in mg.
- * @param {number} stepIndex 
- * @param {Food} food 
- * @param {FoodAStrategy} foodAStrategy 
+ * @param {number} stepIndex
+ * @param {Food} food
+ * @param {FoodAStrategy} foodAStrategy
  * @param {Decimal} diThreshold - dilution threshold.
  * @param {ProtocolConfig} config - protocol configuration.
  * @returns {Step | null} A step object, or null if dilution is not possible.
@@ -572,7 +574,7 @@ function getFoodAStepCount(protocol: Protocol): number {
 /**
  * Adds Food B to a protocol based on a specified threshold.
  * @param {Protocol} protocol - The protocol object.
- * @param {Food} foodB  
+ * @param {Food} foodB
  * @param {{unit: Unit; amount: any}} threshold - at what amount of Food B to start using instead of Food A
  */
 function addFoodBToProtocol(
@@ -850,8 +852,8 @@ function validateProtocol(protocol: Protocol): Warning[] {
       // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount high (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give. See DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION
       if (
         food.type === FoodType.SOLID &&
-        step.mixFoodAmount!
-          .dividedBy(step.mixWaterAmount!)
+        step
+          .mixFoodAmount!.dividedBy(step.mixWaterAmount!)
           .greaterThan(new Decimal(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION))
       ) {
         warnings.push({
@@ -1051,7 +1053,7 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
 }
 
 /**
- * To be called when user updates daily amount in a step. Handles steps that are direct or dilution. 
+ * To be called when user updates daily amount in a step. Handles steps that are direct or dilution.
  * Calls re-rendering functions after
  *
  * @void
@@ -1090,7 +1092,7 @@ function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
 }
 
 /**
- * To be called when user updates mixfoodamount in a step for a dilution. 
+ * To be called when user updates mixfoodamount in a step for a dilution.
  * Calls re-rendering functions after
  *
  * @void
@@ -1808,9 +1810,7 @@ function selectFoodA(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
-    mgPerUnit: gramPer100ToMgPerUnit(
-      foodData["Mean value in 100g"],
-    ),
+    mgPerUnit: gramPer100ToMgPerUnit(foodData["Mean value in 100g"]),
   };
 
   currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
@@ -1830,9 +1830,7 @@ function selectFoodB(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
-    mgPerUnit: gramPer100ToMgPerUnit(
-      foodData["Mean value in 100g"],
-    ),
+    mgPerUnit: gramPer100ToMgPerUnit(foodData["Mean value in 100g"]),
   };
 
   const threshold = {
@@ -2543,14 +2541,11 @@ function exportPDF(): void {
   }
 
   // Output PDF as data URL and open in new tab
-  const dataUrl = doc.output("dataurlstring");
-  const w = window.open("", "_blank");
-  if (w) {
-    w.document.write(
-      `<iframe src="${dataUrl}" style="width:100%; height:100%; border:none;"></iframe>`,
-    );
-  } else {
-    alert("Popup blocked. Please allow popups to view the PDF.");
+  const blobUrl = doc.output("bloburl");
+  const w = window.open(blobUrl, "_blank");
+  if (!w) {
+    // Fallback to direct download if popup blocked
+    doc.save("protocol.pdf");
   }
 }
 
