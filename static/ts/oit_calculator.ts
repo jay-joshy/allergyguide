@@ -152,8 +152,12 @@ const DOSING_STRATEGIES: { [key: string]: number[] } = {
 const SOLID_MIX_CANDIDATES = [
   0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
 ];
-const LIQUID_MIX_CANDIDATES = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10];
-const DAILY_AMOUNT_CANDIDATES = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12];
+const LIQUID_MIX_CANDIDATES = [
+  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10,
+];
+const DAILY_AMOUNT_CANDIDATES = [
+  0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
+];
 const MAX_MIX_WATER = 250;
 
 let DEFAULT_CONFIG: ProtocolConfig;
@@ -589,6 +593,23 @@ function validateProtocol(protocol: Protocol): Warning[] {
       code: "R7",
       message: `${escapeHtml(protocol.foodB?.name || "")} protein concentration must be > 0 to be considered for OIT`,
     });
+  }
+
+  // Y5: No transition point found for food B if it exists. That means the transition threshold is too high.
+  if (protocol.foodB) {
+    let foodBinSteps: boolean = false;
+    for (const step of protocol.steps) {
+      if (step.food === "B") {
+        foodBinSteps = true;
+      }
+    }
+    if (foodBinSteps === false) {
+      warnings.push({
+        severity: "yellow",
+        code: "Y5",
+        message: `${escapeHtml(protocol.foodB.name)} has no transition point. Decrease the threshold if you want to transition.`,
+      });
+    }
   }
 
   // STEP VALIDATION ONE BY ONE
@@ -2186,7 +2207,14 @@ function exportPDF(): void {
   (doc as any).autoTable({
     startY: yPosition,
     head: [
-      ["Step", "Protein", "Method", "Daily Amount", "How to make mix", "Interval"],
+      [
+        "Step",
+        "Protein",
+        "Method",
+        "Daily Amount",
+        "How to make mix",
+        "Interval",
+      ],
     ],
     body: foodARows,
     theme: "grid",
@@ -2225,7 +2253,6 @@ function exportPDF(): void {
         const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
         mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
       }
-
 
       // last step should say continue long term
       if (i === totalSteps - 1) {
@@ -2338,11 +2365,7 @@ function exportPDF(): void {
     doc.setFontSize(8);
     doc.setFont(undefined, "italic");
     doc.setTextColor(100);
-    doc.text(
-      "",
-      40,
-      760,
-    );
+    doc.text("", 40, 760);
     doc.text("Always verify calculations before clinical use.", 40, 772);
     doc.setTextColor(0);
   }
