@@ -3,18 +3,20 @@
 // ============================================
 
 // Declare global Decimal from decimal.js + other CDN packages
-declare const Decimal: any;
-declare const fuzzysort: any;
 declare const AsciiTable: any;
 declare const jspdf: any;
 interface jsPDF {
   autoTable: (...args: any[]) => void;
 }
+// Import types for better type checking
+import Decimal from "decimal.js";
+import fuzzysort from "fuzzysort";
 
 // Configure Decimal.js
 if (typeof Decimal !== "undefined") {
   Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 }
+Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 
 // ============================================
 // ENUMS
@@ -1476,7 +1478,7 @@ function performSearch(query: string, searchType: "food" | "protocol"): any[] {
       limit: 50,
       threshold: -10000,
     });
-    return results;
+    return [...results];
   } else {
     // Search both foods and protocols for Food A
     const foodResults = fuzzysort.go(query, fuzzySortPreparedFoods, {
@@ -1743,7 +1745,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   }
 
   // load steps from the relevant table (table_di, table_dn, or table_da
-  let tableToLoad;
+  let tableToLoad: any[] = [];
   if (protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
     tableToLoad = protocolData.table_di;
   } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_NONE) {
@@ -2143,7 +2145,7 @@ function exportPDF(): void {
 
   // Add title
   doc.setFontSize(18);
-  doc.setFont(undefined, "bold");
+  doc.setFont("helvetica", "bold");
   doc.text("Oral Immunotherapy Protocol", 40, yPosition);
   yPosition += 30;
 
@@ -2191,12 +2193,12 @@ function exportPDF(): void {
 
   // Food A section
   doc.setFontSize(14);
-  doc.setFont(undefined, "bold");
+  doc.setFont("helvetica", "bold");
   doc.text(`${currentProtocol.foodA.name}`, 40, yPosition);
   yPosition += 20;
 
   doc.setFontSize(10);
-  doc.setFont(undefined, "normal");
+  doc.setFont("helvetica", "normal");
   doc.text(
     `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodAUnit} serving.`,
     40,
@@ -2285,12 +2287,12 @@ function exportPDF(): void {
 
     yPosition += 10;
     doc.setFontSize(14);
-    doc.setFont(undefined, "bold");
+    doc.setFont("helvetica", "bold");
     doc.text(`${currentProtocol.foodB.name}`, 40, yPosition);
     yPosition += 20;
 
     doc.setFontSize(10);
-    doc.setFont(undefined, "normal");
+    doc.setFont("helvetica", "normal");
     doc.text(
       `Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodBUnit} serving`,
       40,
@@ -2338,12 +2340,12 @@ function exportPDF(): void {
     }
 
     doc.setFontSize(14);
-    doc.setFont(undefined, "bold");
+    doc.setFont("helvetica", "bold");
     doc.text("Notes", 40, yPosition);
     yPosition += 15;
 
     doc.setFontSize(10);
-    doc.setFont(undefined, "normal");
+    doc.setFont("helvetica", "normal");
 
     // Split notes into lines that fit the page width
     const maxWidth = 520; // page width minus margins
@@ -2364,7 +2366,7 @@ function exportPDF(): void {
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
     doc.setFontSize(8);
-    doc.setFont(undefined, "italic");
+    doc.setFont("helvetica", "italic");
     doc.setTextColor(100);
     doc.text("", 40, 760);
     doc.text("Always verify calculations before clinical use.", 40, 772);
