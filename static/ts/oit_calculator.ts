@@ -1,8 +1,15 @@
 // ============================================
 // OIT CALCULATOR - COMPLETE IMPLEMENTATION
+// Joshua Yu 2025 - allergyguide.ca
+// See TYPESCRIPT_SETUP.md
 // ============================================
 
-// Declare CDN packages 
+// ============================================
+// EXTERNAL PACKAGES
+// ============================================
+
+// CDN packages - ? TODO! switch to a more modern ascii exporter
+// Have had some difficulty downloading and using jspdf and autotable outside of CDN 
 declare const AsciiTable: any;
 declare const jspdf: any;
 
@@ -17,6 +24,7 @@ Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 // ENUMS
 // ============================================
 
+// TODO! Consider increasing number of strategies
 enum DosingStrategy {
   STANDARD = "STANDARD",
   SLOW = "SLOW",
@@ -52,38 +60,38 @@ type Unit = "g" | "ml";
 interface Food {
   name: string;
   type: FoodType;
-  mgPerUnit: Decimal; // Decimal
+  mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool.
 }
 
 interface Step {
   stepIndex: number;
-  targetMg: Decimal; // Decimal
+  targetMg: Decimal;
   method: Method;
-  dailyAmount: Decimal; // Decimal
+  dailyAmount: Decimal;
   dailyAmountUnit: Unit;
-  mixFoodAmount?: Decimal; // Decimal
-  mixWaterAmount?: Decimal; // Decimal
-  servings?: Decimal; // Decimal
-  food: "A" | "B"; // Tracks which food this step belongs to
+  mixFoodAmount?: Decimal;
+  mixWaterAmount?: Decimal;
+  servings?: Decimal;
+  food: "A" | "B";
 }
 
 interface ProtocolConfig {
-  minMeasurableMass: Decimal; // Decimal.
-  minMeasurableVolume: Decimal; // Decimal
-  minServingsForMix: Decimal; // Decimal
-  PROTEIN_TOLERANCE_MG: Decimal; // Decimal. Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
-  DEFAULT_FOOD_A_DILUTION_THRESHOLD: Decimal; // Decimal
-  DEFAULT_FOOD_B_THRESHOLD: Decimal; // Decimal
-  MAX_SOLID_CONCENTRATION: Decimal; // Decimal - max g/ml ratio for solid dilutions (default 0.05). We assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
+  minMeasurableMass: Decimal; // Minimal mass that is practically measurable by scale.
+  minMeasurableVolume: Decimal; // Minimal mass that is practically measurable by syringe.
+  minServingsForMix: Decimal; // Minimal servings for dilution mix (must be >= 1)
+  PROTEIN_TOLERANCE_MG: Decimal; // Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
+  DEFAULT_FOOD_A_DILUTION_THRESHOLD: Decimal; // At what amount of Food A do you switch to direct dosing?
+  DEFAULT_FOOD_B_THRESHOLD: Decimal; // At what amount of Food B do you switch from Food A to Food B?
+  MAX_SOLID_CONCENTRATION: Decimal; //  max g/ml ratio for solid diluted into liquids (default 0.05). Assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
 }
 
 interface Protocol {
   dosingStrategy: DosingStrategy;
   foodA: Food;
   foodAStrategy: FoodAStrategy;
-  diThreshold: Decimal; // Decimal
+  diThreshold: Decimal;
   foodB?: Food;
-  foodBThreshold?: { unit: Unit; amount: Decimal }; // Decimal
+  foodBThreshold?: { unit: Unit; amount: Decimal };
   steps: Step[];
   config: ProtocolConfig;
 }
@@ -96,18 +104,20 @@ interface Warning {
 }
 
 interface Candidate {
-  mixFoodAmount: Decimal; // Decimal
-  mixWaterAmount: Decimal; // Decimal
-  dailyAmount: Decimal; // Decimal
-  mixTotalVolume: Decimal; // Decimal
-  servings: Decimal; // Decimal
+  mixFoodAmount: Decimal;
+  mixWaterAmount: Decimal;
+  dailyAmount: Decimal;
+  mixTotalVolume: Decimal;
+  servings: Decimal;
 }
 
+// Loaded from .json with [Canadian Nutrient File, Health Canada, 2015] data
+// TODO! Clean up the CNF file; some of the SOLID/LIQUID distinctions are wrong still
 interface FoodData {
   Food: string;
   "Food Group": string;
-  "Mean value in 100g": number;
-  Type: string;
+  "Mean value in 100g": number; // before use in calculations should be converted into Decimal
+  Type: string; // SOLID or LIQUID
 }
 
 // For loading of protocols from JSON file
@@ -127,9 +137,9 @@ interface ProtocolData {
     mgPerUnit: string;
   };
   food_b_threshold?: string;
-  table_di: any[];
-  table_dn: any[];
-  table_da: any[];
+  table_di: any[]; // steps for protocol using dilution initial strategy
+  table_dn: any[]; // steps for protocol using dilution none strategy
+  table_da: any[]; // steps for protocol using dilution all strategy
   custom_note?: string;
 }
 
@@ -137,6 +147,13 @@ interface ProtocolData {
 // CONSTANTS / DEFAULTS
 // ============================================
 
+// Precision / resolution of scales/syringes
+// Number of decimals to display
+const SOLID_RESOLUTION: number = 2;
+const LIQUID_RESOLUTION: number = 1;
+
+// Dosing step target quick options  
+// TODO! Clarify other options
 const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
   STANDARD: [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300].map(num => new Decimal(num)),
   SLOW: [
@@ -146,6 +163,7 @@ const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
   RAPID: [5, 10, 20, 40, 80, 160, 300].map(num => new Decimal(num)),
 };
 
+// Default candidate options for various parameters used to calculate optimal dilutions
 const SOLID_MIX_CANDIDATES = [
   0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
 ].map(num => new Decimal(num));
@@ -158,15 +176,14 @@ const DAILY_AMOUNT_CANDIDATES = [
 const MAX_MIX_WATER = new Decimal(500);
 
 let DEFAULT_CONFIG: ProtocolConfig;
-
 DEFAULT_CONFIG = {
-  minMeasurableMass: new Decimal(0.2), // assume that most scales for parents only have resolution of 0.01g
+  minMeasurableMass: new Decimal(0.2), // assume that scales for patients have resolution of 0.01g
   minMeasurableVolume: new Decimal(0.2), // assume that syringes used has resolution of 0.1ml
-  minServingsForMix: new Decimal(3), // want the mixture to last at least 3 days
-  PROTEIN_TOLERANCE_MG: new Decimal(0.5), // max difference between target protein and actual protein in daily amount
-  DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2), // at what point to switch to direct from dilution
-  DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2), // at what point to switch to food B
-  MAX_SOLID_CONCENTRATION: new Decimal(0.05), // highest w/v ratio acceptable to assume weight of solid in liquid doesn't contribute to volume
+  minServingsForMix: new Decimal(3), // want mixture to last at least 3 days
+  PROTEIN_TOLERANCE_MG: new Decimal(0.5),
+  DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
+  DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
+  MAX_SOLID_CONCENTRATION: new Decimal(0.05),
 };
 
 // ============================================
@@ -208,35 +225,60 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, "&#039;");
 }
 
+/**
+ * Convert g protein per 100 (g or ml) to mg protein per (g or ml).
+ * @param {number} uiValue - The protein in g per 100.
+ * @returns {Decimal} The protein in mg per unit.
+ */
 function gramPer100ToMgPerUnit(uiValue: number): Decimal {
-  // Convert g protein per 100 (g or ml) to mg protein per (g or ml)
   // works out to value * 1000 / 100 = value * 10
   return new Decimal(uiValue).times(10);
 }
 
+/**
+ * Convert mg per unit back to g per 100 for UI display.
+ * @param {Decimal} mgPerUnit - The value in mg per unit.
+ * @returns {number} The value in g per 100.
+ */
 function mgPerUnitToGramPer100(mgPerUnit: Decimal): number {
-  // Convert mg per unit back to g per 100 for UI display
   // works out to value * (1/1000) * (100) = value / 10
   return mgPerUnit.dividedBy(10).toNumber();
 }
 
+/**
+ * Formats a number for UI display to specified decimal rounding and returns string.
+ * @param {any} value - The number to format.
+ * @param {number} decimals - The number of decimals to round to.
+ * @returns {string} The formatted number as a string.
+ */
 function formatNumber(value: any, decimals: number): string {
   if (value === null || value === undefined) return "";
   const num = typeof value === "number" ? value : value.toNumber();
   return num.toFixed(decimals);
 }
 
+/**
+ * Formats a number / amount but will round to different precision based on if it is measured in g or ml.
+ * @param {any} value - The number to format.
+ * @param {Unit} unit - 'g' or 'ml'.
+ * @returns {string} The formatted number as a string.
+ */
 function formatAmount(value: any, unit: Unit): string {
   if (value === null || value === undefined) return "";
   const num = typeof value === "number" ? value : value.toNumber();
   if (unit === "g") {
-    return num.toFixed(2);
+    return num.toFixed(SOLID_RESOLUTION);
   } else {
-    // ml - use 1 decimal or integer
-    return num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
+    // ml - integer or the LIQUID_RESOLUTION
+    return num % 1 === 0 ? num.toFixed(0) : num.toFixed(LIQUID_RESOLUTION);
   }
 }
 
+/**
+ * Determines the measuring unit for a given food item.
+ * @param {Food} food - The food item.
+ * @returns {Unit} The measuring unit ('g' or 'ml').
+ */
 function getMeasuringUnit(food: Food): Unit {
   if (food.type === FoodType.LIQUID) {
     return "ml";
@@ -249,6 +291,14 @@ function getMeasuringUnit(food: Food): Unit {
 // CORE ALGORITHMS
 // ============================================
 
+// TODO! JSDOC
+/**
+ * Finds candidates for dilutions based on specified parameters.
+ * @param {Decimal} P - The target protein amount (mg).
+ * @param {Food} food - The food item.
+ * @param {ProtocolConfig} config - The protocol configuration.
+ * @returns {Candidate[]} An array of candidates.
+ */
 function findDilutionCandidates(
   P: Decimal,
   food: Food,
@@ -375,12 +425,22 @@ function findDilutionCandidates(
   return candidates;
 }
 
+/**
+ * Generates a step for a target protein amount.
+ * @param {Decimal} targetMg - The target protein amount in mg.
+ * @param {number} stepIndex 
+ * @param {Food} food 
+ * @param {FoodAStrategy} foodAStrategy 
+ * @param {Decimal} diThreshold - dilution threshold.
+ * @param {ProtocolConfig} config - protocol configuration.
+ * @returns {Step | null} A step object, or null if dilution is not possible.
+ */
 function generateStepForTarget(
   targetMg: Decimal,
   stepIndex: number,
   food: Food,
   foodAStrategy: FoodAStrategy,
-  diThreshold: any,
+  diThreshold: Decimal,
   config: ProtocolConfig,
 ): Step | null {
   const P = targetMg;
@@ -425,6 +485,12 @@ function generateStepForTarget(
   }
 }
 
+/**
+ * Generates a default protocol based on the provided food and configuration.
+ * @param {Food} food - The food item.
+ * @param {ProtocolConfig} config - The protocol configuration.
+ * @returns {Protocol} A default protocol object.
+ */
 function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
   const dosingStrategy = DosingStrategy.STANDARD;
   const foodAStrategy = FoodAStrategy.DILUTE_INITIAL;
@@ -470,6 +536,11 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
   };
 }
 
+/**
+ * Gets the number of steps for food A in a protocol.
+ * @param {Protocol} protocol - The protocol object.
+ * @returns {number} The number of steps for food A.
+ */
 function getFoodAStepCount(protocol: Protocol): number {
   if (!protocol.foodB) return protocol.steps.length;
 
@@ -482,6 +553,12 @@ function getFoodAStepCount(protocol: Protocol): number {
   return protocol.steps.length;
 }
 
+/**
+ * Adds Food B to a protocol based on a specified threshold.
+ * @param {Protocol} protocol - The protocol object.
+ * @param {Food} foodB  
+ * @param {{unit: Unit; amount: any}} threshold - at what amount of Food B to start using instead of Food A
+ */
 function addFoodBToProtocol(
   protocol: Protocol,
   foodB: Food,
@@ -560,6 +637,12 @@ function addFoodBToProtocol(
   }
 }
 
+/**
+ * Validates a protocol and returns an array of warnings.
+ *
+ * @param {Protocol} protocol The protocol to validate.
+ * @returns {Warning[]} An array of warnings.
+ */
 function validateProtocol(protocol: Protocol): Warning[] {
   const warnings: Warning[] = [];
 
@@ -653,7 +736,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "red",
           code: "R5",
-          message: `Step ${step.stepIndex}: ${formatNumber(step.mixFoodAmount, 2)} ${getMeasuringUnit(food)} of food only makes ${formatNumber(totalMixProtein, 1)} mg of total protein. However, target protein is ${formatNumber(step.targetMg, 1)} mg.`,
+          message: `Step ${step.stepIndex}: ${formatAmount(step.mixFoodAmount, getMeasuringUnit(food))} ${getMeasuringUnit(food)} of food only makes ${formatNumber(totalMixProtein, 1)} mg of total protein. However, target protein is ${formatNumber(step.targetMg, 1)} mg.`,
           stepIndex: step.stepIndex,
         });
       }
@@ -663,7 +746,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "red",
           code: "R6",
-          message: `Step ${step.stepIndex}: Total volume of dilution is ${formatNumber(mixTotalVolume, 1)} ml; however, daily amount is ${formatNumber(step.dailyAmount, 1)} ml, which is impossible`,
+          message: `Step ${step.stepIndex}: Total volume of dilution is ${formatNumber(mixTotalVolume, LIQUID_RESOLUTION)} ml; however, daily amount is ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml, which is impossible`,
           stepIndex: step.stepIndex,
         });
       }
@@ -702,7 +785,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, 2)} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
       }
@@ -713,7 +796,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, 1)} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -721,7 +804,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, 1)} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -729,7 +812,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, 1)} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -747,17 +830,17 @@ function validateProtocol(protocol: Protocol): Warning[] {
         });
       }
 
-      // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20 (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give
+      // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount high (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give. See DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION
       if (
         food.type === FoodType.SOLID &&
         step.mixFoodAmount!
           .dividedBy(step.mixWaterAmount!)
-          .greaterThan(new Decimal(0.05))
+          .greaterThan(new Decimal(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION))
       ) {
         warnings.push({
           severity: "yellow",
           code: "Y4",
-          message: `Step ${step.stepIndex}: at ${formatNumber(step.mixFoodAmount, 2)} g of food in ${formatNumber(step.mixWaterAmount, 1)} ml of water, the ratio of food:water is >1:20. The assumption that the food contributes non-negligibly to the total volume of dilution is likely violated. Consider increasing the Daily Amount`,
+          message: `Step ${step.stepIndex}: at ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food in ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water, the w/v is > ${formatNumber(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION.times(100), 0)}%. The assumption that the food contributes non-negligibly to the total volume of dilution is likely violated. Consider increasing the Daily Amount`,
           stepIndex: step.stepIndex,
         });
       }
@@ -785,7 +868,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, 2)} g of food is impractical. Aim for >=${protocol.config.minMeasurableMass} g`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for >=${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
       }
@@ -796,7 +879,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, 1)} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -822,6 +905,12 @@ function validateProtocol(protocol: Protocol): Warning[] {
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
 
+/**
+ * If currentProtocol exists, recalculates steps and updates currentProtocol.
+ * Calls rerender functions after to update UI
+ *
+ * @void
+ */
 function recalculateProtocol(): void {
   if (!currentProtocol) return;
 
@@ -858,6 +947,12 @@ function recalculateProtocol(): void {
   updateWarnings();
 }
 
+/**
+ * Recalculates the step methods while preserving existing target amounts and food properties.
+ * Calls rendering functions after.
+ *
+ * @void
+ */
 function recalculateStepMethods(): void {
   if (!currentProtocol) return;
 
@@ -895,8 +990,15 @@ function recalculateStepMethods(): void {
   updateWarnings();
 }
 
-// newTargetMg has to be any since it accepts update from UI user input
+/**
+ * Handle user modification of step targetMg, for both dilutions and direct
+ * Calls re-rendering functions after
+ *
+ * @void
+ */
 function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
+  // newTargetMg has to be any since it accepts update from UI user input
+  // Though it really should only be a number
   if (!currentProtocol) return;
 
   const step = currentProtocol.steps[stepIndex - 1];
@@ -929,8 +1031,14 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
   updateWarnings();
 }
 
-// new daily amount should be any since it accepts value from UI in event handler
+/**
+ * To be called when user updates daily amount in a step. Handles steps that are direct or dilution. 
+ * Calls re-rendering functions after
+ *
+ * @void
+ */
 function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
+  // new daily amount should be any since it accepts value from UI in event handler
   if (!currentProtocol) return;
 
   const step = currentProtocol.steps[stepIndex - 1];
@@ -962,9 +1070,14 @@ function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
   updateWarnings();
 }
 
-
-// newMixFoodAmount must be any since it accepts user input from UI
+/**
+ * To be called when user updates mixfoodamount in a step for a dilution. 
+ * Calls re-rendering functions after
+ *
+ * @void
+ */
 function updateStepMixFoodAmount(
+  // newMixFoodAmount must be any since it accepts user input from UI
   stepIndex: number,
   newMixFoodAmount: any,
 ): void {
@@ -994,6 +1107,12 @@ function updateStepMixFoodAmount(
   updateWarnings();
 }
 
+/**
+ * Adds a new step after the specified step index in the current protocol.
+ * The new step is identical to the old one.
+ * @param {number} stepIndex The index after which to insert the new step.  The index is 1-based.
+ * @void
+ */
 function addStepAfter(stepIndex: number): void {
   if (!currentProtocol) return;
 
@@ -1027,6 +1146,11 @@ function addStepAfter(stepIndex: number): void {
   updateWarnings();
 }
 
+/**
+ * Removes a step from the current protocol at the specified index.
+ * @param {number} stepIndex The index of the step to remove. The index is 1-based.
+ * @void
+ */
 function removeStep(stepIndex: number): void {
   if (!currentProtocol) return;
   if (currentProtocol.steps.length <= 1) return;
@@ -1042,6 +1166,12 @@ function removeStep(stepIndex: number): void {
   updateWarnings();
 }
 
+/**
+ * Toggles the food type SOLID <-> LIQUID for either food A or B and updates the protocol steps accordingly.
+ * Also calls re-rendering functions.
+ * @param {boolean} isFoodB Is the food being toggled food B?
+ * @void
+ */
 function toggleFoodType(isFoodB: boolean): void {
   console.log(`toggleFoodType called with isFoodB=${isFoodB}`);
   if (!currentProtocol) return;
