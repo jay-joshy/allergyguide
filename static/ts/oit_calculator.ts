@@ -1320,7 +1320,7 @@ function renderFoodSettings(): void {
           </div>
         </div>
         <div class="setting-row threshold-setting">
-          <label>Transition when amount of food ≥</label>
+          <label>Transition when daily amount ≥</label>
           <input
             type="number"
             id="food-b-threshold"
@@ -1540,7 +1540,7 @@ function renderProtocolTable(): void {
     const exportHTML = `
       <div class="export-container">
         <div class="export-buttons">
-          <button class="btn-export" id="export-ascii">Export ASCII</button>
+          <button class="btn-export" id="export-ascii">Copy ASCII</button>
           <button class="btn-export" id="export-pdf">Export PDF</button>
         </div>
         <div class="custom-note-container">
