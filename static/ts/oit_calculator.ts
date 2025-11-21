@@ -2,13 +2,11 @@
 // OIT CALCULATOR - COMPLETE IMPLEMENTATION
 // ============================================
 
-// Declare global Decimal from decimal.js + other CDN packages
+// Declare CDN packages 
 declare const AsciiTable: any;
 declare const jspdf: any;
-interface jsPDF {
-  autoTable: (...args: any[]) => void;
-}
-// Import types for better type checking
+
+// Imports 
 import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
 
@@ -54,38 +52,38 @@ type Unit = "g" | "ml";
 interface Food {
   name: string;
   type: FoodType;
-  mgPerUnit: any; // Decimal
+  mgPerUnit: Decimal; // Decimal
 }
 
 interface Step {
   stepIndex: number;
-  targetMg: any; // Decimal
+  targetMg: Decimal; // Decimal
   method: Method;
-  dailyAmount: any; // Decimal
+  dailyAmount: Decimal; // Decimal
   dailyAmountUnit: Unit;
-  mixFoodAmount?: any; // Decimal
-  mixWaterAmount?: any; // Decimal
-  servings?: any; // Decimal
+  mixFoodAmount?: Decimal; // Decimal
+  mixWaterAmount?: Decimal; // Decimal
+  servings?: Decimal; // Decimal
   food: "A" | "B"; // Tracks which food this step belongs to
 }
 
 interface ProtocolConfig {
-  minMeasurableMass: any; // Decimal.
-  minMeasurableVolume: any; // Decimal
-  minServingsForMix: any; // Decimal
-  PROTEIN_TOLERANCE_MG: any; // Decimal. Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
-  DEFAULT_FOOD_A_DILUTION_THRESHOLD: any; // Decimal
-  DEFAULT_FOOD_B_THRESHOLD: any; // Decimal
-  MAX_SOLID_CONCENTRATION: any; // Decimal - max g/ml ratio for solid dilutions (default 0.05). We assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
+  minMeasurableMass: Decimal; // Decimal.
+  minMeasurableVolume: Decimal; // Decimal
+  minServingsForMix: Decimal; // Decimal
+  PROTEIN_TOLERANCE_MG: Decimal; // Decimal. Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
+  DEFAULT_FOOD_A_DILUTION_THRESHOLD: Decimal; // Decimal
+  DEFAULT_FOOD_B_THRESHOLD: Decimal; // Decimal
+  MAX_SOLID_CONCENTRATION: Decimal; // Decimal - max g/ml ratio for solid dilutions (default 0.05). We assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
 }
 
 interface Protocol {
   dosingStrategy: DosingStrategy;
   foodA: Food;
   foodAStrategy: FoodAStrategy;
-  diThreshold: any; // Decimal
+  diThreshold: Decimal; // Decimal
   foodB?: Food;
-  foodBThreshold?: { unit: Unit; amount: any }; // Decimal
+  foodBThreshold?: { unit: Unit; amount: Decimal }; // Decimal
   steps: Step[];
   config: ProtocolConfig;
 }
@@ -98,11 +96,11 @@ interface Warning {
 }
 
 interface Candidate {
-  mixFoodAmount: any; // Decimal
-  mixWaterAmount: any; // Decimal
-  dailyAmount: any; // Decimal
-  mixTotalVolume: any; // Decimal
-  servings: any; // Decimal
+  mixFoodAmount: Decimal; // Decimal
+  mixWaterAmount: Decimal; // Decimal
+  dailyAmount: Decimal; // Decimal
+  mixTotalVolume: Decimal; // Decimal
+  servings: Decimal; // Decimal
 }
 
 interface FoodData {
@@ -139,25 +137,25 @@ interface ProtocolData {
 // CONSTANTS / DEFAULTS
 // ============================================
 
-const DOSING_STRATEGIES: { [key: string]: number[] } = {
-  STANDARD: [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300],
+const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
+  STANDARD: [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300].map(num => new Decimal(num)),
   SLOW: [
     0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220,
     260, 300,
-  ],
-  RAPID: [5, 10, 20, 40, 80, 160, 300],
+  ].map(num => new Decimal(num)),
+  RAPID: [5, 10, 20, 40, 80, 160, 300].map(num => new Decimal(num)),
 };
 
 const SOLID_MIX_CANDIDATES = [
   0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
-];
+].map(num => new Decimal(num));
 const LIQUID_MIX_CANDIDATES = [
   0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10,
-];
+].map(num => new Decimal(num));
 const DAILY_AMOUNT_CANDIDATES = [
   0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
-];
-const MAX_MIX_WATER = 500;
+].map(num => new Decimal(num));
+const MAX_MIX_WATER = new Decimal(500);
 
 let DEFAULT_CONFIG: ProtocolConfig;
 
@@ -184,7 +182,6 @@ let customNote: string = "";
 
 // Debounce timers
 let searchDebounceTimer: number | null = null;
-let editDebounceTimer: number | null = null;
 
 // Dropdown navigation state
 let currentDropdownIndex: number = -1;
@@ -211,15 +208,16 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, "&#039;");
 }
 
-function mgPer100ToMgPerUnit(uiValue: number, unit: Unit): any {
-  // Convert g protein per 100 (g or ml) to mg protein per 1 (g or ml)
-  // uiValue is in g per 100, we need mg per 1
-  return new Decimal(uiValue).times(1000).dividedBy(100);
+function gramPer100ToMgPerUnit(uiValue: number): Decimal {
+  // Convert g protein per 100 (g or ml) to mg protein per (g or ml)
+  // works out to value * 1000 / 100 = value * 10
+  return new Decimal(uiValue).times(10);
 }
 
-function mgPerUnitToMgPer100(mgPerUnit: any): number {
+function mgPerUnitToGramPer100(mgPerUnit: Decimal): number {
   // Convert mg per unit back to g per 100 for UI display
-  return mgPerUnit.times(100).dividedBy(1000).toNumber();
+  // works out to value * (1/1000) * (100) = value / 10
+  return mgPerUnit.dividedBy(10).toNumber();
 }
 
 function formatNumber(value: any, decimals: number): string {
@@ -252,7 +250,7 @@ function getMeasuringUnit(food: Food): Unit {
 // ============================================
 
 function findDilutionCandidates(
-  P: any,
+  P: Decimal,
   food: Food,
   config: ProtocolConfig,
 ): Candidate[] {
@@ -273,10 +271,10 @@ function findDilutionCandidates(
       : null;
 
   for (const mixFoodValue of mixCandidates) {
-    const mixFood = new Decimal(mixFoodValue);
+    const mixFood: Decimal = mixFoodValue;
 
     for (const dailyAmountValue of DAILY_AMOUNT_CANDIDATES) {
-      const dailyAmount = new Decimal(dailyAmountValue);
+      const dailyAmount: Decimal = dailyAmountValue;
 
       if (food.type === FoodType.SOLID) {
         // Solid in liquid - volume of solid is negligible
@@ -378,14 +376,14 @@ function findDilutionCandidates(
 }
 
 function generateStepForTarget(
-  targetMg: any,
+  targetMg: Decimal,
   stepIndex: number,
   food: Food,
   foodAStrategy: FoodAStrategy,
   diThreshold: any,
   config: ProtocolConfig,
 ): Step | null {
-  const P = new Decimal(targetMg);
+  const P = targetMg;
   const neatMass = P.dividedBy(food.mgPerUnit);
   const unit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
 
@@ -449,7 +447,7 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
       steps.push(step);
     } else {
       // Cannot generate step - still add it as direct with warning
-      const P = new Decimal(targetProteins[i]);
+      const P = targetProteins[i];
       const neatMass = P.dividedBy(food.mgPerUnit);
       steps.push({
         stepIndex: i + 1,
@@ -637,7 +635,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
           : step.mixFoodAmount!.plus(step.mixWaterAmount!);
       const calculatedProtein = totalMixProtein
         .times(step.dailyAmount)
-        .dividedBy(mixTotalVolume);
+        .dividedBy(mixTotalVolume!);
       const delta = calculatedProtein.minus(step.targetMg).abs();
 
       if (delta.greaterThan(0.5)) {
@@ -650,7 +648,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // R5: if in dilution, servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
-      if (step.servings.lessThan(new Decimal(1))) {
+      if (step.servings!.lessThan(new Decimal(1))) {
         const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
         warnings.push({
           severity: "red",
@@ -661,7 +659,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // R6: if in dilution, Mix total volume < dailyAmount (impossible)
-      if (mixTotalVolume.lessThan(step.dailyAmount)) {
+      if (mixTotalVolume!.lessThan(step.dailyAmount)) {
         warnings.push({
           severity: "red",
           code: "R6",
@@ -679,7 +677,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
           stepIndex: step.stepIndex,
         });
       }
-      if (step.mixFoodAmount.lessThanOrEqualTo(0)) {
+      if (step.mixFoodAmount!.lessThanOrEqualTo(0)) {
         warnings.push({
           severity: "red",
           code: "R9",
@@ -687,7 +685,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
           stepIndex: step.stepIndex,
         });
       }
-      if (step.mixWaterAmount.lessThan(0)) {
+      if (step.mixWaterAmount!.lessThan(0)) {
         warnings.push({
           severity: "red",
           code: "R9",
@@ -752,8 +750,8 @@ function validateProtocol(protocol: Protocol): Warning[] {
       // Y4: if method is dilution and Food A is a solid, and the ratio of mixFoodAmount:mixWaterAmount is >1:20 (ie more than 5% w/v) our assumption that the solid contributes non neglibly to volume is violated. The effect is we underestimate the doses we give
       if (
         food.type === FoodType.SOLID &&
-        step.mixFoodAmount
-          .dividedBy(step.mixWaterAmount)
+        step.mixFoodAmount!
+          .dividedBy(step.mixWaterAmount!)
           .greaterThan(new Decimal(0.05))
       ) {
         warnings.push({
@@ -866,7 +864,6 @@ function recalculateStepMethods(): void {
   // Preserve existing targets and food properties but recalculate methods
   const preservedTargets = currentProtocol.steps.map((s) => s.targetMg);
   const preservedFoods = currentProtocol.steps.map((s) => s.food);
-  const foodBStartIndex = getFoodAStepCount(currentProtocol);
 
   const steps: Step[] = [];
 
@@ -898,6 +895,7 @@ function recalculateStepMethods(): void {
   updateWarnings();
 }
 
+// newTargetMg has to be any since it accepts update from UI user input
 function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
   if (!currentProtocol) return;
 
@@ -931,6 +929,7 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
   updateWarnings();
 }
 
+// new daily amount should be any since it accepts value from UI in event handler
 function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
   if (!currentProtocol) return;
 
@@ -963,6 +962,8 @@ function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
   updateWarnings();
 }
 
+
+// newMixFoodAmount must be any since it accepts user input from UI
 function updateStepMixFoodAmount(
   stepIndex: number,
   newMixFoodAmount: any,
@@ -1046,7 +1047,6 @@ function toggleFoodType(isFoodB: boolean): void {
   if (!currentProtocol) return;
 
   const food = isFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
-  const wasLiquid = food.type === FoodType.LIQUID;
   food.type = food.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
 
   // Convert all relevant steps
@@ -1115,7 +1115,7 @@ function renderFoodSettings(): void {
           min="0"
           max="150"
           id="food-a-protein"
-          value="${mgPerUnitToMgPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
+          value="${mgPerUnitToGramPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
           step="0.1"
         />
         <span>g per 100 ${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
@@ -1135,9 +1135,8 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${
-        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-          ? `
+      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+      ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -1150,8 +1149,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-          : ""
-      }
+      : ""
+    }
     </div>
   `;
 
@@ -1179,7 +1178,7 @@ function renderFoodSettings(): void {
             id="food-b-protein"
             min="0"
             max="150"
-            value="${mgPerUnitToMgPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
+            value="${mgPerUnitToGramPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
             step="0.1"
           />
           <span>g per 100 ${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
@@ -1277,7 +1276,6 @@ function renderProtocolTable(): void {
     <tbody>
   `;
 
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
   let lastWasFootA = true;
 
   // Get warnings to check for step highlights
@@ -1660,9 +1658,8 @@ function selectFoodA(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
-    mgPerUnit: mgPer100ToMgPerUnit(
+    mgPerUnit: gramPer100ToMgPerUnit(
       foodData["Mean value in 100g"],
-      foodData.Type === "Solid" ? "g" : "ml",
     ),
   };
 
@@ -1683,9 +1680,8 @@ function selectFoodB(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
-    mgPerUnit: mgPer100ToMgPerUnit(
+    mgPerUnit: gramPer100ToMgPerUnit(
       foodData["Mean value in 100g"],
-      foodData.Type === "Solid" ? "g" : "ml",
     ),
   };
 
@@ -1707,7 +1703,7 @@ function selectCustomFood(name: string, inputId: string): void {
   const food: Food = {
     name: name || "Custom Food",
     type: FoodType.SOLID,
-    mgPerUnit: mgPer100ToMgPerUnit(10, "g"), // Default 10g protein per 100g
+    mgPerUnit: gramPer100ToMgPerUnit(10), // Default 10g protein per 100g
   };
 
   if (inputId === "food-a-search") {
@@ -1733,7 +1729,7 @@ function selectCustomFood(name: string, inputId: string): void {
 }
 
 function selectProtocol(protocolData: ProtocolData): void {
-  // Load protocol from JSON
+  // Load protocol from JSON. All numbers should be represented as strings
   const foodA: Food = {
     name: protocolData.food_a.name,
     type:
@@ -1744,7 +1740,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-        protocolData.dosing_strategy as keyof typeof DosingStrategy
+      protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
@@ -1917,9 +1913,7 @@ function attachSettingsEventListeners(): void {
         if (value > 150) value = 150;
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
-        const unit: Unit =
-          currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-        currentProtocol.foodA.mgPerUnit = mgPer100ToMgPerUnit(value, unit);
+        currentProtocol.foodA.mgPerUnit = gramPer100ToMgPerUnit(value);
         recalculateStepMethods();
       }
     });
@@ -1966,9 +1960,7 @@ function attachSettingsEventListeners(): void {
         if (value > 150) value = 150;
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
-        const unit: Unit =
-          currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-        currentProtocol.foodB.mgPerUnit = mgPer100ToMgPerUnit(value, unit);
+        currentProtocol.foodB.mgPerUnit = gramPer100ToMgPerUnit(value);
 
         // Recalculate Food B steps
         if (currentProtocol.foodBThreshold) {
@@ -2181,8 +2173,6 @@ function exportPDF(): void {
   yPosition += 30;
 
   // Get food information
-  const foodAType =
-    currentProtocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
   const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
   const foodAStepCount = getFoodAStepCount(currentProtocol);
   const totalSteps = currentProtocol.steps.length;
@@ -2269,8 +2259,6 @@ function exportPDF(): void {
 
   // Food B section (if exists)
   if (currentProtocol.foodB && foodAStepCount < totalSteps) {
-    const foodBType =
-      currentProtocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
     const foodBUnit =
       currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
 
