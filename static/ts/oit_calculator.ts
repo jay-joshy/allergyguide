@@ -79,7 +79,7 @@ interface ProtocolConfig {
   minMeasurableMass: Decimal; // Minimal mass that is practically measurable by scale.
   minMeasurableVolume: Decimal; // Minimal mass that is practically measurable by syringe.
   minServingsForMix: Decimal; // Minimal servings for dilution mix (must be >= 1)
-  PROTEIN_TOLERANCE_MG: Decimal; // Max difference allowable between target and actual protein content (understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target)
+  PROTEIN_TOLERANCE: Decimal; // allowable percent deviation of calculated actual protein target and targetmg. ie. 0.05. Understanding that in real life there is limited resolution of measurement so the actual protein content may be slightly different from the target to an allowable degree
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: Decimal; // At what amount of Food A do you switch to direct dosing?
   DEFAULT_FOOD_B_THRESHOLD: Decimal; // At what amount of Food B do you switch from Food A to Food B?
   MAX_SOLID_CONCENTRATION: Decimal; //  max g/ml ratio for solid diluted into liquids (default 0.05). Assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
@@ -180,7 +180,7 @@ DEFAULT_CONFIG = {
   minMeasurableMass: new Decimal(0.2), // assume that scales for patients have resolution of 0.01g
   minMeasurableVolume: new Decimal(0.2), // assume that syringes used has resolution of 0.1ml
   minServingsForMix: new Decimal(3), // want mixture to last at least 3 days
-  PROTEIN_TOLERANCE_MG: new Decimal(0.5),
+  PROTEIN_TOLERANCE: new Decimal(0.05), // percent difference allowable
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
   DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
   MAX_SOLID_CONCENTRATION: new Decimal(0.05),
@@ -345,11 +345,19 @@ function findDilutionCandidates(
         // Check protein tolerance
         const actualProteinPerMl = totalMixProtein.dividedBy(mixTotalVolume);
         const actualProteinDelivered = actualProteinPerMl.times(dailyAmount);
+        // if (
+        //   actualProteinDelivered
+        //     .minus(P)
+        //     .abs()
+        //     .greaterThan(config.PROTEIN_TOLERANCE_MG)
+        // )
+        //   continue;
         if (
           actualProteinDelivered
-            .minus(P)
+            .dividedBy(P)
+            .minus(1)
             .abs()
-            .greaterThan(config.PROTEIN_TOLERANCE_MG)
+            .greaterThan(config.PROTEIN_TOLERANCE)
         )
           continue;
 
@@ -380,11 +388,19 @@ function findDilutionCandidates(
         const actualProteinDelivered = actualProteinPerMl.times(dailyAmount);
         if (
           actualProteinDelivered
-            .minus(P)
+            .dividedBy(P)
+            .minus(1)
             .abs()
-            .greaterThan(config.PROTEIN_TOLERANCE_MG)
+            .greaterThan(config.PROTEIN_TOLERANCE)
         )
           continue;
+        // if (
+        //   actualProteinDelivered
+        //     .minus(P)
+        //     .abs()
+        //     .greaterThan(config.PROTEIN_TOLERANCE_MG)
+        // )
+        //   continue;
 
         candidates.push({
           mixFoodAmount: mixFood,
@@ -719,13 +735,14 @@ function validateProtocol(protocol: Protocol): Warning[] {
       const calculatedProtein = totalMixProtein
         .times(step.dailyAmount)
         .dividedBy(mixTotalVolume!);
-      const delta = calculatedProtein.minus(step.targetMg).abs();
+      const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
+      // const delta = calculatedProtein.minus(step.targetMg).abs();
 
-      if (delta.greaterThan(0.5)) {
+      if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
         warnings.push({
           severity: "red",
           code: "R2",
-          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg.`,
+          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
           stepIndex: step.stepIndex,
         });
       }
@@ -785,7 +802,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for value >=${protocol.config.minMeasurableMass} g`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for value ≥ ${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
       }
@@ -796,7 +813,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for value ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -804,7 +821,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml is impractical. Aim for value ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -812,7 +829,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water is impractical. Aim for value >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water is impractical. Aim for value ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }
@@ -849,13 +866,15 @@ function validateProtocol(protocol: Protocol): Warning[] {
     else if (step.method === Method.DIRECT) {
       // R2: Protein mismatch
       const calculatedProtein = step.dailyAmount.times(food.mgPerUnit);
-      const delta = calculatedProtein.minus(step.targetMg).abs();
+      // const delta = calculatedProtein.minus(step.targetMg).abs();
+      const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
 
-      if (delta.greaterThan(0.5)) {
+      if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
         warnings.push({
           severity: "red",
           code: "R2",
-          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg.`,
+          // message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg.`,
+          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
           stepIndex: step.stepIndex,
         });
       }
@@ -868,7 +887,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for >=${protocol.config.minMeasurableMass} g`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for ≥ ${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
         });
       }
@@ -879,7 +898,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
         warnings.push({
           severity: "yellow",
           code: "Y3",
-          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for >=${protocol.config.minMeasurableVolume} ml`,
+          message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
         });
       }

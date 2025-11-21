@@ -69,7 +69,7 @@ This:
 - Bundles TypeScript and bundled dependencies (Decimal.js, fuzzysort)
 - Excludes jsPDF AsciiTable and autoTable (loaded from CDN)
 - Minifies the output
-- Outputs to `static/js/oit_calculator.js` (~75KB)
+- Outputs to `static/js/oit_calculator.js`
 
 ## Adding New Dependencies
 
