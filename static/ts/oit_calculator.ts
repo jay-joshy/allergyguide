@@ -2146,14 +2146,25 @@ function exportPDF(): void {
       mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
     }
 
-    foodARows.push([
-      step.stepIndex,
-      `${formatNumber(step.targetMg, 1)} mg`,
-      step.method,
-      dailyAmountStr,
-      mixDetails,
-      "2-4 weeks",
-    ]);
+    if (i === totalSteps - 1) {
+      foodARows.push([
+        step.stepIndex,
+        `${formatNumber(step.targetMg, 1)} mg`,
+        step.method,
+        dailyAmountStr,
+        mixDetails,
+        "Continue long term",
+      ]);
+    } else {
+      foodARows.push([
+        step.stepIndex,
+        `${formatNumber(step.targetMg, 1)} mg`,
+        step.method,
+        dailyAmountStr,
+        mixDetails,
+        "2-4 weeks",
+      ]);
+    }
   }
 
   // Food A section
@@ -2215,14 +2226,27 @@ function exportPDF(): void {
         mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
       }
 
-      foodBRows.push([
-        step.stepIndex,
-        `${formatNumber(step.targetMg, 1)} mg`,
-        step.method,
-        dailyAmountStr,
-        mixDetails,
-        "2-4 weeks",
-      ]);
+
+      // last step should say continue long term
+      if (i === totalSteps - 1) {
+        foodBRows.push([
+          step.stepIndex,
+          `${formatNumber(step.targetMg, 1)} mg`,
+          step.method,
+          dailyAmountStr,
+          mixDetails,
+          "Continue long term",
+        ]);
+      } else {
+        foodBRows.push([
+          step.stepIndex,
+          `${formatNumber(step.targetMg, 1)} mg`,
+          step.method,
+          dailyAmountStr,
+          mixDetails,
+          "2-4 weeks",
+        ]);
+      }
     }
 
     // Check if we need a new page
