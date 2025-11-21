@@ -1,77 +1,283 @@
 [
   {
-    "name": "Protocol: peanut powder",
+    "name": "Protocol: almond milk",
     "dosing_strategy": "STANDARD",
     "food_a": {
-      "type": "SOLID",
-      "name": "Peanut Powder",
-      "mgPerUnit": "210"
+      "type": "LIQUID",
+      "name": "Elmhurst Milked Almonds Unsweetened Beverage",
+      "mgPerUnit": "20"
     },
     "food_a_strategy": "DILUTE_INITIAL",
-    "di_threshold": "0.2",
-    "food_b": {
-      "type": "SOLID",
-      "name": "Roasted Peanut",
-      "mgPerUnit": "250"
-    },
-    "food_b_threshold": "0.45",
+    "di_threshold": "0.5",
     "table_di": [
       {
-        "food": "Peanut Powder",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "1",
         "method": "DILUTE",
-        "daily_amount": "0.2",
+        "daily_amount": "1",
         "mix_amount": "1",
-        "water_amount": "2.5"
+        "water_amount": "19"
       },
       {
-        "food": "Peanut Powder",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "2.5",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "1",
+        "water_amount": "7"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "5",
         "method": "DILUTE",
         "daily_amount": "1",
-        "mix_amount": "0.2",
-        "water_amount": "0.5"
+        "mix_amount": "1",
+        "water_amount": "3"
       },
       {
-        "food": "Peanut Powder",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "10",
+        "method": "DIRECT",
+        "daily_amount": "0.5"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "20",
+        "method": "DIRECT",
+        "daily_amount": "1"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "40",
         "method": "DIRECT",
-        "daily_amount": "0.19"
+        "daily_amount": "2"
       },
       {
-        "food": "Peanut Powder",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "80",
         "method": "DIRECT",
-        "daily_amount": "0.381"
+        "daily_amount": "4"
       },
       {
-        "food": "Roasted Peanut",
-        "protein": "80",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "120",
         "method": "DIRECT",
-        "daily_amount": "0.48"
+        "daily_amount": "6"
       },
       {
-        "food": "Roasted Peanut",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "160",
         "method": "DIRECT",
-        "daily_amount": "0.64"
+        "daily_amount": "8"
       },
       {
-        "food": "Roasted Peanut",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "240",
         "method": "DIRECT",
-        "daily_amount": "0.96"
+        "daily_amount": "12"
       },
       {
-        "food": "Roasted Peanut",
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
         "protein": "300",
         "method": "DIRECT",
-        "daily_amount": "1.2"
+        "daily_amount": "15"
       }
     ],
     "table_dn": [],
     "table_da": [],
-    "custom_note": "This is a custom note about the wrong protocl here"
+    "custom_note": "Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving."
+  },
+  {
+    "name": "Protocol: almond milk to whole almonds",
+    "dosing_strategy": "STANDARD",
+    "food_a": {
+      "type": "LIQUID",
+      "name": "Elmhurst Milked Almonds Unsweetened Beverage",
+      "mgPerUnit": "20"
+    },
+    "food_a_strategy": "DILUTE_INITIAL",
+    "di_threshold": "0.5",
+    "food_b": {
+      "type": "SOLID",
+      "name": "Almonds (dry roasted, unblanched)",
+      "mgPerUnit": "210"
+    },
+    "food_b_threshold": "0.4",
+    "table_di": [
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "1",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "1",
+        "water_amount": "19"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "2.5",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "1",
+        "water_amount": "7"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "5",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "1",
+        "water_amount": "3"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "10",
+        "method": "DIRECT",
+        "daily_amount": "0.5"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "20",
+        "method": "DIRECT",
+        "daily_amount": "1"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "40",
+        "method": "DIRECT",
+        "daily_amount": "2"
+      },
+      {
+        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "protein": "80",
+        "method": "DIRECT",
+        "daily_amount": "4"
+      },
+      {
+        "food": "Almonds (dry roasted, unblanched)",
+        "protein": "80",
+        "method": "DIRECT",
+        "daily_amount": "0.4"
+      },
+      {
+        "food": "Almonds (dry roasted, unblanched)",
+        "protein": "120",
+        "method": "DIRECT",
+        "daily_amount": "0.6"
+      },
+      {
+        "food": "Almonds (dry roasted, unblanched)",
+        "protein": "160",
+        "method": "DIRECT",
+        "daily_amount": "0.8"
+      },
+      {
+        "food": "Almonds (dry roasted, unblanched)",
+        "protein": "240",
+        "method": "DIRECT",
+        "daily_amount": "1.1"
+      },
+      {
+        "food": "Almonds (dry roasted, unblanched)",
+        "protein": "300",
+        "method": "DIRECT",
+        "daily_amount": "1.4"
+      }
+    ],
+    "table_dn": [],
+    "table_da": [],
+    "custom_note": "Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving."
+  },
+  {
+    "name": "Protocol: almond powder initial dilution",
+    "dosing_strategy": "STANDARD",
+    "food_a": {
+      "type": "SOLID",
+      "name": "PB2 Powdered Almond Butter",
+      "mgPerUnit": "384.62"
+    },
+    "food_a_strategy": "DILUTE_INITIAL",
+    "di_threshold": "0.1",
+    "table_di": [
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "1",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "0.2",
+        "water_amount": "77"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "2.5",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "0.2",
+        "water_amount": "30"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "5",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "0.2",
+        "water_amount": "15"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "10",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "0.2",
+        "water_amount": "8"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "20",
+        "method": "DILUTE",
+        "daily_amount": "1",
+        "mix_amount": "0.4",
+        "water_amount": "8"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "40",
+        "method": "DIRECT",
+        "daily_amount": "0.1"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "80",
+        "method": "DIRECT",
+        "daily_amount": "0.2"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "120",
+        "method": "DIRECT",
+        "daily_amount": "0.3"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "160",
+        "method": "DIRECT",
+        "daily_amount": "0.4"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "240",
+        "method": "DIRECT",
+        "daily_amount": "0.6"
+      },
+      {
+        "food": "PB2 Powdered Almond Butter",
+        "protein": "300",
+        "method": "DIRECT",
+        "daily_amount": "0.8"
+      }
+    ],
+    "table_dn": [],
+    "table_da": [],
+    "custom_note": "Make a fresh mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase PB2 Powdered Almond Butter with 5 grams of protein per 13 gram serving."
   },
   {
     "name": "Protocol: milk rapid",
