@@ -1173,7 +1173,6 @@ function removeStep(stepIndex: number): void {
  * @void
  */
 function toggleFoodType(isFoodB: boolean): void {
-  console.log(`toggleFoodType called with isFoodB=${isFoodB}`);
   if (!currentProtocol) return;
 
   const food = isFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
@@ -1513,6 +1512,7 @@ function renderProtocolTable(): void {
     }
 
     // Water for mixture (non-editable, auto-calculated)
+    // Also includes servings TODO! consider removing?
     if (step.method === Method.DILUTE) {
       html += `
         <td class="non-editable">
@@ -1548,8 +1548,8 @@ function renderProtocolTable(): void {
           <textarea
             id="custom-note"
             class="custom-note-textarea"
-            placeholder="Add any custom notes or instructions for this protocol..."
-            rows="10"
+            placeholder="Add any custom notes or instructions ..."
+            rows="8"
           >${escapeHtml(customNote)}</textarea>
         </div>
       </div>
@@ -1562,6 +1562,7 @@ function renderProtocolTable(): void {
   attachCustomNoteListener();
 }
 
+// TODO! ? group step warnings together? so it's not just Step 1 ... Step 1 ... Step 1 if step 1 has ++ warnings
 function updateWarnings(): void {
   if (!currentProtocol) return;
 
