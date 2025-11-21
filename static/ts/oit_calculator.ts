@@ -13,9 +13,6 @@ import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
 
 // Configure Decimal.js
-if (typeof Decimal !== "undefined") {
-  Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
-}
 Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 
 // ============================================
@@ -1116,6 +1113,7 @@ function renderFoodSettings(): void {
         <input
           type="number"
           min="0"
+          max="150"
           id="food-a-protein"
           value="${mgPerUnitToMgPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
           step="0.1"
@@ -1180,6 +1178,7 @@ function renderFoodSettings(): void {
             type="number"
             id="food-b-protein"
             min="0"
+            max="150"
             value="${mgPerUnitToMgPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
             step="0.1"
           />
@@ -1896,7 +1895,11 @@ function attachSettingsEventListeners(): void {
   if (foodAProteinInput) {
     foodAProteinInput.addEventListener("change", (e) => {
       if (currentProtocol) {
-        const value = parseFloat((e.target as HTMLInputElement).value);
+        let value = parseFloat((e.target as HTMLInputElement).value);
+        // Clamp value between 0 and 150
+        if (value < 0) value = 0;
+        if (value > 150) value = 150;
+        (e.target as HTMLInputElement).value = value.toFixed(1);
         const unit: Unit =
           currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
         currentProtocol.foodA.mgPerUnit = mgPer100ToMgPerUnit(value, unit);
@@ -1940,7 +1943,11 @@ function attachSettingsEventListeners(): void {
   if (foodBProteinInput) {
     foodBProteinInput.addEventListener("change", (e) => {
       if (currentProtocol && currentProtocol.foodB) {
-        const value = parseFloat((e.target as HTMLInputElement).value);
+        let value = parseFloat((e.target as HTMLInputElement).value);
+        // Clamp value between 0 and 150
+        if (value < 0) value = 0;
+        if (value > 150) value = 150;
+        (e.target as HTMLInputElement).value = value.toFixed(1);
         const unit: Unit =
           currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
         currentProtocol.foodB.mgPerUnit = mgPer100ToMgPerUnit(value, unit);
