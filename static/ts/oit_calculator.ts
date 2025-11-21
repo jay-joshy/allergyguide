@@ -157,7 +157,7 @@ const LIQUID_MIX_CANDIDATES = [
 const DAILY_AMOUNT_CANDIDATES = [
   0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
 ];
-const MAX_MIX_WATER = 250;
+const MAX_MIX_WATER = 500;
 
 let DEFAULT_CONFIG: ProtocolConfig;
 
