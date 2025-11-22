@@ -2934,16 +2934,20 @@ function exportASCII(): void {
   }
 
   // Baseline data
-  text += foodAInfo + "\n" + foodBInfo + "\n\n";
+  if (currentProtocol.foodB) {
+    text += foodAInfo + "\n" + foodBInfo + "\n\n";
+  } else {
+    text += foodAInfo + "\n\n";
+  }
 
   // ADD TABLES
   if (foodAStepCount > 0) {
-    text += foodATable.toString() + "\n";
+    text += foodATable.toString();
   }
 
   if (foodAStepCount < totalSteps) {
     text += `--- TRANSITION TO: ---\n`;
-    text += foodBTable.toString() + "\n\n";
+    text += foodBTable.toString();
   }
 
   // ADD CUSTOM NOTES IF PROVIDED
