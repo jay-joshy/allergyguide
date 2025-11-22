@@ -359,16 +359,6 @@ function getMeasuringUnit(food: Food): Unit {
   }
 }
 
-/**
- * Check if the user is on a mobile device.
- * @returns True if the user agent string matches a mobile device.
- */
-function isMobileDevice(): boolean {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent,
-  );
-}
-
 // ============================================
 // CORE ALGORITHMS
 // ============================================
@@ -2854,18 +2844,12 @@ function exportPDF(): void {
     doc.setTextColor(0);
   }
 
-  // Handle PDF output differently for mobile vs. desktop
-  if (isMobileDevice()) {
-    // On mobile, doc.save() is more reliable than trying to open a new tab
+  // Output PDF as data URL and open in new tab
+  const blobUrl = doc.output("bloburl");
+  const w = window.open(blobUrl, "_blank");
+  if (!w) {
+    // Fallback to direct download if popup blocked
     doc.save("protocol.pdf");
-  } else {
-    // On desktop, open in a new tab for a better user experience
-    const blobUrl = doc.output("bloburl");
-    const w = window.open(blobUrl, "_blank");
-    if (!w) {
-      // Fallback to direct download if the popup was blocked
-      doc.save("protocol.pdf");
-    }
   }
 }
 
