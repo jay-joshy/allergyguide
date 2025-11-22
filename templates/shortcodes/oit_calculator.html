@@ -1,53 +1,95 @@
 <div class="oit_calculator">
-	<!-- Food Selection and Settings -->
-	<div class="settings-container">
-		<!-- Food A Container -->
-		<div class="food-a-container">
-			<div class="search-container">
-				<input type="text" id="food-a-search" placeholder="Search for foods or protocols..." class="search-input" autocomplete="off">
-			</div>
-			<!-- Food A settings will be dynamically inserted here -->
-		</div>
-
-		<!-- Food B Container -->
-		<div class="food-b-container">
-			<h3>Optional Transition Food</h3>
-			<div class="search-container">
-				<input type="text" id="food-b-search" placeholder="Search for another food to transition to..." class="search-input" autocomplete="off" disabled>
-				<button id="clear-food-b" class="clear-food-b" disabled>
-					Clear
-				</button>
-			</div>
-			<!-- Food B settings will be dynamically inserted here -->
-		</div>
-	</div>
-
-	<!-- Dosing Strategy Selection -->
-	<div class="dosing-strategy-container">
-		<!-- Dosing strategy buttons will be dynamically inserted here -->
-	</div>
-
-	<!-- Protocol Output -->
-	<div class="output-container">
-		<table>
-			<!-- Protocol table will be dynamically generated -->
-		</table>
-
-		<div class="bottom-section">
-			<!-- Export buttons will be dynamically inserted here -->
-
-			<!-- Warnings Sidebar -->
-			<div class="warnings-container">
-				<div class="no-warnings">✓ No warnings</div>
-			</div>
-		</div>
-	</div>
+  <!-- Food Selection and Settings -->
+  <div class="settings-container">
+    <!-- Food A Container -->
+    <div class="food-a-container">
+      <div class="search-container">
+        <input
+        type="text"
+        id="food-a-search"
+        placeholder="Search for foods or protocols..."
+        class="search-input"
+        autocomplete="off"
+      >
+      </div>
+      <!-- Food A settings will be dynamically inserted here -->
+    </div>
+    <!-- Food B Container -->
+    <div class="food-b-container">
+      <h3>Optional Transition Food</h3>
+      <div class="search-container">
+        <input
+        type="text"
+        id="food-b-search"
+        placeholder="Search for another food to transition to..."
+        class="search-input"
+        autocomplete="off"
+        disabled
+      >
+        <button id="clear-food-b" class="clear-food-b" disabled>
+          Clear
+        </button>
+      </div>
+      <!-- Food B settings will be dynamically inserted here -->
+    </div>
+  </div>
+  <!-- Dosing Strategy Selection -->
+  <div class="dosing-strategy-container">
+    <!-- Dosing strategy buttons will be dynamically inserted here -->
+  </div>
+  <!-- Protocol Output -->
+  <div class="output-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Protein (mg)</th>
+          <th>Method</th>
+          <th>Daily amount</th>
+          <th>Amount for mixture</th>
+          <th>Water for mixture</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            colspan="6"
+            style="
+                            text-align: center;
+                            color: var(--oit-text-secondary);
+                            padding: 1rem;
+                        "
+          >
+            Select a food or protocol to generate steps.
+          </td>
+        </tr>
+      </tbody>
+      <!-- Protocol table will be dynamically generated -->
+    </table>
+    <div class="bottom-section">
+      <!-- Export buttons will be dynamically inserted here -->
+      <!-- Warnings Sidebar -->
+      <div class="warnings-container">
+        <div class="no-warnings">✓ No warnings</div>
+      </div>
+    </div>
+  </div>
 </div>
-
 <!-- Load external scripts -->
-<script src="https://cdn.jsdelivr.net/npm/ascii-table@0.0.9/ascii-table.min.js" integrity="sha384-nXpUuatSwA6hT9CqAT4vho3rrEzWMlpj69oMFEiubxClOeYYUSjvrEgbroI8L9cr" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/5.0.2/jspdf.plugin.autotable.min.js" integrity="sha384-voAWf+DQNBx+Eya8tGEw2DHSo8aPM0bTyJhi+ZbLLfV6HzrvPV/UqIvc3+ULj7bS" crossorigin="anonymous"></script>
-
+<script
+  src="https://cdn.jsdelivr.net/npm/ascii-table@0.0.9/ascii-table.min.js"
+  integrity="sha384-nXpUuatSwA6hT9CqAT4vho3rrEzWMlpj69oMFEiubxClOeYYUSjvrEgbroI8L9cr"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+  integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/5.0.2/jspdf.plugin.autotable.min.js"
+  integrity="sha384-voAWf+DQNBx+Eya8tGEw2DHSo8aPM0bTyJhi+ZbLLfV6HzrvPV/UqIvc3+ULj7bS"
+  crossorigin="anonymous"
+></script>
 <!-- Load main script -->
 <script src="/js/oit_calculator.js"></script>

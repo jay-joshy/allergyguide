@@ -23,6 +23,7 @@
   --oit-success-text: #90f050;
   --oit-table-header-bg: #2a1f1a;
   --oit-table-row-hover: #3a2a22;
+  --oit-sticky-offset: 0px;
   --oit-warning-highlight-red: rgba(255, 50, 50, 0.08);
   --oit-warning-highlight-red-hover: rgba(255, 50, 50, 0.12);
   --oit-warning-highlight-yellow: rgba(255, 193, 7, 0.08);
@@ -53,6 +54,7 @@
   --oit-success-text: #2a6000;
   --oit-table-header-bg: #fff0e6;
   --oit-table-row-hover: #fff7f0;
+  --oit-sticky-offset: 0px;
   --oit-warning-highlight-red: rgba(255, 50, 50, 0.12);
   --oit-warning-highlight-red-hover: rgba(255, 50, 50, 0.18);
   --oit-warning-highlight-yellow: rgba(255, 193, 7, 0.12);
@@ -441,15 +443,15 @@
     width: 100%;
     border-collapse: collapse;
     background-color: var(--oit-bg-secondary);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* border-radius moved to container */
+    overflow: visible;
+    /* box-shadow moved to container */
 
     thead {
       background-color: var(--oit-table-header-bg);
       position: sticky;
-      top: 0;
-      z-index: 10;
+      top: var(--oit-sticky-offset);
+      z-index: 11;
 
       th {
         padding: 1rem;
