@@ -8,15 +8,14 @@
 // EXTERNAL PACKAGES
 // ============================================
 
-// CDN packages - ? TODO! switch to a more modern ascii exporter
+// CDN packages
 // Have had some difficulty downloading and using jspdf and autotable outside of CDN
-declare const AsciiTable: any;
 declare const jspdf: any;
 
 // Imports
 import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
-import Table from "ascii-table3";
+import { AsciiTable3 } from "ascii-table3";
 
 // Configure Decimal.js
 Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
@@ -695,7 +694,6 @@ function addFoodBToProtocol(
 
   if (transitionIndex === -1) {
     // No transition point found - emit warning
-    console.warn("No transition point found for Food B");
     // warning is picked up by validation system
     return;
   }
@@ -2887,8 +2885,9 @@ function exportASCII(): void {
   const foodAStepCount = getFoodAStepCount(currentProtocol);
 
   // Create separate tables for each food
-  const foodATable = new AsciiTable(foodAInfo);
-  const foodBTable = new AsciiTable(foodBInfo);
+  const foodATable = new AsciiTable3(foodAInfo);
+  const foodBTable = new AsciiTable3(foodBInfo);
+
   foodATable.setHeading(
     "Step",
     "Protein",
@@ -2910,7 +2909,7 @@ function exportASCII(): void {
     const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
     // Create table for this step
-    let table: typeof AsciiTable;
+    let table: AsciiTable3;
     if (!isStepFoodB) {
       table = foodATable;
     } else {
@@ -2936,7 +2935,7 @@ function exportASCII(): void {
 
   // ADD TABLES
   if (foodAStepCount > 0) {
-    text += foodATable.toString() + "\n\n";
+    text += foodATable.toString() + "\n";
   }
 
   if (foodAStepCount < totalSteps) {
