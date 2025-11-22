@@ -15,6 +15,7 @@
     "build": "esbuild static/ts/oit_calculator.ts --bundle --outfile=static/js/oit_calculator.js --format=iife --target=es2017 --minify"
   },
   "dependencies": {
+    "ascii-table3": "^1.0.1",
     "decimal.js": "^10.6.0",
     "fast-toml": "^0.5.4",
     "fuzzysort": "^3.1.0",
@@ -24,6 +25,7 @@
     "uglify-js": "^3.17.4"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "esbuild": "^0.27.0",
     "typescript": "^5.9.3"
   }

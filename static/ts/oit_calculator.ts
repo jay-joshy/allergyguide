@@ -16,6 +16,7 @@ declare const jspdf: any;
 // Imports
 import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
+import Table from "ascii-table3";
 
 // Configure Decimal.js
 Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
