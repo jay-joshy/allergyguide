@@ -25,22 +25,38 @@ Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 // ============================================
 
 // TODO! Consider increasing number of strategies
+/**
+ * Dosing plan presets for target protein steps.
+ * STANDARD, SLOW, and RAPID map to arrays in DOSING_STRATEGIES.
+ */
 enum DosingStrategy {
   STANDARD = "STANDARD",
   SLOW = "SLOW",
   RAPID = "RAPID",
 }
 
+/**
+ * Physical form that determines measuring unit and mixing model.
+ * SOLID uses grams; LIQUID uses milliliters.
+ */
 enum FoodType {
   SOLID = "SOLID",
   LIQUID = "LIQUID",
 }
 
+/**
+ * How a step is administered:
+ * DIRECT (neat food) or DILUTE (prepared mixture).
+ */
 enum Method {
   DILUTE = "DILUTE",
   DIRECT = "DIRECT",
 }
 
+/**
+ * Policy for when Food A uses dilution across steps.
+ * DILUTE_INITIAL (until neat ≥ threshold), DILUTE_ALL, or DILUTE_NONE.
+ */
 enum FoodAStrategy {
   DILUTE_INITIAL = "DILUTE_INITIAL",
   DILUTE_ALL = "DILUTE_ALL",
@@ -51,18 +67,30 @@ enum FoodAStrategy {
 // TYPE ALIASES
 // ============================================
 
+/**
+ * Measuring unit for patient-facing amounts.
+ * "g" for solids; "ml" for liquids.
+ */
 type Unit = "g" | "ml";
 
 // ============================================
 // INTERFACES
 // ============================================
 
+/**
+ * Food definition with protein concentration used for calculations.
+ * mgPerUnit is the canonical internal unit (mg protein per g or ml food).
+ */
 interface Food {
   name: string;
   type: FoodType;
   mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
 }
 
+/**
+ * Single dosing step with target protein and administration details.
+ * For DILUTE steps, mix * and servings describe the prepared mixture.
+ */
 interface Step {
   stepIndex: number;
   targetMg: Decimal;
@@ -75,6 +103,9 @@ interface Step {
   food: "A" | "B";
 }
 
+/**
+ * Limits and tolerances used to compute feasible dilution/direct steps. Values are Decimals and represent device resolution, tolerances, and ratios.
+ */
 interface ProtocolConfig {
   minMeasurableMass: Decimal; // Minimal mass that is practically measurable by scale.
   minMeasurableVolume: Decimal; // Minimal mass that is practically measurable by syringe.
@@ -85,6 +116,10 @@ interface ProtocolConfig {
   MAX_SOLID_CONCENTRATION: Decimal; //  max g/ml ratio for solid diluted into liquids (default 0.05). Assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
 }
 
+/**
+ * Complete protocol definition, including steps and global settings.
+ * May include a Food B transition and its threshold.
+ */
 interface Protocol {
   dosingStrategy: DosingStrategy;
   foodA: Food;
@@ -96,6 +131,10 @@ interface Protocol {
   config: ProtocolConfig;
 }
 
+/**
+ * Validation result describing an issue with the protocol or a specific step.
+ * severity is "red" (critical) or "yellow" (caution).
+ */
 interface Warning {
   severity: "red" | "yellow";
   code: string;
@@ -103,6 +142,10 @@ interface Warning {
   stepIndex?: number;
 }
 
+/**
+ * Intermediate dilution candidate considered during planning.
+ * Represents a particular mix recipe and its derived servings.
+ */
 interface Candidate {
   mixFoodAmount: Decimal;
   mixWaterAmount: Decimal;
@@ -111,8 +154,11 @@ interface Candidate {
   servings: Decimal;
 }
 
-// Loaded from .json with [Canadian Nutrient File, Health Canada, 2015] data
 // TODO! Clean up the CNF file; some of the SOLID/LIQUID distinctions are wrong still
+/**
+ * Food database record (as loaded from JSON containing with data from Canadian Nutrient File, Health Canada, 2015).
+ * Raw values are UI-facing and converted to internal Decimal where needed.
+ */
 interface FoodData {
   Food: string;
   "Food Group": string;
@@ -121,6 +167,10 @@ interface FoodData {
 }
 
 // For loading of protocols from JSON file
+/**
+ * Protocol template record (as loaded from JSON).
+ * String fields representing numbers are parsed into Decimal during load.
+ */
 interface ProtocolData {
   name: string;
   dosing_strategy: string;
@@ -1384,8 +1434,9 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-      ? `
+      ${
+        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+          ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -1398,8 +1449,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-      : ""
-    }
+          : ""
+      }
     </div>
   `;
 
@@ -2087,7 +2138,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-      protocolData.dosing_strategy as keyof typeof DosingStrategy
+        protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
