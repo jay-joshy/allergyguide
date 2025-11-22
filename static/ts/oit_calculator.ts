@@ -2885,8 +2885,8 @@ function exportASCII(): void {
   const foodAStepCount = getFoodAStepCount(currentProtocol);
 
   // Create separate tables for each food
-  const foodATable = new AsciiTable3(foodAInfo);
-  const foodBTable = new AsciiTable3(foodBInfo);
+  const foodATable = new AsciiTable3(currentProtocol.foodA.name);
+  const foodBTable = new AsciiTable3(currentProtocol.foodB?.name);
 
   foodATable.setHeading(
     "Step",
@@ -2932,6 +2932,9 @@ function exportASCII(): void {
       mixDetails,
     );
   }
+
+  // Baseline data
+  text += foodAInfo + "\n" + foodBInfo + "\n\n";
 
   // ADD TABLES
   if (foodAStepCount > 0) {
