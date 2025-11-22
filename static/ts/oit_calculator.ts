@@ -2844,12 +2844,51 @@ function exportPDF(): void {
     doc.setTextColor(0);
   }
 
-  // Output PDF as data URL and open in new tab
-  const blobUrl = doc.output("bloburl");
-  const w = window.open(blobUrl, "_blank");
-  if (!w) {
-    // Fallback to direct download if popup blocked
-    doc.save("protocol.pdf");
+  // Detect if user is on mobile device
+  // Combines user agent check with touch capability and screen size for better accuracy
+  const isMobile =
+    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ||
+    (("ontouchstart" in window || navigator.maxTouchPoints > 0) &&
+      window.innerWidth <= 1024);
+
+  const pdfBlob = doc.output("blob");
+  const blobUrl = URL.createObjectURL(pdfBlob);
+
+  if (isMobile) {
+    // Mobile: Use download link approach for better compatibility
+    const downloadLink = document.createElement("a");
+    downloadLink.href = blobUrl;
+    downloadLink.download = "protocol.pdf";
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    // Clean up the blob URL after a short delay
+    setTimeout(() => {
+      URL.revokeObjectURL(blobUrl);
+    }, 100);
+  } else {
+    // Desktop: Open in new tab (original behavior)
+    const w = window.open(blobUrl, "_blank");
+    if (!w) {
+      // Fallback to download if popup blocked
+      const downloadLink = document.createElement("a");
+      downloadLink.href = blobUrl;
+      downloadLink.download = "protocol.pdf";
+      downloadLink.style.display = "none";
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+
+    // Clean up the blob URL after a delay (longer for new tab scenario)
+    setTimeout(() => {
+      URL.revokeObjectURL(blobUrl);
+    }, 1000);
   }
 }
 
