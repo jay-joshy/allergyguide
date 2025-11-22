@@ -211,12 +211,18 @@ let currentDropdownInputId: string = "";
 // ============================================
 
 /**
- * Escapes HTML special characters to prevent XSS (Cross-Site Scripting) attacks.
- * This function MUST be used whenever user input (food names, search queries, etc.)
- * is inserted into HTML content via innerHTML or template literals.
+ * Escape a string for safe HTML insertion.
  *
- * @param unsafe - The untrusted string that may contain HTML/JS code
- * @returns A safe string with HTML entities escaped
+ * Escapes the five critical characters (&, <, >, ", ') to their HTML entities.
+ * Use this before inserting any user-provided content into the DOM via innerHTML or template literals. Safe for repeated calls (idempotent).
+ *
+ * Side effects: none (pure)
+ *
+ * @param unsafe Untrusted string that may contain HTML/JS
+ * @returns Escaped string safe to render as text content
+ * @example
+ * // => "&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;"
+ * escapeHtml('<script>alert("xss")</script>');
  */
 function escapeHtml(unsafe: string): string {
   return unsafe
@@ -228,9 +234,11 @@ function escapeHtml(unsafe: string): string {
 }
 
 /**
- * Convert g protein per 100 (g or ml) to mg protein per (g or ml).
- * @param {number} uiValue - The protein in g per 100.
- * @returns {Decimal} The protein in mg per unit.
+ * Convert protein concentration from g per 100 (g or ml) to mg per unit (g or ml).
+ *
+ * @remarks Formula: mgPerUnit = gPer100 × 10.
+ * @param uiValue protein concentration in g per 100 unit (UI-facing)
+ * @returns Milligrams of protein per unit (Decimal) for internal calculations
  */
 function gramPer100ToMgPerUnit(uiValue: number): Decimal {
   // works out to value * 1000 / 100 = value * 10
@@ -238,9 +246,11 @@ function gramPer100ToMgPerUnit(uiValue: number): Decimal {
 }
 
 /**
- * Convert mg per unit back to g per 100 for UI display.
- * @param {Decimal} mgPerUnit - The value in mg per unit.
- * @returns {number} The value in g per 100.
+ * Convert protein concentration from mg per unit (g or ml) to g per 100 (g or ml).
+ *
+ * @remarks Formula: gPer100 = mgPerUnit ÷ 10.
+ * @param mgPerUnit Milligrams of protein per unit
+ * @returns Grams of protein per 100 units (number) for UI display
  */
 function mgPerUnitToGramPer100(mgPerUnit: Decimal): number {
   // works out to value * (1/1000) * (100) = value / 10
@@ -248,10 +258,14 @@ function mgPerUnitToGramPer100(mgPerUnit: Decimal): number {
 }
 
 /**
- * Formats a number for UI display to specified decimal rounding and returns string.
- * @param {any} value - The number to format.
- * @param {number} decimals - The number of decimals to round to.
- * @returns {string} The formatted number as a string.
+ * Format a numeric value with fixed decimal places.
+ *
+ * Accepts native numbers or Decimal-like objects exposing toNumber().
+ * Returns an empty string for null/undefined to simplify templating.
+ *
+ * @param value Number or Decimal to format
+ * @param decimals Number of fractional digits to render
+ * @returns Formatted string (or "" for nullish input)
  */
 function formatNumber(value: any, decimals: number): string {
   if (value === null || value === undefined) return "";
@@ -260,10 +274,15 @@ function formatNumber(value: any, decimals: number): string {
 }
 
 /**
- * Formats a number / amount but will round to different precision based on if it is measured in g or ml.
- * @param {any} value - The number to format.
- * @param {Unit} unit - 'g' or 'ml'.
- * @returns {string} The formatted number as a string.
+ * Format a patient-measured amount based on its unit.
+ *
+ * @remarks
+ * - For grams (g): fixed to SOLID_RESOLUTION decimals
+ * - For milliliters (ml): integer when whole, otherwise LIQUID_RESOLUTION
+ *
+ * @param value Amount to format (g/ml)
+ * @param unit Measuring unit: "g" or "ml"
+ * @returns Formatted string
  */
 function formatAmount(value: any, unit: Unit): string {
   if (value === null || value === undefined) return "";
@@ -277,9 +296,10 @@ function formatAmount(value: any, unit: Unit): string {
 }
 
 /**
- * Determines the measuring unit for a given food item.
- * @param {Food} food - The food item.
- * @returns {Unit} The measuring unit ('g' or 'ml').
+ * Get the measuring unit for a food by its form.
+ *
+ * @param food Food definition with type SOLID or LIQUID
+ * @returns "g" for SOLID foods; "ml" for LIQUID foods
  */
 function getMeasuringUnit(food: Food): Unit {
   if (food.type === FoodType.LIQUID) {
@@ -292,14 +312,27 @@ function getMeasuringUnit(food: Food): Unit {
 // ============================================
 // CORE ALGORITHMS
 // ============================================
-
-// TODO! JSDOC
 /**
- * Finds candidates for dilutions based on specified parameters.
- * @param {Decimal} P - The target protein amount (mg).
- * @param {Food} food - The food item.
- * @param {ProtocolConfig} config - The protocol configuration.
- * @returns {Candidate[]} An array of candidates.
+ * Compute feasible dilution candidates for a target protein dose.
+ *
+ * For a target protein P (mg), searches across candidate mix sizes and daily amounts to produce practical dilution recipes that:
+ * - respect tool resolution (minMeasurableMass/minMeasurableVolume)
+ * - keep total mix water within MAX_MIX_WATER
+ * - meet minimum servings (minServingsForMix)
+ * - achieve protein within relative tolerance PROTEIN_TOLERANCE
+ * - for SOLID foods, prefer low w/v concentration based on MAX_SOLID_CONCENTRATION
+ *
+ * Liquid-in-liquid assumes additive volumes; solid-in-liquid assumes solid volume is negligible (validated separately via warnings).
+ *
+ * Returned candidates are sorted by:
+ * - whether they meet low-concentration preference (SOLID only), then
+ * - mixFoodAmount asc, dailyAmount asc, mixTotalVolume asc, mixWaterAmount asc
+ *
+ *
+ * @param P Target protein per dose, in mg
+ * @param food Food used for the dilution (determines unit logic)
+ * @param config Protocol configuration and constraints
+ * @returns Array of feasible, sorted Candidate items
  */
 function findDilutionCandidates(
   P: Decimal,
@@ -347,13 +380,6 @@ function findDilutionCandidates(
         // Check protein tolerance
         const actualProteinPerMl = totalMixProtein.dividedBy(mixTotalVolume);
         const actualProteinDelivered = actualProteinPerMl.times(dailyAmount);
-        // if (
-        //   actualProteinDelivered
-        //     .minus(P)
-        //     .abs()
-        //     .greaterThan(config.PROTEIN_TOLERANCE_MG)
-        // )
-        //   continue;
         if (
           actualProteinDelivered
             .dividedBy(P)
@@ -396,13 +422,6 @@ function findDilutionCandidates(
             .greaterThan(config.PROTEIN_TOLERANCE)
         )
           continue;
-        // if (
-        //   actualProteinDelivered
-        //     .minus(P)
-        //     .abs()
-        //     .greaterThan(config.PROTEIN_TOLERANCE_MG)
-        // )
-        //   continue;
 
         candidates.push({
           mixFoodAmount: mixFood,
@@ -444,14 +463,20 @@ function findDilutionCandidates(
 }
 
 /**
- * Generates a step for a target protein amount.
- * @param {Decimal} targetMg - The target protein amount in mg.
- * @param {number} stepIndex
- * @param {Food} food
- * @param {FoodAStrategy} foodAStrategy
- * @param {Decimal} diThreshold - dilution threshold.
- * @param {ProtocolConfig} config - protocol configuration.
- * @returns {Step | null} A step object, or null if dilution is not possible.
+ * For a given target protein in a step, calculate the remaining numbers to formally define a step if possible.
+ *
+ * When diluting, picks the first (best) candidate from findDilutionCandidates.
+ * Returns null only when a dilution is required but no feasible candidate exists.
+ *
+ * Side effects: none (pure)
+ *
+ * @param targetMg Target protein amount for this step (mg)
+ * @param stepIndex
+ * @param food Food to base the step on (Food A or Food B)
+ * @param foodAStrategy Strategy controlling Food A dilution behavior
+ * @param diThreshold Threshold neat amount at/above which DIRECT is acceptable, for dilution initial strategy
+ * @param config Protocol constraints and tolerances
+ * @returns Step definition or null if a required dilution cannot be constructed
  */
 function generateStepForTarget(
   targetMg: Decimal,
@@ -504,10 +529,18 @@ function generateStepForTarget(
 }
 
 /**
- * Generates a default protocol based on the provided food and configuration.
- * @param {Food} food - The food item.
- * @param {ProtocolConfig} config - The protocol configuration.
- * @returns {Protocol} A default protocol object.
+ * Build a default protocol for Food A using the default dosing strategy.
+ *
+ * Uses:
+ * - dosingStrategy: STANDARD
+ * - foodAStrategy: DILUTE_INITIAL
+ * - diThreshold: DEFAULT_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD
+ *
+ * Steps are generated with generateStepForTarget. If a dilution is required but not feasible for a target, a DIRECT fallback step is emitted so the sequence remains continuous (validation will flag any issues).
+ *
+ * @param food Food A
+ * @param config Protocol configuration and constraints
+ * @returns Protocol with Food A steps populated
  */
 function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
   const dosingStrategy = DosingStrategy.STANDARD;
@@ -555,9 +588,10 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
 }
 
 /**
- * Gets the number of steps for food A in a protocol.
- * @param {Protocol} protocol - The protocol object.
- * @returns {number} The number of steps for food A.
+ * Count the number of Food A steps in a protocol.
+ *
+ * @param protocol Protocol to inspect
+ * @returns Number of steps that belong to Food A
  */
 function getFoodAStepCount(protocol: Protocol): number {
   if (!protocol.foodB) return protocol.steps.length;
@@ -572,15 +606,25 @@ function getFoodAStepCount(protocol: Protocol): number {
 }
 
 /**
- * Adds Food B to a protocol based on a specified threshold.
- * @param {Protocol} protocol - The protocol object.
- * @param {Food} foodB
- * @param {{unit: Unit; amount: any}} threshold - at what amount of Food B to start using instead of Food A
+ * Inject a Food B transition into an existing protocol.
+ *
+ * Finds the first step where targetMg ≥ (threshold.amount × foodB.mgPerUnit) and transitions at that point by:
+ * - duplicating the transition target as the first Food B step
+ * - converting all subsequent targets to Food B DIRECT steps
+ * - reindexing steps
+ *
+ * Protocol.foodB and .foodBThreshold are assigned even if no transition point is found; the validation system will surface a warning in that case.
+ *
+ * Mutates the provided protocol in place.
+ *
+ * @param protocol Protocol to modify (mutated)
+ * @param foodB Food B definition
+ * @param threshold Threshold to begin Food B, unit-specific amount (g/ml)
  */
 function addFoodBToProtocol(
   protocol: Protocol,
   foodB: Food,
-  threshold: { unit: Unit; amount: any },
+  threshold: { unit: Unit; amount: Decimal },
 ): void {
   // Calculate foodBmgThreshold
   const foodBmgThreshold = threshold.amount.times(foodB.mgPerUnit);
@@ -656,10 +700,18 @@ function addFoodBToProtocol(
 }
 
 /**
- * Validates a protocol and returns an array of warnings.
+ * Validate protocol-level and per-step constraints, yielding warnings.
  *
- * @param {Protocol} protocol The protocol to validate.
- * @returns {Warning[]} An array of warnings.
+ * Produces red (critical) and yellow (practical) warnings covering:
+ * - structural issues (too few steps, non-ascending targets)
+ * - invalid/edge concentrations, servings, volumes, mismatch to tolerance
+ * - measurement resolution impracticalities
+ * - transition feasibility for Food B
+ *
+ * No exceptions are thrown; issues are reported via structured Warning items.
+ *
+ * @param protocol Protocol to validate
+ * @returns Array of warnings, possibly empty
  */
 function validateProtocol(protocol: Protocol): Warning[] {
   const warnings: Warning[] = [];
@@ -927,10 +979,13 @@ function validateProtocol(protocol: Protocol): Warning[] {
 // ============================================
 
 /**
- * If currentProtocol exists, recalculates steps and updates currentProtocol.
- * Calls rerender functions after to update UI
+ * Recompute the entire protocol step sequence from current high-level settings.
  *
- * @void
+ * Rebuilds Food A steps from the selected dosing strategy and Food A strategy, then re-applies Food B transition if present. Triggers UI updates.
+ *
+ * Mutates global currentProtocol.
+ *
+ * @returns void
  */
 function recalculateProtocol(): void {
   if (!currentProtocol) return;
@@ -969,10 +1024,13 @@ function recalculateProtocol(): void {
 }
 
 /**
- * Recalculates the step methods while preserving existing target amounts and food properties.
- * Calls rendering functions after.
+ * Recompute per-step methods (DIRECT vs DILUTE) without changing targets/foods.
  *
- * @void
+ * For Food B steps, always enforce DILUTE_NONE. For Food A steps, use the current Food A strategy and diThreshold. Triggers UI updates.
+ *
+ * Mutates global currentProtocol.
+ *
+ * @returns void
  */
 function recalculateStepMethods(): void {
   if (!currentProtocol) return;
@@ -1012,10 +1070,17 @@ function recalculateStepMethods(): void {
 }
 
 /**
- * Handle user modification of step targetMg, for both dilutions and direct
- * Calls re-rendering functions after
+ * Handle user change to a step's target protein (mg).
  *
- * @void
+ * Updates dependent fields:
+ * - DIRECT: recompute dailyAmount = targetMg / mgPerUnit
+ * - DILUTE: recompute servings and mixWaterAmount to preserve dailyAmount and mixFoodAmount
+ *
+ * Triggers UI and warnings re-render.
+ *
+ * @param stepIndex 1-based index of the step to update
+ * @param newTargetMg New target protein (mg)
+ * @returns void
  */
 function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
   // newTargetMg has to be any since it accepts update from UI user input
@@ -1053,10 +1118,17 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
 }
 
 /**
- * To be called when user updates daily amount in a step. Handles steps that are direct or dilution.
- * Calls re-rendering functions after
+ * Handle user change to a step's daily amount (g/ml).
  *
- * @void
+ * Updates dependent fields:
+ * - DIRECT: recompute targetMg = dailyAmount × mgPerUnit
+ * - DILUTE: recompute servings and mixWaterAmount to preserve targetMg and mixFoodAmount
+ *
+ * Triggers UI and warnings re-render.
+ *
+ * @param stepIndex 1-based index of the step to update
+ * @param newDailyAmount New amount (g or ml), number-like
+ * @returns void
  */
 function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
   // new daily amount should be any since it accepts value from UI in event handler
@@ -1092,10 +1164,15 @@ function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
 }
 
 /**
- * To be called when user updates mixfoodamount in a step for a dilution.
- * Calls re-rendering functions after
+ * Handle user change to a dilution step's mix food amount.
  *
- * @void
+ * Updates dependent fields (servings and mixWaterAmount) while preserving targetMg and dailyAmount.
+ *
+ * Triggers UI and warnings re-render.
+ *
+ * @param stepIndex 1-based index of the dilution step
+ * @param newMixFoodAmount New amount of food to include in mix (g or ml), number-like
+ * @returns void
  */
 function updateStepMixFoodAmount(
   // newMixFoodAmount must be any since it accepts user input from UI
@@ -1129,10 +1206,12 @@ function updateStepMixFoodAmount(
 }
 
 /**
- * Adds a new step after the specified step index in the current protocol.
- * The new step is identical to the old one.
- * @param {number} stepIndex The index after which to insert the new step.  The index is 1-based.
- * @void
+ * Duplicate a step and insert it immediately after the original.
+ *
+ * Copies all step fields; for DILUTE steps also copies mix amounts and servings. Reindexes all subsequent steps. Triggers UI update.
+ *
+ * @param stepIndex 1-based index after which to insert the new step
+ * @returns void
  */
 function addStepAfter(stepIndex: number): void {
   if (!currentProtocol) return;
@@ -1168,9 +1247,12 @@ function addStepAfter(stepIndex: number): void {
 }
 
 /**
- * Removes a step from the current protocol at the specified index.
- * @param {number} stepIndex The index of the step to remove. The index is 1-based.
- * @void
+ * Remove a step from the protocol and reindex the remaining steps.
+ *
+ * Does nothing if there is only one step. Triggers UI update.
+ *
+ * @param stepIndex 1-based index of the step to remove
+ * @returns void
  */
 function removeStep(stepIndex: number): void {
   if (!currentProtocol) return;
@@ -1188,10 +1270,19 @@ function removeStep(stepIndex: number): void {
 }
 
 /**
- * Toggles the food type SOLID <-> LIQUID for either food A or B and updates the protocol steps accordingly.
- * Also calls re-rendering functions.
- * @param {boolean} isFoodB Is the food being toggled food B?
- * @void
+ * Toggle the form (SOLID ⇄ LIQUID) for Food A or Food B, updating all steps.
+ *
+ * For DILUTE steps:
+ * - ensures dailyAmountUnit is "ml"
+ * - recomputes mixWaterAmount based on the new volume model
+ *
+ * For DIRECT steps:
+ * - adjusts dailyAmountUnit to "g" (SOLID) or "ml" (LIQUID)
+ *
+ * Triggers re-render of settings, table, and warnings.
+ *
+ * @param isFoodB When true, toggles Food B; otherwise toggles Food A
+ * @returns void
  */
 function toggleFoodType(isFoodB: boolean): void {
   if (!currentProtocol) return;
@@ -1239,6 +1330,14 @@ function toggleFoodType(isFoodB: boolean): void {
 // UI RENDERING FUNCTIONS
 // ============================================
 
+/**
+ * Render Food A and (optionally) Food B settings panels into the DOM.
+ *
+ * Uses currentProtocol to populate controls and attaches event listeners.
+ * Safe to call repeatedly; replaces existing settings blocks in-place.
+ *
+ * @returns void
+ */
 function renderFoodSettings(): void {
   if (!currentProtocol) return;
 
@@ -1370,6 +1469,13 @@ function renderFoodSettings(): void {
   attachSettingsEventListeners();
 }
 
+/**
+ * Render dosing strategy buttons and wire up click handlers.
+ *
+ * Re-renders when strategy changes (which triggers recomputation of protocol).
+ *
+ * @returns void
+ */
 function renderDosingStrategy(): void {
   if (!currentProtocol) return;
 
@@ -1405,6 +1511,13 @@ function renderDosingStrategy(): void {
   });
 }
 
+/**
+ * Render the protocol table (steps) and auxiliary UI (export, notes).
+ *
+ * Highlights rows with warnings, groups by Food A/B, and attaches handlers for inline editing and step add/remove controls.
+ *
+ * @returns void
+ */
 function renderProtocolTable(): void {
   if (!currentProtocol) return;
 
@@ -1584,6 +1697,13 @@ function renderProtocolTable(): void {
 }
 
 // TODO! ? group step warnings together? so it's not just Step 1 ... Step 1 ... Step 1 if step 1 has ++ warnings
+/**
+ * Recompute and render the warnings sidebar for the current protocol.
+ *
+ * Groups warnings by severity and prints human-readable messages.
+ *
+ * @returns void
+ */
 function updateWarnings(): void {
   if (!currentProtocol) return;
 
@@ -1633,6 +1753,16 @@ function updateWarnings(): void {
 // SEARCH FUNCTIONS
 // ============================================
 
+/**
+ * Run fuzzy search against foods and/or protocol templates.
+ *
+ * For searchType "food": returns foods only (used for Food B search).
+ * For searchType "protocol": returns protocols first, then foods (Food A search).
+ *
+ * @param query User-entered search string
+ * @param searchType "food" to search foods only; "protocol" to search protocols+foods
+ * @returns Array of fuzzysort results (protocols may appear before foods)
+ */
 function performSearch(query: string, searchType: "food" | "protocol"): any[] {
   if (!query.trim()) return [];
 
@@ -1663,6 +1793,17 @@ function performSearch(query: string, searchType: "food" | "protocol"): any[] {
   }
 }
 
+/**
+ * Render the autocomplete dropdown below a search input.
+ *
+ * Always includes a "Custom" item (index 0) to create user-defined foods.
+ * Clicking an item selects Food A, Food B, or a protocol template depending on the input element.
+ *
+ * @param inputId Element id of the associated input
+ * @param results Fuzzysort results array to display
+ * @param query Current input string (used for the Custom option)
+ * @returns void
+ */
 function showSearchDropdown(
   inputId: string,
   results: any[],
@@ -1735,6 +1876,12 @@ function showSearchDropdown(
   container.appendChild(dropdown);
 }
 
+/**
+ * Remove and reset the autocomplete dropdown for a given input.
+ *
+ * @param inputId Element id of the associated input
+ * @returns void
+ */
 function hideSearchDropdown(inputId: string): void {
   const input = document.getElementById(inputId) as HTMLInputElement;
   const container = input.parentElement!;
@@ -1746,6 +1893,14 @@ function hideSearchDropdown(inputId: string): void {
   currentDropdownInputId = "";
 }
 
+/**
+ * Keyboard navigation for the autocomplete dropdown.
+ *
+ * Wraps around at ends and ensures the highlighted item is visible.
+ *
+ * @param direction "up" or "down"
+ * @returns void
+ */
 function navigateDropdown(direction: "up" | "down"): void {
   if (!currentDropdownInputId) return;
 
@@ -1784,6 +1939,13 @@ function navigateDropdown(direction: "up" | "down"): void {
   });
 }
 
+/**
+ * Programmatically "click" the currently highlighted autocomplete item.
+ *
+ * No-op if nothing is highlighted or the dropdown is missing.
+ *
+ * @returns void
+ */
 function selectHighlightedDropdownItem(): void {
   if (!currentDropdownInputId || currentDropdownIndex < 0) return;
 
@@ -1806,6 +1968,14 @@ function selectHighlightedDropdownItem(): void {
 // FOOD SELECTION FUNCTIONS
 // ============================================
 
+/**
+ * Select Food A from database entry and initialize a default protocol.
+ *
+ * Triggers rendering of settings, dosing strategy, table, and warnings.
+ *
+ * @param foodData Entry from the foods database
+ * @returns void
+ */
 function selectFoodA(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
@@ -1824,6 +1994,15 @@ function selectFoodA(foodData: FoodData): void {
   (document.getElementById("food-a-search") as HTMLInputElement).value = "";
 }
 
+/**
+ * Select Food B from database entry and compute transition steps.
+ *
+ * Applies DEFAULT_FOOD_B_THRESHOLD as the initial transition threshold.
+ * Triggers rendering and warnings update.
+ *
+ * @param foodData Entry from the foods database
+ * @returns void
+ */
 function selectFoodB(foodData: FoodData): void {
   if (!currentProtocol) return;
 
@@ -1847,6 +2026,16 @@ function selectFoodB(foodData: FoodData): void {
   (document.getElementById("food-b-search") as HTMLInputElement).value = "";
 }
 
+/**
+ * Create and select a custom food for Food A or Food B.
+ *
+ * Defaults to SOLID with 10 g protein per 100 g (100 mg/g) until edited.
+ * For Food A, initializes a new protocol; for Food B, attaches to current protocol.
+ *
+ * @param name Display name for the custom food
+ * @param inputId Source input id ("food-a-search" or "food-b-search")
+ * @returns void
+ */
 function selectCustomFood(name: string, inputId: string): void {
   const food: Food = {
     name: name || "Custom Food",
@@ -1876,6 +2065,16 @@ function selectCustomFood(name: string, inputId: string): void {
   (document.getElementById(inputId) as HTMLInputElement).value = "";
 }
 
+/**
+ * Load a protocol template from JSON metadata.
+ *
+ * Populates Food A, strategy, thresholds, and the appropriate step table (table_di, table_dn, or table_da). Also loads Food B and its threshold if present. Computes servings for any dilution steps.
+ *
+ * Triggers full UI refresh and updates Food B disabled state.
+ *
+ * @param protocolData Protocol template record
+ * @returns void
+ */
 function selectProtocol(protocolData: ProtocolData): void {
   // Load protocol from JSON. All numbers should be represented as strings
   const foodA: Food = {
@@ -1972,6 +2171,13 @@ function selectProtocol(protocolData: ProtocolData): void {
   (document.getElementById("food-a-search") as HTMLInputElement).value = "";
 }
 
+/**
+ * Remove Food B and its transition from the current protocol.
+ *
+ * Recomputes the protocol as Food A only and refreshes UI.
+ *
+ * @returns void
+ */
 function clearFoodB(): void {
   if (!currentProtocol) return;
 
@@ -1988,7 +2194,11 @@ function clearFoodB(): void {
 }
 
 /**
- * Updates the disabled state of the Food B section based on whether Food A is set
+ * Enable/disable the Food B UI section depending on Food A availability.
+ *
+ * Also clears and disables inputs when Food A is not set.
+ *
+ * @returns void
  */
 function updateFoodBDisabledState(): void {
   const foodBContainer = document.querySelector(
@@ -2034,6 +2244,16 @@ function updateFoodBDisabledState(): void {
 // EVENT LISTENERS
 // ============================================
 
+/**
+ * Wire up event listeners for settings panel controls (Food A/B).
+ *
+ * Handles:
+ * - name, protein concentration, and thresholds
+ * - strategy toggles and type toggles
+ * - recomputation and re-rendering on change
+ *
+ * @returns void
+ */
 function attachSettingsEventListeners(): void {
   // Food A name
   const foodANameInput = document.getElementById(
@@ -2207,6 +2427,15 @@ function attachSettingsEventListeners(): void {
   });
 }
 
+/**
+ * Attach event listeners for protocol table interactions.
+ *
+ * Handles:
+ * - inline editing of numeric fields (blur/enter)
+ * - add/remove step buttons
+ *
+ * @returns void
+ */
 function attachTableEventListeners(): void {
   // Editable inputs
   document.querySelectorAll("input.editable").forEach((input) => {
@@ -2261,6 +2490,11 @@ function attachTableEventListeners(): void {
   });
 }
 
+/**
+ * Wire up export buttons (ASCII and PDF).
+ *
+ * @returns void
+ */
 function attachExportEventListeners(): void {
   const asciiBtn = document.getElementById("export-ascii");
   if (asciiBtn) {
@@ -2273,6 +2507,13 @@ function attachExportEventListeners(): void {
   }
 }
 
+/**
+ * Attach debounced input handler for custom notes textarea.
+ *
+ * Sanitizes text via textContent assignment to avoid HTML injection.
+ *
+ * @returns void
+ */
 function attachCustomNoteListener(): void {
   const textarea = document.getElementById(
     "custom-note",
@@ -2303,6 +2544,19 @@ function attachCustomNoteListener(): void {
 // EXPORT FUNCTIONS
 // ============================================
 
+/**
+ * Generate a printable PDF of the current protocol using jsPDF + autoTable.
+ *
+ * Includes:
+ * - Food A section (and Food B when present)
+ * - step tables with intervals
+ * - optional notes section
+ * - footer disclaimer
+ *
+ * Opens in a new tab where possible; falls back to direct download.
+ *
+ * @returns void
+ */
 function exportPDF(): void {
   if (!currentProtocol) return;
 
@@ -2549,6 +2803,13 @@ function exportPDF(): void {
   }
 }
 
+/**
+ * Generate and copy an ASCII representation of the protocol to clipboard.
+ *
+ * Creates separate tables for Food A and Food B, includes mix instructions for dilution steps, and appends custom notes when present. Falls back to alerting the text when clipboard copy fails.
+ *
+ * @returns void
+ */
 function exportASCII(): void {
   if (!currentProtocol) return;
 
@@ -2649,6 +2910,17 @@ function exportASCII(): void {
 // DATABASE LOADING
 // ============================================
 
+/**
+ * Load foods and protocol template databases and prepare fuzzy search indices.
+ *
+ * Fetches:
+ * - /tool_assets/typed_foods_rough.json
+ * - /tool_assets/oit_protocols.json
+ *
+ * On failure, logs the error and alerts the user that some features may not work.
+ *
+ * @returns Promise that resolves when databases are loaded
+ */
 async function loadDatabases(): Promise<void> {
   try {
     // Load foods database
@@ -2686,6 +2958,13 @@ async function loadDatabases(): Promise<void> {
 // INITIALIZATION
 // ============================================
 
+/**
+ * Initialize the OIT calculator after DOM is ready.
+ *
+ * Loads databases, wires up search inputs (with debounce and keyboard nav), attaches clear button behavior, initializes Food B disabled state, and logs readiness.
+ *
+ * @returns Promise<void>
+ */
 async function initializeCalculator(): Promise<void> {
   // Load databases
   await loadDatabases();
