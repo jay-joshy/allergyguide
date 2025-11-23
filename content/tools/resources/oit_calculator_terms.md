@@ -4,7 +4,7 @@ date = 2025-11-10
 draft = false
 
 [extra]
-keywords = "SPT, Skin prick test, intradermal test"
+keywords = "OIT"
 toc = true
 authors = ["Joshua Yu"]
 +++

@@ -248,6 +248,7 @@ let protocolsDatabase: ProtocolData[] = [];
 let fuzzySortPreparedFoods: any[] = [];
 let fuzzySortPreparedProtocols: any[] = [];
 let customNote: string = "";
+let warningsPageURL = "";
 
 // Debounce timers
 let searchDebounceTimer: number | null = null;
@@ -1793,7 +1794,7 @@ function updateWarnings(): void {
 
   if (warnings.length === 0) {
     container.innerHTML = `
-      <div class="no-warnings">✓ Protocol valid. See here for the issues we check for.<br></div>
+      <div class="no-warnings">✓ Protocol valid. See&nbsp;<a href="${warningsPageURL}" target="_blank">here</a>&nbsp;for the issues we check for.<br></div>
     `;
     return;
   }
@@ -3098,6 +3099,12 @@ async function initializeCalculator(): Promise<void> {
   // Load databases
   await loadDatabases();
 
+  // Get URL for rules page
+  const urlContainer = document.getElementById('url-container');
+  if (urlContainer) {
+    // Note: data-target-url becomes dataset.targetUrl in JS (camelCase)
+    warningsPageURL = urlContainer.dataset.targetUrl!;
+  }
   // Set up search input listeners
   const foodASearchInput = document.getElementById(
     "food-a-search",
