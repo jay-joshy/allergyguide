@@ -3157,9 +3157,6 @@ async function initializeCalculator(): Promise<void> {
     clearFoodBBtn.addEventListener("click", clearFoodB);
   }
 
-  // Set initial disabled state for Food B section
-  updateFoodBDisabledState();
-
   console.log("OIT Calculator initialized");
 }
 
