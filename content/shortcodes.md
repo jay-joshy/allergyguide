@@ -824,12 +824,6 @@ This is a danger admonition with a danger icon.
 
 <script src="/js/tabs.js"></script>
 
-## test_net_functions
-
-This is testing the ability for Netlify to securely hydrate a div with content based on credentials.
-
-{{ test_net_functions() }}
-
 ## protected
 
 This allows for secure username/password protected content. The actual content is hidden in a private repository and is securely fetched dynamically to populate the content when the user signs in. Once the user signs in, until ~24h that password will be remembered on their machine. No log-out has been implemented yet but I see little utility at this time for that feature.
