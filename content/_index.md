@@ -6,7 +6,7 @@ draft = false
 in_search_index = true
 +++
 
-<div style="text-align: center; margin: 1.5rem 0 2rem;">
+<div style="text-align: center; margin: 1.5rem 0 1.5rem; background-color: var(--c2); padding: 1.5rem; border-radius: 0.75rem;">
 
 # **Practical Clinical Allergy and Immunology**
 
@@ -45,6 +45,6 @@ Check out our [about](/about) section to learn more!
 
 <p>This resource is actively under development. If you are interested in helping, please see below:</p>
 <br>
-<a href="/contribute" class="button" style="text-decoration: none; background-color: var(--a1); color: var(--c1); padding: 0.8rem 1.5rem; border-radius: 0.5rem; font-weight: bold;">Learn How to Contribute</a>
+<a href="/contribute" class="button" style="text-decoration: none; background-color: var(--a1); color: var(--c1); padding: 0.8rem 1.5rem; border-radius: 0.5rem; font-weight: bold;">Learn how to contribute</a>
 
 </div>
