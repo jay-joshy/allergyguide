@@ -457,12 +457,21 @@
       top: var(--oit-sticky-offset);
       z-index: 11;
 
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-bottom: 0.2rem solid var(--oit-border);
+      }
+
       th {
         padding: 1rem;
         text-align: left;
         font-weight: 700;
         color: var(--oit-text);
-        border-bottom: 2px solid var(--oit-border);
+        border-bottom: none;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
