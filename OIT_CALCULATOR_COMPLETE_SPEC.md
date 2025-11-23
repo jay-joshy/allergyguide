@@ -248,7 +248,7 @@ interface Step {
   dailyAmountUnit: Unit; // "g" or "ml"
   mixFoodAmount?: Decimal; // Food amount in mixture (for DILUTE only)
   mixWaterAmount?: Decimal; // Water amount in mixture (for DILUTE only)
-  servings?: Decimal; // Number of servings mixture provides. May be fractional 
+  servings?: Decimal; // Number of servings mixture provides. May be fractional
 }
 
 interface ProtocolConfig {
@@ -337,7 +337,7 @@ const DEFAULT_CONFIG = {
   minMeasurableMass: new Decimal(0.2), // 0.2 g (scale resolution) inclusive (≥)
   minMeasurableVolume: new Decimal(0.2), // 0.2 ml (syringe resolution) inclusive (≥)
   minServingsForMix: new Decimal(3), // Minimum 3 servings per mix inc.lusive (≥)
-  PROTEIN_TOLERANCE_MG: new Decimal(0.5)
+  PROTEIN_TOLERANCE_MG: new Decimal(0.5),
 };
 ```
 
@@ -1023,22 +1023,22 @@ What happens if a new food is loaded?
 
 ### Yellow Warnings (Practical Issues)
 
-| Code | Description                                  | Condition                                             | Impact                                              |
-| ---- | -------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------- |
-| Y1   | Low servings                                 | `servings < minServingsForMix` AND `servings > 1`     | Mix may not last long enough; impractical           |
-| Y2   | Non-ascending steps                          | `step[i].targetMg < step[i-1].targetMg`               | Doses should increase or stay equal                 |
-| Y3   | Impractical measurement (solid food in mix)  | `mixFoodAmount < minMeasurableMass` (dilution)        | Too small to measure accurately                     |
-| Y3   | Impractical measurement (liquid food in mix) | `mixFoodAmount < minMeasurableVolume` (dilution)      | Too small to measure accurately                     |
-| Y3   | Impractical measurement (daily amount)       | `dailyAmount < minMeasurableVolume` (dilution)        | Too small to measure accurately                     |
-| Y3   | Impractical measurement (water amount)       | `mixWaterAmount < minMeasurableVolume` (dilution)     | Too small to measure accurately                     |
-| Y3   | Impractical measurement (solid direct)       | `dailyAmount < minMeasurableMass` (direct)            | Too small to measure accurately                     |
-| Y3   | Impractical measurement (liquid direct)      | `dailyAmount < minMeasurableVolume` (direct)          | Too small to measure accurately                     |
-| Y4   | High food-to-water ratio                     | `mixFoodAmount / mixWaterAmount > 0.05` (>1:20 ratio) | Volume assumption violated; may underestimate doses |
+| Code | Description                                    | Condition                                             | Impact                                                                            |
+| ---- | ---------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Y1   | Low servings                                   | `servings < minServingsForMix` AND `servings > 1`     | Mix may not last long enough; impractical                                         |
+| Y2   | Non-ascending steps                            | `step[i].targetMg < step[i-1].targetMg`               | Doses should increase or stay equal                                               |
+| Y3   | Impractical measurement (solid food in mix)    | `mixFoodAmount < minMeasurableMass` (dilution)        | Too small to measure accurately                                                   |
+| Y3   | Impractical measurement (liquid food in mix)   | `mixFoodAmount < minMeasurableVolume` (dilution)      | Too small to measure accurately                                                   |
+| Y3   | Impractical measurement (daily amount)         | `dailyAmount < minMeasurableVolume` (dilution)        | Too small to measure accurately                                                   |
+| Y3   | Impractical measurement (water amount)         | `mixWaterAmount < minMeasurableVolume` (dilution)     | Too small to measure accurately                                                   |
+| Y3   | Impractical measurement (solid direct)         | `dailyAmount < minMeasurableMass` (direct)            | Too small to measure accurately                                                   |
+| Y3   | Impractical measurement (liquid direct)        | `dailyAmount < minMeasurableVolume` (direct)          | Too small to measure accurately                                                   |
+| Y4   | High food-to-water ratio                       | `mixFoodAmount / mixWaterAmount > 0.05` (>1:20 ratio) | Volume assumption violated; may underestimate doses                               |
+| Y5   | If no transition point can be found for food B | ...                                                   | Food B has no transition point. Decrease the threshold if you want to transition. |
 
 TODO!
 
 - Implement R3 during dilution generation. For example, around line 386 in the function generateDefaultProtocol() notes a warning should be emitted if no working dilution can be found.
-- Y5: in addFoodBToProtocol (around line 444), if no transition point can be found a warning should be emitted, with a suggestion to decrease the threshold for food B.
 
 ### 9.2 Validation Timing
 
