@@ -1650,10 +1650,12 @@ function renderProtocolTable(): void {
 
     // Actions + Step number
     html += `
-      <td class="actions-cell">
-        <button class="btn-add-step" data-step="${step.stepIndex}">+</button>
-        <button class="btn-remove-step" data-step="${step.stepIndex}">−</button>
-        <span class="step-number">${step.stepIndex}</span>
+      <td>
+        <div class="actions-cell">
+          <button class="btn-add-step" data-step="${step.stepIndex}">+</button>
+          <button class="btn-remove-step" data-step="${step.stepIndex}">−</button>
+          <span class="step-number">${step.stepIndex}</span>
+        </div>
       </td>
     `;
 
