@@ -12,7 +12,6 @@
   --tmtl_button_active_bg: #888;
   --tmtl_button_active_text: #fff;
   --tmtl_input_outline: #ffa500;
-
 }
 
 :root.switch {
@@ -29,12 +28,13 @@
   --tmtl_button_active_bg: #bbb;
   --tmtl_button_active_text: #000;
   --tmtl_input_outline: #ff4500;
-
 }
 
 .topic_macros_toml_load {
   border-radius: 5px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   .macro-block {
     margin: 0;
@@ -55,7 +55,9 @@
       border-radius: 4px;
       background-color: var(--tmtl_bg_color);
       color: var(--tmtl_text_color);
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition:
+        border-color 0.3s,
+        box-shadow 0.3s;
 
       &::placeholder {
         color: var(--medstl_text);
@@ -69,7 +71,6 @@
       }
     }
   }
-
 
   .txt {
     white-space: pre-wrap;
@@ -117,7 +118,9 @@
     border-radius: 3px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    transition: background-color 0.2s, color 0.2s;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
   }
 
   .copy-button:hover {

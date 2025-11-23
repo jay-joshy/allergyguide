@@ -54,7 +54,14 @@
     <div class="drug-card-content">
       {% if details.draft == true %}
       <div class="wip-message">
-        <svg class="wip-icon" fill="currentColor" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg" stroke-width="0.48">
+        <svg
+          class="wip-icon"
+          fill="currentColor"
+          viewBox="0 0 32 32"
+          id="icon"
+          xmlns="http://www.w3.org/2000/svg"
+          stroke-width="0.48"
+        >
           <g id="SVGRepo_iconCarrier">
             <path d="M27.38,28H20.6178L24,21.2358ZM24,18a1,1,0,0,0-.8947.5527l-5,10A1.0005,1.0005,0,0,0,19,30H29a1,1,0,0,0,.9214-1.3892L24.8946,18.5527A1,1,0,0,0,24,18Z">
             </path>
@@ -205,197 +212,275 @@
 {% if filter %}
 <script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.1.0/fuzzysort.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const filterButtons = document.querySelectorAll('.filter-button');
-    const drugCards = document.querySelectorAll('.drug-card');
-    const searchInput = document.getElementById('search-input');
+  document.addEventListener("DOMContentLoaded", function () {
+        const filterButtons = document.querySelectorAll(".filter-button");
+        const drugCards = Array.from(document.querySelectorAll(".drug-card"));
+        const searchInput = document.getElementById("search-input");
 
-    // --- Fuzzy match function ---
-    function fuzzyMatch(query, text) {
-      // fuzzysort.single returns null if there is no match
-      return fuzzysort.single(query, text) !== null;
-    }
+        // Store card data for searching
+        const cardData = drugCards.map((card) => {
+            const cardTitleElem = card.querySelector(".generic-name");
+            const cardTitle = cardTitleElem ? cardTitleElem.textContent : "";
+            const brandNames = card.dataset.brandNames || "";
+            // Split brand names into individual items for better matching
+            const brandNamesArray = brandNames
+                .split(",")
+                .map((b) => b.trim())
+                .filter((b) => b.length > 0);
+            return {
+                el: card,
+                title: cardTitle,
+                brandNames: brandNames,
+                brandNamesArray: brandNamesArray,
+                categories: card.dataset.categories
+                    .split(",")
+                    .map((c) => c.trim()),
+            };
+        });
 
-    // --- Category filter button logic ---
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const category = button.dataset.category;
+        // --- Category filter button logic ---
+        filterButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const category = button.dataset.category;
 
-        if (category === 'all') {
-          // If "All" is clicked, clear other active states and activate only "All"
-          filterButtons.forEach(btn => {
-            if (btn.dataset.category === 'all') {
-              btn.classList.add('active');
-            } else {
-              btn.classList.remove('active');
+                if (category === "all") {
+                    // If "All" is clicked, clear other active states and activate only "All"
+                    filterButtons.forEach((btn) => {
+                        if (btn.dataset.category === "all") {
+                            btn.classList.add("active");
+                        } else {
+                            btn.classList.remove("active");
+                        }
+                    });
+                } else {
+                    // Toggle the active state for non-"All" buttons
+                    button.classList.toggle("active");
+                    // If any non-"all" filters are active, ensure "All" is not active
+                    let anyActive = false;
+                    filterButtons.forEach((btn) => {
+                        if (
+                            btn.dataset.category !== "all" &&
+                            btn.classList.contains("active")
+                        ) {
+                            anyActive = true;
+                        }
+                    });
+                    if (anyActive) {
+                        document
+                            .querySelector(
+                                '.filter-button[data-category="all"]',
+                            )
+                            .classList.remove("active");
+                    } else {
+                        // If none are active, default back to "All"
+                        document
+                            .querySelector(
+                                '.filter-button[data-category="all"]',
+                            )
+                            .classList.add("active");
+                    }
+                }
+
+                updateCards();
+            });
+        });
+
+        // --- Listen to search input events ---
+        searchInput.addEventListener("input", updateCards);
+
+        // --- Update cards: filter by categories and search query ---
+        function updateCards() {
+            // Build a list of active categories (ignoring "all")
+            let activeCategories = [];
+            filterButtons.forEach((btn) => {
+                if (
+                    btn.classList.contains("active") &&
+                    btn.dataset.category !== "all"
+                ) {
+                    activeCategories.push(btn.dataset.category);
+                }
+            });
+
+            // Get the search query (trimmed)
+            const searchQuery = searchInput.value.trim();
+
+            // If no search query, just filter by category and reset order
+            if (searchQuery === "") {
+                cardData.forEach((card) => {
+                    let categoryMatches =
+                        activeCategories.length === 0 ||
+                        activeCategories.every((cat) =>
+                            card.categories.includes(cat),
+                        );
+                    card.el.style.display = categoryMatches ? "block" : "none";
+                    card.el.style.order = ""; // Reset order
+                });
+                return;
             }
-          });
-        } else {
-          // Toggle the active state for non-"All" buttons
-          button.classList.toggle('active');
-          // If any non-"all" filters are active, ensure "All" is not active
-          let anyActive = false;
-          filterButtons.forEach(btn => {
-            if (btn.dataset.category !== 'all' && btn.classList.contains('active')) {
-              anyActive = true;
-            }
-          });
-          if (anyActive) {
-            document.querySelector('.filter-button[data-category="all"]').classList.remove('active');
-          } else {
-            // If none are active, default back to "All"
-            document.querySelector('.filter-button[data-category="all"]').classList.add('active');
-          }
+
+            // Map to store card element -> {score, categoryMatch}
+            const cardScores = new Map();
+
+            cardData.forEach((card) => {
+                // Check category match first
+                let categoryMatches =
+                    activeCategories.length === 0 ||
+                    activeCategories.every((cat) =>
+                        card.categories.includes(cat),
+                    );
+
+                if (!categoryMatches) {
+                    card.el.style.display = "none";
+                    return;
+                }
+
+                // Search the generic name (title)
+                const titleResult = fuzzysort.single(searchQuery, card.title);
+                let bestScore = titleResult ? titleResult.score * 1.5 : null; // Boost generic name matches
+
+                // Search each brand name individually
+                card.brandNamesArray.forEach((brandName) => {
+                    const brandResult = fuzzysort.single(
+                        searchQuery,
+                        brandName,
+                    );
+                    if (brandResult) {
+                        if (
+                            bestScore === null ||
+                            brandResult.score > bestScore
+                        ) {
+                            bestScore = brandResult.score;
+                        }
+                    }
+                });
+
+                // If there's any match, store it
+                if (bestScore !== null) {
+                    cardScores.set(card.el, bestScore);
+                } else {
+                    card.el.style.display = "none";
+                }
+            });
+
+            // Hide all cards first
+            cardData.forEach((card) => {
+                card.el.style.display = "none";
+            });
+
+            // Sort matched cards by score (higher = better match in fuzzysort)
+            const sortedMatches = Array.from(cardScores.entries()).sort(
+                (a, b) => b[1] - a[1],
+            );
+
+            // Show matched cards in relevance order using flexbox order
+            sortedMatches.forEach(([el, score], index) => {
+                el.style.display = "block";
+                el.style.order = index;
+            });
         }
-
-        updateCards();
-      });
     });
-
-    // --- Listen to search input events ---
-    searchInput.addEventListener('input', updateCards);
-
-    // --- Update cards: filter by categories and search query ---
-    function updateCards() {
-      // Build a list of active categories (ignoring "all")
-      let activeCategories = [];
-      filterButtons.forEach(btn => {
-        if (btn.classList.contains('active') && btn.dataset.category !== 'all') {
-          activeCategories.push(btn.dataset.category);
-        }
-      });
-
-      // Get the search query (trimmed and in lowercase)
-      const searchQuery = searchInput.value.trim().toLowerCase();
-
-      drugCards.forEach(card => {
-        // Get the card's categories from its data attribute
-        const cardCategories = card.dataset.categories.split(',').map(c => c.trim());
-
-        // Get the card's title 
-        const cardTitleElem = card.querySelector('.generic-name');
-        const cardTitle = cardTitleElem ? cardTitleElem.textContent : '';
-
-        // Get the card's brand names from the data attribute
-        const brandNames = card.dataset.brandNames || '';
-
-        // Check if the card matches the active category filters.
-        // If no specific filters are active, we consider the card a match.
-        let categoryMatches = activeCategories.length === 0 ||
-          activeCategories.every(cat => cardCategories.includes(cat));
-
-        // Check if either the title or the brand names fuzzy-match the search query.
-        let searchMatches = searchQuery === '' ||
-          fuzzyMatch(searchQuery, cardTitle) ||
-          fuzzyMatch(searchQuery, brandNames);
-
-        // Display the card only if both conditions are met.
-        card.style.display = (categoryMatches && searchMatches) ? 'block' : 'none';
-      });
-    }
-  });
 </script>
 {% endif %}
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-  // Function to reorganize pearls into two columns for landscape
-  function organizePearls() {
-    const pearlsLists = document.querySelectorAll('.pearls_list');
-    
-    pearlsLists.forEach(pearlsList => {
-      // Check if we're in landscape mode (width > height)
-      const isLandscape = window.innerWidth > window.innerHeight;
-      
-      if (isLandscape) {
-        // Check if already organized to avoid unnecessary DOM manipulation
-        if (!pearlsList.querySelector('.two_columns')) {
-          organizePearlsIntoColumns(pearlsList);
+  document.addEventListener("DOMContentLoaded", function () {
+        // Function to reorganize pearls into two columns for landscape
+        function organizePearls() {
+            const pearlsLists = document.querySelectorAll(".pearls_list");
+
+            pearlsLists.forEach((pearlsList) => {
+                // Check if we're in landscape mode (width > height)
+                const isLandscape = window.innerWidth > window.innerHeight;
+
+                if (isLandscape) {
+                    // Check if already organized to avoid unnecessary DOM manipulation
+                    if (!pearlsList.querySelector(".two_columns")) {
+                        organizePearlsIntoColumns(pearlsList);
+                    }
+                } else {
+                    // Portrait mode - revert to simple ul structure
+                    if (pearlsList.querySelector(".two_columns")) {
+                        revertToSingleColumn(pearlsList);
+                    }
+                }
+            });
         }
-      } else {
-        // Portrait mode - revert to simple ul structure
-        if (pearlsList.querySelector('.two_columns')) {
-          revertToSingleColumn(pearlsList);
+
+        function organizePearlsIntoColumns(pearlsList) {
+            // Find the original ul element
+            const originalUl = pearlsList.querySelector("ul");
+            if (!originalUl) return;
+
+            // Get all li elements
+            const listItems = Array.from(originalUl.querySelectorAll("li"));
+            if (listItems.length === 0) return;
+
+            // Calculate how to split the items
+            // For optimal balance, put ceil(n/2) items in first column
+            const totalItems = listItems.length;
+            const firstColumnCount = Math.ceil(totalItems / 2);
+
+            // Create the two-column structure
+            const twoColumnsDiv = document.createElement("div");
+            twoColumnsDiv.className = "two_columns";
+
+            // Create first column
+            const firstColumn = document.createElement("div");
+            firstColumn.className = "column";
+            const firstUl = document.createElement("ul");
+
+            // Add items to first column
+            for (let i = 0; i < firstColumnCount && i < totalItems; i++) {
+                const clonedItem = listItems[i].cloneNode(true);
+                firstUl.appendChild(clonedItem);
+            }
+            firstColumn.appendChild(firstUl);
+
+            // Create second column (only if there are items for it)
+            if (totalItems > firstColumnCount) {
+                const secondColumn = document.createElement("div");
+                secondColumn.className = "column";
+                const secondUl = document.createElement("ul");
+
+                // Add remaining items to second column
+                for (let i = firstColumnCount; i < totalItems; i++) {
+                    const clonedItem = listItems[i].cloneNode(true);
+                    secondUl.appendChild(clonedItem);
+                }
+                secondColumn.appendChild(secondUl);
+                twoColumnsDiv.appendChild(firstColumn);
+                twoColumnsDiv.appendChild(secondColumn);
+            } else {
+                // If only one column needed, just use the first column without two-column wrapper
+                twoColumnsDiv.appendChild(firstColumn);
+            }
+
+            // Replace the original ul with the new structure
+            originalUl.style.display = "none"; // Hide original but keep for reference
+            pearlsList.appendChild(twoColumnsDiv);
         }
-      }
+
+        function revertToSingleColumn(pearlsList) {
+            // Remove the two-column structure and show original ul
+            const twoColumnsDiv = pearlsList.querySelector(".two_columns");
+            const originalUl = pearlsList.querySelector("ul");
+
+            if (twoColumnsDiv) {
+                twoColumnsDiv.remove();
+            }
+
+            if (originalUl) {
+                originalUl.style.display = ""; // Show original ul
+            }
+        }
+
+        // Initial organization
+        organizePearls();
+
+        // Reorganize on window resize with debouncing to avoid excessive calls
+        let resizeTimeout;
+        window.addEventListener("resize", function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(organizePearls, 150);
+        });
     });
-  }
-
-  function organizePearlsIntoColumns(pearlsList) {
-    // Find the original ul element
-    const originalUl = pearlsList.querySelector('ul');
-    if (!originalUl) return;
-    
-    // Get all li elements
-    const listItems = Array.from(originalUl.querySelectorAll('li'));
-    if (listItems.length === 0) return;
-    
-    // Calculate how to split the items
-    // For optimal balance, put ceil(n/2) items in first column
-    const totalItems = listItems.length;
-    const firstColumnCount = Math.ceil(totalItems / 2);
-    
-    // Create the two-column structure
-    const twoColumnsDiv = document.createElement('div');
-    twoColumnsDiv.className = 'two_columns';
-    
-    // Create first column
-    const firstColumn = document.createElement('div');
-    firstColumn.className = 'column';
-    const firstUl = document.createElement('ul');
-    
-    // Add items to first column
-    for (let i = 0; i < firstColumnCount && i < totalItems; i++) {
-      const clonedItem = listItems[i].cloneNode(true);
-      firstUl.appendChild(clonedItem);
-    }
-    firstColumn.appendChild(firstUl);
-    
-    // Create second column (only if there are items for it)
-    if (totalItems > firstColumnCount) {
-      const secondColumn = document.createElement('div');
-      secondColumn.className = 'column';
-      const secondUl = document.createElement('ul');
-      
-      // Add remaining items to second column
-      for (let i = firstColumnCount; i < totalItems; i++) {
-        const clonedItem = listItems[i].cloneNode(true);
-        secondUl.appendChild(clonedItem);
-      }
-      secondColumn.appendChild(secondUl);
-      twoColumnsDiv.appendChild(firstColumn);
-      twoColumnsDiv.appendChild(secondColumn);
-    } else {
-      // If only one column needed, just use the first column without two-column wrapper
-      twoColumnsDiv.appendChild(firstColumn);
-    }
-    
-    // Replace the original ul with the new structure
-    originalUl.style.display = 'none'; // Hide original but keep for reference
-    pearlsList.appendChild(twoColumnsDiv);
-  }
-
-  function revertToSingleColumn(pearlsList) {
-    // Remove the two-column structure and show original ul
-    const twoColumnsDiv = pearlsList.querySelector('.two_columns');
-    const originalUl = pearlsList.querySelector('ul');
-    
-    if (twoColumnsDiv) {
-      twoColumnsDiv.remove();
-    }
-    
-    if (originalUl) {
-      originalUl.style.display = ''; // Show original ul
-    }
-  }
-
-  // Initial organization
-  organizePearls();
-  
-  // Reorganize on window resize with debouncing to avoid excessive calls
-  let resizeTimeout;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(organizePearls, 150);
-  });
-});
 </script>
