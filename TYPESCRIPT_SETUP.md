@@ -38,7 +38,7 @@ Located in the project root. Configures TypeScript compiler options:
 ### `package.json` Build Script
 
 ```json
-"build": "esbuild static/ts/oit_calculator.ts --bundle --outfile=static/js/oit_calculator.js --format=iife --target=es2017 --minify"
+"build_oit": "esbuild static/ts/oit_calculator.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2017 --minify --chunk-names=chunks/[name]-[hash]"
 ```
 
 ## Development Workflow
@@ -58,7 +58,7 @@ This checks for type errors without generating output files.
 ### 3. Build the bundle
 
 ```bash
-npm run build
+npm run build_oit
 ```
 
 This:
@@ -87,7 +87,7 @@ import something from "package-name";
 3. Rebuild:
 
 ```bash
-npm run build
+npm run build_oit
 ```
 
 The dependency will automatically be bundled into the output file.
@@ -103,5 +103,5 @@ tsc static/ts/oit_calculator.ts --target ES2017 --lib ES2017,DOM --outDir static
 **New workflow**:
 
 ```bash
-npm run build
+npm run build_oit
 ```
