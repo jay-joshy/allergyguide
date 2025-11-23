@@ -8,10 +8,6 @@
 // EXTERNAL PACKAGES
 // ============================================
 
-// CDN packages
-// Have had some difficulty downloading and using jspdf and autotable outside of CDN
-declare const jspdf: any;
-
 // Imports
 import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
@@ -2586,7 +2582,32 @@ function attachExportEventListeners(): void {
 
   const pdfBtn = document.getElementById("export-pdf");
   if (pdfBtn) {
-    pdfBtn.addEventListener("click", exportPDF);
+    pdfBtn.addEventListener("click", async () => {
+      const pdfBtn = document.getElementById("export-pdf");
+      if (pdfBtn) {
+        pdfBtn.textContent = "Generating...";
+        pdfBtn.setAttribute("disabled", "true");
+      }
+
+      try {
+        // Dynamically import the libraries ONLY when the button is clicked
+        const { jsPDF } = await import('jspdf');
+        const { applyPlugin } = await import('jspdf-autotable');
+
+        applyPlugin(jsPDF);
+        exportPDF(jsPDF);
+
+      } catch (error) {
+        console.error("Failed to load PDF libraries or generate PDF: ", error)
+        alert("Error generating PDF. Please check the console for details.");
+      } finally {
+        if (pdfBtn) {
+          pdfBtn.textContent = "Export PDF";
+          pdfBtn.removeAttribute("disabled");
+        }
+      }
+
+    });
   }
 }
 
@@ -2640,10 +2661,9 @@ function attachCustomNoteListener(): void {
  *
  * @returns void
  */
-function exportPDF(): void {
+function exportPDF(jsPDF: any): void {
   if (!currentProtocol) return;
 
-  const { jsPDF } = jspdf;
   const doc: any = new jsPDF({
     unit: "pt",
     format: "letter",
