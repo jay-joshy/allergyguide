@@ -13,7 +13,7 @@
 
 # Misc
 
-- CSP alteration: remove in-line <script>...</script>, move all JS to /js
+- CSP alteration: removed in-line <script>...</script>, move all JS to /js, inline event handlers: DONE - waiting to verify on production deploy after removing 'unsafe-inline'
 - remove CDNs if possible, load dynamically instead
 - head staff support?
 - recruitment of editors/contributors once vision better defined
