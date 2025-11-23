@@ -14,11 +14,8 @@
 - `decimal.js` - High-precision decimal arithmetic
 - `fuzzysort` - Fuzzy search for food/protocol lookup
 - `ascii-table3` - ASCII table generation
-
-### CDN Dependencies (Not Bundled)
-
-- `jspdf` - PDF generation (loaded from CDN in HTML)
-- `jspdf-autotable` - Table plugin for jsPDF (loaded from CDN in HTML)
+- `jspdf` - PDF generation
+- `jspdf-autotable`
 
 ### Dev Dependencies
 
