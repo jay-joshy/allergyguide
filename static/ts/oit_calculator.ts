@@ -1428,6 +1428,7 @@ function renderFoodSettings(): void {
       />
       <div class="setting-row">
         <label>Protein:</label>
+      <div class="input-unit-group">
         <input
           type="number"
           min="0"
@@ -1437,6 +1438,7 @@ function renderFoodSettings(): void {
           step="0.1"
         />
         <span>g per 100 ${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+      </div>
       </div>
       <div class="setting-row">
         <label>Form:</label>
@@ -1457,14 +1459,16 @@ function renderFoodSettings(): void {
       ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
-        <input
-          type="number"
-          id="food-a-threshold"
-          min="0"
-          value="${formatAmount(currentProtocol.diThreshold, currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml")}"
-          step="0.1"
-        />
-        <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+        <div class="input-unit-group">
+          <input
+            type="number"
+            id="food-a-threshold"
+            min="0"
+            value="${formatAmount(currentProtocol.diThreshold, currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml")}"
+            step="0.1"
+          />
+          <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+        </div>
       </div>
       `
       : ""
@@ -1491,15 +1495,17 @@ function renderFoodSettings(): void {
         />
         <div class="setting-row">
           <label>Protein:</label>
-          <input
-            type="number"
-            id="food-b-protein"
-            min="0"
-            max="150"
-            value="${mgPerUnitToGramPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
-            step="0.1"
-          />
-          <span>g per 100 ${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
+          <div class="input-unit-group">
+            <input
+              type="number"
+              id="food-b-protein"
+              min="0"
+              max="150"
+              value="${mgPerUnitToGramPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
+              step="0.1"
+            />
+            <span>g per 100 ${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
+          </div>
         </div>
         <div class="setting-row">
           <label>Form:</label>
@@ -1510,14 +1516,16 @@ function renderFoodSettings(): void {
         </div>
         <div class="setting-row threshold-setting">
           <label>Transition when daily amount ≥</label>
-          <input
-            type="number"
-            id="food-b-threshold"
-            value="${formatAmount(currentProtocol.foodBThreshold!.amount, currentProtocol.foodBThreshold!.unit)}"
-            step="0.1"
-            min="0"
-          />
-          <span>${currentProtocol.foodBThreshold!.unit}</span>
+          <div class="input-unit-group">
+            <input
+              type="number"
+              id="food-b-threshold"
+              value="${formatAmount(currentProtocol.foodBThreshold!.amount, currentProtocol.foodBThreshold!.unit)}"
+              step="0.1"
+              min="0"
+            />
+            <span>${currentProtocol.foodBThreshold!.unit}</span>
+          </div>
         </div>
       </div>
     `;

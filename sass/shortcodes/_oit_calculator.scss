@@ -257,6 +257,12 @@
     }
   }
 
+  .input-unit-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .setting-row {
     display: flex;
     align-items: center;
