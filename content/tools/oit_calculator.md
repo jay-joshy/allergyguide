@@ -16,7 +16,7 @@ authors = ["Joshua Yu"]
 <br>
 {% admonition(type="danger", icon="danger", title="TERMS OF USE") %}
 
-**This tool is for informational and planning support only by clinicians**. _All dosing decisions should be reviewed and confirmed by the physician responsible for the patient’s care._ See [full terms of use](/tools/resources/oit-calculator-terms/).
+**This tool is for informational and planning support by clinicians**. _All dosing decisions should be reviewed and confirmed by the physician responsible for the patient’s care._ See [full terms of use](/tools/resources/oit-calculator-terms/).
 
 {% end %}
 
