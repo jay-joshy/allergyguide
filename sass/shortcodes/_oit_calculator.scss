@@ -61,6 +61,10 @@
   --oit-warning-highlight-yellow-hover: rgba(255, 193, 7, 0.18);
 }
 
+.oit-hidden-on-init {
+  display: none;
+}
+
 // Main Container
 .oit_calculator {
   width: 100%;

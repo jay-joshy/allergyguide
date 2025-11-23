@@ -1380,6 +1380,26 @@ function toggleFoodType(isFoodB: boolean): void {
 // ============================================
 
 /**
+ * Make protocol-dependent UI elements visible after initialization.
+ * These include the dosing strategy container and the warnings container.
+ */
+function showProtocolUI(): void {
+  const dosingContainer = document.querySelector(
+    ".dosing-strategy-container",
+  ) as HTMLElement;
+  const warningsContainer = document.querySelector(
+    ".warnings-container",
+  ) as HTMLElement;
+
+  if (dosingContainer) {
+    dosingContainer.classList.remove("oit-hidden-on-init");
+  }
+  if (warningsContainer) {
+    warningsContainer.classList.remove("oit-hidden-on-init");
+  }
+}
+
+/**
  * Render Food A and (optionally) Food B settings panels into the DOM.
  *
  * Uses currentProtocol to populate controls and attaches event listeners.
@@ -1433,9 +1453,8 @@ function renderFoodSettings(): void {
           <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${
-        currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
-          ? `
+      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+      ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
         <input
@@ -1448,8 +1467,8 @@ function renderFoodSettings(): void {
         <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       `
-          : ""
-      }
+      : ""
+    }
     </div>
   `;
 
@@ -2035,6 +2054,7 @@ function selectFoodA(foodData: FoodData): void {
 
   currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
 
+  showProtocolUI();
   renderFoodSettings();
   renderDosingStrategy();
   renderProtocolTable();
@@ -2095,6 +2115,7 @@ function selectCustomFood(name: string, inputId: string): void {
 
   if (inputId === "food-a-search") {
     currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+    showProtocolUI();
     renderFoodSettings();
     renderDosingStrategy();
     renderProtocolTable();
@@ -2137,7 +2158,7 @@ function selectProtocol(protocolData: ProtocolData): void {
   const protocol: Protocol = {
     dosingStrategy:
       DosingStrategy[
-        protocolData.dosing_strategy as keyof typeof DosingStrategy
+      protocolData.dosing_strategy as keyof typeof DosingStrategy
       ],
     foodA,
     foodAStrategy:
@@ -2212,6 +2233,7 @@ function selectProtocol(protocolData: ProtocolData): void {
 
   currentProtocol = protocol;
 
+  showProtocolUI();
   renderFoodSettings();
   renderDosingStrategy();
   renderProtocolTable();
