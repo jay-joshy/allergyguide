@@ -499,15 +499,10 @@
 
         &.warning-highlight-red {
           background-color: var(--oit-warning-highlight-red);
-          box-shadow:
-            0 0 0 2px var(--oit-warning-red-border),
-            0 0 12px rgba(255, 50, 50, 0.3);
+          box-shadow: inset 4px 0 0 0 var(--oit-warning-red-border);
 
           &:hover {
             background-color: var(--oit-warning-highlight-red-hover);
-            box-shadow:
-              0 0 0 2px var(--oit-warning-red-border),
-              0 0 16px rgba(255, 50, 50, 0.4);
           }
 
           td {
@@ -523,15 +518,20 @@
 
         &.warning-highlight-yellow {
           background-color: var(--oit-warning-highlight-yellow);
-          box-shadow:
-            0 0 0 2px var(--oit-warning-yellow-border),
-            0 0 12px rgba(255, 193, 7, 0.25);
+          box-shadow: inset 4px 0 0 0 var(--oit-warning-yellow-border);
 
           &:hover {
             background-color: var(--oit-warning-highlight-yellow-hover);
-            box-shadow:
-              0 0 0 2px var(--oit-warning-yellow-border),
-              0 0 16px rgba(255, 193, 7, 0.35);
+          }
+
+          td {
+            color: var(--oit-warning-yellow-text);
+            font-weight: bold;
+          }
+
+          input.editable {
+            color: var(--oit-warning-yellow-text);
+            font-weight: bold;
           }
         }
       }
