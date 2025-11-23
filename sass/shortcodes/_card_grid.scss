@@ -1,45 +1,11 @@
 /*--------------------------------------------------
-  Theme Variables
---------------------------------------------------*/
-
-/* Dark Theme (Default) */
-:root {
-  --card-bg: #1e1e1e;
-  /* Card background */
-  --card-border: #555;
-  /* More contrasting border */
-  --card-title: #f0f0f0;
-  /* Brighter header text */
-  --card-text: #cccccc;
-  /* Body text */
-  --card-shadow: rgba(0, 0, 0, 0.5);
-  /* Stronger shadow */
-  --card-image-brightness: 0.8;
-}
-
-/* Light Theme: Activate by adding the "switch" class to the root element */
-:root.switch {
-  --card-bg: #fff;
-  /* Card background */
-  --card-border: #ddd;
-  /* Divider & border color */
-  --card-title: #222;
-  /* Card title text */
-  --card-text: #333;
-  /* Card body text */
-  --card-shadow: rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
-  --card-image-brightness: 1;
-}
-
-/*--------------------------------------------------
   Card Grid Styles
 --------------------------------------------------*/
 .card_grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.5rem;
+  padding: 1rem 0;
   justify-content: center;
   align-content: start;
 
@@ -52,39 +18,38 @@
     color: inherit;
     display: flex;
     flex-direction: column;
-    background-color: var(--card-bg);
-    border: 0.1rem solid var(--card-border);
-    border-radius: 0.5rem;
+    background-color: var(--c2);
+    border: 0.05rem solid var(--c3);
+    border-radius: 0.75rem;
     overflow: hidden;
-    /* box-shadow: 0 4px 6px var(--card-shadow); */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     width: 100%;
 
     &:hover {
-      transform: scale(1.05);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     }
 
     &:focus {
-      outline: 0.5rem solid var(--card-border);
-      outline-offset: 4px;
+      outline: 0.2rem solid var(--a1);
+      outline-offset: 2px;
     }
   }
 
   .contact-card-image {
     width: 100%;
     aspect-ratio: 19/18;
-    /* Portrait: width is 3, height is 4 */
     object-fit: cover;
-    filter: brightness(var(--card-image-brightness));
-    border-bottom: 0.2rem solid var(--card-border);
+    border-bottom: 0.2rem solid var(--a1);
   }
 
-  .contact-card-image-container {}
-
+  :root .contact-card-image:not(.dark-invert) {
+    filter: brightness(0.85);
+  }
 
   .contact-card-content {
-    padding: 0.5rem;
-    padding-top: 0.5rem;
+    padding: 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -92,16 +57,16 @@
   }
 
   .contact-card-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--card-title);
-    margin-bottom: 0.5rem;
-    margin-top: 0;
+    font-size: 1.25em;
+    font-weight: 600;
+    color: var(--f2);
+    margin: 0 0 0.5rem 0;
   }
 
   .contact-card-body {
     font-size: 0.9em;
-    color: var(--card-text);
+    color: var(--f1);
     margin: 0;
+    flex-grow: 1;
   }
 }
