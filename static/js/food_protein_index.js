@@ -508,7 +508,7 @@ function openFpiModal(foodName, meanValue) {
           <div>
             <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
                 <span>PRACTALL-5</span>
-                <button onclick="copyAscii('five', '${foodName}', ${protein_per_g})">Copy</button>
+                <button id="fpi-copy-five">Copy</button>
             </div>
 
             <table id="fpi-table-five" border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
@@ -528,7 +528,7 @@ function openFpiModal(foodName, meanValue) {
           <div>
           <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
               <span>PRACTALL-7</span>
-              <button onclick="copyAscii('seven', '${foodName}', ${protein_per_g})">Copy</button>
+              <button id="fpi-copy-seven">Copy</button>
           </div>
             <table id="fpi-table-seven" border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
                 <thead>
@@ -547,6 +547,16 @@ function openFpiModal(foodName, meanValue) {
       </div>
       `
       : "<p>No mean protein value available.</p>";
+
+  const copyFiveBtn = els.body.querySelector("#fpi-copy-five");
+  if (copyFiveBtn) {
+    copyFiveBtn.addEventListener("click", () => copyAscii('five', foodName, protein_per_g));
+  }
+
+  const copySevenBtn = els.body.querySelector("#fpi-copy-seven");
+  if (copySevenBtn) {
+    copySevenBtn.addEventListener("click", () => copyAscii('seven', foodName, protein_per_g));
+  }
 
   // Setup editable behavior: recalc dependent cells when Protein (mg) changes
   function setupEditableTable(tableEl) {
