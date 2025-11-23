@@ -645,6 +645,16 @@ For simple flat tables
 ]
 {% end %}
 
+And for without headers:
+
+{% json_to_table(show_headers=false)%}
+[
+{ "name": "Bob", "age": 21, "isCool": false },
+{ "name": "Sarah", "age": 22, "isCool": true },
+{ "name": "Lee", "age": 23, "isCool": true }
+]
+{% end %}
+
 For more complex nested tables
 
 ```js
