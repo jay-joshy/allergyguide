@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (!referencesContainer) return;
   // The full list of reference objects loaded from the BibTeX file
   const referencesJson = referencesContainer.dataset.references;
-  console.log(referencesJson);
   const references = JSON.parse(referencesJson);
 
   /**
