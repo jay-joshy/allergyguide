@@ -55,7 +55,7 @@ class ProtectedContentLoader {
       container.innerHTML = `
             <div class="protected-login-form">
               <h4>Protected Content - Login Required</h4>
-              <form class="login-form" onsubmit="return false;">
+              <form class="login-form">
                 <div class="form-group">
                   <label for="${containerId}-username">Username:</label>
                   <input type="text" id="${containerId}-username" name="username" required>
@@ -64,13 +64,20 @@ class ProtectedContentLoader {
                   <label for="${containerId}-password">Password:</label>
                   <input type="password" id="${containerId}-password" name="password" required>
                 </div>
-                <button type="button" onclick="window.protectedLoader.submitLogin('${containerId}')" class="login-button">
+                <button type="submit" class="login-button">
                   Access Content
                 </button>
                 <div id="${containerId}-error" class="login-error" style="display: none;"></div>
               </form>
             </div>
           `;
+        const form = container.querySelector('.login-form');
+        if (form) {
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                this.submitLogin(containerId);
+            });
+        }
     }
   }
 
@@ -443,7 +450,14 @@ window.logoutProtectedContent = function() {
   window.protectedLoader.clearToken();
   const protectedElements = document.querySelectorAll('[data-protected-path]');
   protectedElements.forEach(element => {
-    element.innerHTML = '<div class="protected-logged-out">Logged out. <a href="javascript:location.reload()">Reload</a> to access content.</div>';
+    element.innerHTML = '<div class="protected-logged-out">Logged out. <a href="#" class="reload-link">Reload</a> to access content.</div>';
+    const reloadLink = element.querySelector('.reload-link');
+    if (reloadLink) {
+        reloadLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            location.reload();
+        });
+    }
   });
 };
 
