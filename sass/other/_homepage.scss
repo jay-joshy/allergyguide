@@ -3,7 +3,7 @@
   .homepage-icon {
     fill: var(--a1);
     color: var(--a1);
-    height: 1.2em;
+    height: 2em;
     vertical-align: -0.2em;
     margin-right: 0.5em;
   }
@@ -16,13 +16,14 @@
     border-radius: 0.75rem;
   }
 
-  .ul {
+  ul {
     list-style-type: none;
     padding-left: 0;
 
-    .li {
+    li {
       margin-bottom: 1rem;
-
+      display: flex;
+      align-items: flex-start;
     }
   }
 
