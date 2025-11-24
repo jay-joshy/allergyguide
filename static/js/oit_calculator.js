@@ -218,7 +218,7 @@ import{a as Tt,b as St,c as Ge,d as Wt}from"./chunks/chunk-H4Y4UJW3.js";var on=G
           >${Ae(Le)}</textarea>
         </div>
       </div>
-    `;o.insertAdjacentHTML("afterbegin",a)}qi(),Vi(),zi()}function ae(){if(!c)return;let t=xn(c),e=document.querySelector(".warnings-container");if(t.length===0){e.innerHTML=`
+    `;o.insertAdjacentHTML("afterbegin",a),Vi(),zi()}qi()}function ae(){if(!c)return;let t=xn(c),e=document.querySelector(".warnings-container");if(t.length===0){e.innerHTML=`
       <div class="no-warnings">\u2713 Protocol valid. See&nbsp;<a href="${bn}" target="_blank">here</a>&nbsp;for the issues we check for.<br></div>
     `;return}let n=t.filter(o=>o.severity==="red"),r=t.filter(o=>o.severity==="yellow"),i="";n.length>0&&(i+=`
       <div class="warning-section red-warnings">

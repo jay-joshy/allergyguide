@@ -1765,11 +1765,11 @@ function renderProtocolTable(): void {
       </div>
     `;
     bottomSection.insertAdjacentHTML("afterbegin", exportHTML);
+    attachExportEventListeners();
+    attachCustomNoteListener();
   }
 
   attachTableEventListeners();
-  attachExportEventListeners();
-  attachCustomNoteListener();
 }
 
 // TODO! ? group step warnings together? so it's not just Step 1 ... Step 1 ... Step 1 if step 1 has ++ warnings
