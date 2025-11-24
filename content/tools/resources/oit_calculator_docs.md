@@ -75,7 +75,7 @@ There is a large variety of dosing progressions used in the literature and clini
 
 - **Standard** (11 steps): [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300] mg
 - **Slow** (19 steps): [0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300] mg
-- **Rapid** (9 steps): [1, 2.5, 5, 10, 20, 40, 80, 160, 300] mg
+- **Rapid** (7 steps): [5, 10, 20, 40, 80, 160, 300] mg
 
 ### 3.2 Phenotypes of OIT
 
