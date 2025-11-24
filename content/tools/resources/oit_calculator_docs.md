@@ -9,15 +9,7 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-# Todo
-
-- Implement R3 during dilution generation.
-
 # Oral Immunotherapy Calculator
-
-## Table of Contents
-
----
 
 ## 1. Executive Summary
 
@@ -34,6 +26,12 @@ This tool is a free, open-source web application that helps quickly generate saf
 - Editable protocol tables, food characteristics, dilution strategy
 - Real-time protocol validation with color-coded warnings
 - ASCII export to clipboard and PDF export of plan for patients
+
+**Remaining TODO! items**
+
+- Add warning when target protein (mg) is too high (ie. >5000mg)
+- Flesh out PDF export - at present time it only includes the protocol and custom notes
+  - What information to provide to patients about OIT in general?
 
 ---
 
