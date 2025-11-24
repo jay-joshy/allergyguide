@@ -11,7 +11,7 @@ authors = ["Joshua Yu"]
 
 # Todo
 
-- Implement R3 during dilution generation. For example, around line 386 in the function generateDefaultProtocol() notes a warning should be emitted if no working dilution can be found.
+- Implement R3 during dilution generation.
 
 # Oral Immunotherapy Calculator
 
@@ -41,7 +41,7 @@ This tool is a free, open-source web application that helps quickly generate saf
 
 ### 2.1 The current landscape
 
-OIT is an emerging approach to treating IgE-mediated food allergies, involving a progressive introduction of allergen through many 'steps', each corresponding to a specific protein target. A typical 'standard' progression of protein doses / steps is as follows, with 2-4 weeks between each step:
+OIT is an emerging approach to treating IgE-mediated food allergies, involving a progressive introduction of allergen through many 'steps', corresponding to a specific protein targets. A typical progression of protein doses / steps may be as follows, with 2-4 weeks between each step:
 
 | Step | Protein (mg) |
 | ---- | ------------ |
@@ -57,7 +57,7 @@ OIT is an emerging approach to treating IgE-mediated food allergies, involving a
 | 10   | 240          |
 | 11   | 300          |
 
-The goals of OIT can be achieved with many different protocols, and there is substantial heterogeneity in how OIT is implemented across Canada and between individual physicians. That variability may manifest in different forms of food (powders, whole, liquid), when/how dilution is used, how many total steps are taken, the protein target for each step, among others. While there is little evidence that specific dosing schedules are superior to others, the ability to create, edit, and adapt protocols for a patient’s specific situation is clearly important.
+The goals of OIT can be achieved with many different protocols, and **there is substantial heterogeneity in how OIT is implemented across Canada and between individual physicians**. That variability may manifest in different forms of food (powders, whole, liquid), when/how dilution is used, how many total steps are taken, the protein target for each step, among others. While there is little evidence that specific dosing schedules are superior to others, the ability to create, edit, and adapt protocols for a patient’s specific situation is clearly important.
 
 ### 2.2 The problem
 
@@ -123,10 +123,6 @@ interface Step {
   food: "A" | "B";
 }
 
-/**
- * Complete protocol definition, including steps and global settings.
- * May include a Food B transition and its threshold.
- */
 interface Protocol {
   dosingStrategy: DosingStrategy;
   foodA: Food;
@@ -201,7 +197,7 @@ The set of validation rules are documented [here](@/tools/resources/oit_calculat
 
 ## 1. File overview and stack
 
-```
+```txt
 allergyguide/
 ├── templates/shortcodes/
 │ └── oit_calculator.html 
@@ -367,25 +363,25 @@ interface ProtocolData {
 - As noted before, when diluting a solid into a liquid, solids are assumed to have zero volume.
 - Default candidate options for various parameters used to calculate optimal dilutions. These are chosen based on ease of measurement by a patient / family - they are fairly arbitrary and reflect a range of measurements seen in my personal experience.
 
-```
+```txt
 const SOLID_MIX_CANDIDATES = [
-0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
+  0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10, 12, 14, 16, 18, 20, 25, 30
 ].map((num) => new Decimal(num));
 const LIQUID_MIX_CANDIDATES = [
-0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10,
+  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 14, 16, 18, 20, 25, 30
 ].map((num) => new Decimal(num));
 const DAILY_AMOUNT_CANDIDATES = [
-0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
+  0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
 ].map((num) => new Decimal(num));
 const MAX_MIX_WATER = new Decimal(500);
 ```
 
-**Inputs, outputs:**
+**Inputs and outputs:**
 
-@param P Target protein per dose, in mg
-@param food Food used for the dilution (determines unit logic)
-@param config Protocol configuration and constraints
-@returns Array of feasible, sorted Candidate items
+- @param P Target protein per dose, in mg
+- @param food Food used for the dilution (determines unit logic)
+- @param config Protocol configuration and constraints
+- @returns Array of feasible, sorted Candidate items
 
 **Algorithm:**
 
@@ -520,9 +516,10 @@ const MAX_MIX_WATER = new Decimal(500);
 Build a default protocol for Food A using the default dosing strategy.
 
 **Inputs and outputs**
-@param food Food A
-@param config Protocol configuration and constraints
-@returns Protocol with Food A steps populated
+
+- @param food Food A
+- @param config Protocol configuration and constraints
+- @returns Protocol with Food A steps populated
 
 **Algorithm:**
 
@@ -564,9 +561,10 @@ Build a default protocol for Food A using the default dosing strategy.
 - We have decided that Food B dosing is always DIRECT (no dilution) when transition happens
 
 **Inputs:**
-@param protocol Protocol to modify (will be mutated)
-@param foodB Food B definition
-@param threshold Threshold to begin Food B, unit-specific amount (g/ml)
+
+- @param protocol Protocol to modify (will be mutated)
+- @param foodB Food B definition
+- @param threshold Threshold to begin Food B, unit-specific amount (g/ml)
 
 **Algorithm**
 
@@ -711,19 +709,19 @@ NOTE: If a built-in protocol is loaded that has both a Food A and a food B with 
   - Loaded protocols are treated like a blank canvas: changing dosing strategy regenerates and overwrites loaded targets
 - User can adjust thresholds for dilution of food A: table will recalculates DILUTE/DIRECT methods, upon edits of food A threshold _but preserve target mg_
 
-### 6.3 What happens if a new food is loaded?
+### 6.2 What happens if a new food is loaded?
 
 - Loading a new Food A resets and recalculates the entire protocol using the current dosing strategy and default Food A strategy/thresholds.
 - Adding or changing Food B regenerates steps at and after the transition (with the duplicate transition dose); clearing Food B removes Food B steps and headers.
 
-### 6.X Changing dosing strategy
+### 6.3 Changing dosing strategy
 
 - Clicking a strategy button immediately regenerates the entire protocol and resets steps to default steps for that strategy
 - All dilution parameters recalculated
 - Table re-renders completely
 - This is DIFFERENT from Food A strategy changes (which preserve custom targets)
 
-### 6.X Food B
+### 6.4 Food B
 
 Recompute the transition whenever any of these change:
 
@@ -733,7 +731,7 @@ Recompute the transition whenever any of these change:
 - any targetMg in steps 1..current_transition_index: If user manually edited post-transition targets, preserve them until the next “recompute” event.
 - Dosing strategy change
 
-### 6.X: Step editing behaviour
+### 6.5: Step editing behaviour
 
 - when editing target protein (P):
   - DIRECT steps: Editing targetMg recalculates dailyAmount.
@@ -749,6 +747,51 @@ Recompute the transition whenever any of these change:
 ---
 
 ## 7. Export Features
+
+### 7.1 ASCII
+
+Designed for easy input into EMR (not for patient). Assumes user can use a monospace font. So far cannot think of a nice space efficient way to display the steps that fits well with any font.
+
+Example output:
+
+```txt
+Elmhurst Milked Almonds Unsweetened Beverage (Liquid). Protein: 20.0 mg/ml
+Almonds (dry roasted, unblanched) (Solid). Protein: 210.0 mg/g
+
++------------------------------------------------------------------+
+|           Elmhurst Milked Almonds Unsweetened Beverage           |
++------+---------+--------+--------------+-------------------------+
+| Step | Protein | Method | Daily Amount |       Mix Details       |
++------+---------+--------+--------------+-------------------------+
+|    1 | 1.0 mg  | DILUTE | 1 ml         | 1 ml food + 19 ml water |
+|    2 | 2.5 mg  | DILUTE | 1 ml         | 1 ml food + 7 ml water  |
+|    3 | 5.0 mg  | DILUTE | 1 ml         | 1 ml food + 3 ml water  |
+|    4 | 10.0 mg | DIRECT | 0.5 ml       | N/A                     |
+|    5 | 20.0 mg | DIRECT | 1 ml         | N/A                     |
+|    6 | 40.0 mg | DIRECT | 2 ml         | N/A                     |
+|    7 | 80.0 mg | DIRECT | 4 ml         | N/A                     |
++------+---------+--------+--------------+-------------------------+
+--- TRANSITION TO: ---
++-------------------------------------------------------+
+|           Almonds (dry roasted, unblanched)           |
++------+----------+--------+--------------+-------------+
+| Step | Protein  | Method | Daily Amount | Mix Details |
++------+----------+--------+--------------+-------------+
+|    8 | 80.0 mg  | DIRECT | 0.40 g       | N/A         |
+|    9 | 120.0 mg | DIRECT | 0.60 g       | N/A         |
+|   10 | 160.0 mg | DIRECT | 0.80 g       | N/A         |
+|   11 | 240.0 mg | DIRECT | 1.10 g       | N/A         |
+|   12 | 300.0 mg | DIRECT | 1.40 g       | N/A         |
++------+----------+--------+--------------+-------------+
+========================================
+NOTES
+========================================
+Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving.
+```
+
+### 7.2 PDF
+
+See `exportPDF()` function.
 
 ## 8. Data Files
 
