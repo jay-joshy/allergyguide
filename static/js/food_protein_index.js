@@ -504,45 +504,48 @@ function openFpiModal(foodName, meanValue) {
     meanValue !== undefined && meanValue !== null && String(meanValue).length
       ? `
       <p><label><input id="fpi-protein-per-100g" class="protein-per-100g-input" type="number" min="0" step="0.01" value="${meanValue}"> (g) protein per 100g</label></p>
-      <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
-          <div>
-            <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
+      <div class="fpi-modal-tables-container">
+          <div class="fpi-modal-table-wrapper">
+            <div class="fpi-table-header">
                 <span>PRACTALL-5</span>
-                <button id="fpi-copy-five">Copy</button>
+                <button id="fpi-copy-five" class="fpi-copy-btn">Copy</button>
             </div>
-
-            <table id="fpi-table-five" border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
-                <thead>
-                  <tr>
-                    <th>Step</th>
-                    <th><span class="food-name-header">${foodName}</span> (g)</th>
-                    <th>Protein (mg)</th>
-                    <th>Cumulative dose (mg)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${five_rows}
-                </tbody>
-              </table>
+            <div class="fpi-table-scroll-wrapper">
+              <table id="fpi-table-five" class="fpi-protocol-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th><span class="food-name-header">${foodName}</span> (g)</th>
+                      <th>Protein (mg)</th>
+                      <th>Cumulative dose (mg)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${five_rows}
+                  </tbody>
+                </table>
+            </div>
           </div>
-          <div>
-          <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 5px;">
-              <span>PRACTALL-7</span>
-              <button id="fpi-copy-seven">Copy</button>
-          </div>
-            <table id="fpi-table-seven" border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; text-align:center;">
-                <thead>
-                  <tr>
-                    <th>Step</th>
-                    <th><span class="food-name-header">${foodName}</span> (g)</th>
-                    <th>Protein (mg)</th>
-                    <th>Cumulative dose (mg)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${seven_rows}
-                </tbody>
-              </table>
+          <div class="fpi-modal-table-wrapper">
+            <div class="fpi-table-header">
+                <span>PRACTALL-7</span>
+                <button id="fpi-copy-seven" class="fpi-copy-btn">Copy</button>
+            </div>
+            <div class="fpi-table-scroll-wrapper">
+              <table id="fpi-table-seven" class="fpi-protocol-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th><span class="food-name-header">${foodName}</span> (g)</th>
+                      <th>Protein (mg)</th>
+                      <th>Cumulative dose (mg)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${seven_rows}
+                  </tbody>
+                </table>
+            </div>
           </div>
       </div>
       `

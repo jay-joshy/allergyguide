@@ -574,6 +574,7 @@
 }
 
 // Modal overlay for item details
+
 .fpi-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -709,4 +710,97 @@
   outline: 2px solid var(--food-input-focus);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+// Styles for the protocol tables in the modal
+.fpi-modal-tables-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Added for dynamic stacking */
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.fpi-modal-table-wrapper {
+  flex: 1 0 450px;
+  /* flex-grow: 1, flex-shrink: 0, min-width: 450px for dynamic wrapping */
+}
+
+.fpi-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.fpi-copy-btn {
+  padding: 4px 12px;
+  background: var(--food-btn-bg);
+  border: 2px solid var(--food-input-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--food-text);
+  transition: all 0.2s ease;
+}
+
+.fpi-copy-btn:hover {
+  background: var(--food-btn-hover);
+  border-color: var(--food-input-focus);
+}
+
+.fpi-copy-btn:active {
+  transform: translateY(1px);
+  background: var(--food-btn-active);
+  color: white;
+}
+
+.fpi-table-scroll-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--food-border);
+  border-radius: 8px;
+  background: var(--food-bg);
+}
+
+.fpi-protocol-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.fpi-protocol-table th,
+.fpi-protocol-table td {
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+.fpi-protocol-table thead th {
+  background: var(--food-header-bg);
+  font-weight: 600;
+  border-bottom: 2px solid var(--food-border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.fpi-protocol-table tbody td {
+  border-top: 1px solid var(--food-border);
+}
+
+.fpi-protocol-table tbody tr:nth-child(even) {
+  background: var(--row-alt-bg);
+}
+
+.fpi-protocol-table tbody tr:hover {
+  background: var(--row-hover-bg);
+}
+
+.fpi-modal .protein-per-100g-input {
+  width: 7em;
+  margin-right: 4px;
 }
