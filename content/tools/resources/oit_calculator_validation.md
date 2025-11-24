@@ -9,7 +9,12 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-Each time a protocol is loaded or edited in the OIT Calculator, it is validated against a set of rules that assess for both **critical issues** and **practical cautions**. Critical issues represent serious flaws in the protocol that could compromise patient safety or make the protocol impossible to follow. Practical cautions are potential non-threatening issues that could be acceptable under the right clinical context, but in many circumstances may hinder implementation of the protocol or violate assumptions made by the tool.
+Each time a protocol is loaded or edited in the OIT Calculator, it is validated against a set of rules that assess for both **critical issues** and **practical cautions**.
+
+- **Critical issues** represent serious flaws in the protocol that could compromise patient safety or make the protocol impossible to follow.
+- **Practical cautions** are potential non-threatening issues that could be acceptable under the right clinical context, but in many circumstances may hinder implementation of the protocol or violate assumptions made by the tool.
+
+<br>
 
 {% admonition(type="danger", icon="danger", title="CRITICAL ISSUES") %}
 
