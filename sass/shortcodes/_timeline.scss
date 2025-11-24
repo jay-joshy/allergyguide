@@ -2,7 +2,6 @@
   /* Dark mode */
   --timeline_background: #1e1e1e;
   --timeline_text: #ffffff;
-  --timeline_border: #444;
   --timeline_shadow: rgba(0, 0, 0, 0.5);
   --timeline_link: #1e90ff;
   --timeline_icon: #ffa500;
@@ -12,7 +11,6 @@
   /* Light mode */
   --timeline_background: #ffffff;
   --timeline_text: #000000;
-  --timeline_border: #ccc;
   --timeline_shadow: rgba(0, 0, 0, 0.1);
   --timeline_link: #0645ad;
   --timeline_icon: #ff4500;
@@ -25,17 +23,17 @@
   p {
     font-size: 0.8em;
     /* font-weight: lighter; */
+  }
 
-    h3 {
-      font-size: 1em;
-      font-weight: lighter;
-    }
+  h3 {
+    font-size: 1em;
+    font-weight: lighter;
   }
 }
 
 /* Timeline */
 .timeline {
-  border-left: 4px solid var(--timeline_border);
+  border-left: 4px solid var(--a1);
   border-bottom-right-radius: 4px;
   border-top-right-radius: 4px;
   background: var(--timeline_background);
@@ -90,11 +88,38 @@
 }
 
 .timeline .event:after {
-  box-shadow: 0 0 0 4px var(--timeline_border);
+  box-shadow: 0 0 0 4px var(--a1);
   left: -2.5em;
   background: var(--timeline_background);
   border-radius: 50%;
   height: 0.5em;
   width: 0.5em;
   content: "";
+}
+
+/* On portrait orientation, stack the timeline vertically */
+
+@media screen and (orientation: portrait) {
+  .timeline {
+    max-width: 90%;
+    padding: 2em 1.5em 2em 2.5em;
+    /* T R B L */
+  }
+
+  .timeline .event {
+    padding-top: 1.5em;
+    /* Make space for the date */
+  }
+
+  .timeline .event:before {
+    /* Position date above the title */
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  .timeline .event:after {
+    left: -2.08em;
+  }
 }
