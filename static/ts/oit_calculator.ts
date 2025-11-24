@@ -2682,92 +2682,94 @@ function exportPDF(jsPDF: any): void {
   const foodAStepCount = getFoodAStepCount(currentProtocol);
   const totalSteps = currentProtocol.steps.length;
 
-  // Build Food A table data
-  const foodARows: any[] = [];
-  for (let i = 0; i < foodAStepCount; i++) {
-    const step = currentProtocol.steps[i];
-    const food = currentProtocol.foodA;
+  // Build Food A table data if it exists (it always should ... unless the user does Food A -> B and then deletes all the Food A steps for some dumb reason)
+  if (foodAStepCount > 0) {
+    const foodARows: any[] = [];
+    for (let i = 0; i < foodAStepCount; i++) {
+      const step = currentProtocol.steps[i];
+      const food = currentProtocol.foodA;
 
-    let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
-    let mixDetails = "N/A";
+      let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
+      let mixDetails = "N/A";
 
-    if (step.method === Method.DILUTE) {
-      const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-      mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
+      if (step.method === Method.DILUTE) {
+        const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
+        mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
+      }
+
+      if (i === totalSteps - 1) {
+        foodARows.push([
+          step.stepIndex,
+          `${formatNumber(step.targetMg, 1)} mg`,
+          step.method,
+          dailyAmountStr,
+          mixDetails,
+          "Continue long term",
+        ]);
+      } else {
+        foodARows.push([
+          step.stepIndex,
+          `${formatNumber(step.targetMg, 1)} mg`,
+          step.method,
+          dailyAmountStr,
+          mixDetails,
+          "2-4 weeks",
+        ]);
+      }
     }
 
-    if (i === totalSteps - 1) {
-      foodARows.push([
-        step.stepIndex,
-        `${formatNumber(step.targetMg, 1)} mg`,
-        step.method,
-        dailyAmountStr,
-        mixDetails,
-        "Continue long term",
-      ]);
-    } else {
-      foodARows.push([
-        step.stepIndex,
-        `${formatNumber(step.targetMg, 1)} mg`,
-        step.method,
-        dailyAmountStr,
-        mixDetails,
-        "2-4 weeks",
-      ]);
-    }
-  }
+    // Build Food A section PDF
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${currentProtocol.foodA.name}`, 40, yPosition);
+    yPosition += 20;
 
-  // Build Food A section PDF
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text(`${currentProtocol.foodA.name}`, 40, yPosition);
-  yPosition += 20;
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(
+      `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodAUnit} serving.`,
+      40,
+      yPosition,
+    );
+    yPosition += 15;
 
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text(
-    `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodAUnit} serving.`,
-    40,
-    yPosition,
-  );
-  yPosition += 15;
-
-  // Food A table
-  (doc as any).autoTable({
-    startY: yPosition,
-    head: [
-      [
-        "Step",
-        "Protein",
-        "Method",
-        "Daily Amount",
-        "How to make mix",
-        "Interval",
+    // Food A table
+    (doc as any).autoTable({
+      startY: yPosition,
+      head: [
+        [
+          "Step",
+          "Protein",
+          "Method",
+          "Daily Amount",
+          "How to make mix",
+          "Interval",
+        ],
       ],
-    ],
-    body: foodARows,
-    theme: "striped",
-    headStyles: {
-      fillColor: [220, 220, 220], // Light gray, B&W friendly
-      textColor: [0, 0, 0],
-      fontStyle: 'bold',
-    },
-    styles: {
-      fontSize: 9,
-      cellPadding: 6,
-      overflow: 'linebreak',
-      valign: 'middle',
-      halign: 'left',
-    },
-    columnStyles: {
-      0: { halign: 'center' }, // Step
-      1: { halign: 'center' }, // Protein
-      2: { halign: 'center' }, // Method
-    },
-    margin: { left: 40, right: 40 },
-  });
+      body: foodARows,
+      theme: "striped",
+      headStyles: {
+        fillColor: [220, 220, 220], // Light gray, B&W friendly
+        textColor: [0, 0, 0],
+        fontStyle: 'bold',
+      },
+      styles: {
+        fontSize: 9,
+        cellPadding: 6,
+        overflow: 'linebreak',
+        valign: 'middle',
+        halign: 'left',
+      },
+      columnStyles: {
+        0: { halign: 'center' }, // Step
+        1: { halign: 'center' }, // Protein
+        2: { halign: 'center' }, // Method
+      },
+      margin: { left: 40, right: 40 },
+    });
 
-  yPosition = (doc as any).lastAutoTable.finalY + 20;
+    yPosition = (doc as any).lastAutoTable.finalY + 20;
+  }
 
   // Food B section (if exists)
   if (currentProtocol.foodB && foodAStepCount < totalSteps) {
