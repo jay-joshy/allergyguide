@@ -2746,10 +2746,25 @@ function exportPDF(jsPDF: any): void {
       ],
     ],
     body: foodARows,
-    theme: "grid",
-    headStyles: { fillColor: [66, 139, 202], fontStyle: "bold" },
+    theme: "striped",
+    headStyles: {
+      fillColor: [220, 220, 220], // Light gray, B&W friendly
+      textColor: [0, 0, 0],
+      fontStyle: 'bold',
+    },
+    styles: {
+      fontSize: 9,
+      cellPadding: 6,
+      overflow: 'linebreak',
+      valign: 'middle',
+      halign: 'left',
+    },
+    columnStyles: {
+      0: { halign: 'center' }, // Step
+      1: { halign: 'center' }, // Protein
+      2: { halign: 'center' }, // Method
+    },
     margin: { left: 40, right: 40 },
-    styles: { fontSize: 9, cellPadding: 5, overflow: 'linebreak', halign: 'center' },
   });
 
   yPosition = (doc as any).lastAutoTable.finalY + 20;
@@ -2830,10 +2845,25 @@ function exportPDF(jsPDF: any): void {
         ],
       ],
       body: foodBRows,
-      theme: "grid",
-      headStyles: { fillColor: [66, 139, 202], fontStyle: "bold" },
+      theme: "striped",
+      headStyles: {
+        fillColor: [220, 220, 220], // Light gray, B&W friendly
+        textColor: [0, 0, 0],
+        fontStyle: 'bold',
+      },
+      styles: {
+        fontSize: 9,
+        cellPadding: 6,
+        overflow: 'linebreak',
+        valign: 'middle',
+        halign: 'left',
+      },
+      columnStyles: {
+        0: { halign: 'center' }, // Step
+        1: { halign: 'center' }, // Protein
+        2: { halign: 'center' }, // Method
+      },
       margin: { left: 40, right: 40 },
-      styles: { fontSize: 9, cellPadding: 5, overflow: 'linebreak', halign: 'center' },
     });
 
     yPosition = (doc as any).lastAutoTable.finalY + 20;
