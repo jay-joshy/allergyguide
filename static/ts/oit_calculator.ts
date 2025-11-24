@@ -2717,7 +2717,7 @@ function exportPDF(jsPDF: any): void {
     }
   }
 
-  // Food A section
+  // Build Food A section PDF
   doc.setFontSize(14);
   doc.setFont("helvetica", "bold");
   doc.text(`${currentProtocol.foodA.name}`, 40, yPosition);
@@ -2749,15 +2749,7 @@ function exportPDF(jsPDF: any): void {
     theme: "grid",
     headStyles: { fillColor: [66, 139, 202], fontStyle: "bold" },
     margin: { left: 40, right: 40 },
-    styles: { fontSize: 9, cellPadding: 5 },
-    columnStyles: {
-      0: { cellWidth: 40 },
-      1: { cellWidth: 70 },
-      2: { cellWidth: 60 },
-      3: { cellWidth: 90 },
-      4: { cellWidth: 180 },
-      5: { cellWidth: 80 },
-    },
+    styles: { fontSize: 9, cellPadding: 5, overflow: 'linebreak', halign: 'center' },
   });
 
   yPosition = (doc as any).lastAutoTable.finalY + 20;
@@ -2841,15 +2833,7 @@ function exportPDF(jsPDF: any): void {
       theme: "grid",
       headStyles: { fillColor: [66, 139, 202], fontStyle: "bold" },
       margin: { left: 40, right: 40 },
-      styles: { fontSize: 9, cellPadding: 5 },
-      columnStyles: {
-        0: { cellWidth: 40 },
-        1: { cellWidth: 70 },
-        2: { cellWidth: 60 },
-        3: { cellWidth: 90 },
-        4: { cellWidth: 180 },
-        5: { cellWidth: 80 },
-      },
+      styles: { fontSize: 9, cellPadding: 5, overflow: 'linebreak', halign: 'center' },
     });
 
     yPosition = (doc as any).lastAutoTable.finalY + 20;
