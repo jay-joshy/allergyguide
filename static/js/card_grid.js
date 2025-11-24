@@ -65,7 +65,7 @@ async function displayRandomCards() {
 
     cardElement.innerHTML = `
           <a href="${card.url}" class="contact-card-link">
-              <div class="contact-card-image-container">
+              <div>
                   <img src="${card.src}" alt="${card.title}" class="${imgClass}">
               </div>
               <div class="contact-card-content">

@@ -1,0 +1,47 @@
+.allergyguide-homepage {
+
+  .homepage-icon {
+    fill: var(--a1);
+    color: var(--a1);
+    height: 2em;
+    vertical-align: -0.2em;
+    margin-right: 0.5em;
+  }
+
+  .hero {
+    text-align: center;
+    margin: 1.5rem 0 1.5rem;
+    background-color: var(--c2);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+
+    li {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+
+  .contribute {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: var(--c2);
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+
+    .button {
+      text-decoration: none;
+      background-color: var(--a1);
+      color: var(--c1);
+      padding: 0.8rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: bold;
+    }
+  }
+
+}
