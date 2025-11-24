@@ -21,7 +21,7 @@ This open-source tool addresses these challenges by providing a robust and flexi
 - **Diverse Food Support:** Handle both solid and liquid foods, performing automatic dilution calculations where necessary.
 - **Food Transitioning:** Support transitions from a primary food (Food A) to a secondary food (Food B) at a customizable threshold.
 - **Interactive Protocol Tables:** Fully editable tables for protocol steps, food characteristics, and dilution strategies.
-- **Real-time Validation:** Immediate, color-coded warnings for potential safety or practicality concerns during protocol creation.
+- **Real-time Validation:** Immediate, colour-coded warnings for potential safety or practicality concerns during protocol creation.
 - **Export Options:** ASCII export to clipboard and PDF export of plan for patients.
 
 **Future Enhancements:**
@@ -75,20 +75,16 @@ The OIT Calculator's implementation files are organized as follows within the `a
 allergyguide/
 ├── templates/shortcodes/
 │ └── oit_calculator.html      
-│
 ├── static/
 │ ├── ts/
 │ │ └── oit_calculator.ts     
-│ │
 │ ├── js/
 │ │ └── oit_calculator.js     
-│ │
 │ └── tool_assets/
-│ ├── typed_foods_rough.json # Food database (approx. 500 foods)
-│ └── oit_protocols.json   # Pre-built protocol templates
-│
-├── sass/shortcodes/
-│ └── _oit_calculator.scss
+│   ├── typed_foods_rough.json # Food database (approx. 500 foods)
+│   └── oit_protocols.json   # Pre-built protocol templates
+└── sass/shortcodes/
+  └── _oit_calculator.scss
 ```
 
 **Stack:**
@@ -121,7 +117,7 @@ Identifies feasible and practical dilution recipes for a given target protein do
 
 - **Assumptions:** Solid foods diluted in liquid are assumed to have negligible volume contribution, unless their concentration exceeds a `MAX_SOLID_CONCENTRATION` threshold (0.05 w/v).
 - **Constraints:** Recipes must respect minimum measurable mass/volume (e.g., `minMeasurableMass`, `minMeasurableVolume`), maximum total mix water (`MAX_MIX_WATER`), minimum number of servings (`minServingsForMix`), and protein tolerance (`PROTEIN_TOLERANCE`).
-- **Optimization:** Candidates are sorted to prioritize practical mixtures, favoring those meeting low concentration constraints for solids, then by `mixFoodAmount`, `dailyAmount`, `mixTotalVolume`, and `mixWaterAmount`.
+- **Optimization:** Candidates are sorted to prioritize practical mixtures, favouring those meeting low concentration constraints for solids, then by `mixFoodAmount`, `dailyAmount`, `mixTotalVolume`, and `mixWaterAmount`.
 
 Refer to the `findDilutionCandidates` function in `oit_calculator.ts` for implementation details.
 
@@ -180,16 +176,16 @@ The calculator's user interface is composed of several interactive components:
 - **Unit Display:** Displays units (g/ml) appropriate for the food type and method.
 - **Special Rows:** Food section headers appear before the first Food A step and before any Food B steps.
 
-### 2.6 Editing Behavior
+### 2.6 Editing Behaviour
 
 The calculator dynamically responds to user input, recalculating and validating the protocol in real-time:
 
 - **Food Settings Modification:**
   - Changing food name updates display immediately.
-  - Altering protein concentration triggers a full table recalculation.
-  - Toggling food type (Solid ↔ Liquid) for Food A or B converts existing amounts (assuming 1g ≈ 1ml) and recomputes dilution parameters. Target protein values are preserved.
+  - Altering protein concentration of either Food A or B triggers a full table recalculation.
+  - Toggling food type (Solid ↔ Liquid) for Food A or B converts existing amounts (assuming 1g ≈ 1ml) and recomputes dilution parameters. Existing target protein values are preserved.
   - Changing Food A dilution strategy or threshold recalculates step methods and mix parameters while preserving target protein values.
-- **Dosing Strategy Change:** Selecting a different dosing strategy (Standard, Slow, Rapid) regenerates the entire protocol with new default protein targets for that strategy. This overrides any custom step targets.
+- **Dosing Strategy Change:** Selecting a different dosing strategy (Standard, Slow, Rapid) regenerates the entire protocol with new default protein targets for that strategy. This overrides any custom step targets. Food B should be preserved if already selected.
 - **New Food Loading:** Loading a new Food A resets and recalculates the entire protocol. If there is a Food B already selected, it is removed. Adding or changing Food B regenerates steps from the transition point onward.
 - **Step Editing:**
   - **Editing Target Protein:** For direct steps, `dailyAmount` is recalculated. For dilution steps, `mixWaterAmount` is adjusted to preserve `dailyAmount` and `mixFoodAmount` if possible. If impossible, a warning should be triggered.
