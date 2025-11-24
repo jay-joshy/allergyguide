@@ -9,13 +9,6 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-# Bug
-
-Final steps disappear without reason
-
-- load rapid milk protocol
-- switch dilution strategy to dilution throughout and then the last step will be gone forever until reloaded
-
 # Todo
 
 - Implement R3 during dilution generation. For example, around line 386 in the function generateDefaultProtocol() notes a warning should be emitted if no working dilution can be found.

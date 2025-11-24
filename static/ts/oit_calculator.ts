@@ -213,10 +213,10 @@ const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
 
 // Default candidate options for various parameters used to calculate optimal dilutions
 const SOLID_MIX_CANDIDATES = [
-  0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10,
+  0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10, 12, 14, 16
 ].map((num) => new Decimal(num));
 const LIQUID_MIX_CANDIDATES = [
-  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10,
+  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 14, 16
 ].map((num) => new Decimal(num));
 const DAILY_AMOUNT_CANDIDATES = [
   0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
@@ -390,13 +390,13 @@ function findDilutionCandidates(
   const mixCandidates =
     food.type === FoodType.SOLID ? SOLID_MIX_CANDIDATES : LIQUID_MIX_CANDIDATES;
 
-  // Calculate minimum dailyAmount for preferred concentration (solids only)
+  // Calculate minimum dailyAmount to achieve `dailyAmount > P / (MAX_SOLID_CONCENTRATION × mgPerUnit)`
   // For ratio = mixFood / mixWaterAmount < MAX_SOLID_CONCENTRATION
   // Recall: mixWaterAmount = mixTotalVolume = dailyAmount × servings
   // & servings = (mixFood × mgPerUnit) / P
   // => ratio = P / (dailyAmount × mgPerUnit)
   // => MAX_SOLID_CONCENTRATION > P / (dailyAmount × mgPerUnit)
-  // =>dailyAmount > P / (MAX_SOLID_CONCENTRATION × mgPerUnit)
+  // => dailyAmount > P / (MAX_SOLID_CONCENTRATION × mgPerUnit)
   const minDailyForLowConcentration =
     food.type === FoodType.SOLID
       ? P.dividedBy(config.MAX_SOLID_CONCENTRATION.times(food.mgPerUnit))
