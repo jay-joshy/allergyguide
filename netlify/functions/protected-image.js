@@ -1,10 +1,10 @@
 // netlify/functions/protected-image.js
 const fetch = require('node-fetch'); // Only needed in local dev
+const { authenticate } = require('./util/auth');
 
 exports.handler = async (event) => {
   try {
     // Parse environment variables
-    const users = JSON.parse(process.env.AUTH_USERS || "{}");
     const githubToken = process.env.GITHUB_TOKEN;
     const githubOwner = process.env.GITHUB_OWNER;
     const githubRepo = process.env.GITHUB_REPO;
@@ -39,38 +39,9 @@ exports.handler = async (event) => {
     }
 
     // Handle authentication
-    const authHeader = event.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Basic ")) {
-      return {
-        statusCode: 401,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ error: 'Authentication required' })
-      };
-    }
-
-    // Decode and validate credentials
-    let username, password;
-    try {
-      const base64Credentials = authHeader.split(" ")[1];
-      [username, password] = Buffer.from(base64Credentials, 'base64').toString().split(":");
-    } catch (e) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Invalid authentication format' })
-      };
-    }
-
-    if (!users[username] || users[username] !== password) {
-      return {
-        statusCode: 401,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ error: 'Invalid credentials' })
-      };
+    const authResult = authenticate(event);
+    if (authResult.error) {
+      return authResult.error;
     }
 
     // Fetch image from GitHub
