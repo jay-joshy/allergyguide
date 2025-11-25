@@ -1429,7 +1429,7 @@ function renderFoodSettings(): void {
         <input
           type="number"
           min="0"
-          max="150"
+          max="100"
           id="food-a-protein"
           value="${mgPerUnitToGramPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
           step="0.1"
@@ -1497,7 +1497,7 @@ function renderFoodSettings(): void {
               type="number"
               id="food-b-protein"
               min="0"
-              max="150"
+              max="100"
               value="${mgPerUnitToGramPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
               step="0.1"
             />
@@ -2355,9 +2355,9 @@ function attachSettingsEventListeners(): void {
     foodAProteinInput.addEventListener("change", (e) => {
       if (currentProtocol) {
         let value = parseFloat((e.target as HTMLInputElement).value);
-        // Clamp value between 0 and 150
+        // Clamp value between 0 and 100 (impossible to > 100)
         if (value < 0) value = 0;
-        if (value > 150) value = 150;
+        if (value > 100) value = 100;
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
         currentProtocol.foodA.mgPerUnit = gramPer100ToMgPerUnit(value);
@@ -2402,9 +2402,9 @@ function attachSettingsEventListeners(): void {
     foodBProteinInput.addEventListener("change", (e) => {
       if (currentProtocol && currentProtocol.foodB) {
         let value = parseFloat((e.target as HTMLInputElement).value);
-        // Clamp value between 0 and 150
+        // Clamp value between 0 and 100
         if (value < 0) value = 0;
-        if (value > 150) value = 150;
+        if (value > 100) value = 100;
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
         currentProtocol.foodB.mgPerUnit = gramPer100ToMgPerUnit(value);
