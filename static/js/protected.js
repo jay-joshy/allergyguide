@@ -1,12 +1,12 @@
 // protected.js
 class ProtectedContentLoader {
   constructor() {
-    // Use relative URLs - works for both local dev and production
     this.baseUrl = '/.netlify/functions/protected-content';
     this.imageUrl = '/.netlify/functions/protected-image';
-    this.storageKey = 'auth-token-data';
+    this.loginUrl = '/.netlify/functions/login';
+    this.storageKey = 'jwt-token';
     this.imageCache = new Map();
-    this.debug = true; // Enable debug logging
+    this.debug = true;
   }
 
   log(message, data = null) {
@@ -15,120 +15,98 @@ class ProtectedContentLoader {
     }
   }
 
-  // Check if stored token is still valid
-  isTokenValid(tokenData) {
-    if (!tokenData || !tokenData.exp) return false;
-    return Date.now() < tokenData.exp;
-  }
-
-  // Get stored token data
-  getStoredToken() {
+  isTokenValid(token) {
+    if (!token) return false;
     try {
-      const stored = localStorage.getItem(this.storageKey);
-      return stored ? JSON.parse(stored) : null;
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // Add a 30-second buffer for clock skew
+      return payload.exp * 1000 > Date.now() - 30000;
     } catch (e) {
-      console.warn('Failed to parse stored token:', e);
-      localStorage.removeItem(this.storageKey);
-      return null;
+      console.error('Failed to parse JWT:', e);
+      return false;
     }
   }
 
-  // Store token data
-  storeToken(tokenData, credentials) {
-    const dataToStore = {
-      ...tokenData,
-      token: btoa(`${credentials.username}:${credentials.password}`)
-    };
-    localStorage.setItem(this.storageKey, JSON.stringify(dataToStore));
+  getStoredToken() {
+    return localStorage.getItem(this.storageKey);
   }
 
-  // Clear stored token
+  storeToken(token) {
+    localStorage.setItem(this.storageKey, token);
+  }
+
   clearToken() {
     localStorage.removeItem(this.storageKey);
     this.imageCache.clear();
   }
 
-  // Show login form
   showLoginForm(containerId) {
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = `
-            <div class="protected-login-form">
-              <h4>Protected Content - Login Required</h4>
-              <form class="login-form">
-                <div class="form-group">
-                  <label for="${containerId}-username">Username:</label>
-                  <input type="text" id="${containerId}-username" name="username" required>
-                </div>
-                <div class="form-group">
-                  <label for="${containerId}-password">Password:</label>
-                  <input type="password" id="${containerId}-password" name="password" required>
-                </div>
-                <button type="submit" class="login-button">
-                  Access Content
-                </button>
-                <div id="${containerId}-error" class="login-error" style="display: none;"></div>
-              </form>
+        <div class="protected-login-form">
+          <h4>Protected Content - Login Required</h4>
+          <form class="login-form">
+            <div class="form-group">
+              <label for="${containerId}-username">Username:</label>
+              <input type="text" id="${containerId}-username" name="username" required>
             </div>
-          `;
-      const form = container.querySelector('.login-form');
-      if (form) {
-        form.addEventListener('submit', (event) => {
-          event.preventDefault();
-          this.submitLogin(containerId);
-        });
-      }
+            <div class="form-group">
+              <label for="${containerId}-password">Password:</label>
+              <input type="password" id="${containerId}-password" name="password" required>
+            </div>
+            <button type="submit" class="login-button">Access Content</button>
+            <div id="${containerId}-error" class="login-error" style="display: none;"></div>
+          </form>
+        </div>
+      `;
+      container.querySelector('.login-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        this.submitLogin(containerId);
+      });
     }
   }
 
-  // Handle form submission
   async submitLogin(containerId) {
-    const usernameField = document.getElementById(`${containerId}-username`);
-    const passwordField = document.getElementById(`${containerId}-password`);
+    const username = document.getElementById(`${containerId}-username`).value.trim();
+    const password = document.getElementById(`${containerId}-password`).value;
     const errorDiv = document.getElementById(`${containerId}-error`);
     const button = document.querySelector(`#${containerId} .login-button`);
-
-    if (!usernameField || !passwordField) {
-      console.error('Login form fields not found');
-      return;
-    }
-
-    const username = usernameField.value.trim();
-    const password = passwordField.value;
 
     if (!username || !password) {
       this.showLoginError(containerId, 'Please enter both username and password');
       return;
     }
 
-    // Show loading state
     button.textContent = 'Authenticating...';
     button.disabled = true;
     errorDiv.style.display = 'none';
 
     try {
-      const credentials = { username, password };
-      const path = document.getElementById(containerId).getAttribute('data-protected-path');
+      const response = await fetch(this.loginUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-      // Try to authenticate and fetch content
-      await this.authenticateAndLoadContent(containerId, path, credentials);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || `HTTP ${response.status}`);
+      }
+
+      this.storeToken(data.token);
+      const path = document.getElementById(containerId).getAttribute('data-protected-path');
+      await this.loadContentWithToken(containerId, path, data.token);
 
     } catch (error) {
       this.log('Login failed:', error);
-
-      // Reset button state
       button.textContent = 'Access Content';
       button.disabled = false;
-
-      if (error.message.includes('401') || error.message.includes('Invalid credentials') || error.message.includes('Authentication')) {
-        this.showLoginError(containerId, 'Invalid credentials. Please try again.');
-      } else {
-        this.showLoginError(containerId, error.message || 'Authentication failed. Please try again.');
-      }
+      this.showLoginError(containerId, error.message || 'Authentication failed.');
     }
   }
 
-  // Show login error
   showLoginError(containerId, message) {
     const errorDiv = document.getElementById(`${containerId}-error`);
     if (errorDiv) {
@@ -137,128 +115,60 @@ class ProtectedContentLoader {
     }
   }
 
-  // Authenticate and load content (separated from main flow)
-  async authenticateAndLoadContent(containerId, path, credentials) {
-    const token = btoa(`${credentials.username}:${credentials.password}`);
-
-    // Fetch content with credentials
-    const contentData = await this.fetchContent(path, token);
-
-    // Store the token data
-    if (contentData.tokenData) {
-      this.storeToken(contentData.tokenData, credentials);
-    }
-
-    // Get current token for image processing
-    const currentTokenData = this.getStoredToken();
-    const currentToken = currentTokenData ? currentTokenData.token : null;
-
-    // Get base path for images (directory of the content file)
-    const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-
-    // Process and render content
-    await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
-    this.log('Content rendered successfully after login');
-  }
-
-  // Prompt user for credentials (now returns form instead of prompt)
-  async promptCredentials(containerId) {
-    return new Promise((resolve) => {
-      // Show login form instead of prompting
+  async loadContentWithToken(containerId, path, token) {
+    try {
+      const contentData = await this.fetchContent(path, token);
+      const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+      await this.renderContent(contentData.content, contentData.fileType, containerId, token, basePath);
+      this.log('Content rendered successfully with token');
+    } catch (error) {
+      this.log('Failed to load content with token:', error);
+      this.clearToken();
       this.showLoginForm(containerId);
-      resolve(null); // Return null to indicate form is shown
-    });
+      this.showLoginError(containerId, `Session expired or invalid. Please log in again. (${error.message})`);
+    }
   }
 
-  // Fetch protected content
   async fetchContent(path, token) {
     const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
     this.log('Fetching content from:', url);
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
 
-    try {
-      const response = await fetch(url, {
-        headers: { 'Authorization': `Basic ${token}` }
-      });
-
-      this.log('Response status:', response.status);
-      this.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
-      if (!response.ok) {
-        // Get the raw response text for debugging
-        const responseText = await response.text();
-        this.log('Error response body:', responseText);
-
-        // Try to parse as JSON, fall back to text
-        let errorData;
-        try {
-          errorData = JSON.parse(responseText);
-        } catch (e) {
-          // If it's not JSON, it's probably an HTML error page
-          if (responseText.includes('<html') || responseText.includes('<!DOCTYPE')) {
-            throw new Error(`Function returned HTML instead of JSON. Status: ${response.status}. This usually means the function isn't deployed or there's a server error.`);
-          }
-          errorData = { error: responseText };
-        }
-
-        throw new Error(errorData.error || `HTTP ${response.status}`);
-      }
-
-      const responseText = await response.text();
-      this.log('Success response body:', responseText);
-
-      try {
-        return JSON.parse(responseText);
-      } catch (e) {
-        this.log('Failed to parse JSON response:', e);
-        throw new Error('Invalid JSON response from server');
-      }
-    } catch (fetchError) {
-      this.log('Fetch error:', fetchError);
-      if (fetchError.name === 'TypeError' && fetchError.message.includes('fetch')) {
-        throw new Error('Network error - please check your connection');
-      }
-      throw fetchError;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP ${response.status}`);
     }
+    return response.json();
   }
 
-  // Fetch protected image and convert to data URL
   async fetchImage(imagePath, token) {
-    // Check cache first
     const cacheKey = `${imagePath}-${token}`;
     if (this.imageCache.has(cacheKey)) {
       return this.imageCache.get(cacheKey);
     }
 
-    const url = `${this.imageUrl}?path=${imagePath}`;
-    this.log(`Fetch URL: ${url}`);
+    const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
+    this.log(`Fetching image from: ${url}`);
+    
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
 
-    try {
-      const response = await fetch(url, {
-        headers: { 'Authorization': `Basic ${token}` }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to load image: ${imagePath}`);
-      }
-
-      const data = await response.json();
-      this.log("GitHub API response in fetchImage():", data);
-      const dataUrl = `data:${data.contentType};base64,${data.content}`;
-
-      // Cache the result
-      this.imageCache.set(cacheKey, dataUrl);
-      return dataUrl;
-    } catch (error) {
-      console.warn(`Failed to load protected image ${imagePath}:`, error);
-      return null;
+    if (!response.ok) {
+      throw new Error(`Failed to load image: ${imagePath}`);
     }
-  }
 
-  // Process images in content - replace src with data URLs
+    const data = await response.json();
+    const dataUrl = `data:${data.contentType};base64,${data.content}`;
+    this.imageCache.set(cacheKey, dataUrl);
+    return dataUrl;
+  }
+  
   async processImages(content, token, basePath = '') {
     if (!token) return content;
 
-    // Find all img tags with src attributes
     const imgRegex = /<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi;
     const images = [];
     let match;
@@ -269,76 +179,52 @@ class ProtectedContentLoader {
       let srcPath = match[2];
       const afterSrc = match[3];
 
-      // Decode HTML entities in the src path
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = srcPath;
       srcPath = tempDiv.textContent || tempDiv.innerText || srcPath;
 
-      this.log('Processing image src:', { original: match[2], decoded: srcPath });
-
-      // Only process relative paths or absolute paths that should be from the private repo
-      // Skip external URLs and data URLs
       if (!srcPath.startsWith('http') && !srcPath.startsWith('data:')) {
-        // Resolve path to be relative to the 'static' directory in the private repo,
-        // per the project's convention.
-        const finalSrcPath = srcPath.startsWith('/')
-          ? `static${srcPath}`
-          : `static/${srcPath}`;
-
-        this.log('Image path resolution:', { srcPath: finalSrcPath, basePath });
-
-        images.push({
-          fullMatch,
-          beforeSrc,
-          srcPath: finalSrcPath,
-          afterSrc,
-        });
+        const finalSrcPath = srcPath.startsWith('/') ? `static${srcPath}` : `static/${srcPath}`;
+        images.push({ fullMatch, beforeSrc, srcPath: finalSrcPath, afterSrc });
       }
     }
 
-    // Fetch all images in parallel
     const imagePromises = images.map(async (img) => {
-      this.log(`Fetching image from: ${img.srcPath}`);
-      const dataUrl = await this.fetchImage(img.srcPath, token);
-      this.log(`Image fetch result for ${img.srcPath}:`, dataUrl ? 'success' : 'failed');
-      return { ...img, dataUrl };
+      try {
+        const dataUrl = await this.fetchImage(img.srcPath, token);
+        return { ...img, dataUrl };
+      } catch (error) {
+        console.warn(`Failed to process image ${img.srcPath}:`, error);
+        return { ...img, dataUrl: null };
+      }
     });
 
     const imageResults = await Promise.all(imagePromises);
 
-    // Replace image sources in content
     let processedContent = content;
     imageResults.forEach(({ fullMatch, beforeSrc, afterSrc, dataUrl, srcPath }) => {
-      if (dataUrl) {
-        const newImg = `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`;
-        processedContent = processedContent.replace(fullMatch, newImg);
-        this.log(`Successfully replaced image: ${srcPath}`);
-      } else {
-        // If image failed to load, add error class and alt text
-        const newImg = `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
-        processedContent = processedContent.replace(fullMatch, newImg);
-        this.log(`Failed to load image: ${srcPath}`);
-      }
+      const newImg = dataUrl
+        ? `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`
+        : `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
+      processedContent = processedContent.replace(fullMatch, newImg);
     });
 
     return processedContent;
   }
 
-  // Render content based on file type
   async renderContent(content, fileType, containerId, token, basePath) {
     const container = document.getElementById(containerId);
     if (!container) {
       throw new Error(`Container with id '${containerId}' not found`);
     }
 
-    // Process images first
     const processedContent = await this.processImages(content, token, basePath);
 
     if (fileType === 'html') {
       container.innerHTML = processedContent;
     } else if (fileType === 'md') {
       if (typeof marked === 'undefined') {
-        throw new Error('Marked library not loaded for Markdown rendering');
+        throw new Error('Marked library not loaded');
       }
       container.innerHTML = marked.parse(processedContent);
     } else {
@@ -346,17 +232,15 @@ class ProtectedContentLoader {
     }
   }
 
-  // Show error message
   showError(containerId, message) {
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = `<div class="protected-error" style="color: #dc3545; padding: 1rem; border: 1px solid #dc3545; border-radius: 4px; background: #f8d7da;">
-            <strong>Error:</strong> ${message}
-          </div>`;
+        <strong>Error:</strong> ${message}
+      </div>`;
     }
   }
 
-  // Show loading state
   showLoading(containerId, loadingText = 'Loading protected content...') {
     const container = document.getElementById(containerId);
     if (container) {
@@ -364,7 +248,6 @@ class ProtectedContentLoader {
     }
   }
 
-  // Main method to load protected content
   async loadProtectedContent(containerId, path) {
     const container = document.getElementById(containerId);
     const loadingText = container?.getAttribute('data-loading-text') || 'Loading protected content...';
@@ -372,64 +255,23 @@ class ProtectedContentLoader {
     this.log('Starting to load protected content', { containerId, path });
     this.showLoading(containerId, loadingText);
 
-    try {
-      let tokenData = this.getStoredToken();
+    const token = this.getStoredToken();
 
-      // Check if we have a valid token
-      if (!tokenData || !this.isTokenValid(tokenData)) {
-        this.log('No valid token found, showing login form');
-        await this.promptCredentials(containerId);
-        return; // Exit here - form will handle the rest
-      } else {
-        this.log('Using stored token');
-      }
-
-      // Attempt to fetch content with stored token
-      try {
-        const token = tokenData.token;
-        this.log('Attempting to fetch content with stored token');
-        const contentData = await this.fetchContent(path, token);
-
-        this.log('Content fetch successful:', contentData);
-
-        // Get current token for image processing
-        const currentToken = tokenData.token;
-
-        // Get base path for images (directory of the content file)
-        const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-
-        // Process and render content
-        await this.renderContent(contentData.content, contentData.fileType, containerId, currentToken, basePath);
-        this.log('Content rendered successfully');
-
-      } catch (error) {
-        this.log('Stored token failed:', error.message);
-        // If stored token was invalid or expired, show login form
-        if (error.message.includes('401') || error.message.includes('Authentication') || error.message.includes('Invalid credentials')) {
-          this.clearToken();
-          this.log('Token expired/invalid, showing login form');
-          await this.promptCredentials(containerId);
-          return;
-        } else {
-          throw error;
-        }
-      }
-
-    } catch (error) {
-      this.log('Error loading protected content:', error);
-      console.error('Failed to load protected content:', error);
-      this.showError(containerId, error.message || 'Failed to load content');
+    if (this.isTokenValid(token)) {
+      this.log('Using stored JWT');
+      await this.loadContentWithToken(containerId, path, token);
+    } else {
+      this.log('No valid JWT found, showing login form');
+      this.clearToken();
+      this.showLoginForm(containerId);
     }
   }
 }
 
-// Global instance
 window.protectedLoader = new ProtectedContentLoader();
 
-// Auto-load content for elements with data-protected-path attribute
 document.addEventListener('DOMContentLoaded', () => {
-  const protectedElements = document.querySelectorAll('[data-protected-path]');
-  protectedElements.forEach(element => {
+  document.querySelectorAll('[data-protected-path]').forEach(element => {
     const path = element.getAttribute('data-protected-path');
     if (path) {
       window.protectedLoader.loadProtectedContent(element.id, path);
@@ -437,18 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Global logout function
 window.logoutProtectedContent = function() {
   window.protectedLoader.log('Logging out.');
   window.protectedLoader.clearToken();
-
-  const protectedElements = document.querySelectorAll('[data-protected-path]');
-  protectedElements.forEach(element => {
-    const path = element.getAttribute('data-protected-path');
-    if (path) {
-      // Re-running loadProtectedContent will detect the cleared token
-      // and automatically show the login form without a page reload.
-      window.protectedLoader.loadProtectedContent(element.id, path);
-    }
+  document.querySelectorAll('[data-protected-path]').forEach(element => {
+    window.protectedLoader.showLoginForm(element.id);
   });
 };

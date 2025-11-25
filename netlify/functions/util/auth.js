@@ -1,17 +1,27 @@
 // netlify/functions/util/auth.js
+const jwt = require('jsonwebtoken');
 
 /**
- * Authenticates a user based on the Authorization header in a Netlify function event.
+ * Verifies a JWT from the Authorization header.
  * @param {object} event - The Netlify function event object.
- * @returns {{user: {username: string}|null, error: object|null}} - An object containing the user if authentication is successful, or an error object if it fails.
+ * @returns {{user: {username: string}|null, error: object|null}} - An object containing the decoded user payload or an error.
  */
-function authenticate(event) {
-  // Parse environment variables for users
-  const users = JSON.parse(process.env.AUTH_USERS || "{}");
+function verifyToken(event) {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    console.error('JWT_SECRET environment variable not set');
+    return {
+      user: null,
+      error: {
+        statusCode: 500,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Server configuration error' })
+      }
+    };
+  }
 
-  // Handle authentication header
   const authHeader = event.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Basic ")) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return {
       user: null,
       error: {
@@ -22,37 +32,24 @@ function authenticate(event) {
     };
   }
 
-  // Decode and validate credentials
-  let username, password;
+  const token = authHeader.split(' ')[1];
   try {
-    const base64Credentials = authHeader.split(" ")[1];
-    [username, password] = Buffer.from(base64Credentials, 'base64').toString().split(":");
-  } catch (e) {
-    return {
-      user: null,
-      error: {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Invalid authentication format' })
-      }
-    };
-  }
-
-  if (!users[username] || users[username] !== password) {
+    const decoded = jwt.verify(token, jwtSecret);
+    return { user: { username: decoded.username }, error: null };
+  } catch (err) {
+    let errorMessage = 'Invalid token';
+    if (err.name === 'TokenExpiredError') {
+      errorMessage = 'Token has expired';
+    }
     return {
       user: null,
       error: {
         statusCode: 401,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ error: 'Invalid credentials' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: errorMessage })
       }
     };
   }
-
-  // Success
-  return { user: { username }, error: null };
 }
 
-module.exports = { authenticate };
+module.exports = { verifyToken };

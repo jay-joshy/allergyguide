@@ -1,12 +1,8 @@
-// netlify/functions/protected-content.js
-
-const { authenticate } = require('./util/auth');
+const { verifyToken } = require('./util/auth');
 
 exports.handler = async (event) => {
   try {
     // Parse environment variables
-    // These need to be present in Netlify and secure
-    const tokenExpiryHours = parseInt(process.env.TOKEN_EXPIRY_HOURS || "24");
     const githubToken = process.env.GITHUB_TOKEN;
     const githubOwner = process.env.GITHUB_OWNER; // e.g., "your-username"
     const githubRepo = process.env.GITHUB_REPO;   // e.g., "private-content"
@@ -40,11 +36,10 @@ exports.handler = async (event) => {
     }
 
     // Handle authentication
-    const authResult = authenticate(event);
+    const authResult = verifyToken(event);
     if (authResult.error) {
       return authResult.error;
     }
-    const { username } = authResult.user;
 
     // Fetch content from GitHub
     const githubUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${path}`;
@@ -95,19 +90,12 @@ exports.handler = async (event) => {
     const content = await githubResponse.text();
     const fileType = path.toLowerCase().endsWith('.html') ? 'html' : 'md';
 
-    // Generate token with expiry
-    const tokenData = {
-      username,
-      exp: Date.now() + (tokenExpiryHours * 60 * 60 * 1000)
-    };
-
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content,
         fileType,
-        tokenData,
         path
       })
     };

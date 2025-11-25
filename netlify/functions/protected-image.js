@@ -1,5 +1,4 @@
-// netlify/functions/protected-image.js
-const { authenticate } = require('./util/auth');
+const { verifyToken } = require('./util/auth');
 
 exports.handler = async (event) => {
   try {
@@ -38,7 +37,7 @@ exports.handler = async (event) => {
     }
 
     // Handle authentication
-    const authResult = authenticate(event);
+    const authResult = verifyToken(event);
     if (authResult.error) {
       return authResult.error;
     }
