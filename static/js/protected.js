@@ -9,6 +9,7 @@ class ProtectedContentLoader {
 
   static TOKEN_EXPIRY_BUFFER_MS = 30000; // 30 seconds for clock skew
   static MILLISECONDS_PER_SECOND = 1000;
+  static CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours (same as token expiry)
 
   // ============================================================================
   // LIFECYCLE & INITIALIZATION
@@ -23,6 +24,8 @@ class ProtectedContentLoader {
     this.imageUrl = "/.netlify/functions/protected-image";
     this.loginUrl = "/.netlify/functions/login";
     this.storageKey = "jwt-token";
+    this.contentCachePrefix = "content-cache-";
+    this.imageCachePrefix = "image-cache-";
     this.imageCache = new Map();
     this.debug = true;
   }
@@ -99,13 +102,42 @@ class ProtectedContentLoader {
   }
 
   /**
-   * Clears the stored token and image cache.
+   * Clears the stored token, image cache, and all cached content.
    * Called on logout or when token becomes invalid.
    * @returns {void}
    */
   clearToken() {
     localStorage.removeItem(this.storageKey);
     this.imageCache.clear();
+    this.clearAllCaches();
+  }
+
+  /**
+   * Clears all cached content and images from localStorage.
+   * @returns {void}
+   */
+  clearAllCaches() {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (
+        key.startsWith(this.contentCachePrefix) ||
+        key.startsWith(this.imageCachePrefix)
+      ) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
+    this.log(`Cleared ${keysToRemove.length} cached items`);
+  }
+
+  /**
+   * Checks if a cached item is still valid based on timestamp.
+   * @param {number} timestamp - The timestamp when the item was cached.
+   * @returns {boolean} True if the cache is still valid, false otherwise.
+   */
+  isCacheValid(timestamp) {
+    return Date.now() - timestamp < ProtectedContentLoader.CACHE_EXPIRY_MS;
   }
 
   // ============================================================================
@@ -263,15 +295,81 @@ class ProtectedContentLoader {
   }
 
   /**
-   * Fetches protected content from the backend.
+   * Gets cached content from localStorage.
+   * @param {string} path - The path to the content file.
+   * @returns {Object|null} The cached content object or null if not found/expired.
+   */
+  getCachedContent(path) {
+    const cacheKey = this.contentCachePrefix + path;
+    const cached = localStorage.getItem(cacheKey);
+    if (!cached) {
+      return null;
+    }
+
+    try {
+      const data = JSON.parse(cached);
+      if (this.isCacheValid(data.timestamp)) {
+        this.log(`Using cached content for: ${path}`);
+        return data;
+      } else {
+        this.log(`Cache expired for: ${path}`);
+        localStorage.removeItem(cacheKey);
+        return null;
+      }
+    } catch (e) {
+      this.log(`Failed to parse cached content for: ${path}`, e);
+      localStorage.removeItem(cacheKey);
+      return null;
+    }
+  }
+
+  /**
+   * Stores content in localStorage cache.
+   * @param {string} path - The path to the content file.
+   * @param {Object} contentData - The content data object to cache.
+   * @returns {void}
+   */
+  setCachedContent(path, contentData) {
+    const cacheKey = this.contentCachePrefix + path;
+    const cacheData = {
+      ...contentData,
+      timestamp: Date.now(),
+    };
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+      this.log(`Cached content for: ${path}`);
+    } catch (e) {
+      this.log(`Failed to cache content for: ${path}`, e);
+      // If localStorage is full, clear old caches and try again
+      if (e.name === "QuotaExceededError") {
+        this.log("localStorage quota exceeded, clearing old caches");
+        this.clearAllCaches();
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+        } catch (retryError) {
+          this.log("Still failed to cache after clearing", retryError);
+        }
+      }
+    }
+  }
+
+  /**
+   * Fetches protected content from the backend or cache.
    * @param {string} path - The path to the content file in the private repository.
    * @param {string} token - The JWT token for authentication.
    * @returns {Promise<{content: string, fileType: string, path: string}>} The content data object.
    * @throws {Error} If the fetch fails or returns an error response.
    */
   async fetchContent(path, token) {
+    // Check cache first
+    const cached = this.getCachedContent(path);
+    if (cached) {
+      return cached;
+    }
+
+    // Fetch from server
     const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
-    this.log("Fetching content from:", url);
+    this.log("Fetching content from server:", url);
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -287,7 +385,11 @@ class ProtectedContentLoader {
         throw new Error("Failed to load content.");
       }
     }
-    return response.json();
+
+    const contentData = await response.json();
+    // Cache the fetched content
+    this.setCachedContent(path, contentData);
+    return contentData;
   }
 
   /**
@@ -325,23 +427,90 @@ class ProtectedContentLoader {
   // ============================================================================
 
   /**
-   * Fetches a protected image from the backend.
-   * Images are cached in memory to avoid redundant requests.
-   * Cache persists across token renewals and is only cleared on logout/expiry.
+   * Gets cached image from localStorage.
+   * @param {string} imagePath - The path to the image file.
+   * @returns {string|null} The cached data URL or null if not found/expired.
+   */
+  getCachedImage(imagePath) {
+    const cacheKey = this.imageCachePrefix + imagePath;
+    const cached = localStorage.getItem(cacheKey);
+    if (!cached) {
+      return null;
+    }
+
+    try {
+      const data = JSON.parse(cached);
+      if (this.isCacheValid(data.timestamp)) {
+        this.log(`Using cached image for: ${imagePath}`);
+        return data.dataUrl;
+      } else {
+        this.log(`Image cache expired for: ${imagePath}`);
+        localStorage.removeItem(cacheKey);
+        return null;
+      }
+    } catch (e) {
+      this.log(`Failed to parse cached image for: ${imagePath}`, e);
+      localStorage.removeItem(cacheKey);
+      return null;
+    }
+  }
+
+  /**
+   * Stores image in localStorage cache.
+   * @param {string} imagePath - The path to the image file.
+   * @param {string} dataUrl - The base64 data URL to cache.
+   * @returns {void}
+   */
+  setCachedImage(imagePath, dataUrl) {
+    const cacheKey = this.imageCachePrefix + imagePath;
+    const cacheData = {
+      dataUrl: dataUrl,
+      timestamp: Date.now(),
+    };
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+      this.log(`Cached image for: ${imagePath}`);
+    } catch (e) {
+      this.log(`Failed to cache image for: ${imagePath}`, e);
+      // If localStorage is full, clear old caches and try again
+      if (e.name === "QuotaExceededError") {
+        this.log("localStorage quota exceeded for image, clearing old caches");
+        this.clearAllCaches();
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+        } catch (retryError) {
+          this.log("Still failed to cache image after clearing", retryError);
+        }
+      }
+    }
+  }
+
+  /**
+   * Fetches a protected image from the backend or cache.
+   * Images are cached in localStorage with expiry to avoid redundant requests.
+   * Cache persists across page refreshes and is cleared on logout/token expiry.
    * @param {string} imagePath - The path to the image file in the private repository.
    * @param {string} token - The JWT token for authentication.
    * @returns {Promise<string>} A data URL containing the base64-encoded image.
    * @throws {Error} If the image fetch fails.
    */
   async fetchImage(imagePath, token) {
-    // Cache by path only - images don't change per-user
-    // Cache is cleared on clearToken() which happens on logout/token expiry
+    // Check localStorage cache first
+    const cached = this.getCachedImage(imagePath);
+    if (cached) {
+      // Also populate in-memory cache for faster subsequent access during same session
+      this.imageCache.set(imagePath, cached);
+      return cached;
+    }
+
+    // Check in-memory cache (faster than localStorage)
     if (this.imageCache.has(imagePath)) {
       return this.imageCache.get(imagePath);
     }
 
+    // Fetch from server
     const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
-    this.log(`Fetching image from: ${url}`);
+    this.log(`Fetching image from server: ${url}`);
 
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -354,7 +523,11 @@ class ProtectedContentLoader {
 
     const data = await response.json();
     const dataUrl = `data:${data.contentType};base64,${data.content}`;
+
+    // Cache in both localStorage and memory
+    this.setCachedImage(imagePath, dataUrl);
     this.imageCache.set(imagePath, dataUrl);
+
     return dataUrl;
   }
 
@@ -475,7 +648,8 @@ document.addEventListener("DOMContentLoaded", () => {
  * Global logout function that clears authentication and shows login forms.
  * Can be called from anywhere in the page (e.g., a logout button).
  * @example
- * <button onclick="logoutProtectedContent()">Logout</button>
+ * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
+ * NOT YET REFERENCED
  */
 window.logoutProtectedContent = function() {
   window.protectedLoader.log("Logging out.");
