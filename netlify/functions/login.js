@@ -45,20 +45,23 @@ const failedAttempts = {};
  */
 function checkRateLimit(ip) {
   const record = failedAttempts[ip];
-  if (record) {
+  if (!record) {
+    return { limited: false };
+  }
+
+  // active block?
+  if (record.count >= MAX_ATTEMPTS) {
     // If the block has expired, clear the record for this IP.
     if (Date.now() > record.expires) {
       delete failedAttempts[ip];
       return { limited: false };
     }
-    // If the block is active and the attempt count is over the limit.
-    if (record.count >= MAX_ATTEMPTS) {
-      const remaining = Math.ceil((record.expires - Date.now()) / 60000);
-      return {
-        limited: true,
-        message: `Too many failed login attempts. Please try again in ${remaining} minute(s).`,
-      };
-    }
+    // block is active therefore
+    const remaining = Math.ceil((record.expires - Date.now()) / 60000);
+    return {
+      limited: true,
+      message: `Too many failed login attempts. Please try again in ${remaining} minute(s).`,
+    };
   }
   return { limited: false };
 }
