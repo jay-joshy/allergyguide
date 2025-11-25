@@ -1,9 +1,23 @@
-// protected.js
+/**
+ * Handles authentication and loading of protected content from a private GitHub repository.
+ * Content is fetched via Netlify serverless functions and requires JWT authentication.
+ */
 class ProtectedContentLoader {
-  // Constants
+  // ============================================================================
+  // CONSTANTS
+  // ============================================================================
+
   static TOKEN_EXPIRY_BUFFER_MS = 30000; // 30 seconds for clock skew
   static MILLISECONDS_PER_SECOND = 1000;
 
+  // ============================================================================
+  // LIFECYCLE & INITIALIZATION
+  // ============================================================================
+
+  /**
+   * Creates a new ProtectedContentLoader instance.
+   * Initializes API endpoints, storage keys, and image cache.
+   */
   constructor() {
     this.baseUrl = "/.netlify/functions/protected-content";
     this.imageUrl = "/.netlify/functions/protected-image";
@@ -13,12 +27,62 @@ class ProtectedContentLoader {
     this.debug = true;
   }
 
-  log(message, data = null) {
-    if (this.debug) {
-      console.log(`[ProtectedLoader] ${message}`, data || "");
+  /**
+   * Main entry point - loads protected content for a given container.
+   * Checks for valid JWT and either loads content or shows login form.
+   * @param {string} containerId - The ID of the DOM element to render content into.
+   * @param {string} path - The path to the protected content file in the private repository.
+   * @returns {Promise<void>}
+   */
+  async loadProtectedContent(containerId, path) {
+    const container = document.getElementById(containerId);
+    const loadingText =
+      container?.getAttribute("data-loading-text") ||
+      "Loading protected content...";
+
+    this.log("Starting to load protected content", { containerId, path });
+    this.showLoading(containerId, loadingText);
+
+    const token = this.getStoredToken();
+
+    if (this.isTokenValid(token)) {
+      this.log("Using stored JWT");
+      await this.loadContentWithToken(containerId, path, token);
+    } else {
+      this.log("No valid JWT found, showing login form");
+      this.clearToken();
+      this.showLoginForm(containerId);
     }
   }
 
+  // ============================================================================
+  // TOKEN MANAGEMENT
+  // ============================================================================
+
+  /**
+   * Retrieves the stored JWT token from localStorage.
+   * @returns {string|null} The JWT token if it exists, null otherwise.
+   */
+  getStoredToken() {
+    return localStorage.getItem(this.storageKey);
+  }
+
+  /**
+   * Stores a JWT token in localStorage.
+   * @param {string} token - The JWT token to store.
+   * @returns {void}
+   */
+  storeToken(token) {
+    localStorage.setItem(this.storageKey, token);
+  }
+
+  /**
+   * Validates a JWT token and checks if it's still valid.
+   * Adds a 30-second buffer for clock skew to account for time differences
+   * between client and server.
+   * @param {string|null} token - The JWT token to validate.
+   * @returns {boolean} True if the token is valid and not expired, false otherwise.
+   */
   isTokenValid(token) {
     if (!token) return false;
     try {
@@ -34,19 +98,26 @@ class ProtectedContentLoader {
     }
   }
 
-  getStoredToken() {
-    return localStorage.getItem(this.storageKey);
-  }
-
-  storeToken(token) {
-    localStorage.setItem(this.storageKey, token);
-  }
-
+  /**
+   * Clears the stored token and image cache.
+   * Called on logout or when token becomes invalid.
+   * @returns {void}
+   */
   clearToken() {
     localStorage.removeItem(this.storageKey);
     this.imageCache.clear();
   }
 
+  // ============================================================================
+  // AUTHENTICATION FLOW
+  // ============================================================================
+
+  /**
+   * Displays the login form in the specified container.
+   * Creates a form with username and password fields, and attaches a submit handler.
+   * @param {string} containerId - The ID of the container element to render the form into.
+   * @returns {void}
+   */
   showLoginForm(containerId) {
     const container = document.getElementById(containerId);
     if (container) {
@@ -76,6 +147,13 @@ class ProtectedContentLoader {
     }
   }
 
+  /**
+   * Handles login form submission.
+   * Sends credentials to the login endpoint and stores the returned JWT.
+   * On success, automatically loads the protected content.
+   * @param {string} containerId - The ID of the container element with the login form.
+   * @returns {Promise<void>}
+   */
   async submitLogin(containerId) {
     const username = document
       .getElementById(`${containerId}-username`)
@@ -137,6 +215,12 @@ class ProtectedContentLoader {
     }
   }
 
+  /**
+   * Displays an error message in the login form.
+   * @param {string} containerId - The ID of the container element with the login form.
+   * @param {string} message - The error message to display to the user.
+   * @returns {void}
+   */
   showLoginError(containerId, message) {
     const errorDiv = document.getElementById(`${containerId}-error`);
     if (errorDiv) {
@@ -145,6 +229,18 @@ class ProtectedContentLoader {
     }
   }
 
+  // ============================================================================
+  // CONTENT LOADING
+  // ============================================================================
+
+  /**
+   * Loads and renders protected content using a valid JWT token.
+   * If loading fails, clears the token and shows the login form.
+   * @param {string} containerId - The ID of the container element to render content into.
+   * @param {string} path - The path to the protected content file.
+   * @param {string} token - The valid JWT token for authentication.
+   * @returns {Promise<void>}
+   */
   async loadContentWithToken(containerId, path, token) {
     try {
       const contentData = await this.fetchContent(path, token);
@@ -166,6 +262,13 @@ class ProtectedContentLoader {
     }
   }
 
+  /**
+   * Fetches protected content from the backend.
+   * @param {string} path - The path to the content file in the private repository.
+   * @param {string} token - The JWT token for authentication.
+   * @returns {Promise<{content: string, fileType: string, path: string}>} The content data object.
+   * @throws {Error} If the fetch fails or returns an error response.
+   */
   async fetchContent(path, token) {
     const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
     this.log("Fetching content from:", url);
@@ -187,6 +290,49 @@ class ProtectedContentLoader {
     return response.json();
   }
 
+  /**
+   * Renders content in the specified container.
+   * Processes images first, then renders based on file type (HTML/Markdown/Text).
+   * @param {string} content - The raw content to render.
+   * @param {string} fileType - The type of content ('html', 'md', or other).
+   * @param {string} containerId - The ID of the container element to render into.
+   * @param {string} token - The JWT token for fetching images.
+   * @returns {Promise<void>}
+   * @throws {Error} If the container is not found or marked.js is not loaded for Markdown.
+   */
+  async renderContent(content, fileType, containerId, token) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+      throw new Error(`Container with id '${containerId}' not found`);
+    }
+
+    const processedContent = await this.processImages(content, token);
+
+    if (fileType === "html") {
+      container.innerHTML = processedContent;
+    } else if (fileType === "md") {
+      if (typeof marked === "undefined") {
+        throw new Error("Marked library not loaded");
+      }
+      container.innerHTML = marked.parse(processedContent);
+    } else {
+      container.textContent = processedContent;
+    }
+  }
+
+  // ============================================================================
+  // IMAGE PROCESSING
+  // ============================================================================
+
+  /**
+   * Fetches a protected image from the backend.
+   * Images are cached in memory to avoid redundant requests.
+   * Cache persists across token renewals and is only cleared on logout/expiry.
+   * @param {string} imagePath - The path to the image file in the private repository.
+   * @param {string} token - The JWT token for authentication.
+   * @returns {Promise<string>} A data URL containing the base64-encoded image.
+   * @throws {Error} If the image fetch fails.
+   */
   async fetchImage(imagePath, token) {
     // Cache by path only - images don't change per-user
     // Cache is cleared on clearToken() which happens on logout/token expiry
@@ -212,6 +358,14 @@ class ProtectedContentLoader {
     return dataUrl;
   }
 
+  /**
+   * Processes all images in the content HTML.
+   * Finds img tags with relative paths and replaces them with base64 data URLs.
+   * External URLs and data URIs are left unchanged.
+   * @param {string} content - The HTML content containing img tags.
+   * @param {string} token - The JWT token for fetching images.
+   * @returns {Promise<string>} The processed content with images replaced by data URLs.
+   */
   async processImages(content, token) {
     if (!token) return content;
 
@@ -262,26 +416,16 @@ class ProtectedContentLoader {
     return processedContent;
   }
 
-  async renderContent(content, fileType, containerId, token) {
-    const container = document.getElementById(containerId);
-    if (!container) {
-      throw new Error(`Container with id '${containerId}' not found`);
-    }
+  // ============================================================================
+  // UI HELPERS
+  // ============================================================================
 
-    const processedContent = await this.processImages(content, token);
-
-    if (fileType === "html") {
-      container.innerHTML = processedContent;
-    } else if (fileType === "md") {
-      if (typeof marked === "undefined") {
-        throw new Error("Marked library not loaded");
-      }
-      container.innerHTML = marked.parse(processedContent);
-    } else {
-      container.textContent = processedContent;
-    }
-  }
-
+  /**
+   * Shows a loading message in the container.
+   * @param {string} containerId - The ID of the container element.
+   * @param {string} [loadingText="Loading protected content..."] - The loading message to display.
+   * @returns {void}
+   */
   showLoading(containerId, loadingText = "Loading protected content...") {
     const container = document.getElementById(containerId);
     if (container) {
@@ -289,30 +433,35 @@ class ProtectedContentLoader {
     }
   }
 
-  async loadProtectedContent(containerId, path) {
-    const container = document.getElementById(containerId);
-    const loadingText =
-      container?.getAttribute("data-loading-text") ||
-      "Loading protected content...";
-
-    this.log("Starting to load protected content", { containerId, path });
-    this.showLoading(containerId, loadingText);
-
-    const token = this.getStoredToken();
-
-    if (this.isTokenValid(token)) {
-      this.log("Using stored JWT");
-      await this.loadContentWithToken(containerId, path, token);
-    } else {
-      this.log("No valid JWT found, showing login form");
-      this.clearToken();
-      this.showLoginForm(containerId);
+  /**
+   * Logs a debug message if debug mode is enabled.
+   * Prefixes all messages with [ProtectedLoader] for easy identification.
+   * @param {string} message - The message to log.
+   * @param {*} [data=null] - Optional data to log alongside the message.
+   * @returns {void}
+   */
+  log(message, data = null) {
+    if (this.debug) {
+      console.log(`[ProtectedLoader] ${message}`, data || "");
     }
   }
 }
 
+// ============================================================================
+// GLOBAL INITIALIZATION
+// ============================================================================
+
+/**
+ * Global instance of ProtectedContentLoader.
+ * Accessible via window.protectedLoader for manual interactions.
+ * @type {ProtectedContentLoader}
+ */
 window.protectedLoader = new ProtectedContentLoader();
 
+/**
+ * Automatically loads protected content for all elements with data-protected-path attribute
+ * when the DOM is ready.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
     const path = element.getAttribute("data-protected-path");
@@ -322,7 +471,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-window.logoutProtectedContent = function () {
+/**
+ * Global logout function that clears authentication and shows login forms.
+ * Can be called from anywhere in the page (e.g., a logout button).
+ * @example
+ * <button onclick="logoutProtectedContent()">Logout</button>
+ */
+window.logoutProtectedContent = function() {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
