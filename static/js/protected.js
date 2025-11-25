@@ -90,23 +90,22 @@ class ProtectedContentLoader {
       });
 
       if (!response.ok) {
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          const errorData = await response.json();
-          let displayErrorMessage = errorData.error || `HTTP ${response.status}`;
-
-          if (response.status === 401 && errorData.error === 'Invalid credentials') {
-            displayErrorMessage = 'Authentication failed: Invalid username or password.';
-          } else if (response.status === 429 && errorData.error && errorData.error.startsWith('Too many failed attempts')) {
-            displayErrorMessage = errorData.error; // Rate limit message is already descriptive
-          }
-          throw new Error(displayErrorMessage);
-        } else {
-          // If the response isn't JSON, it's likely a platform error page (HTML)
-          const errorText = await response.text();
-          this.log("Server returned a non-JSON error response:", errorText.substring(0, 500));
+        let errorData;
+        try {
+          // We expect a JSON error body from our function, but Netlify might override it.
+          errorData = await response.json();
+        } catch (e) {
+          // If JSON parsing fails, the body is likely HTML from Netlify's gateway.
+          // We can't get a specific message, so we'll use a generic one.
           throw new Error(`Authentication failed. The server returned an unexpected response (status: ${response.status}).`);
         }
+        
+        // If we successfully parsed the JSON error, create a clean message.
+        let displayErrorMessage = errorData.error || `HTTP ${response.status}`;
+        if (response.status === 401 && errorData.error === 'Invalid credentials') {
+          displayErrorMessage = 'Authentication failed: Invalid username or password.';
+        }
+        throw new Error(displayErrorMessage);
       }
 
       const data = await response.json();
