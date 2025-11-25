@@ -2,12 +2,11 @@
 
 const fetch = require('node-fetch'); // Only needed in local dev
 
-const { authenticate } = require('./util/auth');
-
 exports.handler = async (event) => {
   try {
     // Parse environment variables
     // These need to be present in Netlify and secure
+    const users = JSON.parse(process.env.AUTH_USERS || "{}");
     const tokenExpiryHours = parseInt(process.env.TOKEN_EXPIRY_HOURS || "24");
     const githubToken = process.env.GITHUB_TOKEN;
     const githubOwner = process.env.GITHUB_OWNER; // e.g., "your-username"
@@ -41,15 +40,38 @@ exports.handler = async (event) => {
       };
     }
 
-    // Handle authentication by calling the shared utility
-    let username;
-    try {
-      username = authenticate(event);
-    } catch (authError) {
+    // Handle authentication
+    const authHeader = event.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Basic ")) {
       return {
-        statusCode: authError.statusCode || 401,
+        statusCode: 401,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ error: 'Authentication required' })
+      };
+    }
+
+    // Decode and validate credentials
+    let username, password;
+    try {
+      const base64Credentials = authHeader.split(" ")[1];
+      [username, password] = Buffer.from(base64Credentials, 'base64').toString().split(":");
+    } catch (e) {
+      return {
+        statusCode: 400,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: authError.message })
+        body: JSON.stringify({ error: 'Invalid authentication format' })
+      };
+    }
+
+    if (!users[username] || users[username] !== password) {
+      return {
+        statusCode: 401,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ error: 'Invalid credentials' })
       };
     }
 
