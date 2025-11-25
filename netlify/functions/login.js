@@ -1,6 +1,15 @@
-// netlify/functions/login.js
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
+// --- Configuration Constants ---
+const MAX_ATTEMPTS = parseInt(process.env.MAX_LOGIN_ATTEMPTS || "5", 10);
+const BLOCK_DURATION_MIN = parseInt(
+  process.env.LOGIN_BLOCK_DURATION_MIN || "5",
+  10,
+);
+const MINUTES_TO_MS = 60000;
+const MAX_USERNAME_LENGTH = 50;
+const MAX_PASSWORD_LENGTH = 100;
 
 // --- Input Sanitization ---
 /**
@@ -9,7 +18,7 @@ const bcrypt = require("bcryptjs");
  * @param {number} maxLength - Maximum allowed length.
  * @returns {string|null} - Sanitized string or null if invalid.
  */
-function sanitizeInput(input, maxLength = 100) {
+function sanitizeInput(input, maxLength) {
   if (typeof input !== "string") return null;
 
   // Trim whitespace
@@ -25,9 +34,7 @@ function sanitizeInput(input, maxLength = 100) {
 }
 
 // --- Rate Limiting (in-memory) ---
-const MAX_ATTEMPTS = 5; // Max failed attempts before blocking
-const BLOCK_DURATION_MIN = 5; // Block duration in minutes
-
+// Note: In-memory storage resets on function cold starts (~15 minutes of inactivity)
 // Store for failed attempts: { ip: { count: number, expires: timestamp } }
 const failedAttempts = {};
 
@@ -58,19 +65,22 @@ function checkRateLimit(ip) {
 
 /**
  * Records a failed login attempt for a given IP.
+ * Sets a lockout timer when max attempts reached.
  * @param {string} ip - The client's IP address.
  */
 function recordFailedAttempt(ip) {
-  let record = failedAttempts[ip];
-  if (!record) {
-    record = { count: 0, expires: 0 };
-    failedAttempts[ip] = record;
-  }
+  const record = failedAttempts[ip] || { count: 0, expires: 0 };
   record.count++;
-  // If the count reaches the max, set the expiration time for the block.
-  if (record.count >= MAX_ATTEMPTS) {
-    record.expires = Date.now() + BLOCK_DURATION_MIN * 60 * 1000;
+
+  // Set lockout expiration only when threshold reached
+  if (record.count === MAX_ATTEMPTS) {
+    record.expires = Date.now() + BLOCK_DURATION_MIN * MINUTES_TO_MS;
+    console.log(
+      `IP ${ip} locked out for ${BLOCK_DURATION_MIN} minutes after ${MAX_ATTEMPTS} failed attempts`,
+    );
   }
+
+  failedAttempts[ip] = record;
 }
 
 /**
@@ -179,8 +189,8 @@ exports.handler = async (event) => {
     }
 
     // Sanitize inputs
-    const sanitizedUsername = sanitizeInput(username, 50);
-    const sanitizedPassword = sanitizeInput(password, 100);
+    const sanitizedUsername = sanitizeInput(username, MAX_USERNAME_LENGTH);
+    const sanitizedPassword = sanitizeInput(password, MAX_PASSWORD_LENGTH);
 
     // No username or password
     if (!sanitizedUsername || !sanitizedPassword) {

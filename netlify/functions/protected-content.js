@@ -3,6 +3,7 @@ const {
   handleGithubError,
   jsonResponse,
 } = require("./util/handler-helper");
+const { validateContentPath } = require("./util/path-validator");
 
 /**
  * Core logic for fetching a content file (HTML or Markdown) from GitHub.
@@ -51,42 +52,6 @@ const processContentRequest = async (path, { token, owner, repo }) => {
  * Provides a specific path validator and the core processing logic.
  */
 exports.handler = createProtectedHandler({
-  validatePath: (path) => {
-    // Decode the path to catch encoded traversal attempts
-    let decoded;
-    try {
-      decoded = decodeURIComponent(path);
-    } catch (e) {
-      return "Invalid path encoding";
-    }
-
-    // Comprehensive path security checks
-    if (
-      // Path traversal attempts
-      decoded.includes("..") ||
-      decoded.includes("%2e%2e") ||
-      decoded.includes("%252e") ||
-      // Absolute paths
-      decoded.startsWith("/") ||
-      decoded.startsWith("\\") ||
-      // Null bytes
-      decoded.includes("\0") ||
-      decoded.includes("%00") ||
-      // Windows paths
-      decoded.includes("\\") ||
-      decoded.match(/^[a-zA-Z]:/) ||
-      // Only allow safe characters and forward slashes for paths
-      !decoded.match(/^[a-zA-Z0-9/_-]+\.(html|md)$/i)
-    ) {
-      return "Invalid path format. Use relative paths ending in .html or .md";
-    }
-
-    // Additional length check to prevent extremely long paths
-    if (decoded.length > 500) {
-      return "Path too long";
-    }
-
-    return null; // Path is valid
-  },
+  validatePath: validateContentPath,
   processRequest: processContentRequest,
 });

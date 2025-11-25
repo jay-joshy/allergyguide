@@ -1,5 +1,9 @@
 // protected.js
 class ProtectedContentLoader {
+  // Constants
+  static TOKEN_EXPIRY_BUFFER_MS = 30000; // 30 seconds for clock skew
+  static MILLISECONDS_PER_SECOND = 1000;
+
   constructor() {
     this.baseUrl = "/.netlify/functions/protected-content";
     this.imageUrl = "/.netlify/functions/protected-image";
@@ -19,8 +23,11 @@ class ProtectedContentLoader {
     if (!token) return false;
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      // Add a 30-second buffer for clock skew (expire tokens 30s early)
-      return payload.exp * 1000 > Date.now() + 30000;
+      const expiryTimeMs =
+        payload.exp * ProtectedContentLoader.MILLISECONDS_PER_SECOND;
+      const bufferTimeMs =
+        Date.now() + ProtectedContentLoader.TOKEN_EXPIRY_BUFFER_MS;
+      return expiryTimeMs > bufferTimeMs;
     } catch (e) {
       console.error("Failed to parse JWT:", e);
       return false;
@@ -181,9 +188,10 @@ class ProtectedContentLoader {
   }
 
   async fetchImage(imagePath, token) {
-    const cacheKey = `${imagePath}-${token}`;
-    if (this.imageCache.has(cacheKey)) {
-      return this.imageCache.get(cacheKey);
+    // Cache by path only - images don't change per-user
+    // Cache is cleared on clearToken() which happens on logout/token expiry
+    if (this.imageCache.has(imagePath)) {
+      return this.imageCache.get(imagePath);
     }
 
     const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
@@ -200,7 +208,7 @@ class ProtectedContentLoader {
 
     const data = await response.json();
     const dataUrl = `data:${data.contentType};base64,${data.content}`;
-    this.imageCache.set(cacheKey, dataUrl);
+    this.imageCache.set(imagePath, dataUrl);
     return dataUrl;
   }
 
@@ -271,21 +279,6 @@ class ProtectedContentLoader {
       container.innerHTML = marked.parse(processedContent);
     } else {
       container.textContent = processedContent;
-    }
-  }
-
-  showError(containerId, message) {
-    const container = document.getElementById(containerId);
-    if (container) {
-      // Escape HTML to prevent XSS
-      const escapeHtml = (text) => {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-      };
-      container.innerHTML = `<div class="protected-error" style="color: #dc3545; padding: 1rem; border: 1px solid #dc3545; border-radius: 4px; background: #f8d7da;">
-        <strong>Error:</strong> ${escapeHtml(message)}
-      </div>`;
     }
   }
 
