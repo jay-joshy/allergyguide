@@ -71,13 +71,13 @@ class ProtectedContentLoader {
               </form>
             </div>
           `;
-        const form = container.querySelector('.login-form');
-        if (form) {
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-                this.submitLogin(containerId);
-            });
-        }
+      const form = container.querySelector('.login-form');
+      if (form) {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          this.submitLogin(containerId);
+        });
+      }
     }
   }
 
@@ -279,27 +279,19 @@ class ProtectedContentLoader {
       // Only process relative paths or absolute paths that should be from the private repo
       // Skip external URLs and data URLs
       if (!srcPath.startsWith('http') && !srcPath.startsWith('data:')) {
-        let fullPath;
-
         if (srcPath.startsWith('/')) {
           srcPath = "static" + srcPath;
-          // Absolute path - remove leading slash and combine with base path
-          const relativePath = srcPath.substring(1); // Remove leading /
-          fullPath = basePath ? `${basePath}/${relativePath}` : relativePath;
         } else {
           srcPath = "static/" + srcPath;
-          // Relative path - combine directly with base path
-          fullPath = basePath ? `${basePath}/${srcPath}` : srcPath;
         }
 
-        this.log('Image path resolution:', { srcPath, basePath, fullPath });
+        this.log('Image path resolution:', { srcPath, basePath });
 
         images.push({
           fullMatch,
           beforeSrc,
           srcPath,
           afterSrc,
-          fullPath
         });
       }
     }
@@ -453,10 +445,10 @@ window.logoutProtectedContent = function() {
     element.innerHTML = '<div class="protected-logged-out">Logged out. <a href="#" class="reload-link">Reload</a> to access content.</div>';
     const reloadLink = element.querySelector('.reload-link');
     if (reloadLink) {
-        reloadLink.addEventListener('click', (event) => {
-            event.preventDefault();
-            location.reload();
-        });
+      reloadLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        location.reload();
+      });
     }
   });
 };
