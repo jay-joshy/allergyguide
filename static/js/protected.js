@@ -5,7 +5,8 @@ class ProtectedContentLoader {
     this.baseUrl = '/.netlify/functions/protected-content';
     this.imageUrl = '/.netlify/functions/protected-image';
     this.storageKey = 'auth-token-data';
-    this.imageCache = new Map();
+    this.imageCache = new Map(); // In-memory cache for current page load
+    this.sessionImageKeyPrefix = 'protected-img-data-'; // Prefix for sessionStorage keys
     this.debug = true; // Enable debug logging
   }
 
@@ -42,10 +43,18 @@ class ProtectedContentLoader {
     localStorage.setItem(this.storageKey, JSON.stringify(dataToStore));
   }
 
-  // Clear stored token
+  // Clear stored token and image caches
   clearToken() {
     localStorage.removeItem(this.storageKey);
     this.imageCache.clear();
+    // Clear sessionStorage image cache
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key.startsWith(this.sessionImageKeyPrefix)) {
+        sessionStorage.removeItem(key);
+      }
+    }
+    this.log('Cleared authentication token and image caches.');
   }
 
   // Show login form
@@ -223,10 +232,17 @@ class ProtectedContentLoader {
 
   // Fetch protected image and convert to data URL
   async fetchImage(imagePath, token) {
-    // Check cache first
-    const cacheKey = `${imagePath}-${token}`;
-    if (this.imageCache.has(cacheKey)) {
-      return this.imageCache.get(cacheKey);
+    const sessionKey = `${this.sessionImageKeyPrefix}${imagePath}`;
+    // Check sessionStorage first
+    const cachedDataUrl = sessionStorage.getItem(sessionKey);
+    if (cachedDataUrl) {
+      this.log(`Image from sessionStorage: ${imagePath}`);
+      return cachedDataUrl;
+    }
+
+    // Check in-memory cache next (useful for multiple references on same page)
+    if (this.imageCache.has(sessionKey)) { // Using sessionKey for in-memory cache consistency
+      return this.imageCache.get(sessionKey);
     }
 
     const url = `${this.imageUrl}?path=${imagePath}`;
@@ -245,8 +261,9 @@ class ProtectedContentLoader {
       console.log("GitHub API response in fetchImage():", data);
       const dataUrl = `data:${data.contentType};base64,${data.content}`;
 
-      // Cache the result
-      this.imageCache.set(cacheKey, dataUrl);
+      // Cache the result in both in-memory and sessionStorage
+      this.imageCache.set(sessionKey, dataUrl);
+      sessionStorage.setItem(sessionKey, dataUrl);
       return dataUrl;
     } catch (error) {
       console.warn(`Failed to load protected image ${imagePath}:`, error);
@@ -254,11 +271,31 @@ class ProtectedContentLoader {
     }
   }
 
+  // Helper to resolve a relative path (e.g., "images/foo.png", "../bar.jpg")
+  // against a base path (e.g., "content/private").
+  // This correctly handles '.' and '..' segments.
+  _resolveRelativePath(relativePath, basePath) {
+    const baseSegments = basePath.split('/').filter(s => s);
+    const relativeSegments = relativePath.split('/').filter(s => s);
+
+    const resolvedSegments = [...baseSegments];
+
+    for (const segment of relativeSegments) {
+      if (segment === '..') {
+        if (resolvedSegments.length > 0) {
+          resolvedSegments.pop();
+        }
+      } else if (segment !== '.') {
+        resolvedSegments.push(segment);
+      }
+    }
+    return resolvedSegments.join('/');
+  }
+
   // Process images in content - replace src with data URLs
   async processImages(content, token, basePath = '') {
     if (!token) return content;
 
-    // Find all img tags with src attributes
     const imgRegex = /<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi;
     const images = [];
     let match;
@@ -276,39 +313,35 @@ class ProtectedContentLoader {
 
       this.log('Processing image src:', { original: match[2], decoded: srcPath });
 
-      // Only process relative paths or absolute paths that should be from the private repo
       // Skip external URLs and data URLs
-      if (!srcPath.startsWith('http') && !srcPath.startsWith('data:')) {
-        let fullPath;
-
-        if (srcPath.startsWith('/')) {
-          srcPath = "static" + srcPath;
-          // Absolute path - remove leading slash and combine with base path
-          const relativePath = srcPath.substring(1); // Remove leading /
-          fullPath = basePath ? `${basePath}/${relativePath}` : relativePath;
-        } else {
-          srcPath = "static/" + srcPath;
-          // Relative path - combine directly with base path
-          fullPath = basePath ? `${basePath}/${srcPath}` : srcPath;
-        }
-
-        this.log('Image path resolution:', { srcPath, basePath, fullPath });
-
-        images.push({
-          fullMatch,
-          beforeSrc,
-          srcPath,
-          afterSrc,
-          fullPath
-        });
+      if (srcPath.startsWith('http') || srcPath.startsWith('data:')) {
+        continue;
       }
+
+      let fullPath;
+      if (srcPath.startsWith('/')) {
+        // If srcPath starts with '/', it refers to the root of the site, which maps to 'static/' in the private repo
+        fullPath = `static${srcPath}`;
+      } else {
+        // For relative paths, resolve them against the content's base path
+        fullPath = this._resolveRelativePath(srcPath, basePath);
+      }
+
+      this.log('Image path resolution:', { srcPath, basePath, fullPath });
+
+      images.push({
+        fullMatch,
+        beforeSrc,
+        afterSrc,
+        fullPath // Use the resolved full path
+      });
     }
 
     // Fetch all images in parallel
     const imagePromises = images.map(async (img) => {
-      this.log(`Fetching image from: ${img.srcPath}`);
-      const dataUrl = await this.fetchImage(img.srcPath, token);
-      this.log(`Image fetch result for ${img.srcPath}:`, dataUrl ? 'success' : 'failed');
+      this.log(`Fetching image from: ${img.fullPath}`);
+      const dataUrl = await this.fetchImage(img.fullPath, token);
+      this.log(`Image fetch result for ${img.fullPath}:`, dataUrl ? 'success' : 'failed');
       return { ...img, dataUrl };
     });
 
@@ -316,16 +349,16 @@ class ProtectedContentLoader {
 
     // Replace image sources in content
     let processedContent = content;
-    imageResults.forEach(({ fullMatch, beforeSrc, afterSrc, dataUrl, srcPath }) => {
+    imageResults.forEach(({ fullMatch, beforeSrc, afterSrc, dataUrl, fullPath }) => {
       if (dataUrl) {
         const newImg = `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`;
         processedContent = processedContent.replace(fullMatch, newImg);
-        this.log(`Successfully replaced image: ${srcPath}`);
+        this.log(`Successfully replaced image: ${fullPath}`);
       } else {
         // If image failed to load, add error class and alt text
-        const newImg = `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
+        const newImg = `<img${beforeSrc}src="#" alt="Failed to load: ${fullPath}" class="protected-image-error"${afterSrc}>`;
         processedContent = processedContent.replace(fullMatch, newImg);
-        this.log(`Failed to load image: ${srcPath}`);
+        this.log(`Failed to load image: ${fullPath}`);
       }
     });
 
