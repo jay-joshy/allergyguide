@@ -3,10 +3,12 @@
 {% set loading_text = loading | default(value="Loading protected content...") %}
 {% set css_class = class | default(value="protected") %}
 <div id="{{ container_id }}" class="{{ css_class }}" data-protected-path="{{ path }}" data-loading-text="{{ loading_text }}">
-  {{ loading_text }}
+	{{ loading_text }}
 </div>
-{% if not config.extra.protected_content_script_loaded %}
-<!-- Only load scripts once per page -->
+<!--
+  NOTE: The script tags below will be included every time this shortcode is used.
+  This shortcode should only be used once per page.
+	TODO! marked.min.js dynamically load?
+-->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="/js/protected.js"></script>
-{% endif %}

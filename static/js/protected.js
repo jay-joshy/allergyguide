@@ -230,7 +230,7 @@ class ProtectedContentLoader {
     }
 
     const url = `${this.imageUrl}?path=${imagePath}`;
-    console.log(`Fetch URL: ${url}`)
+    this.log(`Fetch URL: ${url}`);
 
     try {
       const response = await fetch(url, {
@@ -242,7 +242,7 @@ class ProtectedContentLoader {
       }
 
       const data = await response.json();
-      console.log("GitHub API response in fetchImage():", data);
+      this.log("GitHub API response in fetchImage():", data);
       const dataUrl = `data:${data.contentType};base64,${data.content}`;
 
       // Cache the result
@@ -279,18 +279,18 @@ class ProtectedContentLoader {
       // Only process relative paths or absolute paths that should be from the private repo
       // Skip external URLs and data URLs
       if (!srcPath.startsWith('http') && !srcPath.startsWith('data:')) {
-        if (srcPath.startsWith('/')) {
-          srcPath = "static" + srcPath;
-        } else {
-          srcPath = "static/" + srcPath;
-        }
+        // Resolve path to be relative to the 'static' directory in the private repo,
+        // per the project's convention.
+        const finalSrcPath = srcPath.startsWith('/')
+          ? `static${srcPath}`
+          : `static/${srcPath}`;
 
-        this.log('Image path resolution:', { srcPath, basePath });
+        this.log('Image path resolution:', { srcPath: finalSrcPath, basePath });
 
         images.push({
           fullMatch,
           beforeSrc,
-          srcPath,
+          srcPath: finalSrcPath,
           afterSrc,
         });
       }
@@ -439,22 +439,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Global logout function
 window.logoutProtectedContent = function() {
+  window.protectedLoader.log('Logging out.');
   window.protectedLoader.clearToken();
+
   const protectedElements = document.querySelectorAll('[data-protected-path]');
   protectedElements.forEach(element => {
-    element.innerHTML = '<div class="protected-logged-out">Logged out. <a href="#" class="reload-link">Reload</a> to access content.</div>';
-    const reloadLink = element.querySelector('.reload-link');
-    if (reloadLink) {
-      reloadLink.addEventListener('click', (event) => {
-        event.preventDefault();
-        location.reload();
-      });
+    const path = element.getAttribute('data-protected-path');
+    if (path) {
+      // Re-running loadProtectedContent will detect the cleared token
+      // and automatically show the login form without a page reload.
+      window.protectedLoader.loadProtectedContent(element.id, path);
     }
   });
 };
-
-// mark that scripts have been loaded
-if (!window.config) window.config = {};
-if (!window.config.extra) window.config.extra = {};
-window.config.extra.protected_content_script_loaded = true;
-

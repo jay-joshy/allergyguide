@@ -1,6 +1,5 @@
 // netlify/functions/protected-content.js
 
-const fetch = require('node-fetch'); // Only needed in local dev
 const { authenticate } = require('./util/auth');
 
 exports.handler = async (event) => {
