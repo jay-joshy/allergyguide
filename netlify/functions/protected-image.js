@@ -1,156 +1,80 @@
-const { verifyToken } = require('./util/auth');
+const { createProtectedHandler, handleGithubError, jsonResponse } = require('./util/handler-helper');
 
-exports.handler = async (event) => {
+/**
+ * Determines the appropriate MIME type for a given image filename.
+ */
+const getContentType = (filename) => {
+  const ext = filename.toLowerCase().split('.').pop();
+  const mimeTypes = {
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'png': 'image/png',
+    'gif': 'image/gif',
+    'svg': 'image/svg+xml',
+    'webp': 'image/webp',
+    'bmp': 'image/bmp',
+    'ico': 'image/x-icon'
+  };
+  return mimeTypes[ext] || 'application/octet-stream';
+};
+
+/**
+ * Core logic for fetching an image file from GitHub.
+ * Handles both small files (inline content) and large files (via download_url).
+ */
+const processImageRequest = async (path, { token, owner, repo }) => {
+  const githubUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  console.log(`Fetching image metadata from: ${githubUrl}`);
+
   try {
-    // Parse environment variables
-    const githubToken = process.env.GITHUB_TOKEN;
-    const githubOwner = process.env.GITHUB_OWNER;
-    const githubRepo = process.env.GITHUB_REPO;
-
-    if (!githubToken || !githubOwner || !githubRepo) {
-      console.error('Missing required environment variables');
-      return {
-        statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Server configuration error' })
-      };
-    }
-
-    // Extract and validate path parameter
-    const { path } = event.queryStringParameters || {};
-    if (!path) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Missing path parameter' })
-      };
-    }
-
-    // Validate path (security check) - allow common image extensions
-    const imageExtensions = /\.(jpg|jpeg|png|gif|svg|webp|bmp|ico)$/i;
-    if (path.includes('..') || path.startsWith('/') || !imageExtensions.test(path)) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Invalid image path format' })
-      };
-    }
-
-    // Handle authentication
-    const authResult = verifyToken(event);
-    if (authResult.error) {
-      return authResult.error;
-    }
-
-    // Fetch image from GitHub
-    const githubUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${path}`;
-    console.log(`Fetching image: ${githubUrl}`);
-
-    let githubResponse;
-    try {
-      githubResponse = await fetch(githubUrl, {
-        headers: {
-          'Authorization': `token ${githubToken}`,
-          'Accept': 'application/vnd.github.v3+json', // Get metadata including content
-          'User-Agent': 'Netlify-Function'
-        }
-      });
-    } catch (fetchError) {
-      console.error('GitHub fetch error:', fetchError);
-      return {
-        statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Failed to connect to image source' })
-      };
-    }
-
-    if (!githubResponse.ok) {
-      if (githubResponse.status === 404) {
-        return {
-          statusCode: 404,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Image not found' })
-        };
-      } else if (githubResponse.status === 403) {
-        console.error('GitHub API rate limit or permission error');
-        return {
-          statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Image access denied' })
-        };
-      } else {
-        console.error(`GitHub API error: ${githubResponse.status}`);
-        return {
-          statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Failed to fetch image' })
-        };
+    // First, fetch file metadata. The content may be included if the file is small enough.
+    const metaResponse = await fetch(githubUrl, {
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json', // Request JSON metadata
+        'User-Agent': 'Netlify-Function'
       }
+    });
+
+    if (!metaResponse.ok) {
+      return handleGithubError(metaResponse, 'image');
     }
 
-    const imageData = await githubResponse.json();
+    const imageData = await metaResponse.json();
 
-    // Verify it's a file (not a directory)
     if (imageData.type !== 'file') {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Path is not a file' })
-      };
+      return jsonResponse(400, { error: 'The requested path is not a file.' });
     }
 
-    // Determine content type based on file extension
-    const getContentType = (filename) => {
-      const ext = filename.toLowerCase().split('.').pop();
-      const mimeTypes = {
-        'jpg': 'image/jpeg',
-        'jpeg': 'image/jpeg',
-        'png': 'image/png',
-        'gif': 'image/gif',
-        'svg': 'image/svg+xml',
-        'webp': 'image/webp',
-        'bmp': 'image/bmp',
-        'ico': 'image/x-icon'
-      };
-      return mimeTypes[ext] || 'application/octet-stream';
-    };
-
-    const contentType = getContentType(imageData.name);
     let base64Content = imageData.content;
 
+    // If content is not in the metadata response, the file is too large.
+    // We must fetch it from the download_url.
     if (!base64Content) {
-      // Content was too large — fetch from download_url
       if (!imageData.download_url) {
-        return {
-          statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Missing download_url for large file' })
-        };
+        return jsonResponse(500, { error: 'Missing download_url for a large file.' });
       }
 
       const imageBinaryRes = await fetch(imageData.download_url, {
-        headers: {
-          Authorization: `token ${githubToken}` // Might not be needed for raw URLs
-        }
+        headers: { Authorization: `token ${token}` }
       });
 
       if (!imageBinaryRes.ok) {
-        return {
-          statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ error: 'Failed to fetch image binary' })
-        };
+        return jsonResponse(500, { error: 'Failed to fetch image binary for a large file.' });
       }
 
       const arrayBuffer = await imageBinaryRes.arrayBuffer();
       base64Content = Buffer.from(arrayBuffer).toString('base64');
     }
 
+    const contentType = getContentType(imageData.name);
+
+    // Return the successful response with the Base64 content and cache headers.
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'private, max-age=3600'
+        'Cache-Control': 'private, max-age=3600' // Cache on the client
       },
       body: JSON.stringify({
         content: base64Content,
@@ -160,12 +84,22 @@ exports.handler = async (event) => {
       })
     };
 
-  } catch (error) {
-    console.error('Unexpected error:', error);
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Internal server error' })
-    };
+  } catch (fetchError) {
+    console.error('GitHub fetch error:', fetchError);
+    return jsonResponse(500, { error: 'Failed to connect to image source' });
   }
 };
+
+/**
+ * Creates the Netlify function handler for images.
+ */
+exports.handler = createProtectedHandler({
+  validatePath: (path) => {
+    const imageExtensions = /\.(jpg|jpeg|png|gif|svg|webp|bmp|ico)$/i;
+    if (path.includes('..') || path.startsWith('/') || !imageExtensions.test(path)) {
+      return 'Invalid image path format. Only common image extensions are allowed.';
+    }
+    return null; // Path is valid
+  },
+  processRequest: processImageRequest,
+});

@@ -118,8 +118,7 @@ class ProtectedContentLoader {
   async loadContentWithToken(containerId, path, token) {
     try {
       const contentData = await this.fetchContent(path, token);
-      const basePath = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-      await this.renderContent(contentData.content, contentData.fileType, containerId, token, basePath);
+      await this.renderContent(contentData.content, contentData.fileType, containerId, token);
       this.log('Content rendered successfully with token');
     } catch (error) {
       this.log('Failed to load content with token:', error);
@@ -166,7 +165,7 @@ class ProtectedContentLoader {
     return dataUrl;
   }
   
-  async processImages(content, token, basePath = '') {
+  async processImages(content, token) {
     if (!token) return content;
 
     const imgRegex = /<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi;
@@ -212,13 +211,13 @@ class ProtectedContentLoader {
     return processedContent;
   }
 
-  async renderContent(content, fileType, containerId, token, basePath) {
+  async renderContent(content, fileType, containerId, token) {
     const container = document.getElementById(containerId);
     if (!container) {
       throw new Error(`Container with id '${containerId}' not found`);
     }
 
-    const processedContent = await this.processImages(content, token, basePath);
+    const processedContent = await this.processImages(content, token);
 
     if (fileType === 'html') {
       container.innerHTML = processedContent;
