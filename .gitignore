@@ -17,3 +17,12 @@ static/js/index
 static/js/fragment
 .DS_Store
 *static/.DS_Store
+
+# Local Netlify folder
+.netlify
+static/js/abridge.min.js
+static/js/abridge_nopwa.min.js
+static/js/sw_load.js
+static/js/sw_load.min.js
+static/sw.js
+static/sw.min.js

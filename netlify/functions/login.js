@@ -1,5 +1,28 @@
 // netlify/functions/login.js
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
+// --- Input Sanitization ---
+/**
+ * Sanitizes a string input to prevent injection attacks.
+ * @param {string} input - The input string to sanitize.
+ * @param {number} maxLength - Maximum allowed length.
+ * @returns {string|null} - Sanitized string or null if invalid.
+ */
+function sanitizeInput(input, maxLength = 100) {
+  if (typeof input !== "string") return null;
+
+  // Trim whitespace
+  let sanitized = input.trim();
+
+  // Check length
+  if (sanitized.length === 0 || sanitized.length > maxLength) return null;
+
+  // Remove null bytes and other control characters
+  sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, "");
+
+  return sanitized;
+}
 
 // --- Rate Limiting (in-memory) ---
 const MAX_ATTEMPTS = 5; // Max failed attempts before blocking
@@ -26,7 +49,7 @@ function checkRateLimit(ip) {
       const remaining = Math.ceil((record.expires - Date.now()) / 60000);
       return {
         limited: true,
-        message: `Too many failed attempts. Please try again in ${remaining} minute(s).`
+        message: `Too many failed login attempts. Please try again in ${remaining} minute(s).`,
       };
     }
   }
@@ -61,26 +84,48 @@ function clearFailedAttempts(ip) {
 }
 // --- End Rate Limiting ---
 
+/**
+ * User-friendly error messages that don't leak system information.
+ */
+const USER_ERRORS = {
+  RATE_LIMIT: (minutes) =>
+    `Too many failed login attempts. Please try again in ${minutes} minute(s).`,
+  INVALID_CREDENTIALS: "Invalid username or password.",
+  MISSING_FIELDS: "Username and password are required.",
+  INVALID_INPUT: "Invalid username or password format.",
+  SERVER_ERROR: "Unable to process your request. Please try again later.",
+  METHOD_NOT_ALLOWED: "Invalid request method.",
+};
 
 exports.handler = async (event) => {
   // Ensure this is a POST request
-  if (event.httpMethod !== 'POST') {
+  if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Method Not Allowed' })
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify({ error: USER_ERRORS.METHOD_NOT_ALLOWED }),
     };
   }
 
-  const clientIp = event.headers['x-nf-client-connection-ip'];
+  const clientIp = event.headers["x-nf-client-connection-ip"] || "unknown";
 
   // --- Rate Limiting Check ---
   const limit = checkRateLimit(clientIp);
   if (limit.limited) {
+    console.log(`Rate limit triggered for IP: ${clientIp}`);
     return {
       statusCode: 429, // Too Many Requests
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: limit.message })
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Retry-After": "300",
+      },
+      body: JSON.stringify({ error: limit.message }),
     };
   }
   // --- End Rate Limiting Check ---
@@ -88,68 +133,155 @@ exports.handler = async (event) => {
   try {
     // Parse environment variables
     const jwtSecret = process.env.JWT_SECRET;
-    const users = JSON.parse(process.env.AUTH_USERS || '{}');
+    const users = JSON.parse(process.env.AUTH_USERS || "{}");
     const tokenExpiryHours = parseInt(process.env.TOKEN_EXPIRY_HOURS || "24");
 
     if (!jwtSecret) {
-      console.error('JWT_SECRET environment variable not set');
+      console.error("JWT_SECRET environment variable not set");
       return {
         statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Server configuration error' })
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: USER_ERRORS.SERVER_ERROR }),
       };
     }
 
     // Parse incoming credentials
-    const { username, password } = JSON.parse(event.body);
+    let requestBody;
+    try {
+      requestBody = JSON.parse(event.body);
+    } catch (parseError) {
+      console.error("Invalid JSON in request body:", parseError.message);
+      return {
+        statusCode: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: USER_ERRORS.INVALID_INPUT }),
+      };
+    }
+
+    const { username, password } = requestBody;
+
+    // Check if fields are provided
     if (!username || !password) {
       return {
         statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Username and password are required' })
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: USER_ERRORS.MISSING_FIELDS }),
+      };
+    }
+
+    // Sanitize inputs
+    const sanitizedUsername = sanitizeInput(username, 50);
+    const sanitizedPassword = sanitizeInput(password, 100);
+
+    // No username or password
+    if (!sanitizedUsername || !sanitizedPassword) {
+      console.log(`No username or no password provided: ${clientIp}`);
+      return {
+        statusCode: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: USER_ERRORS.INVALID_INPUT }),
       };
     }
 
     // Validate credentials
-    if (!users[username] || users[username] !== password) {
-      recordFailedAttempt(clientIp); // Record the failure
+    // Check if user exists
+    if (!users[sanitizedUsername]) {
+      recordFailedAttempt(clientIp);
+      console.log(
+        `Failed login attempt for non-existent user: ${sanitizedUsername} from IP: ${clientIp}`,
+      );
       return {
         statusCode: 401,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Invalid credentials' })
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: USER_ERRORS.INVALID_CREDENTIALS }),
+      };
+    }
+
+    const storedPasswordHash = users[sanitizedUsername];
+
+    // Check if the stored password is a bcrypt hash or plaintext (for migration)
+    let isValid = false;
+    if (
+      storedPasswordHash.startsWith("$2a$") ||
+      storedPasswordHash.startsWith("$2b$")
+    ) {
+      // It's a bcrypt hash, use bcrypt.compare
+      isValid = await bcrypt.compare(sanitizedPassword, storedPasswordHash);
+    } else {
+      // Legacy plaintext comparison (for migration period)
+      // In production, you should remove this and require all passwords to be hashed
+      console.warn(
+        `WARNING: User ${sanitizedUsername} using plaintext password; consider migrating to bcrypt.`,
+      );
+      isValid = sanitizedPassword === storedPasswordHash;
+    }
+
+    if (!isValid) {
+      recordFailedAttempt(clientIp);
+      console.log(
+        `Failed login attempt for user: ${sanitizedUsername} from IP: ${clientIp}`,
+      );
+      return {
+        statusCode: 401,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ error: USER_ERRORS.INVALID_CREDENTIALS }),
       };
     }
 
     // --- Success ---
-    clearFailedAttempts(clientIp); // Clear any prior failures on success
+    clearFailedAttempts(clientIp);
+    console.log(
+      `Successful login for user: ${sanitizedUsername} from IP: ${clientIp}`,
+    );
 
     // Credentials are valid, generate a JWT
     const token = jwt.sign(
-      { username }, // Payload
-      jwtSecret,   // Secret key
-      { expiresIn: `${tokenExpiryHours}h` } // Expiration
+      { username: sanitizedUsername }, // Payload
+      jwtSecret, // Secret key
+      { expiresIn: `${tokenExpiryHours}h` }, // Expiration
     );
 
     // Return the token
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-store, no-cache, must-revalidate, private",
+      },
+      body: JSON.stringify({ token }),
     };
-
   } catch (error) {
-    console.error('Error during login:', error);
-    if (error instanceof SyntaxError) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Invalid JSON format in request body' })
-      };
-    }
+    console.error("Unexpected error during login:", {
+      message: error.message,
+      stack: error.stack,
+      ip: clientIp,
+    });
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Internal server error' })
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ error: USER_ERRORS.SERVER_ERROR }),
     };
   }
 };

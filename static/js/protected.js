@@ -1,28 +1,28 @@
 // protected.js
 class ProtectedContentLoader {
   constructor() {
-    this.baseUrl = '/.netlify/functions/protected-content';
-    this.imageUrl = '/.netlify/functions/protected-image';
-    this.loginUrl = '/.netlify/functions/login';
-    this.storageKey = 'jwt-token';
+    this.baseUrl = "/.netlify/functions/protected-content";
+    this.imageUrl = "/.netlify/functions/protected-image";
+    this.loginUrl = "/.netlify/functions/login";
+    this.storageKey = "jwt-token";
     this.imageCache = new Map();
     this.debug = true;
   }
 
   log(message, data = null) {
     if (this.debug) {
-      console.log(`[ProtectedLoader] ${message}`, data || '');
+      console.log(`[ProtectedLoader] ${message}`, data || "");
     }
   }
 
   isTokenValid(token) {
     if (!token) return false;
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      // Add a 30-second buffer for clock skew
-      return payload.exp * 1000 > Date.now() - 30000;
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      // Add a 30-second buffer for clock skew (expire tokens 30s early)
+      return payload.exp * 1000 > Date.now() + 30000;
     } catch (e) {
-      console.error('Failed to parse JWT:', e);
+      console.error("Failed to parse JWT:", e);
       return false;
     }
   }
@@ -60,32 +60,39 @@ class ProtectedContentLoader {
           </form>
         </div>
       `;
-      container.querySelector('.login-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        this.submitLogin(containerId);
-      });
+      container
+        .querySelector(".login-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          this.submitLogin(containerId);
+        });
     }
   }
 
   async submitLogin(containerId) {
-    const username = document.getElementById(`${containerId}-username`).value.trim();
+    const username = document
+      .getElementById(`${containerId}-username`)
+      .value.trim();
     const password = document.getElementById(`${containerId}-password`).value;
     const errorDiv = document.getElementById(`${containerId}-error`);
     const button = document.querySelector(`#${containerId} .login-button`);
 
     if (!username || !password) {
-      this.showLoginError(containerId, 'Please enter both username and password');
+      this.showLoginError(
+        containerId,
+        "Please enter both username and password",
+      );
       return;
     }
 
-    button.textContent = 'Authenticating...';
+    button.textContent = "Authenticating...";
     button.disabled = true;
-    errorDiv.style.display = 'none';
+    errorDiv.style.display = "none";
 
     try {
       const response = await fetch(this.loginUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
@@ -96,28 +103,30 @@ class ProtectedContentLoader {
           errorData = await response.json();
         } catch (e) {
           // If JSON parsing fails, the body is likely HTML from Netlify's gateway.
-          // We can't get a specific message, so we'll use a generic one.
-          throw new Error(`Authentication failed. The server returned an unexpected response (status: ${response.status}).`);
+          // Use a generic, user-friendly message
+          throw new Error("Unable to authenticate. Please try again.");
         }
-        
-        // If we successfully parsed the JSON error, create a clean message.
-        let displayErrorMessage = errorData.error || `HTTP ${response.status}`;
-        if (response.status === 401 && errorData.error === 'Invalid credentials') {
-          displayErrorMessage = 'Authentication failed: Invalid username or password.';
-        }
-        throw new Error(displayErrorMessage);
+
+        // Use the error message from the server (already user-friendly)
+        throw new Error(
+          errorData.error || "Authentication failed. Please try again.",
+        );
       }
 
       const data = await response.json();
       this.storeToken(data.token);
-      const path = document.getElementById(containerId).getAttribute('data-protected-path');
+      const path = document
+        .getElementById(containerId)
+        .getAttribute("data-protected-path");
       await this.loadContentWithToken(containerId, path, data.token);
-
     } catch (error) {
-      this.log('Login failed:', error);
-      button.textContent = 'Access Content';
+      this.log("Login failed:", error);
+      button.textContent = "Access Content";
       button.disabled = false;
-      this.showLoginError(containerId, error.message || 'Authentication failed.');
+      this.showLoginError(
+        containerId,
+        error.message || "Authentication failed.",
+      );
     }
   }
 
@@ -125,33 +134,48 @@ class ProtectedContentLoader {
     const errorDiv = document.getElementById(`${containerId}-error`);
     if (errorDiv) {
       errorDiv.textContent = message;
-      errorDiv.style.display = 'block';
+      errorDiv.style.display = "block";
     }
   }
 
   async loadContentWithToken(containerId, path, token) {
     try {
       const contentData = await this.fetchContent(path, token);
-      await this.renderContent(contentData.content, contentData.fileType, containerId, token);
-      this.log('Content rendered successfully with token');
+      await this.renderContent(
+        contentData.content,
+        contentData.fileType,
+        containerId,
+        token,
+      );
+      this.log("Content rendered successfully with token");
     } catch (error) {
-      this.log('Failed to load content with token:', error);
+      this.log("Failed to load content with token:", error);
       this.clearToken();
       this.showLoginForm(containerId);
-      this.showLoginError(containerId, `Session expired or invalid. Please log in again. (${error.message})`);
+      // Use user-friendly message from server error
+      const userMessage =
+        error.message || "Your session has expired. Please log in again.";
+      this.showLoginError(containerId, userMessage);
     }
   }
 
   async fetchContent(path, token) {
     const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
-    this.log('Fetching content from:', url);
+    this.log("Fetching content from:", url);
     const response = await fetch(url, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP ${response.status}`);
+      try {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to load content.");
+      } catch (e) {
+        if (e.message && !e.message.includes("JSON")) {
+          throw e; // Re-throw if it's our error
+        }
+        throw new Error("Failed to load content.");
+      }
     }
     return response.json();
   }
@@ -164,13 +188,14 @@ class ProtectedContentLoader {
 
     const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
     this.log(`Fetching image from: ${url}`);
-    
+
     const response = await fetch(url, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to load image: ${imagePath}`);
+      this.log(`Failed to load image: ${imagePath} (${response.status})`);
+      throw new Error("Failed to load image");
     }
 
     const data = await response.json();
@@ -178,7 +203,7 @@ class ProtectedContentLoader {
     this.imageCache.set(cacheKey, dataUrl);
     return dataUrl;
   }
-  
+
   async processImages(content, token) {
     if (!token) return content;
 
@@ -192,12 +217,14 @@ class ProtectedContentLoader {
       let srcPath = match[2];
       const afterSrc = match[3];
 
-      const tempDiv = document.createElement('div');
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = srcPath;
       srcPath = tempDiv.textContent || tempDiv.innerText || srcPath;
 
-      if (!srcPath.startsWith('http') && !srcPath.startsWith('data:')) {
-        const finalSrcPath = srcPath.startsWith('/') ? `static${srcPath}` : `static/${srcPath}`;
+      if (!srcPath.startsWith("http") && !srcPath.startsWith("data:")) {
+        const finalSrcPath = srcPath.startsWith("/")
+          ? `static${srcPath}`
+          : `static/${srcPath}`;
         images.push({ fullMatch, beforeSrc, srcPath: finalSrcPath, afterSrc });
       }
     }
@@ -215,12 +242,14 @@ class ProtectedContentLoader {
     const imageResults = await Promise.all(imagePromises);
 
     let processedContent = content;
-    imageResults.forEach(({ fullMatch, beforeSrc, afterSrc, dataUrl, srcPath }) => {
-      const newImg = dataUrl
-        ? `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`
-        : `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
-      processedContent = processedContent.replace(fullMatch, newImg);
-    });
+    imageResults.forEach(
+      ({ fullMatch, beforeSrc, afterSrc, dataUrl, srcPath }) => {
+        const newImg = dataUrl
+          ? `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`
+          : `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
+        processedContent = processedContent.replace(fullMatch, newImg);
+      },
+    );
 
     return processedContent;
   }
@@ -233,11 +262,11 @@ class ProtectedContentLoader {
 
     const processedContent = await this.processImages(content, token);
 
-    if (fileType === 'html') {
+    if (fileType === "html") {
       container.innerHTML = processedContent;
-    } else if (fileType === 'md') {
-      if (typeof marked === 'undefined') {
-        throw new Error('Marked library not loaded');
+    } else if (fileType === "md") {
+      if (typeof marked === "undefined") {
+        throw new Error("Marked library not loaded");
       }
       container.innerHTML = marked.parse(processedContent);
     } else {
@@ -248,13 +277,19 @@ class ProtectedContentLoader {
   showError(containerId, message) {
     const container = document.getElementById(containerId);
     if (container) {
+      // Escape HTML to prevent XSS
+      const escapeHtml = (text) => {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      };
       container.innerHTML = `<div class="protected-error" style="color: #dc3545; padding: 1rem; border: 1px solid #dc3545; border-radius: 4px; background: #f8d7da;">
-        <strong>Error:</strong> ${message}
+        <strong>Error:</strong> ${escapeHtml(message)}
       </div>`;
     }
   }
 
-  showLoading(containerId, loadingText = 'Loading protected content...') {
+  showLoading(containerId, loadingText = "Loading protected content...") {
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = `<div class="protected-loading">${loadingText}</div>`;
@@ -263,18 +298,20 @@ class ProtectedContentLoader {
 
   async loadProtectedContent(containerId, path) {
     const container = document.getElementById(containerId);
-    const loadingText = container?.getAttribute('data-loading-text') || 'Loading protected content...';
+    const loadingText =
+      container?.getAttribute("data-loading-text") ||
+      "Loading protected content...";
 
-    this.log('Starting to load protected content', { containerId, path });
+    this.log("Starting to load protected content", { containerId, path });
     this.showLoading(containerId, loadingText);
 
     const token = this.getStoredToken();
 
     if (this.isTokenValid(token)) {
-      this.log('Using stored JWT');
+      this.log("Using stored JWT");
       await this.loadContentWithToken(containerId, path, token);
     } else {
-      this.log('No valid JWT found, showing login form');
+      this.log("No valid JWT found, showing login form");
       this.clearToken();
       this.showLoginForm(containerId);
     }
@@ -283,19 +320,19 @@ class ProtectedContentLoader {
 
 window.protectedLoader = new ProtectedContentLoader();
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[data-protected-path]').forEach(element => {
-    const path = element.getAttribute('data-protected-path');
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-protected-path]").forEach((element) => {
+    const path = element.getAttribute("data-protected-path");
     if (path) {
       window.protectedLoader.loadProtectedContent(element.id, path);
     }
   });
 });
 
-window.logoutProtectedContent = function() {
-  window.protectedLoader.log('Logging out.');
+window.logoutProtectedContent = function () {
+  window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
-  document.querySelectorAll('[data-protected-path]').forEach(element => {
+  document.querySelectorAll("[data-protected-path]").forEach((element) => {
     window.protectedLoader.showLoginForm(element.id);
   });
 };
