@@ -89,12 +89,27 @@ class ProtectedContentLoader {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || `HTTP ${response.status}`);
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          let displayErrorMessage = errorData.error || `HTTP ${response.status}`;
+
+          if (response.status === 401 && errorData.error === 'Invalid credentials') {
+            displayErrorMessage = 'Authentication failed: Invalid username or password.';
+          } else if (response.status === 429 && errorData.error && errorData.error.startsWith('Too many failed attempts')) {
+            displayErrorMessage = errorData.error; // Rate limit message is already descriptive
+          }
+          throw new Error(displayErrorMessage);
+        } else {
+          // If the response isn't JSON, it's likely a platform error page (HTML)
+          const errorText = await response.text();
+          this.log("Server returned a non-JSON error response:", errorText.substring(0, 500));
+          throw new Error(`Authentication failed. The server returned an unexpected response (status: ${response.status}).`);
+        }
       }
 
+      const data = await response.json();
       this.storeToken(data.token);
       const path = document.getElementById(containerId).getAttribute('data-protected-path');
       await this.loadContentWithToken(containerId, path, data.token);
