@@ -238,6 +238,7 @@ class ProtectedContentLoader {
       await this.loadContentWithToken(containerId, path, data.token);
     } catch (error) {
       this.log("Login failed:", error);
+      this.log("actual response:", await response.text())
       button.textContent = "Access Content";
       button.disabled = false;
       this.showLoginError(
