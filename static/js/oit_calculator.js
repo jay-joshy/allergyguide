@@ -135,9 +135,9 @@ import{a as Tt,b as St,c as Ge,d as kt}from"./chunks/chunk-H4Y4UJW3.js";var rn=G
         <th>Step</th>
         <th>Protein (mg)</th>
         <th>Method</th>
-        <th>Daily amount</th>
         <th>Amount for mixture</th>
         <th>Water for mixture</th>
+        <th>Daily amount</th>
       </tr>
     </thead>
     <tbody>
@@ -171,19 +171,6 @@ import{a as Tt,b as St,c as Ge,d as kt}from"./chunks/chunk-H4Y4UJW3.js";var rn=G
       </td>
     `,e+=`
       <td class="method-cell">${a.method}</td>
-    `,e+=`
-      <td>
-        <input
-          class="editable"
-          type="number"
-          data-step="${a.stepIndex}"
-          data-field="dailyAmount"
-          value="${ue(a.dailyAmount,a.dailyAmountUnit)}"
-          step="0.1"
-          min="0"
-        />
-        <span> ${a.dailyAmountUnit}</span>
-      </td>
     `,a.method==="DILUTE"){let g=d.type==="SOLID"?"g":"ml";e+=`
         <td>
           <input
@@ -202,7 +189,20 @@ import{a as Tt,b as St,c as Ge,d as kt}from"./chunks/chunk-H4Y4UJW3.js";var rn=G
           ${ue(a.mixWaterAmount,"ml")} ml
           <span style="color: var(--oit-text-secondary); font-size: 0.85rem;"> (${O(a.servings,1)} servings)</span>
         </td>
-      `:e+='<td class="na-cell">n/a</td>',e+="</tr>"}e+="</tbody>",t.innerHTML=e;let o=document.querySelector(".bottom-section");if(!o.querySelector(".export-container")){let a=`
+      `:e+='<td class="na-cell">n/a</td>',e+=`
+      <td>
+        <input
+          class="editable"
+          type="number"
+          data-step="${a.stepIndex}"
+          data-field="dailyAmount"
+          value="${ue(a.dailyAmount,a.dailyAmountUnit)}"
+          step="0.1"
+          min="0"
+        />
+        <span> ${a.dailyAmountUnit}</span>
+      </td>
+    `,e+="</tr>"}e+="</tbody>",t.innerHTML=e;let o=document.querySelector(".bottom-section");if(!o.querySelector(".export-container")){let a=`
       <div class="export-container">
         <div class="export-buttons">
           <button class="btn-export" id="export-ascii">Copy ASCII</button>
