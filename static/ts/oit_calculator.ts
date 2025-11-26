@@ -1605,9 +1605,9 @@ function renderProtocolTable(): void {
         <th>Step</th>
         <th>Protein (mg)</th>
         <th>Method</th>
-        <th>Daily amount</th>
         <th>Amount for mixture</th>
         <th>Water for mixture</th>
+        <th>Daily amount</th>
       </tr>
     </thead>
     <tbody>
@@ -1684,22 +1684,6 @@ function renderProtocolTable(): void {
       <td class="method-cell">${step.method}</td>
     `;
 
-    // Daily amount (editable)
-    html += `
-      <td>
-        <input
-          class="editable"
-          type="number"
-          data-step="${step.stepIndex}"
-          data-field="dailyAmount"
-          value="${formatAmount(step.dailyAmount, step.dailyAmountUnit)}"
-          step="0.1"
-          min="0"
-        />
-        <span> ${step.dailyAmountUnit}</span>
-      </td>
-    `;
-
     // Amount for mixture (editable for dilutions)
     if (step.method === Method.DILUTE) {
       const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
@@ -1733,6 +1717,22 @@ function renderProtocolTable(): void {
     } else {
       html += `<td class="na-cell">n/a</td>`;
     }
+
+    // Daily amount (editable)
+    html += `
+      <td>
+        <input
+          class="editable"
+          type="number"
+          data-step="${step.stepIndex}"
+          data-field="dailyAmount"
+          value="${formatAmount(step.dailyAmount, step.dailyAmountUnit)}"
+          step="0.1"
+          min="0"
+        />
+        <span> ${step.dailyAmountUnit}</span>
+      </td>
+    `;
 
     html += `</tr>`;
   }
