@@ -2081,6 +2081,9 @@ function selectFoodA(foodData: FoodData): void {
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
     gramsInServing: new Decimal(foodData["Mean protein in grams"]),
     servingSize: new Decimal(foodData["Serving size"]),
+    getMgPerUnit: function() {
+      return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+    },
     mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
@@ -2113,6 +2116,9 @@ function selectFoodB(foodData: FoodData): void {
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
     gramsInServing: new Decimal(foodData["Mean protein in grams"]),
     servingSize: new Decimal(foodData["Serving size"]),
+    getMgPerUnit: function() {
+      return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+    },
     mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
@@ -2146,6 +2152,9 @@ function selectCustomFood(name: string, inputId: string): void {
     type: FoodType.SOLID,
     gramsInServing: new Decimal(10),
     servingSize: new Decimal(100),
+    getMgPerUnit: function() {
+      return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+    },
     mgPerUnit: gramPer100ToMgPerUnit(10), // Default 10g protein per 100g
   };
 
@@ -2190,6 +2199,9 @@ function selectProtocol(protocolData: ProtocolData): void {
       protocolData.food_a.type === "SOLID" ? FoodType.SOLID : FoodType.LIQUID,
     gramsInServing: new Decimal(protocolData.food_a.gramsInServing),
     servingSize: new Decimal(protocolData.food_a.servingSize),
+    getMgPerUnit: function() {
+      return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+    },
     mgPerUnit: new Decimal(protocolData.food_a.mgPerUnit),
   };
 
@@ -2260,6 +2272,9 @@ function selectProtocol(protocolData: ProtocolData): void {
         protocolData.food_b.type === "SOLID" ? FoodType.SOLID : FoodType.LIQUID,
       gramsInServing: new Decimal(protocolData.food_b.gramsInServing),
       servingSize: new Decimal(protocolData.food_b.servingSize),
+      getMgPerUnit: function() {
+        return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+      },
       mgPerUnit: new Decimal(protocolData.food_b.mgPerUnit),
     };
 
