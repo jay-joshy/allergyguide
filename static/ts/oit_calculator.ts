@@ -3080,7 +3080,8 @@ function exportASCII(): void {
  * Load foods and protocol template databases and prepare fuzzy search indices.
  *
  * Fetches:
- * - /tool_assets/typed_foods_rough.json
+ * - /tool_assets/typed_foods_rough.json TODO! Change to not rough...
+ * - /tool_assets/custom_foods.json
  * - /tool_assets/oit_protocols.json
  *
  * On failure, logs the error and alerts the user that some features may not work.
@@ -3090,8 +3091,13 @@ function exportASCII(): void {
 async function loadDatabases(): Promise<void> {
   try {
     // Load foods database
-    const foodsResponse = await fetch("/tool_assets/typed_foods_rough.json");
-    foodsDatabase = await foodsResponse.json();
+    // TODO! validate the JSON structure
+    const cnfFoodsResponse = await fetch("/tool_assets/typed_foods_rough.json");
+    const customFoodsResponse = await fetch("/tool_assets/custom_foods.json");
+    const cnfFoodsDatabase = await cnfFoodsResponse.json();
+    const customFoodsDatabase = await customFoodsResponse.json();
+
+    const foodsDatabase = [...cnfFoodsDatabase, ...customFoodsDatabase];
 
     // Prepare for fuzzy search
     fuzzySortPreparedFoods = foodsDatabase.map((f) => ({
