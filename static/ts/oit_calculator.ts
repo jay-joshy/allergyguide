@@ -157,8 +157,8 @@ interface Candidate {
  */
 interface FoodData {
   Food: string;
-  "Food Group": string;
-  "Mean value in 100g": number; // before use in calculations should be converted into Decimal
+  "Mean protein in grams": number; // Not all will be mean
+  "Serving size": number; // 100g for CNF, but otherwise for custom foods will be variable
   Type: string; // SOLID or LIQUID
 }
 
@@ -278,6 +278,20 @@ function escapeHtml(unsafe: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+/**
+ * Calculate the canonical internal mgPerUnit (mg protein per g or ml of food)
+ * from protein in grams and serving size.
+ *
+ * @remarks Formula: mgPerUnit = (proteinInGrams / servingSize) * 1000
+ * @param proteinInGrams Total grams of protein in the serving
+ * @param servingSize Serving size in grams or ml
+ * @returns Milligrams of protein per unit (Decimal) for internal calculations. If serving size is 0, returns 0.
+ */
+function calculateMgPerUnit(proteinInGrams: number, servingSize: number): Decimal {
+  if (servingSize === 0) return new Decimal(0); // Avoid division by zero
+  return new Decimal(proteinInGrams).dividedBy(servingSize).times(1000);
 }
 
 /**
@@ -1931,10 +1945,11 @@ function showSearchDropdown(
       });
     } else {
       // Food result
-      const foodData = result.obj as FoodData;
+      const foodData: FoodData = result.obj; // foodData here is the object from fuzzySortPreparedFoods. In addition to the FoodData fields being passed, also get: `..., prepared: fuzzysort.prepare(f.Food)` - is this needed? TODO!
+
       item.innerHTML = `
         ${escapeHtml(foodData.Food)}
-        <span class="food-type"> - ${escapeHtml(foodData.Type)} - Protein: ${foodData["Mean value in 100g"].toFixed(1)} g/100 ${foodData.Type === "Solid" ? "g" : "ml"}</span>
+        <span class="food-type"> - ${escapeHtml(foodData.Type)} - Protein: ${foodData["Mean protein in grams"].toFixed(1)} g/${foodData["Serving size"]} ${foodData.Type === "Solid" ? "g" : "ml"}</span>
       `;
       item.addEventListener("click", () => {
         if (inputId === "food-a-search") {
@@ -2056,7 +2071,7 @@ function selectFoodA(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
-    mgPerUnit: gramPer100ToMgPerUnit(foodData["Mean value in 100g"]),
+    mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
   currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
@@ -2086,7 +2101,7 @@ function selectFoodB(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
-    mgPerUnit: gramPer100ToMgPerUnit(foodData["Mean value in 100g"]),
+    mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
   const threshold = {
