@@ -220,8 +220,14 @@ class ProtectedContentLoader {
           errorData = await response.json();
         } catch (e) {
           // If JSON parsing fails, the body is likely HTML from Netlify's gateway.
-          // Use a generic, user-friendly message
-          throw new Error("Unable to authenticate. Please try again.");
+          // Use a generic, user-friendly message based on status code
+          if (response.status === 429) {
+            throw new Error("Too many login attempts. Please try again later.");
+          } else if (response.status === 404) {
+            throw new Error("Login service unavailable.");
+          } else {
+            throw new Error("Unable to authenticate. Please try again.");
+          }
         }
 
         // Use the error message from the server (already user-friendly)
@@ -237,14 +243,7 @@ class ProtectedContentLoader {
         .getAttribute("data-protected-path");
       await this.loadContentWithToken(containerId, path, data.token);
     } catch (error) {
-      const response = await fetch(this.loginUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
       this.log("Login failed:", error);
-      this.log("actual response:", response.text())
       button.textContent = "Access Content";
       button.disabled = false;
       this.showLoginError(
@@ -658,7 +657,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
  * NOT YET REFERENCED
  */
-window.logoutProtectedContent = function() {
+window.logoutProtectedContent = function () {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
