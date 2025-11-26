@@ -76,6 +76,7 @@ type Unit = "g" | "ml";
 /**
  * Food definition with protein concentration used for calculations.
  * mgPerUnit is the canonical internal unit (mg protein per g or ml food).
+ * But this can be derived from the grams of protein per serving size (X g or ml)
  */
 interface Food {
   name: string;
