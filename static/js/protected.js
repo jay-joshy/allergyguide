@@ -212,6 +212,7 @@ class ProtectedContentLoader {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+      console.log("actual response:", response.text())
 
       if (!response.ok) {
         let errorData;
@@ -230,7 +231,7 @@ class ProtectedContentLoader {
           }
         }
 
-        // Use the error message from the server (already user-friendly)
+        // but this Error simply gets propagated into the next catch...
         throw new Error(
           errorData.error || "Authentication failed. Please try again.",
         );
@@ -246,9 +247,13 @@ class ProtectedContentLoader {
       this.log("Login failed:", error);
       button.textContent = "Access Content";
       button.disabled = false;
+      // this.showLoginError(
+      //   containerId,
+      //   error.message || "Authentication failed.",
+      // );
       this.showLoginError(
         containerId,
-        error.message || "Authentication failed.",
+        "Authentication failed.",
       );
     }
   }
@@ -657,7 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
  * NOT YET REFERENCED
  */
-window.logoutProtectedContent = function () {
+window.logoutProtectedContent = function() {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
