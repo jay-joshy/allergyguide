@@ -5,6 +5,8 @@
     "food_a": {
       "type": "LIQUID",
       "name": "Elmhurst Milked Almonds Unsweetened Beverage",
+      "gramsInServing": "5",
+      "servingSize": "250",
       "mgPerUnit": "20"
     },
     "food_a_strategy": "DILUTE_INITIAL",
@@ -93,6 +95,8 @@
     "food_a": {
       "type": "LIQUID",
       "name": "Elmhurst Milked Almonds Unsweetened Beverage",
+      "gramsInServing": "5",
+      "servingSize": "250",
       "mgPerUnit": "20"
     },
     "food_a_strategy": "DILUTE_INITIAL",
@@ -100,6 +104,8 @@
     "food_b": {
       "type": "SOLID",
       "name": "Almonds (dry roasted, unblanched)",
+      "gramsInServing": "21",
+      "servingSize": "100",
       "mgPerUnit": "210"
     },
     "food_b_threshold": "0.4",
@@ -193,6 +199,8 @@
     "food_a": {
       "type": "SOLID",
       "name": "PB2 Powdered Almond Butter",
+      "gramsInServing": "5",
+      "servingSize": "13",
       "mgPerUnit": "384.62"
     },
     "food_a_strategy": "DILUTE_INITIAL",
@@ -285,6 +293,8 @@
     "food_a": {
       "type": "LIQUID",
       "name": "Cow Milk",
+      "gramsInServing": "8",
+      "servingSize": "100",
       "mgPerUnit": "80"
     },
     "food_a_strategy": "DILUTE_NONE",
