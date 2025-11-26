@@ -386,15 +386,7 @@ class ProtectedContentLoader {
       }
     }
 
-    let contentData;
-    try {
-      contentData = await response.json();
-    } catch (e) {
-      // If we get HTML instead of JSON (e.g., Netlify error page), throw user-friendly error and see what that content is?
-      this.log("Failed to parse JSON response:", e);
-      this.log("Content received:", await response.text());
-      throw new Error("Failed to load content. Please try again.");
-    }
+    const contentData = await response.json();
     // Cache the fetched content
     this.setCachedContent(path, contentData);
     return contentData;
@@ -529,15 +521,7 @@ class ProtectedContentLoader {
       throw new Error("Failed to load image");
     }
 
-    let data;
-    try {
-      data = await response.json();
-    } catch (e) {
-      // If we get HTML instead of JSON (e.g., Netlify error page), throw user-friendly error
-      this.log("Failed to parse JSON response for image:", e);
-      this.log("Actual content received:", await response.text());
-      throw new Error("Failed to load image.");
-    }
+    const data = await response.json();
     const dataUrl = `data:${data.contentType};base64,${data.content}`;
 
     // Cache in both localStorage and memory
@@ -667,7 +651,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
  * NOT YET REFERENCED
  */
-window.logoutProtectedContent = function () {
+window.logoutProtectedContent = function() {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
