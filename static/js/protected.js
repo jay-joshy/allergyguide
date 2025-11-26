@@ -237,8 +237,14 @@ class ProtectedContentLoader {
         .getAttribute("data-protected-path");
       await this.loadContentWithToken(containerId, path, data.token);
     } catch (error) {
+      const response = await fetch(this.loginUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
       this.log("Login failed:", error);
-      this.log("actual response:", await response.text())
+      this.log("actual response:", response.text())
       button.textContent = "Access Content";
       button.disabled = false;
       this.showLoginError(
