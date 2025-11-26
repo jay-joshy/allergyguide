@@ -128,6 +128,7 @@ author: Joshua Yu
 <!-- list_item_newlines: 2 -->
 
 - **<span style="color: #ff0000">Measurement Limits:</span>** Defaults to 0.01g for scales and 0.1ml for syringes; practically, I personally have found a minimum measurement of 0.2g or 0.2ml to be reasonable
+  - Some feedback: for certain families, measuring 0.1 ml resolution with a syringe is difficult?
 
 - **<span style="color: #ff0000">Daily amounts</span>**: variation in practice ... 0.5 ml, etc.
 
@@ -192,16 +193,21 @@ author: Joshua Yu
 
 <!-- end_slide -->
 
-# What's Next for the OIT Calculator?
+# Action items for OIT Calculator
 
 <!-- list_item_newlines: 2 -->
 
-- **Enhanced Safety Features:**
+- **Review and add more Warning Rules:**
+  - Review current rules
   - Add warnings for excessively high target protein doses (e.g., >5000mg).
-
 - **Improved Patient Handouts:**
-  - Expand the PDF export to include comprehensive patient-facing information about home OIT administration, side effects, emergency
+  - Expand the PDF export to include comprehensive patient-facing information about home OIT administration, side effects, emergency protocols, etc.
 - **Adding more custom food and protocols**
+  - Pending more beta testing for bugs
+- **QI project**
+  - Reaching out to allergists (BCCH, ARISE) who would be interested
+- **Rounding**: only integers for mls? For some families, having to measure .1 ml resolution difficult?
+  - Offer as a toggle?
 
 <!-- end_slide -->
 
