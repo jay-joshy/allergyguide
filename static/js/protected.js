@@ -207,11 +207,14 @@ class ProtectedContentLoader {
     errorDiv.style.display = "none";
 
     try {
+      console.log('Fetching login URL:', this.loginUrl);
       const response = await fetch(this.loginUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+      console.log('Response URL:', response.url);
+      console.log('Response status:', response.status);
 
       if (!response.ok) {
         let errorData;
@@ -657,7 +660,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
  * NOT YET REFERENCED
  */
-window.logoutProtectedContent = function () {
+window.logoutProtectedContent = function() {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
