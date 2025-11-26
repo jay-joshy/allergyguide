@@ -81,6 +81,9 @@ type Unit = "g" | "ml";
 interface Food {
   name: string;
   type: FoodType;
+  gramsInServing: Decimal;
+  servingSize: Decimal;
+  getMgPerUnit(): Decimal;
   mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
 }
 
@@ -174,6 +177,8 @@ interface ProtocolData {
   food_a: {
     type: string;
     name: string;
+    gramsInServing: string;
+    servingSize: string;
     mgPerUnit: string;
   };
   food_a_strategy: string;
@@ -181,6 +186,8 @@ interface ProtocolData {
   food_b?: {
     type: string;
     name: string;
+    gramsInServing: string;
+    servingSize: string;
     mgPerUnit: string;
   };
   food_b_threshold?: string;
@@ -2072,6 +2079,8 @@ function selectFoodA(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
+    gramsInServing: new Decimal(foodData["Mean protein in grams"]),
+    servingSize: new Decimal(foodData["Serving size"]),
     mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
@@ -2102,6 +2111,8 @@ function selectFoodB(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
     type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
+    gramsInServing: new Decimal(foodData["Mean protein in grams"]),
+    servingSize: new Decimal(foodData["Serving size"]),
     mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
@@ -2133,6 +2144,8 @@ function selectCustomFood(name: string, inputId: string): void {
   const food: Food = {
     name: name || "Custom Food",
     type: FoodType.SOLID,
+    gramsInServing: new Decimal(10),
+    servingSize: new Decimal(100),
     mgPerUnit: gramPer100ToMgPerUnit(10), // Default 10g protein per 100g
   };
 
@@ -2175,6 +2188,8 @@ function selectProtocol(protocolData: ProtocolData): void {
     name: protocolData.food_a.name,
     type:
       protocolData.food_a.type === "SOLID" ? FoodType.SOLID : FoodType.LIQUID,
+    gramsInServing: new Decimal(protocolData.food_a.gramsInServing),
+    servingSize: new Decimal(protocolData.food_a.servingSize),
     mgPerUnit: new Decimal(protocolData.food_a.mgPerUnit),
   };
 
@@ -2243,6 +2258,8 @@ function selectProtocol(protocolData: ProtocolData): void {
       name: protocolData.food_b.name,
       type:
         protocolData.food_b.type === "SOLID" ? FoodType.SOLID : FoodType.LIQUID,
+      gramsInServing: new Decimal(protocolData.food_b.gramsInServing),
+      servingSize: new Decimal(protocolData.food_b.servingSize),
       mgPerUnit: new Decimal(protocolData.food_b.mgPerUnit),
     };
 
