@@ -214,20 +214,43 @@ class ProtectedContentLoader {
       });
 
       if (!response.ok) {
-        let errorData;
+        let errorMessage = "Authentication failed. Please try again.";
+
         try {
-          // We expect a JSON error body from our function, but Netlify might override it.
-          errorData = await response.json();
-        } catch (e) {
-          // If JSON parsing fails, the body is likely HTML from Netlify's gateway.
-          // Use a generic, user-friendly message
-          throw new Error("Unable to authenticate. Please try again.");
+          // Check if response is JSON
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            const errorData = await response.json();
+            errorMessage = errorData.error || errorMessage;
+          } else {
+            // Non-JSON response (likely HTML from Netlify infrastructure)
+            const text = await response.text();
+
+            // Try to provide a more specific message based on status code
+            if (response.status === 429) {
+              errorMessage =
+                "Too many failed login attempts. Please try again in a few minutes.";
+            } else if (response.status === 401) {
+              errorMessage = "Invalid username or password.";
+            } else if (response.status >= 500) {
+              errorMessage = "Server error. Please try again later.";
+            } else {
+              errorMessage = "Unable to authenticate. Please try again.";
+            }
+
+            this.log("Non-JSON response received:", {
+              status: response.status,
+              contentType: contentType,
+              bodyPreview: text.substring(0, 200),
+            });
+          }
+        } catch (parseError) {
+          // If we can't parse the response at all, use a generic message
+          this.log("Error parsing response:", parseError);
+          errorMessage = "Unable to authenticate. Please try again.";
         }
 
-        // Use the error message from the server (already user-friendly)
-        throw new Error(
-          errorData.error || "Authentication failed. Please try again.",
-        );
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -651,7 +674,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
  * NOT YET REFERENCED
  */
-window.logoutProtectedContent = function() {
+window.logoutProtectedContent = function () {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
