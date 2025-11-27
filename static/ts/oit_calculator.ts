@@ -20,7 +20,6 @@ Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 // ENUMS
 // ============================================
 
-// TODO! Consider increasing number of strategies
 /**
  * Dosing plan presets for target protein steps.
  * STANDARD, SLOW, and RAPID map to arrays in DOSING_STRATEGIES.
@@ -1119,7 +1118,13 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
   const step = currentProtocol.steps[stepIndex - 1];
   if (!step) return;
 
-  step.targetMg = new Decimal(newTargetMg);
+  try {
+    step.targetMg = new Decimal(newTargetMg);
+  }
+  catch (error) {
+    console.error("Invalid number format for targetMg:", newTargetMg);
+    return
+  }
 
   // Determine which food
   const isStepFoodB = step.food === "B";
@@ -1705,7 +1710,6 @@ function renderProtocolTable(): void {
     }
 
     // Water for mixture (non-editable, auto-calculated)
-    // Also includes servings TODO! consider removing?
     if (step.method === Method.DILUTE) {
       html += `
         <td class="non-editable">
@@ -1841,7 +1845,7 @@ function updateWarnings(): void {
 function performSearch(query: string, searchType: "food" | "protocol"): any[] {
   if (!query.trim()) return [];
 
-  if (searchType === "protocol") {
+  if (searchType === "food") {
     // Search foods only (for Food B)
     const results = fuzzysort.go(query, fuzzySortPreparedFoods, {
       key: "Food",
@@ -3234,7 +3238,7 @@ async function initializeCalculator(): Promise<void> {
       }
 
       searchDebounceTimer = window.setTimeout(() => {
-        const results = performSearch(query, "food");
+        const results = performSearch(query, "protocol");
         showSearchDropdown("food-a-search", results, query);
       }, 150);
     });
@@ -3275,7 +3279,7 @@ async function initializeCalculator(): Promise<void> {
       }
 
       searchDebounceTimer = window.setTimeout(() => {
-        const results = performSearch(query, "protocol");
+        const results = performSearch(query, "food");
         showSearchDropdown("food-b-search", results, query);
       }, 150);
     });
