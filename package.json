@@ -12,7 +12,8 @@
     "elasticlunr": "npm run abridge -- elasticlunr",
     "pagefind": "npm run abridge -- pagefind",
     "tinysearch": "npm run abridge -- tinysearch",
-    "build_oit": "esbuild static/ts/oit_calculator.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2017 --minify --chunk-names=chunks/[name]-[hash]"
+    "check:oit": "tsc --noEmit",
+    "build_oit": "npm run check:oit && esbuild static/ts/oit_calculator.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2017 --minify --chunk-names=chunks/[name]-[hash]"
   },
   "dependencies": {
     "ascii-table3": "^1.0.1",

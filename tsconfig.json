@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "lib": ["ES2017", "DOM"],
+    "lib": [
+      "ES2017",
+      "DOM"
+    ],
     "module": "ES2020",
     "moduleResolution": "node",
     "outDir": "./dist",
@@ -9,8 +12,13 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": false,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
   },
-  "include": ["static/ts/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "static/ts/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
