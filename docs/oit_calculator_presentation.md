@@ -208,6 +208,8 @@ author: Joshua Yu
   - Reaching out to allergists (BCCH, ARISE) who would be interested
 - **Rounding**: only integers for mls? For some families, having to measure .1 ml resolution difficult?
   - Offer as a toggle?
+- **More coding improvements**:
+  - Validation of .json datasets before tool runs
 
 <!-- end_slide -->
 
