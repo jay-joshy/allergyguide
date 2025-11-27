@@ -261,6 +261,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    white-space: nowrap;
   }
 
   .setting-row {
@@ -282,7 +283,7 @@
       color: var(--oit-text);
       border: 1px solid var(--oit-input-border);
       border-radius: 4px;
-      width: 4rem;
+      width: 5rem;
 
       &:focus {
         outline: none;

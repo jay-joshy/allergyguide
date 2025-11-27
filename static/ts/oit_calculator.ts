@@ -84,7 +84,7 @@ interface Food {
   gramsInServing: Decimal;
   servingSize: Decimal;
   getMgPerUnit(): Decimal;
-  mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
+  // mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
 }
 
 /**
@@ -179,7 +179,7 @@ interface ProtocolData {
     name: string;
     gramsInServing: string;
     servingSize: string;
-    mgPerUnit: string;
+    // mgPerUnit: string;
   };
   food_a_strategy: string;
   di_threshold: string;
@@ -188,7 +188,7 @@ interface ProtocolData {
     name: string;
     gramsInServing: string;
     servingSize: string;
-    mgPerUnit: string;
+    // mgPerUnit: string;
   };
   food_b_threshold?: string;
   table_di: any[]; // steps for protocol using dilution initial strategy
@@ -247,7 +247,6 @@ DEFAULT_CONFIG = {
 // ============================================
 
 let currentProtocol: Protocol | null = null;
-let foodsDatabase: FoodData[] = [];
 let protocolsDatabase: ProtocolData[] = [];
 let fuzzySortPreparedFoods: any[] = [];
 let fuzzySortPreparedProtocols: any[] = [];
@@ -286,44 +285,6 @@ function escapeHtml(unsafe: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-}
-
-/**
- * Calculate the canonical internal mgPerUnit (mg protein per g or ml of food)
- * from protein in grams and serving size.
- *
- * @remarks Formula: mgPerUnit = (proteinInGrams / servingSize) * 1000
- * @param proteinInGrams Total grams of protein in the serving
- * @param servingSize Serving size in grams or ml
- * @returns Milligrams of protein per unit (Decimal) for internal calculations. If serving size is 0, returns 0.
- */
-function calculateMgPerUnit(proteinInGrams: number, servingSize: number): Decimal {
-  if (servingSize === 0) return new Decimal(0); // Avoid division by zero
-  return new Decimal(proteinInGrams).dividedBy(servingSize).times(1000);
-}
-
-/**
- * Convert protein concentration from g per 100 (g or ml) to mg per unit (g or ml).
- *
- * @remarks Formula: mgPerUnit = gPer100 × 10.
- * @param uiValue protein concentration in g per 100 unit (UI-facing)
- * @returns Milligrams of protein per unit (Decimal) for internal calculations
- */
-function gramPer100ToMgPerUnit(uiValue: number): Decimal {
-  // works out to value * 1000 / 100 = value * 10
-  return new Decimal(uiValue).times(10);
-}
-
-/**
- * Convert protein concentration from mg per unit (g or ml) to g per 100 (g or ml).
- *
- * @remarks Formula: gPer100 = mgPerUnit ÷ 10.
- * @param mgPerUnit Milligrams of protein per unit
- * @returns Grams of protein per 100 units (number) for UI display
- */
-function mgPerUnitToGramPer100(mgPerUnit: Decimal): number {
-  // works out to value * (1/1000) * (100) = value / 10
-  return mgPerUnit.dividedBy(10).toNumber();
 }
 
 /**
@@ -421,7 +382,7 @@ function findDilutionCandidates(
   // => dailyAmount > P / (MAX_SOLID_CONCENTRATION × mgPerUnit)
   const minDailyForLowConcentration =
     food.type === FoodType.SOLID
-      ? P.dividedBy(config.MAX_SOLID_CONCENTRATION.times(food.mgPerUnit))
+      ? P.dividedBy(config.MAX_SOLID_CONCENTRATION.times(food.getMgPerUnit()))
       : null;
 
   for (const mixFoodValue of mixCandidates) {
@@ -432,7 +393,7 @@ function findDilutionCandidates(
 
       if (food.type === FoodType.SOLID) {
         // Solid in liquid - volume of solid is negligible
-        const totalMixProtein = mixFood.times(food.mgPerUnit);
+        const totalMixProtein = mixFood.times(food.getMgPerUnit());
         const servings = totalMixProtein.dividedBy(P);
 
         if (servings.lessThan(config.minServingsForMix)) continue;
@@ -467,7 +428,7 @@ function findDilutionCandidates(
         });
       } else {
         // Liquid in liquid - volumes are additive
-        const totalMixProtein = mixFood.times(food.mgPerUnit);
+        const totalMixProtein = mixFood.times(food.getMgPerUnit());
         const servings = totalMixProtein.dividedBy(P);
 
         if (servings.lessThan(config.minServingsForMix)) continue;
@@ -556,7 +517,7 @@ function generateStepForTarget(
   config: ProtocolConfig,
 ): Step | null {
   const P = targetMg;
-  const neatMass = P.dividedBy(food.mgPerUnit);
+  const neatMass = P.dividedBy(food.getMgPerUnit());
   const unit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
 
   let needsDilution = false;
@@ -634,7 +595,7 @@ function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
     } else {
       // Cannot generate step - still add it as direct with warning
       const P = targetProteins[i];
-      const neatMass = P.dividedBy(food.mgPerUnit);
+      const neatMass = P.dividedBy(food.getMgPerUnit());
       steps.push({
         stepIndex: i + 1,
         targetMg: P,
@@ -696,7 +657,7 @@ function addFoodBToProtocol(
   threshold: { unit: Unit; amount: Decimal },
 ): void {
   // Calculate foodBmgThreshold
-  const foodBmgThreshold = threshold.amount.times(foodB.mgPerUnit);
+  const foodBmgThreshold = threshold.amount.times(foodB.getMgPerUnit());
 
   // Set Food B in protocol (even if no transition point found, so threshold changes can be detected)
   protocol.foodB = foodB;
@@ -732,7 +693,7 @@ function addFoodBToProtocol(
 
   // First Food B step uses same target as last Food A step
   const firstBTargetMg = transitionTargetMg;
-  const firstBNeatMass = firstBTargetMg.dividedBy(foodB.mgPerUnit);
+  const firstBNeatMass = firstBTargetMg.dividedBy(foodB.getMgPerUnit());
   foodBSteps.push({
     stepIndex: transitionIndex + 2, // Will be reindexed later
     targetMg: firstBTargetMg,
@@ -744,7 +705,7 @@ function addFoodBToProtocol(
 
   // Remaining Food B steps
   for (const targetMg of originalTargets) {
-    const neatMass = targetMg.dividedBy(foodB.mgPerUnit);
+    const neatMass = targetMg.dividedBy(foodB.getMgPerUnit());
     foodBSteps.push({
       stepIndex: 0, // Will be reindexed
       targetMg,
@@ -797,7 +758,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
   }
 
   // R7: zero or negative mgPerUnit for food A
-  if (protocol.foodA.mgPerUnit.lessThanOrEqualTo(new Decimal(0))) {
+  if (protocol.foodA.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: "red",
       code: "R7",
@@ -805,7 +766,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
     });
   }
   // R7: zero or negative mgPerUnit for food B
-  if (protocol.foodB?.mgPerUnit.lessThanOrEqualTo(new Decimal(0))) {
+  if (protocol.foodB?.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: "red",
       code: "R7",
@@ -849,7 +810,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
     // FOR DILUTION STEPS
     if (step.method === Method.DILUTE) {
       // R2: Protein mismatch
-      const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
+      const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
       const mixTotalVolume =
         food.type === FoodType.SOLID
           ? step.mixWaterAmount
@@ -871,7 +832,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
 
       // R5: if in dilution, servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
       if (step.servings!.lessThan(new Decimal(1))) {
-        const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
+        const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
         warnings.push({
           severity: "red",
           code: "R5",
@@ -987,7 +948,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
     // FOR DIRECT
     else if (step.method === Method.DIRECT) {
       // R2: Protein mismatch
-      const calculatedProtein = step.dailyAmount.times(food.mgPerUnit);
+      const calculatedProtein = step.dailyAmount.times(food.getMgPerUnit());
       // const delta = calculatedProtein.minus(step.targetMg).abs();
       const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
 
@@ -1166,10 +1127,10 @@ function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
 
   if (step.method === Method.DIRECT) {
     // Recalculate dailyAmount
-    step.dailyAmount = step.targetMg.dividedBy(food.mgPerUnit);
+    step.dailyAmount = step.targetMg.dividedBy(food.getMgPerUnit());
   } else {
     // DILUTE - keep mixFoodAmount and dailyAmount, recalculate servings and water
-    const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
+    const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
     step.servings = totalMixProtein.dividedBy(step.targetMg);
 
     if (food.type === FoodType.SOLID) {
@@ -1212,10 +1173,10 @@ function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
 
   if (step.method === Method.DIRECT) {
     // Recalculate target protein
-    step.targetMg = step.dailyAmount.times(food.mgPerUnit);
+    step.targetMg = step.dailyAmount.times(food.getMgPerUnit());
   } else {
     // DILUTE - keep mixFoodAmount fixed, recalculate water
-    const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
+    const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
     step.servings = totalMixProtein.dividedBy(step.targetMg);
 
     if (food.type === FoodType.SOLID) {
@@ -1258,7 +1219,7 @@ function updateStepMixFoodAmount(
   const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
 
   // Recalculate water to keep P and dailyAmount unchanged
-  const totalMixProtein = step.mixFoodAmount.times(food.mgPerUnit);
+  const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
   step.servings = totalMixProtein.dividedBy(step.targetMg);
 
   if (food.type === FoodType.SOLID) {
@@ -1368,7 +1329,7 @@ function toggleFoodType(isFoodB: boolean): void {
       step.dailyAmountUnit = "ml";
 
       // Recalculate servings and water based on new food type
-      const totalMixProtein = step.mixFoodAmount!.times(food.mgPerUnit);
+      const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
       step.servings = totalMixProtein.dividedBy(step.targetMg);
 
       if (food.type === FoodType.SOLID) {
@@ -1451,12 +1412,20 @@ function renderFoodSettings(): void {
         <input
           type="number"
           min="0"
-          max="100"
+          max="${currentProtocol.foodA.servingSize}"
           id="food-a-protein"
-          value="${mgPerUnitToGramPer100(currentProtocol.foodA.mgPerUnit).toFixed(1)}"
+          value="${currentProtocol.foodA.gramsInServing.toFixed(1)}"
           step="0.1"
         />
-        <span>g per 100 ${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+        <span>g per</span>
+        <input
+          type="number"
+          min="0"
+          id="food-a-serving-size"
+          value="${currentProtocol.foodA.servingSize.toFixed(1)}"
+          step="0.1"
+        />
+        <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       </div>
       <div class="setting-row">
@@ -1519,11 +1488,19 @@ function renderFoodSettings(): void {
               type="number"
               id="food-b-protein"
               min="0"
-              max="100"
-              value="${mgPerUnitToGramPer100(currentProtocol.foodB.mgPerUnit).toFixed(1)}"
+              max="${currentProtocol.foodB.servingSize}"
+              value="${currentProtocol.foodB.gramsInServing.toFixed(1)}"
               step="0.1"
             />
-            <span>g per 100 ${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
+            <span>g per</span>
+            <input
+              type="number"
+              id="food-b-serving-size"
+              min="0"
+              value="${currentProtocol.foodB.servingSize.toFixed(1)}"
+              step="0.1"
+            />
+            <span>${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
           </div>
         </div>
         <div class="setting-row">
@@ -2084,7 +2061,6 @@ function selectFoodA(foodData: FoodData): void {
     getMgPerUnit: function() {
       return this.gramsInServing.times(1000).dividedBy(this.servingSize);
     },
-    mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
   currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
@@ -2119,7 +2095,6 @@ function selectFoodB(foodData: FoodData): void {
     getMgPerUnit: function() {
       return this.gramsInServing.times(1000).dividedBy(this.servingSize);
     },
-    mgPerUnit: calculateMgPerUnit(foodData["Mean protein in grams"], foodData["Serving size"]),
   };
 
   const threshold = {
@@ -2155,7 +2130,6 @@ function selectCustomFood(name: string, inputId: string): void {
     getMgPerUnit: function() {
       return this.gramsInServing.times(1000).dividedBy(this.servingSize);
     },
-    mgPerUnit: gramPer100ToMgPerUnit(10), // Default 10g protein per 100g
   };
 
   if (inputId === "food-a-search") {
@@ -2202,7 +2176,6 @@ function selectProtocol(protocolData: ProtocolData): void {
     getMgPerUnit: function() {
       return this.gramsInServing.times(1000).dividedBy(this.servingSize);
     },
-    mgPerUnit: new Decimal(protocolData.food_a.mgPerUnit),
   };
 
   const protocol: Protocol = {
@@ -2257,7 +2230,7 @@ function selectProtocol(protocolData: ProtocolData): void {
       step.mixWaterAmount = new Decimal(row.water_amount);
       // Calculate servings
       const food = row.food === foodA.name ? foodA : protocol.foodB!;
-      const totalMixProtein = step.mixFoodAmount.times(food.mgPerUnit);
+      const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
       step.servings = totalMixProtein.dividedBy(step.targetMg);
     }
 
@@ -2275,7 +2248,6 @@ function selectProtocol(protocolData: ProtocolData): void {
       getMgPerUnit: function() {
         return this.gramsInServing.times(1000).dividedBy(this.servingSize);
       },
-      mgPerUnit: new Decimal(protocolData.food_b.mgPerUnit),
     };
 
     if (protocolData.food_b_threshold) {
@@ -2395,20 +2367,44 @@ function attachSettingsEventListeners(): void {
     });
   }
 
-  // Food A protein
+  // Food A protein - both grams in serving && servingSize
+  // GET SERVING SIZE FIRST (because validation for protein amount depends on this being valid)
+  const foodAServingSizeInput = document.getElementById(
+    "food-a-serving-size",
+  ) as HTMLInputElement;
+  if (foodAServingSizeInput) {
+    foodAServingSizeInput.addEventListener("change", (e) => {
+      if (currentProtocol) {
+        let value = parseFloat((e.target as HTMLInputElement).value);
+        // Clamp value >0, cannot be NaN. Doesn't make sense to have a serving size of 0...
+        // Serving size <= 1000, 1kg or 1L of food is crazy and not an applicable serving size
+        if (value <= 0) value = 1;
+        if (value > 1000) value = 1000;
+        if (Number.isNaN(value)) value = 1;
+        // Display
+        (e.target as HTMLInputElement).value = value.toFixed(1);
+        // Change protocol state
+        currentProtocol.foodA.servingSize = new Decimal(value);
+        recalculateStepMethods();
+      }
+    });
+  }
+
+  // GET PROTEIN IN SERVING
   const foodAProteinInput = document.getElementById(
+
     "food-a-protein",
   ) as HTMLInputElement;
   if (foodAProteinInput) {
     foodAProteinInput.addEventListener("change", (e) => {
       if (currentProtocol) {
         let value = parseFloat((e.target as HTMLInputElement).value);
-        // Clamp value between 0 and 100 (impossible to > 100)
+        // Clamp value between 0 and serving size (impossible to have more grams of protein than grams of substance... lol)
         if (value < 0) value = 0;
-        if (value > 100) value = 100;
+        if (value > currentProtocol.foodA.servingSize.toNumber()) value = currentProtocol.foodA.servingSize.toNumber();
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
-        currentProtocol.foodA.mgPerUnit = gramPer100ToMgPerUnit(value);
+        currentProtocol.foodA.gramsInServing = new Decimal(value);
         recalculateStepMethods();
       }
     });
@@ -2442,7 +2438,37 @@ function attachSettingsEventListeners(): void {
     });
   }
 
-  // Food B protein
+  // SERVING SIZE OF FOOD B
+  const foodBServingSizeInput = document.getElementById(
+    "food-b-serving-size",
+  ) as HTMLInputElement;
+  if (foodBServingSizeInput) {
+    foodBServingSizeInput.addEventListener("change", (e) => {
+      if (currentProtocol && currentProtocol.foodB) {
+        let value = parseFloat((e.target as HTMLInputElement).value);
+        // serving size must be > 0 and < 1000 (1L or 1kg of food is CRAZY)
+        if (value <= 0) value = 1;
+        if (value > 1000) value = 1000;
+        if (Number.isNaN(value)) value = 1;
+        (e.target as HTMLInputElement).value = value.toFixed(1);
+        currentProtocol.foodB.servingSize = new Decimal(value);
+
+        // Recalculate Food B steps
+        if (currentProtocol.foodBThreshold) {
+          const tempFoodB = currentProtocol.foodB;
+          const tempThreshold = currentProtocol.foodBThreshold;
+          currentProtocol.foodB = undefined;
+          currentProtocol.foodBThreshold = undefined;
+          recalculateProtocol();
+          addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
+          renderProtocolTable();
+          updateWarnings();
+        }
+      }
+    });
+  }
+
+  // Food B protein in serving 
   const foodBProteinInput = document.getElementById(
     "food-b-protein",
   ) as HTMLInputElement;
@@ -2450,12 +2476,12 @@ function attachSettingsEventListeners(): void {
     foodBProteinInput.addEventListener("change", (e) => {
       if (currentProtocol && currentProtocol.foodB) {
         let value = parseFloat((e.target as HTMLInputElement).value);
-        // Clamp value between 0 and 100
+        // Clamp value between 0 and serving size
         if (value < 0) value = 0;
-        if (value > 100) value = 100;
+        if (value > currentProtocol.foodB.servingSize.toNumber()) value = currentProtocol.foodB.servingSize.toNumber();
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
-        currentProtocol.foodB.mgPerUnit = gramPer100ToMgPerUnit(value);
+        currentProtocol.foodB.gramsInServing = new Decimal(value);
 
         // Recalculate Food B steps
         if (currentProtocol.foodBThreshold) {
@@ -2775,7 +2801,7 @@ function exportPDF(jsPDF: any): void {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(
-      `Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodAUnit} serving.`,
+      `Protein: ${formatNumber(currentProtocol.foodA.gramsInServing, 2)} g per ${currentProtocol.foodA.servingSize} ${foodAUnit} serving.`,
       40,
       yPosition,
     );
@@ -2875,7 +2901,7 @@ function exportPDF(jsPDF: any): void {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(
-      `Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit.dividedBy(new Decimal(10)), 2)} g per 100 ${foodBUnit} serving`,
+      `Protein: ${formatNumber(currentProtocol.foodB.gramsInServing, 2)} g per ${currentProtocol.foodB.servingSize} ${foodBUnit} serving`,
       40,
       yPosition,
     );
@@ -3027,13 +3053,13 @@ function exportASCII(): void {
   const foodAType =
     currentProtocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
   const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-  foodAInfo += `${currentProtocol.foodA.name} (${foodAType}). Protein: ${formatNumber(currentProtocol.foodA.mgPerUnit, 1)} mg/${foodAUnit}`;
+  foodAInfo += `${currentProtocol.foodA.name} (${foodAType}). Protein: ${formatNumber(currentProtocol.foodA.getMgPerUnit(), 1)} mg/${foodAUnit}`;
   if (currentProtocol.foodB) {
     const foodBType =
       currentProtocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
     const foodBUnit =
       currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-    foodBInfo += `${currentProtocol.foodB.name} (${foodBType}). Protein: ${formatNumber(currentProtocol.foodB.mgPerUnit, 1)} mg/${foodBUnit}`;
+    foodBInfo += `${currentProtocol.foodB.name} (${foodBType}). Protein: ${formatNumber(currentProtocol.foodB.getMgPerUnit(), 1)} mg/${foodBUnit}`;
   }
 
   // GENERATE TABLES
