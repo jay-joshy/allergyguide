@@ -273,6 +273,7 @@ You need *1 mL disposable oral syringes* (no needles).
 
 Doses should be given around 24h apart
 No empty stomach
+ALWAYS eat a snack prior to dose
 keep food consistent
 
 Before giving the dose every day, check these 5 things:
@@ -346,5 +347,6 @@ Yes, many children undergo OIT to multiple foods at the same time.
 Spits up most of all of their dose
 don't double dose, resume normal next day. if recurring contact team
 
+#pagebreak()
 
 
