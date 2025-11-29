@@ -2808,8 +2808,8 @@ function exportPDF(jsPDF: any): void {
           step.stepIndex,
           `${formatNumber(step.targetMg, 1)} mg`,
           step.method,
-          dailyAmountStr,
           mixDetails,
+          dailyAmountStr,
           "Continue long term",
         ]);
       } else {
@@ -2817,8 +2817,8 @@ function exportPDF(jsPDF: any): void {
           step.stepIndex,
           `${formatNumber(step.targetMg, 1)} mg`,
           step.method,
-          dailyAmountStr,
           mixDetails,
+          dailyAmountStr,
           "2-4 weeks",
         ]);
       }
@@ -2847,8 +2847,8 @@ function exportPDF(jsPDF: any): void {
           "Step",
           "Protein",
           "Method",
-          "Daily Amount",
           "How to make mix",
+          "Daily Amount",
           "Interval",
         ],
       ],
@@ -2886,14 +2886,12 @@ function exportPDF(jsPDF: any): void {
     const foodBRows: any[] = [];
     for (let i = foodAStepCount; i < totalSteps; i++) {
       const step = currentProtocol.steps[i];
-      const food = currentProtocol.foodB;
 
       let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
-      let mixDetails = "N/A";
+      let mixDetails = "N/A"; // default for food B since there is no mix
 
       if (step.method === Method.DILUTE) {
-        const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-        mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
+        console.log("A step for food B should never be diluted by design.", step)
       }
 
       // last step should say continue long term
@@ -2902,8 +2900,8 @@ function exportPDF(jsPDF: any): void {
           step.stepIndex,
           `${formatNumber(step.targetMg, 1)} mg`,
           step.method,
-          dailyAmountStr,
           mixDetails,
+          dailyAmountStr,
           "Continue long term",
         ]);
       } else {
@@ -2911,8 +2909,8 @@ function exportPDF(jsPDF: any): void {
           step.stepIndex,
           `${formatNumber(step.targetMg, 1)} mg`,
           step.method,
-          dailyAmountStr,
           mixDetails,
+          dailyAmountStr,
           "2-4 weeks",
         ]);
       }
@@ -2947,8 +2945,8 @@ function exportPDF(jsPDF: any): void {
           "Step",
           "Protein",
           "Method",
-          "Daily Amount",
           "How to make mix",
+          "Daily Amount",
           "Interval",
         ],
       ],
@@ -3142,8 +3140,8 @@ function exportASCII(): void {
       step.stepIndex,
       `${formatNumber(step.targetMg, 1)} mg`,
       step.method,
-      dailyAmountStr,
       mixDetails,
+      dailyAmountStr,
     );
   }
 
