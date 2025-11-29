@@ -165,16 +165,6 @@ interface FoodData {
   Type: string; // SOLID or LIQUID
 }
 
-
-interface StepData {
-  food: string;
-  protein: Decimal;
-  method: string;
-  dailyAmount: string;
-  mixFoodAmount?: Decimal;
-  mixWaterAmount?: Decimal;
-}
-
 // For loading of protocols from JSON file
 /**
  * Protocol template record (as loaded from JSON).
@@ -197,11 +187,12 @@ interface ProtocolData {
     name: string;
     gramsInServing: string;
     servingSize: string;
+    // mgPerUnit: string;
   };
   food_b_threshold?: string;
-  table_di?: StepData[]; // steps for protocol using dilution initial strategy
-  table_dn?: StepData[]; // steps for protocol using dilution none strategy
-  table_da?: StepData[]; // steps for protocol using dilution all strategy
+  table_di: any[]; // steps for protocol using dilution initial strategy
+  table_dn: any[]; // steps for protocol using dilution none strategy
+  table_da: any[]; // steps for protocol using dilution all strategy
   custom_note?: string;
 }
 
@@ -2238,13 +2229,13 @@ function selectProtocol(protocolData: ProtocolData): void {
   }
 
   // load steps from the relevant table (table_di, table_dn, or table_da
-  let tableToLoad: StepData[] = [];
+  let tableToLoad: any[] = [];
   if (protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
-    tableToLoad = protocolData.table_di!;
+    tableToLoad = protocolData.table_di;
   } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_NONE) {
-    tableToLoad = protocolData.table_dn!;
+    tableToLoad = protocolData.table_dn;
   } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_ALL) {
-    tableToLoad = protocolData.table_da!;
+    tableToLoad = protocolData.table_da;
   }
 
   // Load steps from relevant table
@@ -2254,7 +2245,7 @@ function selectProtocol(protocolData: ProtocolData): void {
       stepIndex: i + 1,
       targetMg: new Decimal(row.protein),
       method: row.method === "DILUTE" ? Method.DILUTE : Method.DIRECT,
-      dailyAmount: new Decimal(row.dailyAmount),
+      dailyAmount: new Decimal(row.daily_amount),
       dailyAmountUnit:
         row.method === "DILUTE"
           ? "ml"
@@ -2267,8 +2258,8 @@ function selectProtocol(protocolData: ProtocolData): void {
     };
 
     if (row.method === "DILUTE") {
-      step.mixFoodAmount = new Decimal(row.mixFoodAmount!);
-      step.mixWaterAmount = new Decimal(row.mixWaterAmount!);
+      step.mixFoodAmount = new Decimal(row.mix_amount);
+      step.mixWaterAmount = new Decimal(row.water_amount);
       // Calculate servings
       const food = row.food === foodA.name ? foodA : protocol.foodB!;
       const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
