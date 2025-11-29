@@ -747,6 +747,7 @@ function addFoodBToProtocol(
  *
  * No exceptions are thrown; issues are reported via structured Warning items.
  *
+ * @remarks Validation should act on the ROUNDED VALUES PRESENTED TO THE USER, not the internally calculated ones.
  * @param protocol Protocol to validate
  * @returns Array of warnings, possibly empty
  */
@@ -817,25 +818,43 @@ function validateProtocol(protocol: Protocol): Warning[] {
 
     // FOR DILUTION STEPS
     if (step.method === Method.DILUTE) {
-      // R2: Protein mismatch
-      const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
-      const mixTotalVolume =
-        food.type === FoodType.SOLID
-          ? step.mixWaterAmount
-          : step.mixFoodAmount!.plus(step.mixWaterAmount!);
-      const calculatedProtein = totalMixProtein
-        .times(step.dailyAmount)
-        .dividedBy(mixTotalVolume!);
-      const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
-      // const delta = calculatedProtein.minus(step.targetMg).abs();
+      // R2: Protein mismatch. This check is based on the ROUNDED values that a user will actually measure at home, to reflect the true delivered dose.
+      const mixUnit = getMeasuringUnit(food);
+      const roundedMixFoodAmount = new Decimal(
+        formatAmount(step.mixFoodAmount!, mixUnit),
+      );
+      const roundedMixWaterAmount = new Decimal(
+        formatAmount(step.mixWaterAmount!, "ml"),
+      );
+      const roundedDailyAmount = new Decimal(formatAmount(step.dailyAmount, "ml"));
 
-      if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
-        warnings.push({
-          severity: "red",
-          code: "R2",
-          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
-          stepIndex: step.stepIndex,
-        });
+      const totalMixProteinBasedOnRounded = roundedMixFoodAmount.times(
+        food.getMgPerUnit(),
+      );
+      let mixTotalVolumeBasedOnRounded =
+        food.type === FoodType.SOLID
+          ? roundedMixWaterAmount
+          : roundedMixFoodAmount.plus(roundedMixWaterAmount);
+
+      if (mixTotalVolumeBasedOnRounded.isZero()) {
+        mixTotalVolumeBasedOnRounded = new Decimal(1); // Avoid division by zero
+        console.log("mixTotalVolumeBasedOnRounded is 0", mixTotalVolumeBasedOnRounded)
+      }
+
+      const calculatedProtein = totalMixProteinBasedOnRounded
+        .times(roundedDailyAmount)
+        .dividedBy(mixTotalVolumeBasedOnRounded);
+
+      if (!step.targetMg.isZero()) {
+        const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
+        if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
+          warnings.push({
+            severity: "red",
+            code: "R2",
+            message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
+            stepIndex: step.stepIndex,
+          });
+        }
       }
 
       // R5: if in dilution, servings <1 then => there is not enough protein in mixFoodAmount to even give the target protein (mg)
@@ -850,6 +869,10 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // R6: if in dilution, Mix total volume < dailyAmount (impossible)
+      const mixTotalVolume =
+        food.type === FoodType.SOLID
+          ? step.mixWaterAmount
+          : step.mixFoodAmount!.plus(step.mixWaterAmount!);
       if (mixTotalVolume!.lessThan(step.dailyAmount)) {
         warnings.push({
           severity: "red",
@@ -886,9 +909,9 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
 
       // Y3: for dilutions, noted below resolution of measurement tools
+      // FOR ROUNDED VALUES
       if (
-        food.type === FoodType.SOLID &&
-        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableMass)
+        food.type === FoodType.SOLID && roundedMixFoodAmount.lessThan(protocol.config.minMeasurableMass)
       ) {
         warnings.push({
           severity: "yellow",
@@ -899,7 +922,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
       if (
         food.type === FoodType.LIQUID &&
-        step.mixFoodAmount!.lessThan(protocol.config.minMeasurableVolume)
+        roundedMixFoodAmount.lessThan(protocol.config.minMeasurableVolume)
       ) {
         warnings.push({
           severity: "yellow",
@@ -908,7 +931,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
           stepIndex: step.stepIndex,
         });
       }
-      if (step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
+      if (roundedDailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
         warnings.push({
           severity: "yellow",
           code: "Y3",
@@ -916,7 +939,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
           stepIndex: step.stepIndex,
         });
       }
-      if (step.mixWaterAmount!.lessThan(protocol.config.minMeasurableVolume)) {
+      if (roundedMixWaterAmount.lessThan(protocol.config.minMeasurableVolume)) {
         warnings.push({
           severity: "yellow",
           code: "Y3",
@@ -955,25 +978,30 @@ function validateProtocol(protocol: Protocol): Warning[] {
     }
     // FOR DIRECT
     else if (step.method === Method.DIRECT) {
-      // R2: Protein mismatch
-      const calculatedProtein = step.dailyAmount.times(food.getMgPerUnit());
-      // const delta = calculatedProtein.minus(step.targetMg).abs();
-      const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
+      // R2: Protein mismatch. This check is based on the ROUNDED values that a user will actually measure at home, to reflect the true delivered dose.
+      const dailyAmountUnit = step.dailyAmountUnit;
+      const roundedDailyAmount = new Decimal(
+        formatAmount(step.dailyAmount, dailyAmountUnit),
+      );
+      const calculatedProtein = roundedDailyAmount.times(food.getMgPerUnit());
 
-      if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
-        warnings.push({
-          severity: "red",
-          code: "R2",
-          // message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg.`,
-          message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
-          stepIndex: step.stepIndex,
-        });
+      if (!step.targetMg.isZero()) {
+        const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
+        if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
+          warnings.push({
+            severity: "red",
+            code: "R2",
+            message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
+            stepIndex: step.stepIndex,
+          });
+        }
       }
 
       // Y3: for direct, noted below resolution of measurement tools
+      // Will use the ROUNDED measurements since that is what users will use
       if (
         food.type === FoodType.SOLID &&
-        step.dailyAmount.lessThan(protocol.config.minMeasurableMass)
+        roundedDailyAmount.lessThan(protocol.config.minMeasurableMass)
       ) {
         warnings.push({
           severity: "yellow",
@@ -984,7 +1012,7 @@ function validateProtocol(protocol: Protocol): Warning[] {
       }
       if (
         food.type === FoodType.LIQUID &&
-        step.dailyAmount.lessThan(protocol.config.minMeasurableVolume)
+        roundedDailyAmount.lessThan(protocol.config.minMeasurableVolume)
       ) {
         warnings.push({
           severity: "yellow",
