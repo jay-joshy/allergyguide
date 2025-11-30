@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "fast-toml": "^0.5.4",
+    "fuzzysort": "^3.1.0",
     "jsonminify": "^0.4.2",
     "pagefind": "^1.1.0",
     "replace-in-file": "^8.1.0",
