@@ -11,13 +11,21 @@
     "elasticlunrjava": "npm run abridge -- elasticlunrjava",
     "elasticlunr": "npm run abridge -- elasticlunr",
     "pagefind": "npm run abridge -- pagefind",
-    "tinysearch": "npm run abridge -- tinysearch"
+    "tinysearch": "npm run abridge -- tinysearch",
+    "check:ts": "tsc --noEmit",
+    "build:ts": "npm run check:ts && esbuild static/ts/**/*.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2017 --minify --chunk-names=chunks/[name]-[hash]"
   },
   "dependencies": {
     "fast-toml": "^0.5.4",
+    "fuzzysort": "^3.1.0",
     "jsonminify": "^0.4.2",
     "pagefind": "^1.1.0",
     "replace-in-file": "^8.1.0",
     "uglify-js": "^3.17.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "esbuild": "^0.27.0",
+    "typescript": "^5.9.3"
   }
 }

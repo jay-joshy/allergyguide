@@ -27,3 +27,4 @@ static/js/sw_load.min.js
 static/sw.js
 static/sw.min.js
 netlify/functions/protected_overview.md
+.netlify/
