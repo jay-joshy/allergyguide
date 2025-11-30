@@ -6,7 +6,7 @@ const CONFIG = {
   VIRTUAL_SCROLL_THRESHOLD: 100,
 };
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("food-search");
   const clearBtn = document.getElementById("clear-search");
   const filterBtns = document.querySelectorAll(".filter-btn");
@@ -158,11 +158,11 @@ document.addEventListener("DOMContentLoaded", function() {
   const debouncedSearch = debounce(updateDisplay, CONFIG.DEBOUNCE_DELAY);
 
   // Event listeners
-  searchInput.addEventListener("input", function() {
+  searchInput.addEventListener("input", function () {
     debouncedSearch();
   });
 
-  clearBtn.addEventListener("click", function() {
+  clearBtn.addEventListener("click", function () {
     searchInput.value = "";
 
     // Reset filter
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Optimized filter button handling
   filterBtns.forEach((btn) => {
-    btn.addEventListener("click", function() {
+    btn.addEventListener("click", function () {
       const newFilter = this.getAttribute("data-group");
 
       // Skip if same filter
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // Enhanced keyboard navigation
-  searchInput.addEventListener("keydown", function(e) {
+  searchInput.addEventListener("keydown", function (e) {
     switch (e.key) {
       case "Escape":
         this.value = "";
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelector(".food_protein_index").classList.add("initialized");
 
   // Modal open on food name click (delegated so it survives table re-renders)
-  tableBody.addEventListener("click", function(e) {
+  tableBody.addEventListener("click", function (e) {
     const cell = e.target.closest(".food-name");
     if (!cell || !tableBody.contains(cell)) return;
 
@@ -276,7 +276,7 @@ function ensureFpiModal() {
   header.appendChild(title);
 
   // Keep modal state in sync with title edits (do not rewrite the title content to avoid caret jumps)
-  title.addEventListener("input", function() {
+  title.addEventListener("input", function () {
     const els = ensureFpiModal();
     const name = title.textContent;
     els.modal.dataset.foodName = name;
@@ -286,7 +286,7 @@ function ensureFpiModal() {
   });
 
   // Prevent Enter from inserting a newline, and commit on Enter
-  title.addEventListener("keydown", function(e) {
+  title.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
       title.blur();
@@ -294,7 +294,7 @@ function ensureFpiModal() {
   });
 
   // Normalize and trim the title on blur to avoid stray whitespace/newlines
-  title.addEventListener("blur", function() {
+  title.addEventListener("blur", function () {
     let name = title.textContent.replace(/\s+/g, " ").trim();
     if (title.textContent !== name) {
       title.textContent = name;
@@ -325,7 +325,7 @@ function ensureFpiModal() {
 
   // Close interactions
   closeBtn.addEventListener("click", closeFpiModal);
-  backdrop.addEventListener("click", function(e) {
+  backdrop.addEventListener("click", function (e) {
     if (e.target === backdrop) closeFpiModal();
   });
   document.addEventListener("keydown", onEsc);
@@ -348,24 +348,26 @@ function pad(str, width, alignRight = false) {
  * @param {Array<number>} doses - Array of doses in mg.
  * @param {string} name - Name of the food.
  * @param {number} protein_per_g - Protein content in g per gram of food.
+ * @param {number} serving_size - Serving size in grams.
  * @returns {string} ASCII table string.
  */
-function generateAsciiProtocol(doses, name, protein_per_g) {
+function generateAsciiProtocol(doses, name, protein_per_g, serving_size = 100) {
   let cum = 0;
 
   // make easy format of challenge steps even without mono font
   if (!name.includes("@")) {
-    let ascii = `Challenge protocol: ${name} (${protein_per_g * 100}g protein per 100g)\n---\n`;
+    let ascii = `Challenge protocol: ${name} (${protein_per_g * serving_size}g protein per ${serving_size}g)\n---\n`;
     let cum = 0;
 
     doses.forEach((mg, i) => {
-      const g = protein_per_g > 0 ? ((mg * 0.001) / protein_per_g).toFixed(2) : "0.00";
+      const g =
+        protein_per_g > 0 ? ((mg * 0.001) / protein_per_g).toFixed(2) : "0.00";
       cum += mg;
 
       ascii += `Step ${i + 1}: ${g}g (${mg}mg protein; ${cum}mg cumulative dose)\n`;
     });
 
-    return ascii + "---"
+    return ascii + "---";
   }
 
   // OLD TABLE LOGIC - only if you include @ in the name... a bit of a easter egg.
@@ -393,7 +395,8 @@ function generateAsciiProtocol(doses, name, protein_per_g) {
     });
 
     // Build ASCII table
-    let ascii = protein_per_g * 100 + " (g) protein per 100g\n";
+    let ascii =
+      protein_per_g * serving_size + " (g) protein per " + serving_size + "g\n";
     // Header
     ascii += headers.map((h, i) => pad(h, colWidths[i])).join(" | ") + "\n";
     // Separator
@@ -405,7 +408,6 @@ function generateAsciiProtocol(doses, name, protein_per_g) {
     });
 
     return ascii;
-
   }
 }
 
@@ -446,10 +448,17 @@ function copyAscii(protocol, name, protein_per_g) {
         parseFloat(FPI_MODAL.modal.dataset.proteinPerG)) ||
       protein_per_g;
 
+    const currentServingSize =
+      (FPI_MODAL &&
+        FPI_MODAL.modal &&
+        parseFloat(FPI_MODAL.modal.dataset.servingSize)) ||
+      100;
+
     const tableString = generateAsciiProtocol(
       doses,
       currentName,
       currentProteinPerG,
+      currentServingSize,
     );
     navigator.clipboard
       .writeText(tableString)
@@ -465,10 +474,11 @@ function openFpiModal(foodName, meanValue) {
   els.modal.dataset.foodName = foodName || "";
   els.modal.dataset.meanValue = String(meanValue ?? "");
 
-  // Parse and compute protein per gram of food
+  // Parse and compute protein per gram of food (default serving size is 100g)
   const mean = parseFloat(meanValue);
   const protein_per_g = mean && !Number.isNaN(mean) ? mean / 100 : 0;
   els.modal.dataset.proteinPerG = String(protein_per_g);
+  els.modal.dataset.servingSize = "100";
 
   // Dose steps in mg
   const practall_seven_doses_mg = [3, 10, 30, 100, 300, 1000, 3000];
@@ -503,7 +513,9 @@ function openFpiModal(foodName, meanValue) {
   els.body.innerHTML =
     meanValue !== undefined && meanValue !== null && String(meanValue).length
       ? `
-      <p><label><input id="fpi-protein-per-100g" class="protein-per-100g-input" type="number" min="0" step="0.01" value="${meanValue}"> (g) protein per 100g</label></p>
+      <div class="fpi-inputs-container">
+        <p><label><input id="fpi-protein-per-100g" class="protein-per-100g-input" type="number" min="0" step="0.01" value="${meanValue}"> (g) protein per <input id="fpi-serving-size" class="serving-size-input" type="number" min="1" step="1" value="100">g serving</label></p>
+      </div>
       <div class="fpi-modal-tables-container">
           <div class="fpi-modal-table-wrapper">
             <div class="fpi-table-header">
@@ -553,12 +565,16 @@ function openFpiModal(foodName, meanValue) {
 
   const copyFiveBtn = els.body.querySelector("#fpi-copy-five");
   if (copyFiveBtn) {
-    copyFiveBtn.addEventListener("click", () => copyAscii('five', foodName, protein_per_g));
+    copyFiveBtn.addEventListener("click", () =>
+      copyAscii("five", foodName, protein_per_g),
+    );
   }
 
   const copySevenBtn = els.body.querySelector("#fpi-copy-seven");
   if (copySevenBtn) {
-    copySevenBtn.addEventListener("click", () => copyAscii('seven', foodName, protein_per_g));
+    copySevenBtn.addEventListener("click", () =>
+      copyAscii("seven", foodName, protein_per_g),
+    );
   }
 
   // Setup editable behavior: recalc dependent cells when Protein (mg) changes
@@ -589,14 +605,27 @@ function openFpiModal(foodName, meanValue) {
     recalc();
   }
 
-  // Attach change handler to protein-per-100g input to recalc tables
+  // Attach change handler to protein-per-100g and serving-size inputs to recalc tables
   const protein100Input = els.body.querySelector("#fpi-protein-per-100g");
-  if (protein100Input) {
-    const onProteinChange = () => {
-      let v = parseFloat(protein100Input.value);
-      if (!(v >= 0)) v = 0;
-      const perG = v > 0 ? v / 100 : 0;
+  const servingSizeInput = els.body.querySelector("#fpi-serving-size");
+
+  if (protein100Input && servingSizeInput) {
+    const recalculateAll = () => {
+      let proteinValue = parseFloat(protein100Input.value);
+      if (!(proteinValue >= 0)) proteinValue = 0;
+
+      let servingSize = parseFloat(servingSizeInput.value);
+      // Validate serving size: minimum 1g
+      if (!(servingSize >= 1) || isNaN(servingSize)) {
+        servingSize = 1;
+        servingSizeInput.value = "1";
+      }
+
+      const perG =
+        proteinValue > 0 && servingSize > 0 ? proteinValue / servingSize : 0;
       els.modal.dataset.proteinPerG = String(perG);
+      els.modal.dataset.servingSize = String(servingSize);
+
       // Recalculate both tables using latest value
       [
         els.body.querySelector("#fpi-table-five"),
@@ -615,8 +644,14 @@ function openFpiModal(foodName, meanValue) {
         });
       });
     };
-    protein100Input.addEventListener("input", onProteinChange);
-    protein100Input.addEventListener("change", onProteinChange);
+
+    protein100Input.addEventListener("input", recalculateAll);
+    protein100Input.addEventListener("change", recalculateAll);
+    servingSizeInput.addEventListener("input", recalculateAll);
+    servingSizeInput.addEventListener("change", recalculateAll);
+
+    // Store initial serving size in modal dataset
+    els.modal.dataset.servingSize = "100";
   }
 
   setupEditableTable(els.body.querySelector("#fpi-table-five"));
