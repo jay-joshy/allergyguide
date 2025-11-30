@@ -1,669 +1,75 @@
-/**
- * Handles authentication and loading of protected content from a private GitHub repository.
- * Content is fetched via Netlify serverless functions and requires JWT authentication.
- */
-class ProtectedContentLoader {
-  // ============================================================================
-  // CONSTANTS
-  // ============================================================================
-
-  static TOKEN_EXPIRY_BUFFER_MS = 30000; // 30 seconds for clock skew
-  static MILLISECONDS_PER_SECOND = 1000;
-  static CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours (same as token expiry)
-
-  // ============================================================================
-  // LIFECYCLE & INITIALIZATION
-  // ============================================================================
-
-  /**
-   * Creates a new ProtectedContentLoader instance.
-   * Initializes API endpoints, storage keys, and image cache.
-   */
-  constructor() {
-    this.baseUrl = "/.netlify/functions/protected-content";
-    this.imageUrl = "/.netlify/functions/protected-image";
-    this.loginUrl = "/.netlify/functions/login";
-    this.storageKey = "jwt-token";
-    this.contentCachePrefix = "content-cache-";
-    this.imageCachePrefix = "image-cache-";
-    this.imageCache = new Map();
-    this.debug = true;
-  }
-
-  /**
-   * Main entry point - loads protected content for a given container.
-   * Checks for valid JWT and either loads content or shows login form.
-   * @param {string} containerId - The ID of the DOM element to render content into.
-   * @param {string} path - The path to the protected content file in the private repository.
-   * @returns {Promise<void>}
-   */
-  async loadProtectedContent(containerId, path) {
-    const container = document.getElementById(containerId);
-    const loadingText =
-      container?.getAttribute("data-loading-text") ||
-      "Loading protected content...";
-
-    this.log("Starting to load protected content", { containerId, path });
-    this.showLoading(containerId, loadingText);
-
-    const token = this.getStoredToken();
-
-    if (this.isTokenValid(token)) {
-      this.log("Using stored JWT");
-      await this.loadContentWithToken(containerId, path, token);
-    } else {
-      this.log("No valid JWT found, showing login form");
-      this.clearToken();
-      this.showLoginForm(containerId);
-    }
-  }
-
-  // ============================================================================
-  // TOKEN MANAGEMENT
-  // ============================================================================
-
-  /**
-   * Retrieves the stored JWT token from localStorage.
-   * @returns {string|null} The JWT token if it exists, null otherwise.
-   */
-  getStoredToken() {
-    return localStorage.getItem(this.storageKey);
-  }
-
-  /**
-   * Stores a JWT token in localStorage.
-   * @param {string} token - The JWT token to store.
-   * @returns {void}
-   */
-  storeToken(token) {
-    localStorage.setItem(this.storageKey, token);
-  }
-
-  /**
-   * Validates a JWT token and checks if it's still valid.
-   * Adds a 30-second buffer for clock skew to account for time differences
-   * between client and server.
-   * @param {string|null} token - The JWT token to validate.
-   * @returns {boolean} True if the token is valid and not expired, false otherwise.
-   */
-  isTokenValid(token) {
-    if (!token) return false;
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      const expiryTimeMs =
-        payload.exp * ProtectedContentLoader.MILLISECONDS_PER_SECOND;
-      const bufferTimeMs =
-        Date.now() + ProtectedContentLoader.TOKEN_EXPIRY_BUFFER_MS;
-      return expiryTimeMs > bufferTimeMs;
-    } catch (e) {
-      console.error("Failed to parse JWT:", e);
-      return false;
-    }
-  }
-
-  /**
-   * Clears the stored token, image cache, and all cached content.
-   * Called on logout or when token becomes invalid.
-   * @returns {void}
-   */
-  clearToken() {
-    localStorage.removeItem(this.storageKey);
-    this.imageCache.clear();
-    this.clearAllCaches();
-  }
-
-  /**
-   * Clears all cached content and images from localStorage.
-   * @returns {void}
-   */
-  clearAllCaches() {
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (
-        key.startsWith(this.contentCachePrefix) ||
-        key.startsWith(this.imageCachePrefix)
-      ) {
-        keysToRemove.push(key);
-      }
-    }
-    keysToRemove.forEach((key) => localStorage.removeItem(key));
-    this.log(`Cleared ${keysToRemove.length} cached items`);
-  }
-
-  /**
-   * Checks if a cached item is still valid based on timestamp.
-   * @param {number} timestamp - The timestamp when the item was cached.
-   * @returns {boolean} True if the cache is still valid, false otherwise.
-   */
-  isCacheValid(timestamp) {
-    return Date.now() - timestamp < ProtectedContentLoader.CACHE_EXPIRY_MS;
-  }
-
-  // ============================================================================
-  // AUTHENTICATION FLOW
-  // ============================================================================
-
-  /**
-   * Displays the login form in the specified container.
-   * Creates a form with username and password fields, and attaches a submit handler.
-   * @param {string} containerId - The ID of the container element to render the form into.
-   * @returns {void}
-   */
-  showLoginForm(containerId) {
-    const container = document.getElementById(containerId);
-    if (container) {
-      container.innerHTML = `
+var Ce=Object.defineProperty,Ee=Object.defineProperties;var ve=Object.getOwnPropertyDescriptors;var ae=Object.getOwnPropertySymbols;var Ae=Object.prototype.hasOwnProperty,ze=Object.prototype.propertyIsEnumerable;var j=(n,e,t)=>e in n?Ce(n,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):n[e]=t,b=(n,e)=>{for(var t in e||(e={}))Ae.call(e,t)&&j(n,t,e[t]);if(ae)for(var t of ae(e))ze.call(e,t)&&j(n,t,e[t]);return n},R=(n,e)=>Ee(n,ve(e));var x=(n,e,t)=>j(n,typeof e!="symbol"?e+"":e,t);function G(){return{async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null}}var A=G();function de(n){A=n}var B={exec:()=>null};function f(n,e=""){let t=typeof n=="string"?n:n.source,s={replace:(r,i)=>{let a=typeof i=="string"?i:i.source;return a=a.replace(y.caret,"$1"),t=t.replace(r,a),s},getRegex:()=>new RegExp(t,e)};return s}var Pe=(()=>{try{return!!new RegExp("(?<=1)(?<!1)")}catch(n){return!1}})(),y={codeRemoveIndent:/^(?: {1,4}| {0,3}\t)/gm,outputLinkReplace:/\\([\[\]])/g,indentCodeCompensation:/^(\s+)(?:```)/,beginningSpace:/^\s+/,endingHash:/#$/,startingSpaceChar:/^ /,endingSpaceChar:/ $/,nonSpaceChar:/[^ ]/,newLineCharGlobal:/\n/g,tabCharGlobal:/\t/g,multipleSpaceGlobal:/\s+/g,blankLine:/^[ \t]*$/,doubleBlankLine:/\n[ \t]*\n[ \t]*$/,blockquoteStart:/^ {0,3}>/,blockquoteSetextReplace:/\n {0,3}((?:=+|-+) *)(?=\n|$)/g,blockquoteSetextReplace2:/^ {0,3}>[ \t]?/gm,listReplaceTabs:/^\t+/,listReplaceNesting:/^ {1,4}(?=( {4})*[^ ])/g,listIsTask:/^\[[ xX]\] +\S/,listReplaceTask:/^\[[ xX]\] +/,listTaskCheckbox:/\[[ xX]\]/,anyLine:/\n.*\n/,hrefBrackets:/^<(.*)>$/,tableDelimiter:/[:|]/,tableAlignChars:/^\||\| *$/g,tableRowBlankLine:/\n[ \t]*$/,tableAlignRight:/^ *-+: *$/,tableAlignCenter:/^ *:-+: *$/,tableAlignLeft:/^ *:-+ *$/,startATag:/^<a /i,endATag:/^<\/a>/i,startPreScriptTag:/^<(pre|code|kbd|script)(\s|>)/i,endPreScriptTag:/^<\/(pre|code|kbd|script)(\s|>)/i,startAngleBracket:/^</,endAngleBracket:/>$/,pedanticHrefTitle:/^([^'"]*[^\s])\s+(['"])(.*)\2/,unicodeAlphaNumeric:/[\p{L}\p{N}]/u,escapeTest:/[&<>"']/,escapeReplace:/[&<>"']/g,escapeTestNoEncode:/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/,escapeReplaceNoEncode:/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g,unescapeTest:/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig,caret:/(^|[^\[])\^/g,percentDecode:/%25/g,findPipe:/\|/g,splitPipe:/ \|/,slashPipe:/\\\|/g,carriageReturn:/\r\n|\r/g,spaceLine:/^ +$/gm,notSpaceStart:/^\S*/,endingNewline:/\n$/,listItemRegex:n=>new RegExp(`^( {0,3}${n})((?:[	 ][^\\n]*)?(?:\\n|$))`),nextBulletRegex:n=>new RegExp(`^ {0,${Math.min(3,n-1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`),hrRegex:n=>new RegExp(`^ {0,${Math.min(3,n-1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`),fencesBeginRegex:n=>new RegExp(`^ {0,${Math.min(3,n-1)}}(?:\`\`\`|~~~)`),headingBeginRegex:n=>new RegExp(`^ {0,${Math.min(3,n-1)}}#`),htmlBeginRegex:n=>new RegExp(`^ {0,${Math.min(3,n-1)}}<(?:[a-z].*>|!--)`,"i")},Le=/^(?:[ \t]*(?:\n|$))+/,Ie=/^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/,_e=/^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/,M=/^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,Be=/^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,X=/(?:[*+-]|\d{1,9}[.)])/,ke=/^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/,fe=f(ke).replace(/bull/g,X).replace(/blockCode/g,/(?: {4}| {0,3}\t)/).replace(/fences/g,/ {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g,/ {0,3}>/).replace(/heading/g,/ {0,3}#{1,6}/).replace(/html/g,/ {0,3}<[^\n>]+>\n/).replace(/\|table/g,"").getRegex(),Me=f(ke).replace(/bull/g,X).replace(/blockCode/g,/(?: {4}| {0,3}\t)/).replace(/fences/g,/ {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g,/ {0,3}>/).replace(/heading/g,/ {0,3}#{1,6}/).replace(/html/g,/ {0,3}<[^\n>]+>\n/).replace(/table/g,/ {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(),V=/^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/,qe=/^[^\n]+/,Y=/(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/,De=f(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label",Y).replace("title",/(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(),Oe=f(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g,X).getRegex(),Z="address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul",ee=/<!--(?:-?>|[\s\S]*?(?:-->|$))/,Ue=f("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))","i").replace("comment",ee).replace("tag",Z).replace("attribute",/ +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(),me=f(V).replace("hr",M).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("|table","").replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",Z).getRegex(),Fe=f(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph",me).getRegex(),te={blockquote:Fe,code:Ie,def:De,fences:_e,heading:Be,hr:M,html:Ue,lheading:fe,list:Oe,newline:Le,paragraph:me,table:B,text:qe},oe=f("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr",M).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("blockquote"," {0,3}>").replace("code","(?: {4}| {0,3}	)[^\\n]").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",Z).getRegex(),Ne=R(b({},te),{lheading:Me,table:oe,paragraph:f(V).replace("hr",M).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("table",oe).replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list"," {0,3}(?:[*+-]|1[.)]) ").replace("html","</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag",Z).getRegex()}),Ze=R(b({},te),{html:f(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment",ee).replace(/tag/g,"(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,heading:/^(#{1,6})(.*)(?:\n+|$)/,fences:B,lheading:/^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,paragraph:f(V).replace("hr",M).replace("heading",` *#{1,6} *[^
+]`).replace("lheading",fe).replace("|table","").replace("blockquote"," {0,3}>").replace("|fences","").replace("|list","").replace("|html","").replace("|tag","").getRegex()}),He=/^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,Qe=/^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,xe=/^( {2,}|\\)\n(?!\s*$)/,je=/^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,H=/[\p{P}\p{S}]/u,re=/[\s\p{P}\p{S}]/u,be=/[^\s\p{P}\p{S}]/u,We=f(/^((?![*_])punctSpace)/,"u").replace(/punctSpace/g,re).getRegex(),we=/(?!~)[\p{P}\p{S}]/u,Je=/(?!~)[\s\p{P}\p{S}]/u,Ke=/(?:[^\s\p{P}\p{S}]|~)/u,Ge=f(/link|precode-code|html/,"g").replace("link",new RegExp("\\[(?:[^\\[\\]`]|(?<a>`+)[^`]+\\k<a>(?!`))*?\\]\\((?:\\\\[\\s\\S]|[^\\\\\\(\\)]|\\((?:\\\\[\\s\\S]|[^\\\\\\(\\)])*\\))*\\)")).replace("precode-",Pe?"(?<!`)()":"(^^|[^`])").replace("code",new RegExp("(?<b>`+)[^`]+\\k<b>(?!`)")).replace("html",/<(?! )[^<>]*?>/).getRegex(),ye=/^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/,Xe=f(ye,"u").replace(/punct/g,H).getRegex(),Ve=f(ye,"u").replace(/punct/g,we).getRegex(),$e="^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)",Ye=f($e,"gu").replace(/notPunctSpace/g,be).replace(/punctSpace/g,re).replace(/punct/g,H).getRegex(),et=f($e,"gu").replace(/notPunctSpace/g,Ke).replace(/punctSpace/g,Je).replace(/punct/g,we).getRegex(),tt=f("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)","gu").replace(/notPunctSpace/g,be).replace(/punctSpace/g,re).replace(/punct/g,H).getRegex(),rt=f(/\\(punct)/,"gu").replace(/punct/g,H).getRegex(),nt=f(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme",/[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email",/[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(),st=f(ee).replace("(?:-->|$)","-->").getRegex(),it=f("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment",st).replace("attribute",/\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(),U=/(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+[^`]*?`+(?!`)|[^\[\]\\`])*?/,lt=f(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]*(?:\n[ \t]*)?)(title))?\s*\)/).replace("label",U).replace("href",/<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title",/"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(),Se=f(/^!?\[(label)\]\[(ref)\]/).replace("label",U).replace("ref",Y).getRegex(),Re=f(/^!?\[(ref)\](?:\[\])?/).replace("ref",Y).getRegex(),at=f("reflink|nolink(?!\\()","g").replace("reflink",Se).replace("nolink",Re).getRegex(),ce=/[hH][tT][tT][pP][sS]?|[fF][tT][pP]/,ne={_backpedal:B,anyPunctuation:rt,autolink:nt,blockSkip:Ge,br:xe,code:Qe,del:B,emStrongLDelim:Xe,emStrongRDelimAst:Ye,emStrongRDelimUnd:tt,escape:He,link:lt,nolink:Re,punctuation:We,reflink:Se,reflinkSearch:at,tag:it,text:je,url:B},ot=R(b({},ne),{link:f(/^!?\[(label)\]\((.*?)\)/).replace("label",U).getRegex(),reflink:f(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label",U).getRegex()}),W=R(b({},ne),{emStrongRDelimAst:et,emStrongLDelim:Ve,url:f(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol",ce).replace("email",/[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(),_backpedal:/(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,del:/^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/,text:f(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol",ce).getRegex()}),ct=R(b({},W),{br:f(xe).replace("{2,}","*").getRegex(),text:f(W.text).replace("\\b_","\\b_| {2,}\\n").replace(/\{2,\}/g,"*").getRegex()}),D={normal:te,gfm:Ne,pedantic:Ze},L={normal:ne,gfm:W,breaks:ct,pedantic:ot},ht={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"},he=n=>ht[n];function T(n,e){if(e){if(y.escapeTest.test(n))return n.replace(y.escapeReplace,he)}else if(y.escapeTestNoEncode.test(n))return n.replace(y.escapeReplaceNoEncode,he);return n}function pe(n){try{n=encodeURI(n).replace(y.percentDecode,"%")}catch(e){return null}return n}function ue(n,e){var i;let t=n.replace(y.findPipe,(a,l,c)=>{let o=!1,h=l;for(;--h>=0&&c[h]==="\\";)o=!o;return o?"|":" |"}),s=t.split(y.splitPipe),r=0;if(s[0].trim()||s.shift(),s.length>0&&!((i=s.at(-1))!=null&&i.trim())&&s.pop(),e)if(s.length>e)s.splice(e);else for(;s.length<e;)s.push("");for(;r<s.length;r++)s[r]=s[r].trim().replace(y.slashPipe,"|");return s}function I(n,e,t){let s=n.length;if(s===0)return"";let r=0;for(;r<s;){let i=n.charAt(s-r-1);if(i===e&&!t)r++;else if(i!==e&&t)r++;else break}return n.slice(0,s-r)}function pt(n,e){if(n.indexOf(e[1])===-1)return-1;let t=0;for(let s=0;s<n.length;s++)if(n[s]==="\\")s++;else if(n[s]===e[0])t++;else if(n[s]===e[1]&&(t--,t<0))return s;return t>0?-2:-1}function ge(n,e,t,s,r){let i=e.href,a=e.title||null,l=n[1].replace(r.other.outputLinkReplace,"$1");s.state.inLink=!0;let c={type:n[0].charAt(0)==="!"?"image":"link",raw:t,href:i,title:a,text:l,tokens:s.inlineTokens(l)};return s.state.inLink=!1,c}function ut(n,e,t){let s=n.match(t.other.indentCodeCompensation);if(s===null)return e;let r=s[1];return e.split(`
+`).map(i=>{let a=i.match(t.other.beginningSpace);if(a===null)return i;let[l]=a;return l.length>=r.length?i.slice(r.length):i}).join(`
+`)}var F=class{constructor(n){x(this,"options");x(this,"rules");x(this,"lexer");this.options=n||A}space(n){let e=this.rules.block.newline.exec(n);if(e&&e[0].length>0)return{type:"space",raw:e[0]}}code(n){let e=this.rules.block.code.exec(n);if(e){let t=e[0].replace(this.rules.other.codeRemoveIndent,"");return{type:"code",raw:e[0],codeBlockStyle:"indented",text:this.options.pedantic?t:I(t,`
+`)}}}fences(n){let e=this.rules.block.fences.exec(n);if(e){let t=e[0],s=ut(t,e[3]||"",this.rules);return{type:"code",raw:t,lang:e[2]?e[2].trim().replace(this.rules.inline.anyPunctuation,"$1"):e[2],text:s}}}heading(n){let e=this.rules.block.heading.exec(n);if(e){let t=e[2].trim();if(this.rules.other.endingHash.test(t)){let s=I(t,"#");(this.options.pedantic||!s||this.rules.other.endingSpaceChar.test(s))&&(t=s.trim())}return{type:"heading",raw:e[0],depth:e[1].length,text:t,tokens:this.lexer.inline(t)}}}hr(n){let e=this.rules.block.hr.exec(n);if(e)return{type:"hr",raw:I(e[0],`
+`)}}blockquote(n){let e=this.rules.block.blockquote.exec(n);if(e){let t=I(e[0],`
+`).split(`
+`),s="",r="",i=[];for(;t.length>0;){let a=!1,l=[],c;for(c=0;c<t.length;c++)if(this.rules.other.blockquoteStart.test(t[c]))l.push(t[c]),a=!0;else if(!a)l.push(t[c]);else break;t=t.slice(c);let o=l.join(`
+`),h=o.replace(this.rules.other.blockquoteSetextReplace,`
+    $1`).replace(this.rules.other.blockquoteSetextReplace2,"");s=s?`${s}
+${o}`:o,r=r?`${r}
+${h}`:h;let u=this.lexer.state.top;if(this.lexer.state.top=!0,this.lexer.blockTokens(h,i,!0),this.lexer.state.top=u,t.length===0)break;let g=i.at(-1);if((g==null?void 0:g.type)==="code")break;if((g==null?void 0:g.type)==="blockquote"){let k=g,p=k.raw+`
+`+t.join(`
+`),w=this.blockquote(p);i[i.length-1]=w,s=s.substring(0,s.length-k.raw.length)+w.raw,r=r.substring(0,r.length-k.text.length)+w.text;break}else if((g==null?void 0:g.type)==="list"){let k=g,p=k.raw+`
+`+t.join(`
+`),w=this.list(p);i[i.length-1]=w,s=s.substring(0,s.length-g.raw.length)+w.raw,r=r.substring(0,r.length-k.raw.length)+w.raw,t=p.substring(i.at(-1).raw.length).split(`
+`);continue}}return{type:"blockquote",raw:s,tokens:i,text:r}}}list(n){var t,s;let e=this.rules.block.list.exec(n);if(e){let r=e[1].trim(),i=r.length>1,a={type:"list",raw:"",ordered:i,start:i?+r.slice(0,-1):"",loose:!1,items:[]};r=i?`\\d{1,9}\\${r.slice(-1)}`:`\\${r}`,this.options.pedantic&&(r=i?r:"[*+-]");let l=this.rules.other.listItemRegex(r),c=!1;for(;n;){let h=!1,u="",g="";if(!(e=l.exec(n))||this.rules.block.hr.test(n))break;u=e[0],n=n.substring(u.length);let k=e[2].split(`
+`,1)[0].replace(this.rules.other.listReplaceTabs,z=>" ".repeat(3*z.length)),p=n.split(`
+`,1)[0],w=!k.trim(),d=0;if(this.options.pedantic?(d=2,g=k.trimStart()):w?d=e[1].length+1:(d=e[2].search(this.rules.other.nonSpaceChar),d=d>4?1:d,g=k.slice(d),d+=e[1].length),w&&this.rules.other.blankLine.test(p)&&(u+=p+`
+`,n=n.substring(p.length+1),h=!0),!h){let z=this.rules.other.nextBulletRegex(d),E=this.rules.other.hrRegex(d),q=this.rules.other.fencesBeginRegex(d),le=this.rules.other.headingBeginRegex(d),Te=this.rules.other.htmlBeginRegex(d);for(;n;){let Q=n.split(`
+`,1)[0],P;if(p=Q,this.options.pedantic?(p=p.replace(this.rules.other.listReplaceNesting,"  "),P=p):P=p.replace(this.rules.other.tabCharGlobal,"    "),q.test(p)||le.test(p)||Te.test(p)||z.test(p)||E.test(p))break;if(P.search(this.rules.other.nonSpaceChar)>=d||!p.trim())g+=`
+`+P.slice(d);else{if(w||k.replace(this.rules.other.tabCharGlobal,"    ").search(this.rules.other.nonSpaceChar)>=4||q.test(k)||le.test(k)||E.test(k))break;g+=`
+`+p}!w&&!p.trim()&&(w=!0),u+=Q+`
+`,n=n.substring(Q.length+1),k=P.slice(d)}}a.loose||(c?a.loose=!0:this.rules.other.doubleBlankLine.test(u)&&(c=!0)),a.items.push({type:"list_item",raw:u,task:!!this.options.gfm&&this.rules.other.listIsTask.test(g),loose:!1,text:g,tokens:[]}),a.raw+=u}let o=a.items.at(-1);if(o)o.raw=o.raw.trimEnd(),o.text=o.text.trimEnd();else return;a.raw=a.raw.trimEnd();for(let h of a.items){if(this.lexer.state.top=!1,h.tokens=this.lexer.blockTokens(h.text,[]),h.task){if(h.text=h.text.replace(this.rules.other.listReplaceTask,""),((t=h.tokens[0])==null?void 0:t.type)==="text"||((s=h.tokens[0])==null?void 0:s.type)==="paragraph"){h.tokens[0].raw=h.tokens[0].raw.replace(this.rules.other.listReplaceTask,""),h.tokens[0].text=h.tokens[0].text.replace(this.rules.other.listReplaceTask,"");for(let g=this.lexer.inlineQueue.length-1;g>=0;g--)if(this.rules.other.listIsTask.test(this.lexer.inlineQueue[g].src)){this.lexer.inlineQueue[g].src=this.lexer.inlineQueue[g].src.replace(this.rules.other.listReplaceTask,"");break}}let u=this.rules.other.listTaskCheckbox.exec(h.raw);if(u){let g={type:"checkbox",raw:u[0]+" ",checked:u[0]!=="[ ]"};h.checked=g.checked,a.loose?h.tokens[0]&&["paragraph","text"].includes(h.tokens[0].type)&&"tokens"in h.tokens[0]&&h.tokens[0].tokens?(h.tokens[0].raw=g.raw+h.tokens[0].raw,h.tokens[0].text=g.raw+h.tokens[0].text,h.tokens[0].tokens.unshift(g)):h.tokens.unshift({type:"paragraph",raw:g.raw,text:g.raw,tokens:[g]}):h.tokens.unshift(g)}}if(!a.loose){let u=h.tokens.filter(k=>k.type==="space"),g=u.length>0&&u.some(k=>this.rules.other.anyLine.test(k.raw));a.loose=g}}if(a.loose)for(let h of a.items){h.loose=!0;for(let u of h.tokens)u.type==="text"&&(u.type="paragraph")}return a}}html(n){let e=this.rules.block.html.exec(n);if(e)return{type:"html",block:!0,raw:e[0],pre:e[1]==="pre"||e[1]==="script"||e[1]==="style",text:e[0]}}def(n){let e=this.rules.block.def.exec(n);if(e){let t=e[1].toLowerCase().replace(this.rules.other.multipleSpaceGlobal," "),s=e[2]?e[2].replace(this.rules.other.hrefBrackets,"$1").replace(this.rules.inline.anyPunctuation,"$1"):"",r=e[3]?e[3].substring(1,e[3].length-1).replace(this.rules.inline.anyPunctuation,"$1"):e[3];return{type:"def",tag:t,raw:e[0],href:s,title:r}}}table(n){var a;let e=this.rules.block.table.exec(n);if(!e||!this.rules.other.tableDelimiter.test(e[2]))return;let t=ue(e[1]),s=e[2].replace(this.rules.other.tableAlignChars,"").split("|"),r=(a=e[3])!=null&&a.trim()?e[3].replace(this.rules.other.tableRowBlankLine,"").split(`
+`):[],i={type:"table",raw:e[0],header:[],align:[],rows:[]};if(t.length===s.length){for(let l of s)this.rules.other.tableAlignRight.test(l)?i.align.push("right"):this.rules.other.tableAlignCenter.test(l)?i.align.push("center"):this.rules.other.tableAlignLeft.test(l)?i.align.push("left"):i.align.push(null);for(let l=0;l<t.length;l++)i.header.push({text:t[l],tokens:this.lexer.inline(t[l]),header:!0,align:i.align[l]});for(let l of r)i.rows.push(ue(l,i.header.length).map((c,o)=>({text:c,tokens:this.lexer.inline(c),header:!1,align:i.align[o]})));return i}}lheading(n){let e=this.rules.block.lheading.exec(n);if(e)return{type:"heading",raw:e[0],depth:e[2].charAt(0)==="="?1:2,text:e[1],tokens:this.lexer.inline(e[1])}}paragraph(n){let e=this.rules.block.paragraph.exec(n);if(e){let t=e[1].charAt(e[1].length-1)===`
+`?e[1].slice(0,-1):e[1];return{type:"paragraph",raw:e[0],text:t,tokens:this.lexer.inline(t)}}}text(n){let e=this.rules.block.text.exec(n);if(e)return{type:"text",raw:e[0],text:e[0],tokens:this.lexer.inline(e[0])}}escape(n){let e=this.rules.inline.escape.exec(n);if(e)return{type:"escape",raw:e[0],text:e[1]}}tag(n){let e=this.rules.inline.tag.exec(n);if(e)return!this.lexer.state.inLink&&this.rules.other.startATag.test(e[0])?this.lexer.state.inLink=!0:this.lexer.state.inLink&&this.rules.other.endATag.test(e[0])&&(this.lexer.state.inLink=!1),!this.lexer.state.inRawBlock&&this.rules.other.startPreScriptTag.test(e[0])?this.lexer.state.inRawBlock=!0:this.lexer.state.inRawBlock&&this.rules.other.endPreScriptTag.test(e[0])&&(this.lexer.state.inRawBlock=!1),{type:"html",raw:e[0],inLink:this.lexer.state.inLink,inRawBlock:this.lexer.state.inRawBlock,block:!1,text:e[0]}}link(n){let e=this.rules.inline.link.exec(n);if(e){let t=e[2].trim();if(!this.options.pedantic&&this.rules.other.startAngleBracket.test(t)){if(!this.rules.other.endAngleBracket.test(t))return;let i=I(t.slice(0,-1),"\\");if((t.length-i.length)%2===0)return}else{let i=pt(e[2],"()");if(i===-2)return;if(i>-1){let a=(e[0].indexOf("!")===0?5:4)+e[1].length+i;e[2]=e[2].substring(0,i),e[0]=e[0].substring(0,a).trim(),e[3]=""}}let s=e[2],r="";if(this.options.pedantic){let i=this.rules.other.pedanticHrefTitle.exec(s);i&&(s=i[1],r=i[3])}else r=e[3]?e[3].slice(1,-1):"";return s=s.trim(),this.rules.other.startAngleBracket.test(s)&&(this.options.pedantic&&!this.rules.other.endAngleBracket.test(t)?s=s.slice(1):s=s.slice(1,-1)),ge(e,{href:s&&s.replace(this.rules.inline.anyPunctuation,"$1"),title:r&&r.replace(this.rules.inline.anyPunctuation,"$1")},e[0],this.lexer,this.rules)}}reflink(n,e){let t;if((t=this.rules.inline.reflink.exec(n))||(t=this.rules.inline.nolink.exec(n))){let s=(t[2]||t[1]).replace(this.rules.other.multipleSpaceGlobal," "),r=e[s.toLowerCase()];if(!r){let i=t[0].charAt(0);return{type:"text",raw:i,text:i}}return ge(t,r,t[0],this.lexer,this.rules)}}emStrong(n,e,t=""){let s=this.rules.inline.emStrongLDelim.exec(n);if(!(!s||s[3]&&t.match(this.rules.other.unicodeAlphaNumeric))&&(!(s[1]||s[2])||!t||this.rules.inline.punctuation.exec(t))){let r=[...s[0]].length-1,i,a,l=r,c=0,o=s[0][0]==="*"?this.rules.inline.emStrongRDelimAst:this.rules.inline.emStrongRDelimUnd;for(o.lastIndex=0,e=e.slice(-1*n.length+r);(s=o.exec(e))!=null;){if(i=s[1]||s[2]||s[3]||s[4]||s[5]||s[6],!i)continue;if(a=[...i].length,s[3]||s[4]){l+=a;continue}else if((s[5]||s[6])&&r%3&&!((r+a)%3)){c+=a;continue}if(l-=a,l>0)continue;a=Math.min(a,a+l+c);let h=[...s[0]][0].length,u=n.slice(0,r+s.index+h+a);if(Math.min(r,a)%2){let k=u.slice(1,-1);return{type:"em",raw:u,text:k,tokens:this.lexer.inlineTokens(k)}}let g=u.slice(2,-2);return{type:"strong",raw:u,text:g,tokens:this.lexer.inlineTokens(g)}}}}codespan(n){let e=this.rules.inline.code.exec(n);if(e){let t=e[2].replace(this.rules.other.newLineCharGlobal," "),s=this.rules.other.nonSpaceChar.test(t),r=this.rules.other.startingSpaceChar.test(t)&&this.rules.other.endingSpaceChar.test(t);return s&&r&&(t=t.substring(1,t.length-1)),{type:"codespan",raw:e[0],text:t}}}br(n){let e=this.rules.inline.br.exec(n);if(e)return{type:"br",raw:e[0]}}del(n){let e=this.rules.inline.del.exec(n);if(e)return{type:"del",raw:e[0],text:e[2],tokens:this.lexer.inlineTokens(e[2])}}autolink(n){let e=this.rules.inline.autolink.exec(n);if(e){let t,s;return e[2]==="@"?(t=e[1],s="mailto:"+t):(t=e[1],s=t),{type:"link",raw:e[0],text:t,href:s,tokens:[{type:"text",raw:t,text:t}]}}}url(n){var t,s;let e;if(e=this.rules.inline.url.exec(n)){let r,i;if(e[2]==="@")r=e[0],i="mailto:"+r;else{let a;do a=e[0],e[0]=(s=(t=this.rules.inline._backpedal.exec(e[0]))==null?void 0:t[0])!=null?s:"";while(a!==e[0]);r=e[0],e[1]==="www."?i="http://"+e[0]:i=e[0]}return{type:"link",raw:e[0],text:r,href:i,tokens:[{type:"text",raw:r,text:r}]}}}inlineText(n){let e=this.rules.inline.text.exec(n);if(e){let t=this.lexer.state.inRawBlock;return{type:"text",raw:e[0],text:e[0],escaped:t}}}},$=class J{constructor(e){x(this,"tokens");x(this,"options");x(this,"state");x(this,"inlineQueue");x(this,"tokenizer");this.tokens=[],this.tokens.links=Object.create(null),this.options=e||A,this.options.tokenizer=this.options.tokenizer||new F,this.tokenizer=this.options.tokenizer,this.tokenizer.options=this.options,this.tokenizer.lexer=this,this.inlineQueue=[],this.state={inLink:!1,inRawBlock:!1,top:!0};let t={other:y,block:D.normal,inline:L.normal};this.options.pedantic?(t.block=D.pedantic,t.inline=L.pedantic):this.options.gfm&&(t.block=D.gfm,this.options.breaks?t.inline=L.breaks:t.inline=L.gfm),this.tokenizer.rules=t}static get rules(){return{block:D,inline:L}}static lex(e,t){return new J(t).lex(e)}static lexInline(e,t){return new J(t).inlineTokens(e)}lex(e){e=e.replace(y.carriageReturn,`
+`),this.blockTokens(e,this.tokens);for(let t=0;t<this.inlineQueue.length;t++){let s=this.inlineQueue[t];this.inlineTokens(s.src,s.tokens)}return this.inlineQueue=[],this.tokens}blockTokens(e,t=[],s=!1){var r,i,a;for(this.options.pedantic&&(e=e.replace(y.tabCharGlobal,"    ").replace(y.spaceLine,""));e;){let l;if((i=(r=this.options.extensions)==null?void 0:r.block)!=null&&i.some(o=>(l=o.call({lexer:this},e,t))?(e=e.substring(l.raw.length),t.push(l),!0):!1))continue;if(l=this.tokenizer.space(e)){e=e.substring(l.raw.length);let o=t.at(-1);l.raw.length===1&&o!==void 0?o.raw+=`
+`:t.push(l);continue}if(l=this.tokenizer.code(e)){e=e.substring(l.raw.length);let o=t.at(-1);(o==null?void 0:o.type)==="paragraph"||(o==null?void 0:o.type)==="text"?(o.raw+=(o.raw.endsWith(`
+`)?"":`
+`)+l.raw,o.text+=`
+`+l.text,this.inlineQueue.at(-1).src=o.text):t.push(l);continue}if(l=this.tokenizer.fences(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.heading(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.hr(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.blockquote(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.list(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.html(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.def(e)){e=e.substring(l.raw.length);let o=t.at(-1);(o==null?void 0:o.type)==="paragraph"||(o==null?void 0:o.type)==="text"?(o.raw+=(o.raw.endsWith(`
+`)?"":`
+`)+l.raw,o.text+=`
+`+l.raw,this.inlineQueue.at(-1).src=o.text):this.tokens.links[l.tag]||(this.tokens.links[l.tag]={href:l.href,title:l.title},t.push(l));continue}if(l=this.tokenizer.table(e)){e=e.substring(l.raw.length),t.push(l);continue}if(l=this.tokenizer.lheading(e)){e=e.substring(l.raw.length),t.push(l);continue}let c=e;if((a=this.options.extensions)!=null&&a.startBlock){let o=1/0,h=e.slice(1),u;this.options.extensions.startBlock.forEach(g=>{u=g.call({lexer:this},h),typeof u=="number"&&u>=0&&(o=Math.min(o,u))}),o<1/0&&o>=0&&(c=e.substring(0,o+1))}if(this.state.top&&(l=this.tokenizer.paragraph(c))){let o=t.at(-1);s&&(o==null?void 0:o.type)==="paragraph"?(o.raw+=(o.raw.endsWith(`
+`)?"":`
+`)+l.raw,o.text+=`
+`+l.text,this.inlineQueue.pop(),this.inlineQueue.at(-1).src=o.text):t.push(l),s=c.length!==e.length,e=e.substring(l.raw.length);continue}if(l=this.tokenizer.text(e)){e=e.substring(l.raw.length);let o=t.at(-1);(o==null?void 0:o.type)==="text"?(o.raw+=(o.raw.endsWith(`
+`)?"":`
+`)+l.raw,o.text+=`
+`+l.text,this.inlineQueue.pop(),this.inlineQueue.at(-1).src=o.text):t.push(l);continue}if(e){let o="Infinite loop on byte: "+e.charCodeAt(0);if(this.options.silent){console.error(o);break}else throw new Error(o)}}return this.state.top=!0,t}inline(e,t=[]){return this.inlineQueue.push({src:e,tokens:t}),t}inlineTokens(e,t=[]){var c,o,h,u,g,k;let s=e,r=null;if(this.tokens.links){let p=Object.keys(this.tokens.links);if(p.length>0)for(;(r=this.tokenizer.rules.inline.reflinkSearch.exec(s))!=null;)p.includes(r[0].slice(r[0].lastIndexOf("[")+1,-1))&&(s=s.slice(0,r.index)+"["+"a".repeat(r[0].length-2)+"]"+s.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex))}for(;(r=this.tokenizer.rules.inline.anyPunctuation.exec(s))!=null;)s=s.slice(0,r.index)+"++"+s.slice(this.tokenizer.rules.inline.anyPunctuation.lastIndex);let i;for(;(r=this.tokenizer.rules.inline.blockSkip.exec(s))!=null;)i=r[2]?r[2].length:0,s=s.slice(0,r.index+i)+"["+"a".repeat(r[0].length-i-2)+"]"+s.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);s=(h=(o=(c=this.options.hooks)==null?void 0:c.emStrongMask)==null?void 0:o.call({lexer:this},s))!=null?h:s;let a=!1,l="";for(;e;){a||(l=""),a=!1;let p;if((g=(u=this.options.extensions)==null?void 0:u.inline)!=null&&g.some(d=>(p=d.call({lexer:this},e,t))?(e=e.substring(p.raw.length),t.push(p),!0):!1))continue;if(p=this.tokenizer.escape(e)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.tag(e)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.link(e)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.reflink(e,this.tokens.links)){e=e.substring(p.raw.length);let d=t.at(-1);p.type==="text"&&(d==null?void 0:d.type)==="text"?(d.raw+=p.raw,d.text+=p.text):t.push(p);continue}if(p=this.tokenizer.emStrong(e,s,l)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.codespan(e)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.br(e)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.del(e)){e=e.substring(p.raw.length),t.push(p);continue}if(p=this.tokenizer.autolink(e)){e=e.substring(p.raw.length),t.push(p);continue}if(!this.state.inLink&&(p=this.tokenizer.url(e))){e=e.substring(p.raw.length),t.push(p);continue}let w=e;if((k=this.options.extensions)!=null&&k.startInline){let d=1/0,z=e.slice(1),E;this.options.extensions.startInline.forEach(q=>{E=q.call({lexer:this},z),typeof E=="number"&&E>=0&&(d=Math.min(d,E))}),d<1/0&&d>=0&&(w=e.substring(0,d+1))}if(p=this.tokenizer.inlineText(w)){e=e.substring(p.raw.length),p.raw.slice(-1)!=="_"&&(l=p.raw.slice(-1)),a=!0;let d=t.at(-1);(d==null?void 0:d.type)==="text"?(d.raw+=p.raw,d.text+=p.text):t.push(p);continue}if(e){let d="Infinite loop on byte: "+e.charCodeAt(0);if(this.options.silent){console.error(d);break}else throw new Error(d)}}return t}},N=class{constructor(n){x(this,"options");x(this,"parser");this.options=n||A}space(n){return""}code({text:n,lang:e,escaped:t}){var i;let s=(i=(e||"").match(y.notSpaceStart))==null?void 0:i[0],r=n.replace(y.endingNewline,"")+`
+`;return s?'<pre><code class="language-'+T(s)+'">'+(t?r:T(r,!0))+`</code></pre>
+`:"<pre><code>"+(t?r:T(r,!0))+`</code></pre>
+`}blockquote({tokens:n}){return`<blockquote>
+${this.parser.parse(n)}</blockquote>
+`}html({text:n}){return n}def(n){return""}heading({tokens:n,depth:e}){return`<h${e}>${this.parser.parseInline(n)}</h${e}>
+`}hr(n){return`<hr>
+`}list(n){let e=n.ordered,t=n.start,s="";for(let a=0;a<n.items.length;a++){let l=n.items[a];s+=this.listitem(l)}let r=e?"ol":"ul",i=e&&t!==1?' start="'+t+'"':"";return"<"+r+i+`>
+`+s+"</"+r+`>
+`}listitem(n){return`<li>${this.parser.parse(n.tokens)}</li>
+`}checkbox({checked:n}){return"<input "+(n?'checked="" ':"")+'disabled="" type="checkbox"> '}paragraph({tokens:n}){return`<p>${this.parser.parseInline(n)}</p>
+`}table(n){let e="",t="";for(let r=0;r<n.header.length;r++)t+=this.tablecell(n.header[r]);e+=this.tablerow({text:t});let s="";for(let r=0;r<n.rows.length;r++){let i=n.rows[r];t="";for(let a=0;a<i.length;a++)t+=this.tablecell(i[a]);s+=this.tablerow({text:t})}return s&&(s=`<tbody>${s}</tbody>`),`<table>
+<thead>
+`+e+`</thead>
+`+s+`</table>
+`}tablerow({text:n}){return`<tr>
+${n}</tr>
+`}tablecell(n){let e=this.parser.parseInline(n.tokens),t=n.header?"th":"td";return(n.align?`<${t} align="${n.align}">`:`<${t}>`)+e+`</${t}>
+`}strong({tokens:n}){return`<strong>${this.parser.parseInline(n)}</strong>`}em({tokens:n}){return`<em>${this.parser.parseInline(n)}</em>`}codespan({text:n}){return`<code>${T(n,!0)}</code>`}br(n){return"<br>"}del({tokens:n}){return`<del>${this.parser.parseInline(n)}</del>`}link({href:n,title:e,tokens:t}){let s=this.parser.parseInline(t),r=pe(n);if(r===null)return s;n=r;let i='<a href="'+n+'"';return e&&(i+=' title="'+T(e)+'"'),i+=">"+s+"</a>",i}image({href:n,title:e,text:t,tokens:s}){s&&(t=this.parser.parseInline(s,this.parser.textRenderer));let r=pe(n);if(r===null)return T(t);n=r;let i=`<img src="${n}" alt="${t}"`;return e&&(i+=` title="${T(e)}"`),i+=">",i}text(n){return"tokens"in n&&n.tokens?this.parser.parseInline(n.tokens):"escaped"in n&&n.escaped?n.text:T(n.text)}},se=class{strong({text:n}){return n}em({text:n}){return n}codespan({text:n}){return n}del({text:n}){return n}html({text:n}){return n}text({text:n}){return n}link({text:n}){return""+n}image({text:n}){return""+n}br(){return""}checkbox({raw:n}){return n}},S=class K{constructor(e){x(this,"options");x(this,"renderer");x(this,"textRenderer");this.options=e||A,this.options.renderer=this.options.renderer||new N,this.renderer=this.options.renderer,this.renderer.options=this.options,this.renderer.parser=this,this.textRenderer=new se}static parse(e,t){return new K(t).parse(e)}static parseInline(e,t){return new K(t).parseInline(e)}parse(e){var s,r;let t="";for(let i=0;i<e.length;i++){let a=e[i];if((r=(s=this.options.extensions)==null?void 0:s.renderers)!=null&&r[a.type]){let c=a,o=this.options.extensions.renderers[c.type].call({parser:this},c);if(o!==!1||!["space","hr","heading","code","table","blockquote","list","html","def","paragraph","text"].includes(c.type)){t+=o||"";continue}}let l=a;switch(l.type){case"space":{t+=this.renderer.space(l);break}case"hr":{t+=this.renderer.hr(l);break}case"heading":{t+=this.renderer.heading(l);break}case"code":{t+=this.renderer.code(l);break}case"table":{t+=this.renderer.table(l);break}case"blockquote":{t+=this.renderer.blockquote(l);break}case"list":{t+=this.renderer.list(l);break}case"checkbox":{t+=this.renderer.checkbox(l);break}case"html":{t+=this.renderer.html(l);break}case"def":{t+=this.renderer.def(l);break}case"paragraph":{t+=this.renderer.paragraph(l);break}case"text":{t+=this.renderer.text(l);break}default:{let c='Token with "'+l.type+'" type was not found.';if(this.options.silent)return console.error(c),"";throw new Error(c)}}}return t}parseInline(e,t=this.renderer){var r,i;let s="";for(let a=0;a<e.length;a++){let l=e[a];if((i=(r=this.options.extensions)==null?void 0:r.renderers)!=null&&i[l.type]){let o=this.options.extensions.renderers[l.type].call({parser:this},l);if(o!==!1||!["escape","html","link","image","strong","em","codespan","br","del","text"].includes(l.type)){s+=o||"";continue}}let c=l;switch(c.type){case"escape":{s+=t.text(c);break}case"html":{s+=t.html(c);break}case"link":{s+=t.link(c);break}case"image":{s+=t.image(c);break}case"checkbox":{s+=t.checkbox(c);break}case"strong":{s+=t.strong(c);break}case"em":{s+=t.em(c);break}case"codespan":{s+=t.codespan(c);break}case"br":{s+=t.br(c);break}case"del":{s+=t.del(c);break}case"text":{s+=t.text(c);break}default:{let o='Token with "'+c.type+'" type was not found.';if(this.options.silent)return console.error(o),"";throw new Error(o)}}}return s}},O,_=(O=class{constructor(n){x(this,"options");x(this,"block");this.options=n||A}preprocess(n){return n}postprocess(n){return n}processAllTokens(n){return n}emStrongMask(n){return n}provideLexer(){return this.block?$.lex:$.lexInline}provideParser(){return this.block?S.parse:S.parseInline}},x(O,"passThroughHooks",new Set(["preprocess","postprocess","processAllTokens","emStrongMask"])),x(O,"passThroughHooksRespectAsync",new Set(["preprocess","postprocess","processAllTokens"])),O),gt=class{constructor(...n){x(this,"defaults",G());x(this,"options",this.setOptions);x(this,"parse",this.parseMarkdown(!0));x(this,"parseInline",this.parseMarkdown(!1));x(this,"Parser",S);x(this,"Renderer",N);x(this,"TextRenderer",se);x(this,"Lexer",$);x(this,"Tokenizer",F);x(this,"Hooks",_);this.use(...n)}walkTokens(n,e){var s,r;let t=[];for(let i of n)switch(t=t.concat(e.call(this,i)),i.type){case"table":{let a=i;for(let l of a.header)t=t.concat(this.walkTokens(l.tokens,e));for(let l of a.rows)for(let c of l)t=t.concat(this.walkTokens(c.tokens,e));break}case"list":{let a=i;t=t.concat(this.walkTokens(a.items,e));break}default:{let a=i;(r=(s=this.defaults.extensions)==null?void 0:s.childTokens)!=null&&r[a.type]?this.defaults.extensions.childTokens[a.type].forEach(l=>{let c=a[l].flat(1/0);t=t.concat(this.walkTokens(c,e))}):a.tokens&&(t=t.concat(this.walkTokens(a.tokens,e)))}}return t}use(...n){let e=this.defaults.extensions||{renderers:{},childTokens:{}};return n.forEach(t=>{let s=b({},t);if(s.async=this.defaults.async||s.async||!1,t.extensions&&(t.extensions.forEach(r=>{if(!r.name)throw new Error("extension name required");if("renderer"in r){let i=e.renderers[r.name];i?e.renderers[r.name]=function(...a){let l=r.renderer.apply(this,a);return l===!1&&(l=i.apply(this,a)),l}:e.renderers[r.name]=r.renderer}if("tokenizer"in r){if(!r.level||r.level!=="block"&&r.level!=="inline")throw new Error("extension level must be 'block' or 'inline'");let i=e[r.level];i?i.unshift(r.tokenizer):e[r.level]=[r.tokenizer],r.start&&(r.level==="block"?e.startBlock?e.startBlock.push(r.start):e.startBlock=[r.start]:r.level==="inline"&&(e.startInline?e.startInline.push(r.start):e.startInline=[r.start]))}"childTokens"in r&&r.childTokens&&(e.childTokens[r.name]=r.childTokens)}),s.extensions=e),t.renderer){let r=this.defaults.renderer||new N(this.defaults);for(let i in t.renderer){if(!(i in r))throw new Error(`renderer '${i}' does not exist`);if(["options","parser"].includes(i))continue;let a=i,l=t.renderer[a],c=r[a];r[a]=(...o)=>{let h=l.apply(r,o);return h===!1&&(h=c.apply(r,o)),h||""}}s.renderer=r}if(t.tokenizer){let r=this.defaults.tokenizer||new F(this.defaults);for(let i in t.tokenizer){if(!(i in r))throw new Error(`tokenizer '${i}' does not exist`);if(["options","rules","lexer"].includes(i))continue;let a=i,l=t.tokenizer[a],c=r[a];r[a]=(...o)=>{let h=l.apply(r,o);return h===!1&&(h=c.apply(r,o)),h}}s.tokenizer=r}if(t.hooks){let r=this.defaults.hooks||new _;for(let i in t.hooks){if(!(i in r))throw new Error(`hook '${i}' does not exist`);if(["options","block"].includes(i))continue;let a=i,l=t.hooks[a],c=r[a];_.passThroughHooks.has(i)?r[a]=o=>{if(this.defaults.async&&_.passThroughHooksRespectAsync.has(i))return(async()=>{let u=await l.call(r,o);return c.call(r,u)})();let h=l.call(r,o);return c.call(r,h)}:r[a]=(...o)=>{if(this.defaults.async)return(async()=>{let u=await l.apply(r,o);return u===!1&&(u=await c.apply(r,o)),u})();let h=l.apply(r,o);return h===!1&&(h=c.apply(r,o)),h}}s.hooks=r}if(t.walkTokens){let r=this.defaults.walkTokens,i=t.walkTokens;s.walkTokens=function(a){let l=[];return l.push(i.call(this,a)),r&&(l=l.concat(r.call(this,a))),l}}this.defaults=b(b({},this.defaults),s)}),this}setOptions(n){return this.defaults=b(b({},this.defaults),n),this}lexer(n,e){return $.lex(n,e!=null?e:this.defaults)}parser(n,e){return S.parse(n,e!=null?e:this.defaults)}parseMarkdown(n){return(e,t)=>{let s=b({},t),r=b(b({},this.defaults),s),i=this.onError(!!r.silent,!!r.async);if(this.defaults.async===!0&&s.async===!1)return i(new Error("marked(): The async option was set to true by an extension. Remove async: false from the parse options object to return a Promise."));if(typeof e>"u"||e===null)return i(new Error("marked(): input parameter is undefined or null"));if(typeof e!="string")return i(new Error("marked(): input parameter is of type "+Object.prototype.toString.call(e)+", string expected"));if(r.hooks&&(r.hooks.options=r,r.hooks.block=n),r.async)return(async()=>{let a=r.hooks?await r.hooks.preprocess(e):e,l=await(r.hooks?await r.hooks.provideLexer():n?$.lex:$.lexInline)(a,r),c=r.hooks?await r.hooks.processAllTokens(l):l;r.walkTokens&&await Promise.all(this.walkTokens(c,r.walkTokens));let o=await(r.hooks?await r.hooks.provideParser():n?S.parse:S.parseInline)(c,r);return r.hooks?await r.hooks.postprocess(o):o})().catch(i);try{r.hooks&&(e=r.hooks.preprocess(e));let a=(r.hooks?r.hooks.provideLexer():n?$.lex:$.lexInline)(e,r);r.hooks&&(a=r.hooks.processAllTokens(a)),r.walkTokens&&this.walkTokens(a,r.walkTokens);let l=(r.hooks?r.hooks.provideParser():n?S.parse:S.parseInline)(a,r);return r.hooks&&(l=r.hooks.postprocess(l)),l}catch(a){return i(a)}}}onError(n,e){return t=>{if(t.message+=`
+Please report this to https://github.com/markedjs/marked.`,n){let s="<p>An error occurred:</p><pre>"+T(t.message+"",!0)+"</pre>";return e?Promise.resolve(s):s}if(e)return Promise.reject(t);throw t}}},v=new gt;function m(n,e){return v.parse(n,e)}m.options=m.setOptions=function(n){return v.setOptions(n),m.defaults=v.defaults,de(m.defaults),m};m.getDefaults=G;m.defaults=A;m.use=function(...n){return v.use(...n),m.defaults=v.defaults,de(m.defaults),m};m.walkTokens=function(n,e){return v.walkTokens(n,e)};m.parseInline=v.parseInline;m.Parser=S;m.parser=S.parse;m.Renderer=N;m.TextRenderer=se;m.Lexer=$;m.lexer=$.lex;m.Tokenizer=F;m.Hooks=_;m.parse=m;var kt=m.options,ft=m.setOptions,mt=m.use,xt=m.walkTokens,bt=m.parseInline;var wt=S.parse,yt=$.lex;var C=class C{constructor(){this.baseUrl="/.netlify/functions/protected-content",this.imageUrl="/.netlify/functions/protected-image",this.loginUrl="/.netlify/functions/login",this.storageKey="jwt-token",this.contentCachePrefix="content-cache-",this.imageCachePrefix="image-cache-",this.imageCache=new Map,this.debug=!0}async loadProtectedContent(e,t){let s=document.getElementById(e),r=(s==null?void 0:s.getAttribute("data-loading-text"))||"Loading protected content...";this.log("Starting to load protected content",{containerId:e,path:t}),this.showLoading(e,r);let i=this.getStoredToken();this.isTokenValid(i)?(this.log("Using stored JWT"),await this.loadContentWithToken(e,t,i)):(this.log("No valid JWT found, showing login form"),this.clearToken(),this.showLoginForm(e))}getStoredToken(){return localStorage.getItem(this.storageKey)}storeToken(e){localStorage.setItem(this.storageKey,e)}isTokenValid(e){if(!e)return!1;try{let s=JSON.parse(atob(e.split(".")[1])).exp*C.MILLISECONDS_PER_SECOND,r=Date.now()+C.TOKEN_EXPIRY_BUFFER_MS;return s>r}catch(t){return console.error("Failed to parse JWT:",t),!1}}clearToken(){localStorage.removeItem(this.storageKey),this.imageCache.clear(),this.clearAllCaches()}clearAllCaches(){let e=[];for(let t=0;t<localStorage.length;t++){let s=localStorage.key(t);s&&(s.startsWith(this.contentCachePrefix)||s.startsWith(this.imageCachePrefix))&&e.push(s)}e.forEach(t=>localStorage.removeItem(t)),this.log(`Cleared ${e.length} cached items`)}isCacheValid(e){return Date.now()-e<C.CACHE_EXPIRY_MS}showLoginForm(e){var s;let t=document.getElementById(e);t&&(t.innerHTML=`
         <div class="protected-login-form">
           <h4>Protected Content - Login Required</h4>
           <form class="login-form">
             <div class="form-group">
-              <label for="${containerId}-username">Username:</label>
-              <input type="text" id="${containerId}-username" name="username" required>
+              <label for="${e}-username">Username:</label>
+              <input type="text" id="${e}-username" name="username" required>
             </div>
             <div class="form-group">
-              <label for="${containerId}-password">Password:</label>
-              <input type="password" id="${containerId}-password" name="password" required>
+              <label for="${e}-password">Password:</label>
+              <input type="password" id="${e}-password" name="password" required>
             </div>
             <button type="submit" class="login-button">Access Content</button>
-            <div id="${containerId}-error" class="login-error" style="display: none;"></div>
+            <div id="${e}-error" class="login-error" style="display: none;"></div>
           </form>
         </div>
-      `;
-      container
-        .querySelector(".login-form")
-        .addEventListener("submit", (event) => {
-          event.preventDefault();
-          this.submitLogin(containerId);
-        });
-    }
-  }
-
-  /**
-   * Handles login form submission.
-   * Sends credentials to the login endpoint and stores the returned JWT.
-   * On success, automatically loads the protected content.
-   * @param {string} containerId - The ID of the container element with the login form.
-   * @returns {Promise<void>}
-   */
-  async submitLogin(containerId) {
-    const username = document
-      .getElementById(`${containerId}-username`)
-      .value.trim();
-    const password = document.getElementById(`${containerId}-password`).value;
-    const errorDiv = document.getElementById(`${containerId}-error`);
-    const button = document.querySelector(`#${containerId} .login-button`);
-
-    if (!username || !password) {
-      this.showLoginError(
-        containerId,
-        "Please enter both username and password",
-      );
-      return;
-    }
-
-    button.textContent = "Authenticating...";
-    button.disabled = true;
-    errorDiv.style.display = "none";
-
-    try {
-      console.log('Fetching login URL:', this.loginUrl);
-      const response = await fetch(this.loginUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      console.log('Response URL:', response.url);
-      console.log('Response status:', response.status);
-
-      if (!response.ok) {
-        let errorData;
-        try {
-          // We expect a JSON error body from our function, but Netlify might override it.
-          errorData = await response.json();
-        } catch (e) {
-          // If JSON parsing fails, the body is likely HTML from Netlify's gateway.
-          // Use a generic, user-friendly message based on status code
-          if (response.status === 429) {
-            throw new Error("Too many login attempts. Please try again later.");
-          } else if (response.status === 404) {
-            throw new Error("Login service unavailable.");
-          } else {
-            throw new Error("Unable to authenticate. Please try again.");
-          }
-        }
-
-        // Use the error message from the server (already user-friendly)
-        throw new Error(
-          errorData.error || "Authentication failed. Please try again.",
-        );
-      }
-
-      const data = await response.json();
-      this.storeToken(data.token);
-      const path = document
-        .getElementById(containerId)
-        .getAttribute("data-protected-path");
-      await this.loadContentWithToken(containerId, path, data.token);
-    } catch (error) {
-      this.log("Login failed:", error);
-      button.textContent = "Access Content";
-      button.disabled = false;
-      this.showLoginError(
-        containerId,
-        error.message || "Authentication failed.",
-      );
-    }
-  }
-
-  /**
-   * Displays an error message in the login form.
-   * @param {string} containerId - The ID of the container element with the login form.
-   * @param {string} message - The error message to display to the user.
-   * @returns {void}
-   */
-  showLoginError(containerId, message) {
-    const errorDiv = document.getElementById(`${containerId}-error`);
-    if (errorDiv) {
-      errorDiv.textContent = message;
-      errorDiv.style.display = "block";
-    }
-  }
-
-  // ============================================================================
-  // CONTENT LOADING
-  // ============================================================================
-
-  /**
-   * Loads and renders protected content using a valid JWT token.
-   * If loading fails, clears the token and shows the login form.
-   * @param {string} containerId - The ID of the container element to render content into.
-   * @param {string} path - The path to the protected content file.
-   * @param {string} token - The valid JWT token for authentication.
-   * @returns {Promise<void>}
-   */
-  async loadContentWithToken(containerId, path, token) {
-    try {
-      const contentData = await this.fetchContent(path, token);
-      await this.renderContent(
-        contentData.content,
-        contentData.fileType,
-        containerId,
-        token,
-      );
-      this.log("Content rendered successfully with token");
-    } catch (error) {
-      this.log("Failed to load content with token:", error);
-      this.clearToken();
-      this.showLoginForm(containerId);
-      // Use user-friendly message from server error
-      const userMessage =
-        error.message || "Your session has expired. Please log in again.";
-      this.showLoginError(containerId, userMessage);
-    }
-  }
-
-  /**
-   * Gets cached content from localStorage.
-   * @param {string} path - The path to the content file.
-   * @returns {Object|null} The cached content object or null if not found/expired.
-   */
-  getCachedContent(path) {
-    const cacheKey = this.contentCachePrefix + path;
-    const cached = localStorage.getItem(cacheKey);
-    if (!cached) {
-      return null;
-    }
-
-    try {
-      const data = JSON.parse(cached);
-      if (this.isCacheValid(data.timestamp)) {
-        this.log(`Using cached content for: ${path}`);
-        return data;
-      } else {
-        this.log(`Cache expired for: ${path}`);
-        localStorage.removeItem(cacheKey);
-        return null;
-      }
-    } catch (e) {
-      this.log(`Failed to parse cached content for: ${path}`, e);
-      localStorage.removeItem(cacheKey);
-      return null;
-    }
-  }
-
-  /**
-   * Stores content in localStorage cache.
-   * @param {string} path - The path to the content file.
-   * @param {Object} contentData - The content data object to cache.
-   * @returns {void}
-   */
-  setCachedContent(path, contentData) {
-    const cacheKey = this.contentCachePrefix + path;
-    const cacheData = {
-      ...contentData,
-      timestamp: Date.now(),
-    };
-    try {
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-      this.log(`Cached content for: ${path}`);
-    } catch (e) {
-      this.log(`Failed to cache content for: ${path}`, e);
-      // If localStorage is full, clear old caches and try again
-      if (e.name === "QuotaExceededError") {
-        this.log("localStorage quota exceeded, clearing old caches");
-        this.clearAllCaches();
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-        } catch (retryError) {
-          this.log("Still failed to cache after clearing", retryError);
-        }
-      }
-    }
-  }
-
-  /**
-   * Fetches protected content from the backend or cache.
-   * @param {string} path - The path to the content file in the private repository.
-   * @param {string} token - The JWT token for authentication.
-   * @returns {Promise<{content: string, fileType: string, path: string}>} The content data object.
-   * @throws {Error} If the fetch fails or returns an error response.
-   */
-  async fetchContent(path, token) {
-    // Check cache first
-    const cached = this.getCachedContent(path);
-    if (cached) {
-      return cached;
-    }
-
-    // Fetch from server
-    const url = `${this.baseUrl}?path=${encodeURIComponent(path)}`;
-    this.log("Fetching content from server:", url);
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!response.ok) {
-      try {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to load content.");
-      } catch (e) {
-        if (e.message && !e.message.includes("JSON")) {
-          throw e; // Re-throw if it's our error
-        }
-        throw new Error("Failed to load content.");
-      }
-    }
-
-    const contentData = await response.json();
-    // Cache the fetched content
-    this.setCachedContent(path, contentData);
-    return contentData;
-  }
-
-  /**
-   * Renders content in the specified container.
-   * Processes images first, then renders based on file type (HTML/Markdown/Text).
-   * @param {string} content - The raw content to render.
-   * @param {string} fileType - The type of content ('html', 'md', or other).
-   * @param {string} containerId - The ID of the container element to render into.
-   * @param {string} token - The JWT token for fetching images.
-   * @returns {Promise<void>}
-   * @throws {Error} If the container is not found or marked.js is not loaded for Markdown.
-   */
-  async renderContent(content, fileType, containerId, token) {
-    const container = document.getElementById(containerId);
-    if (!container) {
-      throw new Error(`Container with id '${containerId}' not found`);
-    }
-
-    const processedContent = await this.processImages(content, token);
-
-    if (fileType === "html") {
-      container.innerHTML = processedContent;
-    } else if (fileType === "md") {
-      if (typeof marked === "undefined") {
-        throw new Error("Marked library not loaded");
-      }
-      container.innerHTML = marked.parse(processedContent);
-    } else {
-      container.textContent = processedContent;
-    }
-  }
-
-  // ============================================================================
-  // IMAGE PROCESSING
-  // ============================================================================
-
-  /**
-   * Gets cached image from localStorage.
-   * @param {string} imagePath - The path to the image file.
-   * @returns {string|null} The cached data URL or null if not found/expired.
-   */
-  getCachedImage(imagePath) {
-    const cacheKey = this.imageCachePrefix + imagePath;
-    const cached = localStorage.getItem(cacheKey);
-    if (!cached) {
-      return null;
-    }
-
-    try {
-      const data = JSON.parse(cached);
-      if (this.isCacheValid(data.timestamp)) {
-        this.log(`Using cached image for: ${imagePath}`);
-        return data.dataUrl;
-      } else {
-        this.log(`Image cache expired for: ${imagePath}`);
-        localStorage.removeItem(cacheKey);
-        return null;
-      }
-    } catch (e) {
-      this.log(`Failed to parse cached image for: ${imagePath}`, e);
-      localStorage.removeItem(cacheKey);
-      return null;
-    }
-  }
-
-  /**
-   * Stores image in localStorage cache.
-   * @param {string} imagePath - The path to the image file.
-   * @param {string} dataUrl - The base64 data URL to cache.
-   * @returns {void}
-   */
-  setCachedImage(imagePath, dataUrl) {
-    const cacheKey = this.imageCachePrefix + imagePath;
-    const cacheData = {
-      dataUrl: dataUrl,
-      timestamp: Date.now(),
-    };
-    try {
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-      this.log(`Cached image for: ${imagePath}`);
-    } catch (e) {
-      this.log(`Failed to cache image for: ${imagePath}`, e);
-      // If localStorage is full, clear old caches and try again
-      if (e.name === "QuotaExceededError") {
-        this.log("localStorage quota exceeded for image, clearing old caches");
-        this.clearAllCaches();
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-        } catch (retryError) {
-          this.log("Still failed to cache image after clearing", retryError);
-        }
-      }
-    }
-  }
-
-  /**
-   * Fetches a protected image from the backend or cache.
-   * Images are cached in localStorage with expiry to avoid redundant requests.
-   * Cache persists across page refreshes and is cleared on logout/token expiry.
-   * @param {string} imagePath - The path to the image file in the private repository.
-   * @param {string} token - The JWT token for authentication.
-   * @returns {Promise<string>} A data URL containing the base64-encoded image.
-   * @throws {Error} If the image fetch fails.
-   */
-  async fetchImage(imagePath, token) {
-    // Check localStorage cache first
-    const cached = this.getCachedImage(imagePath);
-    if (cached) {
-      // Also populate in-memory cache for faster subsequent access during same session
-      this.imageCache.set(imagePath, cached);
-      return cached;
-    }
-
-    // Check in-memory cache (faster than localStorage)
-    if (this.imageCache.has(imagePath)) {
-      return this.imageCache.get(imagePath);
-    }
-
-    // Fetch from server
-    const url = `${this.imageUrl}?path=${encodeURIComponent(imagePath)}`;
-    this.log(`Fetching image from server: ${url}`);
-
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!response.ok) {
-      this.log(`Failed to load image: ${imagePath} (${response.status})`);
-      throw new Error("Failed to load image");
-    }
-
-    const data = await response.json();
-    const dataUrl = `data:${data.contentType};base64,${data.content}`;
-
-    // Cache in both localStorage and memory
-    this.setCachedImage(imagePath, dataUrl);
-    this.imageCache.set(imagePath, dataUrl);
-
-    return dataUrl;
-  }
-
-  /**
-   * Processes all images in the content HTML.
-   * Finds img tags with relative paths and replaces them with base64 data URLs.
-   * External URLs and data URIs are left unchanged.
-   * @param {string} content - The HTML content containing img tags.
-   * @param {string} token - The JWT token for fetching images.
-   * @returns {Promise<string>} The processed content with images replaced by data URLs.
-   */
-  async processImages(content, token) {
-    if (!token) return content;
-
-    const imgRegex = /<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi;
-    const images = [];
-    let match;
-
-    while ((match = imgRegex.exec(content)) !== null) {
-      const fullMatch = match[0];
-      const beforeSrc = match[1];
-      let srcPath = match[2];
-      const afterSrc = match[3];
-
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = srcPath;
-      srcPath = tempDiv.textContent || tempDiv.innerText || srcPath;
-
-      if (!srcPath.startsWith("http") && !srcPath.startsWith("data:")) {
-        const finalSrcPath = srcPath.startsWith("/")
-          ? `static${srcPath}`
-          : `static/${srcPath}`;
-        images.push({ fullMatch, beforeSrc, srcPath: finalSrcPath, afterSrc });
-      }
-    }
-
-    const imagePromises = images.map(async (img) => {
-      try {
-        const dataUrl = await this.fetchImage(img.srcPath, token);
-        return { ...img, dataUrl };
-      } catch (error) {
-        console.warn(`Failed to process image ${img.srcPath}:`, error);
-        return { ...img, dataUrl: null };
-      }
-    });
-
-    const imageResults = await Promise.all(imagePromises);
-
-    let processedContent = content;
-    imageResults.forEach(
-      ({ fullMatch, beforeSrc, afterSrc, dataUrl, srcPath }) => {
-        const newImg = dataUrl
-          ? `<img${beforeSrc}src="${dataUrl}"${afterSrc}>`
-          : `<img${beforeSrc}src="#" alt="Failed to load: ${srcPath}" class="protected-image-error"${afterSrc}>`;
-        processedContent = processedContent.replace(fullMatch, newImg);
-      },
-    );
-
-    return processedContent;
-  }
-
-  // ============================================================================
-  // UI HELPERS
-  // ============================================================================
-
-  /**
-   * Shows a loading message in the container.
-   * @param {string} containerId - The ID of the container element.
-   * @param {string} [loadingText="Loading protected content..."] - The loading message to display.
-   * @returns {void}
-   */
-  showLoading(containerId, loadingText = "Loading protected content...") {
-    const container = document.getElementById(containerId);
-    if (container) {
-      container.innerHTML = `<div class="protected-loading">${loadingText}</div>`;
-    }
-  }
-
-  /**
-   * Logs a debug message if debug mode is enabled.
-   * Prefixes all messages with [ProtectedLoader] for easy identification.
-   * @param {string} message - The message to log.
-   * @param {*} [data=null] - Optional data to log alongside the message.
-   * @returns {void}
-   */
-  log(message, data = null) {
-    if (this.debug) {
-      console.log(`[ProtectedLoader] ${message}`, data || "");
-    }
-  }
-}
-
-// ============================================================================
-// GLOBAL INITIALIZATION
-// ============================================================================
-
-/**
- * Global instance of ProtectedContentLoader.
- * Accessible via window.protectedLoader for manual interactions.
- * @type {ProtectedContentLoader}
- */
-window.protectedLoader = new ProtectedContentLoader();
-
-/**
- * Automatically loads protected content for all elements with data-protected-path attribute
- * when the DOM is ready.
- */
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("[data-protected-path]").forEach((element) => {
-    const path = element.getAttribute("data-protected-path");
-    if (path) {
-      window.protectedLoader.loadProtectedContent(element.id, path);
-    }
-  });
-});
-
-/**
- * Global logout function that clears authentication and shows login forms.
- * Can be called from anywhere in the page (e.g., a logout button).
- * @example
- * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
- * NOT YET REFERENCED
- */
-window.logoutProtectedContent = function() {
-  window.protectedLoader.log("Logging out.");
-  window.protectedLoader.clearToken();
-  document.querySelectorAll("[data-protected-path]").forEach((element) => {
-    window.protectedLoader.showLoginForm(element.id);
-  });
-};
+      `,(s=t.querySelector(".login-form"))==null||s.addEventListener("submit",r=>{r.preventDefault(),this.submitLogin(e)}))}async submitLogin(e){let t=document.getElementById(`${e}-username`),s=document.getElementById(`${e}-password`),r=document.getElementById(`${e}-error`),i=document.querySelector(`#${e} .login-button`),a=t.value.trim(),l=s.value;if(!a||!l){this.showLoginError(e,"Please enter both username and password");return}i&&(i.textContent="Authenticating...",i.disabled=!0),r&&(r.style.display="none");try{this.log("Fetching login URL:",this.loginUrl);let c=await fetch(this.loginUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:a,password:l})});if(this.log("Response URL:",c.url),this.log("Response status:",c.status.toString()),!c.ok){let g;try{g=await c.json()}catch(k){throw c.status===429?new Error("Too many login attempts. Please try again later."):c.status===404?new Error("Login service unavailable."):new Error("Unable to authenticate. Please try again.")}throw new Error(g.error||"Authentication failed. Please try again.")}let o=await c.json();this.storeToken(o.token);let h=document.getElementById(e),u=h==null?void 0:h.getAttribute("data-protected-path");u&&await this.loadContentWithToken(e,u,o.token)}catch(c){this.log("Login failed:",c),i&&(i.textContent="Access Content",i.disabled=!1),this.showLoginError(e,c instanceof Error?c.message:"Authentication failed.")}}showLoginError(e,t){let s=document.getElementById(`${e}-error`);s&&(s.textContent=t,s.style.display="block")}async loadContentWithToken(e,t,s){try{let r=await this.fetchContent(t,s);await this.renderContent(r.content,r.fileType,e,s),this.log("Content rendered successfully with token")}catch(r){this.log("Failed to load content with token:",r),this.clearToken(),this.showLoginForm(e);let i=r instanceof Error?r.message:"Your session has expired. Please log in again.";this.showLoginError(e,i)}}getCachedContent(e){let t=this.contentCachePrefix+e,s=localStorage.getItem(t);if(!s)return null;try{let r=JSON.parse(s);return this.isCacheValid(r.timestamp)?(this.log(`Using cached content for: ${e}`),r):(this.log(`Cache expired for: ${e}`),localStorage.removeItem(t),null)}catch(r){return this.log(`Failed to parse cached content for: ${e}`,r),localStorage.removeItem(t),null}}setCachedContent(e,t){let s=this.contentCachePrefix+e,r=R(b({},t),{timestamp:Date.now()});try{localStorage.setItem(s,JSON.stringify(r)),this.log(`Cached content for: ${e}`)}catch(i){if(this.log(`Failed to cache content for: ${e}`,i),i instanceof DOMException&&i.name==="QuotaExceededError"){this.log("localStorage quota exceeded, clearing old caches"),this.clearAllCaches();try{localStorage.setItem(s,JSON.stringify(r))}catch(a){this.log("Still failed to cache after clearing",a)}}}}async fetchContent(e,t){let s=this.getCachedContent(e);if(s)return s;let r=`${this.baseUrl}?path=${encodeURIComponent(e)}`;this.log("Fetching content from server:",r);let i=await fetch(r,{headers:{Authorization:`Bearer ${t}`}});if(!i.ok)try{let l=await i.json();throw new Error(l.error||"Failed to load content.")}catch(l){throw l instanceof Error&&!l.message.includes("JSON")?l:new Error("Failed to load content.")}let a=await i.json();return this.setCachedContent(e,a),a}async renderContent(e,t,s,r){let i=document.getElementById(s);if(!i)throw new Error(`Container with id '${s}' not found`);let a=await this.processImages(e,r);if(t==="html")i.innerHTML=a;else if(t==="md"){if(typeof m=="undefined")throw new Error("Marked library not loaded");i.innerHTML=await m.parse(a)}else i.textContent=a}getCachedImage(e){let t=this.imageCachePrefix+e,s=localStorage.getItem(t);if(!s)return null;try{let r=JSON.parse(s);return this.isCacheValid(r.timestamp)?(this.log(`Using cached image for: ${e}`),r.dataUrl):(this.log(`Image cache expired for: ${e}`),localStorage.removeItem(t),null)}catch(r){return this.log(`Failed to parse cached image for: ${e}`,r),localStorage.removeItem(t),null}}setCachedImage(e,t){let s=this.imageCachePrefix+e,r={dataUrl:t,timestamp:Date.now()};try{localStorage.setItem(s,JSON.stringify(r)),this.log(`Cached image for: ${e}`)}catch(i){if(this.log(`Failed to cache image for: ${e}`,i),i instanceof DOMException&&i.name==="QuotaExceededError"){this.log("localStorage quota exceeded for image, clearing old caches"),this.clearAllCaches();try{localStorage.setItem(s,JSON.stringify(r))}catch(a){this.log("Still failed to cache image after clearing",a)}}}}async fetchImage(e,t){let s=this.getCachedImage(e);if(s)return this.imageCache.set(e,s),s;if(this.imageCache.has(e))return this.imageCache.get(e);let r=`${this.imageUrl}?path=${encodeURIComponent(e)}`;this.log(`Fetching image from server: ${r}`);let i=await fetch(r,{headers:{Authorization:`Bearer ${t}`}});if(!i.ok)throw this.log(`Failed to load image: ${e} (${i.status})`),new Error("Failed to load image");let a=await i.json(),l=`data:${a.contentType};base64,${a.content}`;return this.setCachedImage(e,l),this.imageCache.set(e,l),l}async processImages(e,t){if(!t)return e;let s=/<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi,r=[],i;for(;(i=s.exec(e))!==null;){let o=i[0],h=i[1],u=i[2],g=i[3],k=document.createElement("div");if(k.innerHTML=u,u=k.textContent||k.innerText||u,!u.startsWith("http")&&!u.startsWith("data:")){let p=u.startsWith("/")?`static${u}`:`static/${u}`;r.push({fullMatch:o,beforeSrc:h,srcPath:p,afterSrc:g})}}let a=r.map(async o=>{try{let h=await this.fetchImage(o.srcPath,t);return R(b({},o),{dataUrl:h})}catch(h){return console.warn(`Failed to process image ${o.srcPath}:`,h),R(b({},o),{dataUrl:null})}}),l=await Promise.all(a),c=e;return l.forEach(({fullMatch:o,beforeSrc:h,afterSrc:u,dataUrl:g,srcPath:k})=>{let p=g?`<img${h}src="${g}"${u}>`:`<img${h}src="#" alt="Failed to load: ${k}" class="protected-image-error"${u}>`;c=c.replace(o,p)}),c}showLoading(e,t="Loading protected content..."){let s=document.getElementById(e);s&&(s.innerHTML=`<div class="protected-loading">${t}</div>`)}log(e,t=null){this.debug&&console.log(`[ProtectedLoader] ${e}`,t||"")}};C.TOKEN_EXPIRY_BUFFER_MS=3e4,C.MILLISECONDS_PER_SECOND=1e3,C.CACHE_EXPIRY_MS=1440*60*1e3;var ie=C;window.protectedLoader=new ie;document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("[data-protected-path]").forEach(n=>{let e=n.getAttribute("data-protected-path");e&&window.protectedLoader.loadProtectedContent(n.id,e)})});window.logoutProtectedContent=function(){window.protectedLoader.log("Logging out."),window.protectedLoader.clearToken(),document.querySelectorAll("[data-protected-path]").forEach(n=>{window.protectedLoader.showLoginForm(n.id)})};

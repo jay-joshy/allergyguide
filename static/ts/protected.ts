@@ -1,24 +1,65 @@
+// PACKAGES
+// ============================================================================
+import { marked } from "marked";
+
+// TYPES & INTERFACES
+// ============================================================================
+
+interface JwtPayload {
+  exp: number;
+  [key: string]: any;
+}
+
+interface ContentResponse {
+  content: string;
+  fileType: "html" | "md" | "txt";
+  path: string;
+  contentType?: string; // For images
+}
+
+interface CacheData<T> {
+  data: T; // actual content or dataUrl
+  timestamp: number;
+  // Specific for content cache
+  fileType?: string;
+  path?: string;
+}
+
+interface ImageProcessingMatch {
+  fullMatch: string;
+  beforeSrc: string;
+  srcPath: string;
+  afterSrc: string;
+  dataUrl?: string;
+}
+
+// CLASS
+// ============================================================================
+
 /**
- * Handles authentication and loading of protected content from a private GitHub repository.
+ * Handle authentication and loading of protected content from private repo
  * Content is fetched via Netlify serverless functions and requires JWT authentication.
  */
 class ProtectedContentLoader {
-  // ============================================================================
   // CONSTANTS
   // ============================================================================
+  static readonly TOKEN_EXPIRY_BUFFER_MS = 30000; // 30 seconds for clock skew
+  static readonly MILLISECONDS_PER_SECOND = 1000;
+  static readonly CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-  static TOKEN_EXPIRY_BUFFER_MS = 30000; // 30 seconds for clock skew
-  static MILLISECONDS_PER_SECOND = 1000;
-  static CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours (same as token expiry)
-
+  // PROPERTIES
   // ============================================================================
+  private baseUrl: string;
+  private imageUrl: string;
+  private loginUrl: string;
+  private storageKey: string;
+  private contentCachePrefix: string;
+  private imageCachePrefix: string;
+  private imageCache: Map<string, string>;
+  private debug: boolean;
+
   // LIFECYCLE & INITIALIZATION
   // ============================================================================
-
-  /**
-   * Creates a new ProtectedContentLoader instance.
-   * Initializes API endpoints, storage keys, and image cache.
-   */
   constructor() {
     this.baseUrl = "/.netlify/functions/protected-content";
     this.imageUrl = "/.netlify/functions/protected-image";
@@ -26,18 +67,14 @@ class ProtectedContentLoader {
     this.storageKey = "jwt-token";
     this.contentCachePrefix = "content-cache-";
     this.imageCachePrefix = "image-cache-";
-    this.imageCache = new Map();
+    this.imageCache = new Map<string, string>();
     this.debug = true;
   }
 
   /**
    * Main entry point - loads protected content for a given container.
-   * Checks for valid JWT and either loads content or shows login form.
-   * @param {string} containerId - The ID of the DOM element to render content into.
-   * @param {string} path - The path to the protected content file in the private repository.
-   * @returns {Promise<void>}
    */
-  async loadProtectedContent(containerId, path) {
+  async loadProtectedContent(containerId: string, path: string): Promise<void> {
     const container = document.getElementById(containerId);
     const loadingText =
       container?.getAttribute("data-loading-text") ||
@@ -50,7 +87,7 @@ class ProtectedContentLoader {
 
     if (this.isTokenValid(token)) {
       this.log("Using stored JWT");
-      await this.loadContentWithToken(containerId, path, token);
+      await this.loadContentWithToken(containerId, path, token!);
     } else {
       this.log("No valid JWT found, showing login form");
       this.clearToken();
@@ -58,7 +95,6 @@ class ProtectedContentLoader {
     }
   }
 
-  // ============================================================================
   // TOKEN MANAGEMENT
   // ============================================================================
 
@@ -66,16 +102,16 @@ class ProtectedContentLoader {
    * Retrieves the stored JWT token from localStorage.
    * @returns {string|null} The JWT token if it exists, null otherwise.
    */
-  getStoredToken() {
+  getStoredToken(): string | null {
     return localStorage.getItem(this.storageKey);
   }
 
   /**
-   * Stores a JWT token in localStorage.
+   * Stores JWT token in localStorage.
    * @param {string} token - The JWT token to store.
    * @returns {void}
    */
-  storeToken(token) {
+  storeToken(token: string): void {
     localStorage.setItem(this.storageKey, token);
   }
 
@@ -86,10 +122,10 @@ class ProtectedContentLoader {
    * @param {string|null} token - The JWT token to validate.
    * @returns {boolean} True if the token is valid and not expired, false otherwise.
    */
-  isTokenValid(token) {
+  isTokenValid(token: string | null): boolean {
     if (!token) return false;
     try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
+      const payload: JwtPayload = JSON.parse(atob(token.split(".")[1]));
       const expiryTimeMs =
         payload.exp * ProtectedContentLoader.MILLISECONDS_PER_SECOND;
       const bufferTimeMs =
@@ -106,7 +142,7 @@ class ProtectedContentLoader {
    * Called on logout or when token becomes invalid.
    * @returns {void}
    */
-  clearToken() {
+  clearToken(): void {
     localStorage.removeItem(this.storageKey);
     this.imageCache.clear();
     this.clearAllCaches();
@@ -116,13 +152,14 @@ class ProtectedContentLoader {
    * Clears all cached content and images from localStorage.
    * @returns {void}
    */
-  clearAllCaches() {
-    const keysToRemove = [];
+  clearAllCaches(): void {
+    const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (
-        key.startsWith(this.contentCachePrefix) ||
-        key.startsWith(this.imageCachePrefix)
+        key &&
+        (key.startsWith(this.contentCachePrefix) ||
+          key.startsWith(this.imageCachePrefix))
       ) {
         keysToRemove.push(key);
       }
@@ -136,11 +173,10 @@ class ProtectedContentLoader {
    * @param {number} timestamp - The timestamp when the item was cached.
    * @returns {boolean} True if the cache is still valid, false otherwise.
    */
-  isCacheValid(timestamp) {
+  isCacheValid(timestamp: number): boolean {
     return Date.now() - timestamp < ProtectedContentLoader.CACHE_EXPIRY_MS;
   }
 
-  // ============================================================================
   // AUTHENTICATION FLOW
   // ============================================================================
 
@@ -150,7 +186,7 @@ class ProtectedContentLoader {
    * @param {string} containerId - The ID of the container element to render the form into.
    * @returns {void}
    */
-  showLoginForm(containerId) {
+  showLoginForm(containerId: string): void {
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = `
@@ -172,7 +208,7 @@ class ProtectedContentLoader {
       `;
       container
         .querySelector(".login-form")
-        .addEventListener("submit", (event) => {
+        ?.addEventListener("submit", (event) => {
           event.preventDefault();
           this.submitLogin(containerId);
         });
@@ -186,13 +222,20 @@ class ProtectedContentLoader {
    * @param {string} containerId - The ID of the container element with the login form.
    * @returns {Promise<void>}
    */
-  async submitLogin(containerId) {
-    const username = document
-      .getElementById(`${containerId}-username`)
-      .value.trim();
-    const password = document.getElementById(`${containerId}-password`).value;
+  async submitLogin(containerId: string): Promise<void> {
+    const usernameInput = document.getElementById(
+      `${containerId}-username`,
+    ) as HTMLInputElement;
+    const passwordInput = document.getElementById(
+      `${containerId}-password`,
+    ) as HTMLInputElement;
     const errorDiv = document.getElementById(`${containerId}-error`);
-    const button = document.querySelector(`#${containerId} .login-button`);
+    const button = document.querySelector(
+      `#${containerId} .login-button`,
+    ) as HTMLButtonElement;
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
     if (!username || !password) {
       this.showLoginError(
@@ -202,22 +245,24 @@ class ProtectedContentLoader {
       return;
     }
 
-    button.textContent = "Authenticating...";
-    button.disabled = true;
-    errorDiv.style.display = "none";
+    if (button) {
+      button.textContent = "Authenticating...";
+      button.disabled = true;
+    }
+    if (errorDiv) errorDiv.style.display = "none";
 
     try {
-      console.log('Fetching login URL:', this.loginUrl);
+      this.log("Fetching login URL:", this.loginUrl);
       const response = await fetch(this.loginUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      console.log('Response URL:', response.url);
-      console.log('Response status:', response.status);
+      this.log("Response URL:", response.url);
+      this.log("Response status:", response.status.toString());
 
       if (!response.ok) {
-        let errorData;
+        let errorData: { error?: string };
         try {
           // We expect a JSON error body from our function, but Netlify might override it.
           errorData = await response.json();
@@ -232,8 +277,6 @@ class ProtectedContentLoader {
             throw new Error("Unable to authenticate. Please try again.");
           }
         }
-
-        // Use the error message from the server (already user-friendly)
         throw new Error(
           errorData.error || "Authentication failed. Please try again.",
         );
@@ -241,17 +284,22 @@ class ProtectedContentLoader {
 
       const data = await response.json();
       this.storeToken(data.token);
-      const path = document
-        .getElementById(containerId)
-        .getAttribute("data-protected-path");
-      await this.loadContentWithToken(containerId, path, data.token);
+
+      const container = document.getElementById(containerId);
+      const path = container?.getAttribute("data-protected-path");
+
+      if (path) {
+        await this.loadContentWithToken(containerId, path, data.token);
+      }
     } catch (error) {
       this.log("Login failed:", error);
-      button.textContent = "Access Content";
-      button.disabled = false;
+      if (button) {
+        button.textContent = "Access Content";
+        button.disabled = false;
+      }
       this.showLoginError(
         containerId,
-        error.message || "Authentication failed.",
+        error instanceof Error ? error.message : "Authentication failed.",
       );
     }
   }
@@ -262,7 +310,7 @@ class ProtectedContentLoader {
    * @param {string} message - The error message to display to the user.
    * @returns {void}
    */
-  showLoginError(containerId, message) {
+  showLoginError(containerId: string, message: string): void {
     const errorDiv = document.getElementById(`${containerId}-error`);
     if (errorDiv) {
       errorDiv.textContent = message;
@@ -270,7 +318,6 @@ class ProtectedContentLoader {
     }
   }
 
-  // ============================================================================
   // CONTENT LOADING
   // ============================================================================
 
@@ -282,7 +329,11 @@ class ProtectedContentLoader {
    * @param {string} token - The valid JWT token for authentication.
    * @returns {Promise<void>}
    */
-  async loadContentWithToken(containerId, path, token) {
+  async loadContentWithToken(
+    containerId: string,
+    path: string,
+    token: string,
+  ): Promise<void> {
     try {
       const contentData = await this.fetchContent(path, token);
       await this.renderContent(
@@ -296,9 +347,10 @@ class ProtectedContentLoader {
       this.log("Failed to load content with token:", error);
       this.clearToken();
       this.showLoginForm(containerId);
-      // Use user-friendly message from server error
       const userMessage =
-        error.message || "Your session has expired. Please log in again.";
+        error instanceof Error
+          ? error.message
+          : "Your session has expired. Please log in again.";
       this.showLoginError(containerId, userMessage);
     }
   }
@@ -306,9 +358,9 @@ class ProtectedContentLoader {
   /**
    * Gets cached content from localStorage.
    * @param {string} path - The path to the content file.
-   * @returns {Object|null} The cached content object or null if not found/expired.
+   * @returns {ContentResponse|null} The cached content object or null if not found/expired.
    */
-  getCachedContent(path) {
+  getCachedContent(path: string): ContentResponse | null {
     const cacheKey = this.contentCachePrefix + path;
     const cached = localStorage.getItem(cacheKey);
     if (!cached) {
@@ -316,7 +368,8 @@ class ProtectedContentLoader {
     }
 
     try {
-      const data = JSON.parse(cached);
+      // We expect the stored string to match the ContentResponse + timestamp
+      const data = JSON.parse(cached) as CacheData<string> & ContentResponse;
       if (this.isCacheValid(data.timestamp)) {
         this.log(`Using cached content for: ${path}`);
         return data;
@@ -335,10 +388,10 @@ class ProtectedContentLoader {
   /**
    * Stores content in localStorage cache.
    * @param {string} path - The path to the content file.
-   * @param {Object} contentData - The content data object to cache.
+   * @param {ContentResponse} contentData - The content data object to cache.
    * @returns {void}
    */
-  setCachedContent(path, contentData) {
+  setCachedContent(path: string, contentData: ContentResponse): void {
     const cacheKey = this.contentCachePrefix + path;
     const cacheData = {
       ...contentData,
@@ -350,7 +403,7 @@ class ProtectedContentLoader {
     } catch (e) {
       this.log(`Failed to cache content for: ${path}`, e);
       // If localStorage is full, clear old caches and try again
-      if (e.name === "QuotaExceededError") {
+      if (e instanceof DOMException && e.name === "QuotaExceededError") {
         this.log("localStorage quota exceeded, clearing old caches");
         this.clearAllCaches();
         try {
@@ -366,10 +419,10 @@ class ProtectedContentLoader {
    * Fetches protected content from the backend or cache.
    * @param {string} path - The path to the content file in the private repository.
    * @param {string} token - The JWT token for authentication.
-   * @returns {Promise<{content: string, fileType: string, path: string}>} The content data object.
+   * @returns {Promise<ContentResponse>}
    * @throws {Error} If the fetch fails or returns an error response.
    */
-  async fetchContent(path, token) {
+  async fetchContent(path: string, token: string): Promise<ContentResponse> {
     // Check cache first
     const cached = this.getCachedContent(path);
     if (cached) {
@@ -388,14 +441,14 @@ class ProtectedContentLoader {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to load content.");
       } catch (e) {
-        if (e.message && !e.message.includes("JSON")) {
+        if (e instanceof Error && !e.message.includes("JSON")) {
           throw e; // Re-throw if it's our error
         }
         throw new Error("Failed to load content.");
       }
     }
 
-    const contentData = await response.json();
+    const contentData: ContentResponse = await response.json();
     // Cache the fetched content
     this.setCachedContent(path, contentData);
     return contentData;
@@ -411,7 +464,12 @@ class ProtectedContentLoader {
    * @returns {Promise<void>}
    * @throws {Error} If the container is not found or marked.js is not loaded for Markdown.
    */
-  async renderContent(content, fileType, containerId, token) {
+  async renderContent(
+    content: string,
+    fileType: string,
+    containerId: string,
+    token: string,
+  ): Promise<void> {
     const container = document.getElementById(containerId);
     if (!container) {
       throw new Error(`Container with id '${containerId}' not found`);
@@ -425,13 +483,12 @@ class ProtectedContentLoader {
       if (typeof marked === "undefined") {
         throw new Error("Marked library not loaded");
       }
-      container.innerHTML = marked.parse(processedContent);
+      container.innerHTML = await marked.parse(processedContent);
     } else {
       container.textContent = processedContent;
     }
   }
 
-  // ============================================================================
   // IMAGE PROCESSING
   // ============================================================================
 
@@ -440,7 +497,7 @@ class ProtectedContentLoader {
    * @param {string} imagePath - The path to the image file.
    * @returns {string|null} The cached data URL or null if not found/expired.
    */
-  getCachedImage(imagePath) {
+  getCachedImage(imagePath: string): string | null {
     const cacheKey = this.imageCachePrefix + imagePath;
     const cached = localStorage.getItem(cacheKey);
     if (!cached) {
@@ -448,7 +505,7 @@ class ProtectedContentLoader {
     }
 
     try {
-      const data = JSON.parse(cached);
+      const data = JSON.parse(cached) as { dataUrl: string; timestamp: number };
       if (this.isCacheValid(data.timestamp)) {
         this.log(`Using cached image for: ${imagePath}`);
         return data.dataUrl;
@@ -470,7 +527,7 @@ class ProtectedContentLoader {
    * @param {string} dataUrl - The base64 data URL to cache.
    * @returns {void}
    */
-  setCachedImage(imagePath, dataUrl) {
+  setCachedImage(imagePath: string, dataUrl: string): void {
     const cacheKey = this.imageCachePrefix + imagePath;
     const cacheData = {
       dataUrl: dataUrl,
@@ -482,7 +539,7 @@ class ProtectedContentLoader {
     } catch (e) {
       this.log(`Failed to cache image for: ${imagePath}`, e);
       // If localStorage is full, clear old caches and try again
-      if (e.name === "QuotaExceededError") {
+      if (e instanceof DOMException && e.name === "QuotaExceededError") {
         this.log("localStorage quota exceeded for image, clearing old caches");
         this.clearAllCaches();
         try {
@@ -503,7 +560,7 @@ class ProtectedContentLoader {
    * @returns {Promise<string>} A data URL containing the base64-encoded image.
    * @throws {Error} If the image fetch fails.
    */
-  async fetchImage(imagePath, token) {
+  async fetchImage(imagePath: string, token: string): Promise<string> {
     // Check localStorage cache first
     const cached = this.getCachedImage(imagePath);
     if (cached) {
@@ -514,7 +571,7 @@ class ProtectedContentLoader {
 
     // Check in-memory cache (faster than localStorage)
     if (this.imageCache.has(imagePath)) {
-      return this.imageCache.get(imagePath);
+      return this.imageCache.get(imagePath)!;
     }
 
     // Fetch from server
@@ -530,7 +587,8 @@ class ProtectedContentLoader {
       throw new Error("Failed to load image");
     }
 
-    const data = await response.json();
+    const data: { contentType: string; content: string } =
+      await response.json();
     const dataUrl = `data:${data.contentType};base64,${data.content}`;
 
     // Cache in both localStorage and memory
@@ -548,12 +606,12 @@ class ProtectedContentLoader {
    * @param {string} token - The JWT token for fetching images.
    * @returns {Promise<string>} The processed content with images replaced by data URLs.
    */
-  async processImages(content, token) {
+  async processImages(content: string, token: string): Promise<string> {
     if (!token) return content;
 
     const imgRegex = /<img([^>]*?)src=["']([^"']+)["']([^>]*?)>/gi;
-    const images = [];
-    let match;
+    const images: Omit<ImageProcessingMatch, "dataUrl">[] = [];
+    let match: RegExpExecArray | null;
 
     while ((match = imgRegex.exec(content)) !== null) {
       const fullMatch = match[0];
@@ -598,7 +656,6 @@ class ProtectedContentLoader {
     return processedContent;
   }
 
-  // ============================================================================
   // UI HELPERS
   // ============================================================================
 
@@ -608,7 +665,10 @@ class ProtectedContentLoader {
    * @param {string} [loadingText="Loading protected content..."] - The loading message to display.
    * @returns {void}
    */
-  showLoading(containerId, loadingText = "Loading protected content...") {
+  showLoading(
+    containerId: string,
+    loadingText: string = "Loading protected content...",
+  ): void {
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = `<div class="protected-loading">${loadingText}</div>`;
@@ -622,21 +682,27 @@ class ProtectedContentLoader {
    * @param {*} [data=null] - Optional data to log alongside the message.
    * @returns {void}
    */
-  log(message, data = null) {
+  log(message: string, data: any = null): void {
     if (this.debug) {
       console.log(`[ProtectedLoader] ${message}`, data || "");
     }
   }
 }
 
+// GLOBAL INITIALIZATION & WINDOW DECLARATION
 // ============================================================================
-// GLOBAL INITIALIZATION
-// ============================================================================
+
+// Extend the Window interface to include our custom properties
+declare global {
+  interface Window {
+    protectedLoader: ProtectedContentLoader;
+    logoutProtectedContent: () => void;
+  }
+}
 
 /**
  * Global instance of ProtectedContentLoader.
  * Accessible via window.protectedLoader for manual interactions.
- * @type {ProtectedContentLoader}
  */
 window.protectedLoader = new ProtectedContentLoader();
 
@@ -654,16 +720,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Global logout function that clears authentication and shows login forms.
- * Can be called from anywhere in the page (e.g., a logout button).
- * @example
- * <button onclick="logoutProtectedContent()">Logout</button> (we don't use onclick though for CSP)
- * NOT YET REFERENCED
+ * Global logout function.
  */
-window.logoutProtectedContent = function() {
+window.logoutProtectedContent = function (): void {
   window.protectedLoader.log("Logging out.");
   window.protectedLoader.clearToken();
   document.querySelectorAll("[data-protected-path]").forEach((element) => {
     window.protectedLoader.showLoginForm(element.id);
   });
 };
+
+export {}; // Ensures this is treated as a module
