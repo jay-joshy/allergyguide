@@ -6,6 +6,9 @@
   paper: "us-letter",
   margin: (x: 0.75in, y: 0.75in),
   numbering: "— 1 —",
+  header: {
+    align(right)[#image("banner_two.png", width: 15%)]
+  },
   footer: context {
     if counter(page).get().first() in (1, 2) {
       align(right)[GENERAL INFORMATION - #counter(page).display("1")]
