@@ -24,6 +24,6 @@ authors = ["Joshua Yu"]
 
 ## References:
 
-See the following papers for information on OIT implementation that this tool is based on:
+See the following for information on OIT implementation that this tool is based on:
 
 {{ references(showBib=true, path="content/tools/resources/oit_calculator.bib") }}

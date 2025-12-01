@@ -1821,7 +1821,9 @@ function updateWarnings(): void {
 
   if (warnings.length === 0) {
     container.innerHTML = `
-      <div class="no-warnings">✓ Protocol valid. See&nbsp;<a href="${warningsPageURL}" target="_blank">here</a>&nbsp;for the issues we check for.<br></div>
+      <div class="no-warnings">
+      ✓ Protocol passes internal checks: see <a href="${warningsPageURL}" target="_blank"> here </a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS SAFE.
+      </div>
     `;
     return;
   }
