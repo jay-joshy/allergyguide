@@ -279,18 +279,19 @@ RAPID: [5, 10, 20, 40, 80, 160, 300]
 
 ## Difficulties and road-blocks
 
-- ? Barriers to accreditation, lots of hoops to jump through:
+- ? Barriers to accreditation with professional societies, hoops to jump through, e.g.:
   - learning objectives, CANMEDs, monitoring user progress forces us towards 'modules', which is somewhat against the spirit / goals of the project being free / open source
   - Disagreements about content, given lack of consensus for various topics.
+- Financial backing
 
 ## Next steps for allergyguide.ca
 
 ### Content
 
-- Push OIT tool live
+- Push OIT tool live once ready
 - Topics
 - Drug desensitization protocol generator
   - Existing tool: https://globalrph.com/medcalcs/desensitization-protocol-12-step/
 - Vaccine schedule checklist calculator: for given age range, what vaccines to check for? Checklist to put in EMR
-- guideline compilation section (not sure if there's a way to automate this?)
+- guideline compilation section (way to automate this?)
 - Allergic rhinitis seasonal calendar for allergens: per Province
