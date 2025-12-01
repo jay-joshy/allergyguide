@@ -5,7 +5,17 @@
 #set page(
   paper: "us-letter",
   margin: (x: 0.75in, y: 0.75in),
-  numbering: "1",
+  numbering: "— 1 —",
+  footer: context {
+    if counter(page).get().first() in (1, 2) {
+      align(right)[GENERAL INFORMATION - #counter(page).display("1")]
+    } else if counter(page).get().first() in (3, 4) {
+      // Display nothing on the first page
+      align(right)[EQUIPMENT - #counter(page).display("1")]
+    } else {
+      [#counter(page).display("— 1 —")]
+    }
+  },
 )
 #set text(font: "Arial", size: 11pt, lang: "en")
 #set par(justify: true, leading: 0.65em)
@@ -34,18 +44,18 @@
 
 // --- TITLE ---
 #align(center)[
-  #text(size: 24pt, weight: "bold")[Oral Immunotherapy (OIT)]
-  \
+  #text(size: 24pt, weight: "bold")[Oral Immunotherapy (OIT)]\
+  #v(0.1pt)
   #text(size: 14pt, style: "italic")[Patient & Family Guide]
   \
   #line(length: 100%, stroke: 2pt)
 ]
 
 = What is OIT?
-
+#v(5pt)
 OIT is a medical treatment for food allergies that helps patients gradually gain tolerance to the allergen. By slowly giving tiny amounts of the allergen and then slowly increasing the dose over time, the body gradually becomes used to the allergen. _Eventually over ~2 years, the body becomes trained to tolerate doses of the allergen it previously could not_.
 
-== OIT has two main phases:
+*OIT has two main phases:*
 
 1. *Phase 1: Build-up.* Starting with a _tiny_ daily dose, every 2-4 weeks we slowly increase the dose until we reach a maintenance dose (usually a bit less than a serving size). This takes 6 - 12 months.
 2. *Phase 2: Maintenance.* Once you reach the maintenance dose, it will be eaten daily for 12 months.
@@ -110,39 +120,53 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 )
 
 = What are the possible outcomes?
+#v(5pt)
+
 There are three main outcomes with OIT:
 
 1. *Full Freedom (Tolerance):* you can eat a full serving of the food (like a whole glass of milk or a peanut butter sandwich) without reaction. Around 80%
+
 2. *Safety (Bite-proof):* While you may still react if you eat a full serving, you can tolerate smaller amounts. This protects you from severe reactions if you accidentally eat the food. ~18%
+
 3. *Stopping:* Sometimes, OIT becomes difficult due to taste aversion, is too time consuming for patients and families, or side effects, and we have to stop. This is rare. ~2%
 
 #warning-box("Important Safety Note:")[
   *Remember:* Even after you finish the maintenance phase, if the food is not regularly consumed at least weekly to help the body 'remember' the food is not harmful, the allergy may return.
 ]
 
-= Is OIT right for me?
+#pagebreak()
 
-#grid(
+= Is OIT right for the patient?
+#v(5pt)
+#table(
   columns: (1fr, 1fr),
-  gutter: 20pt,
+  inset: 10pt,
+  align: top + left,
+  stroke: none,
+  table.header([*Who is a GOOD candidate?*], [*Who might NOT be?*]),
+  table.hline(stroke: 1pt),
   [
-    *Who is a GOOD candidate?*
     - *Confirmed food allergy:* convincing history of reaction with either positive skin test or IgE blood test
+
     - *Young children:* Infants and preschoolers (under age 6) have immune systems that more easily 'unlearn' allergies.They are also much less likely to have severe reactions during OIT than older children (imagine \<1% versus 14%).
-    - *Ability to be consistent:* Able to eat a dose every single day at around the same time.
-    - the family must be willing, able, and ready to recognize and treat allergic reactions, including using self-injectable epinephrine properly and in a timely manner
+
+    - *Ability to be consistent:* Able to eat a dose every single day at around the same time. the family must be willing, able, and ready to recognize and treat allergic reactions, including using self-injectable epinephrine properly and in a timely manner
   ],
   [
-    *Who might NOT be?*
     - *Uncontrolled Asthma:* Your asthma must be well-managed before starting.
+
     - *Severe active Eczema:* Severe eczema can make it hard to tell when an allergic reaction is happening.
+
     - *Older patients:* > age of 6, more likely to have anaphylaxis, less likely to adhere
+
     - *Inability to obtain required equipment, language barriers*
+
     - *Inconsistent schedule:* If you travel constantly or cannot stick to a daily routine.
+
   ],
 )
 
-== Benefits vs. Risks
+= Benefits vs. Risks
 
 #table(
   columns: (1fr, 1fr),
@@ -152,20 +176,26 @@ There are three main outcomes with OIT:
   table.header([*Benefits (The Good)*], [*Risks (The Bad)*]),
   table.hline(stroke: 1pt),
   [
-    + *Diet:* At the best outcome, the patient could eat a full serving size without reacting
-    + *Safety:* Much lower risk of a scary reaction from accidental bites.
-    + *Anxiety:* Less fear when going to restaurants or school: both for the patient and families.
+    - *Diet:* At the best outcome, the patient could eat a full serving size without reacting
+
+    - *Safety:* Much lower risk of a scary reaction from accidental bites.
+
+    - *Anxiety:* Less fear when going to restaurants or school: both for the patient and families.
   ],
   [
-    + *EoE:* Around 3% (probably lower in toddlers): if it occurs we consider stopping OIT and involving our Gastroenterology specialists. (not sure if cause or association since EoE is more common in those with food allergies in general; in some select cases we elect to continue)
-    + *Reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe reactions are rare especially in pre-schoolers but possible.
+    - *EoE:* Around 3% (probably lower in toddlers): if it occurs we consider stopping OIT and involving our Gastroenterology specialists. (not sure if cause or association since EoE is more common in those with food allergies in general; in some select cases we elect to continue)
+
+    - *Reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe reactions are rare especially in pre-schoolers but possible.
   ],
 )
 
-#warning-box(
-  "Strict Food Avoidance Is Not “Risk Free” either:",
-)[
-  Even with strict avoidance, accidental allergic reactions are possible (the author of this handout had two reactions to nuts in the past 5 years).
+#place(bottom)[
+  #warning-box(
+    "Strict Food Avoidance Is Not “Risk Free” either:",
+  )[
+    Even with strict avoidance, accidental allergic reactions are possible (the author of this handout had two reactions to nuts in the past 5 years).
+  ]
+  #v(2pt)
 ]
 
 #pagebreak()
@@ -196,8 +226,16 @@ There are three main outcomes with OIT:
 
 #pagebreak()
 
-= Getting Ready: Equipment
-You need the right tools to measure small amounts of food and water safely.
+#align(center)[
+  #text(size: 24pt, weight: "bold")[Getting Ready: Equipment]\
+  #v(0.1pt)
+  #text(
+    size: 14pt,
+    style: "italic",
+  )[You need the right tools to measure small amounts of food and water safely.]
+  \
+  #line(length: 100%, stroke: 2pt)
+]
 
 == 1 ml Syringes
 You need *1 mL disposable oral syringes* (no needles).
