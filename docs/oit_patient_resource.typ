@@ -10,16 +10,21 @@
     if counter(page).get().first() in (1, 2) {
       align(right)[GENERAL INFORMATION - #counter(page).display("1")]
     } else if counter(page).get().first() in (3, 4) {
-      // Display nothing on the first page
       align(right)[EQUIPMENT - #counter(page).display("1")]
     } else {
-      [#counter(page).display("— 1 —")]
+      align(right)[#counter(page).display("1")]
     }
   },
 )
+#show heading.where(level: 1): it => block(
+  width: 100%,
+  stroke: (bottom: 0.5pt + gray), // The underline line
+  inset: (bottom: 0.5em), // Space between text and line
+  below: 1em, // Space after the line
+  it,
+)
 #set text(font: "Arial", size: 11pt, lang: "en")
 #set par(justify: true, leading: 0.65em)
-#set heading(numbering: "1.1.")
 
 // --- CUSTOM STYLES ---
 #let warning-box(title, body) = {
@@ -52,7 +57,6 @@
 ]
 
 = What is OIT?
-#v(5pt)
 OIT is a medical treatment for food allergies that helps patients gradually gain tolerance to the allergen. By slowly giving tiny amounts of the allergen and then slowly increasing the dose over time, the body gradually becomes used to the allergen. _Eventually over ~2 years, the body becomes trained to tolerate doses of the allergen it previously could not_.
 
 *OIT has two main phases:*
@@ -68,7 +72,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 
     // Setup the plot area
     plot.plot(
-      size: (15, 6),
+      size: (15, 5),
       x-tick-step: none,
       y-tick-step: none,
       axis-style: "school-book",
@@ -103,12 +107,12 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
     )
 
     // Annotations for clarity
-    line((6.5, 0), (6.5, 6.5), stroke: (dash: "dashed", paint: gray))
-    content((3, 4), box(
+    line((6.5, 0), (6.5, 5.5), stroke: (dash: "dashed", paint: gray))
+    content((2.5, 4), box(
       fill: white,
       inset: 2pt,
     )[*Build-up Phase* \ (Slowly increasing)])
-    content((12.2, 5), box(
+    content((11, 4), box(
       fill: white,
       inset: 2pt,
     )[*Maintenance Phase* \ (Daily steady dose)])
@@ -120,7 +124,6 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 )
 
 = What are the possible outcomes?
-#v(5pt)
 
 There are three main outcomes with OIT:
 
@@ -137,7 +140,6 @@ There are three main outcomes with OIT:
 #pagebreak()
 
 = Is OIT right for the patient?
-#v(5pt)
 #table(
   columns: (1fr, 1fr),
   inset: 10pt,
@@ -227,7 +229,7 @@ There are three main outcomes with OIT:
 #pagebreak()
 
 #align(center)[
-  #text(size: 24pt, weight: "bold")[Getting Ready: Equipment]\
+  #text(size: 24pt, weight: "bold")[Equipment, and how to use]\
   #v(0.1pt)
   #text(
     size: 14pt,
@@ -237,19 +239,28 @@ There are three main outcomes with OIT:
   #line(length: 100%, stroke: 2pt)
 ]
 
-== 1 ml Syringes
-You need *1 mL disposable oral syringes* (no needles).
+#counter(heading).update(0)
+= Equipment
+
+== A) 1 ml disposable oral syringes (without needles)
+
 - Look for markings every *0.1 mL*.
-- *Cleaning:* If used for liquid food (like milk), wash with hot soapy water and air dry. If used only for water, just air dry.
+
+- *Cleaning:* If used for liquid food (like milk), wash with hot soapy water within an hour of use, and air dry. If used only for water, just air dry.
+
 - *Examples:* BD eclipse 1mL oral syringes or Terumo 1mL oral tuberculin syringes (available on amazon.ca or local pharmacies)
 
-== Digital Scale
+== B) Digital Scale
+
 - *Precision:* Must measure *0.01 grams* (two decimal places).
 - *Calibration:* Buy one that comes with a calibration weight (a little metal weight to test the scale).
+
 - *Cost:* Usually \$20 - \$30 online.
 
-== Medicines
+== C) Medicines
+
 - *Epinephrine Auto-injector:* Must be up to date and nearby at each dose.
+
 - *Non-drowsy antihistamine:* Optional but highly recommended. These can be bought over the counter.
   - Example: Reactine. For children under 2, give half of the smallest indicated dosage on the bottle. This usually is 2.5-5mg
   - Avoid Benadryl
