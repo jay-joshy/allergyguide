@@ -53,49 +53,59 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 // --- CETZ DIAGRAM: OIT PHASES ---
 // https://www.csaci.ca/wp-content/uploads/2020/02/Key-concepts-teaching-tool.pdf
 #figure(
-  caption: [The path of OIT treatment over time.],
   cetz.canvas({
     import cetz.draw: *
 
     // Setup the plot area
     plot.plot(
-      size: (10, 4),
+      size: (15, 6),
       x-tick-step: none,
       y-tick-step: none,
       axis-style: "school-book",
       {
         // The Build-up Phase (Sloping up)
         plot.add(
-          ((0, 0), (1, 0.5), (2, 1), (3, 1.5), (4, 2), (5, 3), (6, 4)),
+          (
+            (0, 0),
+            (0.5, 0.25),
+            (1, 0.5),
+            (1.5, 0.75),
+            (2, 1),
+            (2.5, 1.25),
+            (3, 1.5),
+            (3.5, 1.75),
+            (4, 2),
+            (4.5, 2.5),
+            (5, 3),
+            (5.5, 3.5),
+            (6, 4),
+          ),
           style: (stroke: (thickness: 2pt, dash: "solid")),
-          label: "Dose Amount",
+          line: "hv",
         )
 
         // The Maintenance Phase (Flat line)
         plot.add(
-          ((6, 4), (10, 4)),
+          ((6, 4), (14, 4)),
           style: (stroke: (thickness: 2pt)),
         )
-
-        // Annotations (Manual drawing on top of plot coordinates)
       },
     )
 
     // Annotations for clarity
-    line((0, 0), (6, 4), stroke: (dash: "dashed", paint: gray))
-    content((3, 1), box(
+    line((6.5, 0), (6.5, 6.5), stroke: (dash: "dashed", paint: gray))
+    content((3, 4), box(
       fill: white,
       inset: 2pt,
     )[*Build-up Phase* \ (Slowly increasing)])
-    content((8, 4.5), box(
+    content((12.2, 5), box(
       fill: white,
       inset: 2pt,
     )[*Maintenance Phase* \ (Daily steady dose)])
-    content((10, 4), [Exit Challenge], anchor: "west")
 
     // Axis Labels
-    content((5, -0.5), [*Time (Months/Years)*])
-    content((-0.5, 2.5), [*Amount of Food*], angle: 90deg)
+    content((7.5, -0.5), [*Time*])
+    content((-0.5, 3.5), [*Daily dose of food*], angle: 90deg)
   }),
 )
 
@@ -103,7 +113,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 There are three main outcomes with OIT:
 
 1. *Full Freedom (Tolerance):* you can eat a full serving of the food (like a whole glass of milk or a peanut butter sandwich) without reaction. Around 80%
-2. *Safety (Bite-proof):* While you may still react if you eat a full serving, you can tolerate small amounts (e.g. a quarter of a serving size). This protects you from severe reactions if you accidentally eat the food. ~18%
+2. *Safety (Bite-proof):* While you may still react if you eat a full serving, you can tolerate smaller amounts. This protects you from severe reactions if you accidentally eat the food. ~18%
 3. *Stopping:* Sometimes, OIT becomes difficult due to taste aversion, is too time consuming for patients and families, or side effects, and we have to stop. This is rare. ~2%
 
 #warning-box("Important Safety Note:")[
