@@ -22,12 +22,11 @@ Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 
 /**
  * Dosing plan presets for target protein steps.
- * STANDARD, SLOW, and RAPID map to arrays in DOSING_STRATEGIES.
+ * STANDARD, SLOW, map to arrays in DOSING_STRATEGIES.
  */
 enum DosingStrategy {
   STANDARD = "STANDARD",
   SLOW = "SLOW",
-  RAPID = "RAPID",
 }
 
 /**
@@ -215,7 +214,6 @@ const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
     0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220,
     260, 300,
   ].map((num) => new Decimal(num)),
-  RAPID: [5, 10, 20, 40, 80, 160, 300].map((num) => new Decimal(num)),
 };
 
 // Default candidate options for various parameters used to calculate optimal dilutions
@@ -1595,7 +1593,6 @@ function renderDosingStrategy(): void {
       <div class="toggle-group">
         <button class="toggle-btn ${currentProtocol.dosingStrategy === DosingStrategy.STANDARD ? "active" : ""}" data-strategy="STANDARD">Standard</button>
         <button class="toggle-btn ${currentProtocol.dosingStrategy === DosingStrategy.SLOW ? "active" : ""}" data-strategy="SLOW">Slow</button>
-        <button class="toggle-btn ${currentProtocol.dosingStrategy === DosingStrategy.RAPID ? "active" : ""}" data-strategy="RAPID">Rapid</button>
       </div>
     </div>
   `;

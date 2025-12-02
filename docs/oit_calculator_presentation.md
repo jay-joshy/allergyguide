@@ -71,7 +71,7 @@ author: Joshua Yu
 
 1. **<span style="color: yellow">Select Food or Protocol:</span>** Search for a primary food (e.g., "Peanut flour"), loading a pre-existing protocol template, or make a custom food.
 
-2. **<span style="color: yellow">Customize Protocol:</span>** Adjust Food A settings (protein concentration, form), select a dosing strategy (Standard, Slow, Rapid), and modify individual steps. Optionally, add a transition to a second food (Food B).
+2. **<span style="color: yellow">Customize Protocol:</span>** Adjust Food A settings (protein concentration, form), select a dosing strategy (Standard, Slow), and modify individual steps. Optionally, add a transition to a second food (Food B).
 
 3. **<span style="color: yellow">Review and Refine:</span>** The tool displays real-time warnings (red for critical, yellow for caution). The protocol table is fully editable.
 
@@ -150,12 +150,11 @@ author: Joshua Yu
 }
 ```
 
-- **<span style="color: yellow">Dosing Strategies:</span>** Provides three default progressions (Standard, Slow, Rapid) as starting points; more are easily addable.
+- **<span style="color: yellow">Dosing Strategies:</span>** Provides three default progressions (Standard, Slow) as starting points; more are easily addable.
 
 ```ts
 STANDARD: [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300] 
 SLOW: [ 0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300, ]
-RAPID: [5, 10, 20, 40, 80, 160, 300]
 ```
 
 <!-- end_slide -->

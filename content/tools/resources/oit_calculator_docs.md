@@ -40,7 +40,6 @@ The calculator operates based on a set of clinical and practical assumptions to 
 - **Dosing Strategies:** Three common protein dose progression strategies are provided as starting points: Standard, Slow, and Rapid. These can be adjusted by the user, but also on the backend (ie. new starting strategies can be added to the tool).
   - **Standard** (11 steps): [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300] mg
   - **Slow** (19 steps): [0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300] mg
-  - **Rapid** (7 steps): [5, 10, 20, 40, 80, 160, 300] mg
 - **OIT Phenotypes:** We assume four main OIT implementation types:
   1. _Food A with initial dilutions_, transitioning to direct dosing once the weight of undiluted food is easily measurable. By default, that threshold is set at 0.2 grams or 0.2 ml.
   2. _Food A with dilutions maintained throughout the protocol._

@@ -288,8 +288,8 @@
     "custom_note": "Make a fresh mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase PB2 Powdered Almond Butter with 5 grams of protein per 13 gram serving."
   },
   {
-    "name": "Protocol: milk rapid",
-    "dosing_strategy": "RAPID",
+    "name": "Protocol: milk wrong",
+    "dosing_strategy": "STANDARD",
     "food_a": {
       "type": "LIQUID",
       "name": "Cow Milk",
