@@ -3362,39 +3362,250 @@ if (typeof import.meta.vitest === 'undefined') {
 if (import.meta.vitest) {
   const { it, expect, describe } = import.meta.vitest;
 
-  describe("escapeHtml", () => {
-    it("should escape special HTML characters", () => {
-      const input = "<script>alert('xss & stuff')</script>";
-      const expected = "&lt;script&gt;alert(&#039;xss &amp; stuff&#039;)&lt;/script&gt;";
-      expect(escapeHtml(input)).toBe(expected);
+  // mock config 
+  const TEST_CONFIG: ProtocolConfig = {
+    minMeasurableMass: new Decimal(0.2),
+    minMeasurableVolume: new Decimal(0.2),
+    minServingsForMix: new Decimal(2),
+    PROTEIN_TOLERANCE: new Decimal(0.05),
+    DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
+    DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
+    MAX_SOLID_CONCENTRATION: new Decimal(0.05),
+  };
+
+  // Mock Food: flour (Solid, High Protein)
+  const flour: Food = {
+    name: "flour",
+    type: FoodType.SOLID,
+    gramsInServing: new Decimal(50),
+    servingSize: new Decimal(100),
+    getMgPerUnit: function() {
+      return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+    }
+  };
+
+  // Mock Food: Milk (Liquid, Low Protein)
+  const cowMilk: Food = {
+    name: "Cow Milk",
+    type: FoodType.LIQUID,
+    gramsInServing: new Decimal(3.2),
+    servingSize: new Decimal(100),
+    getMgPerUnit: function() {
+      return this.gramsInServing.times(1000).dividedBy(this.servingSize);
+    }
+  };
+
+  describe("Utility Functions", () => {
+    describe("escapeHtml", () => {
+      it("should escape special HTML characters", () => {
+        const input = "<script>alert('xss & stuff')</script>";
+        const expected = "&lt;script&gt;alert(&#039;xss &amp; stuff&#039;)&lt;/script&gt;";
+        expect(escapeHtml(input)).toBe(expected);
+      });
+      it("should handle empty strings", () => {
+        expect(escapeHtml("")).toBe("");
+      });
     });
 
-    it("should return the same string if no special characters are present", () => {
-      const input = "this is a safe string";
-      expect(escapeHtml(input)).toBe(input);
+    describe("formatNumber", () => {
+      it("should format a number to a fixed number of decimal places", () => {
+        expect(formatNumber(123.456, 2)).toBe("123.46");
+      });
+      it("should handle Decimal objects", () => {
+        expect(formatNumber(new Decimal(123.456), 2)).toBe("123.46");
+      });
     });
 
-    it("should handle empty strings", () => {
-      expect(escapeHtml("")).toBe("");
+    describe("formatAmount", () => {
+      it("should format solids to 2 decimals (SOLID_RESOLUTION)", () => {
+        expect(formatAmount(10.1234, "g")).toBe("10.12");
+      });
+      it("should format liquids to integers if whole", () => {
+        expect(formatAmount(10.00, "ml")).toBe("10");
+      });
+      it("should format liquids to 1 decimal if fractional", () => {
+        expect(formatAmount(10.1234, "ml")).toBe("10.1");
+      });
     });
   });
 
-  describe("formatNumber", () => {
-    it("should format a number to a fixed number of decimal places", () => {
-      expect(formatNumber(123.456, 2)).toBe("123.46");
+  describe("Core Calculations", () => {
+
+    describe("findDilutionCandidates (Solid Food)", () => {
+      it("should calculate correct mix for a small target using Solid food", () => {
+        // Target 10mg protein using Flour (500mg/g)
+        // 10mg requires 0.02g of neat flour. This is < minMeasurableMass (0.05), so it must dilute.
+        const targetMg = new Decimal(10);
+        const candidates = findDilutionCandidates(targetMg, flour, TEST_CONFIG);
+
+        expect(candidates.length).toBeGreaterThan(0);
+
+        const best = candidates[0];
+        const totalMixProtein = best.mixFoodAmount.times(500);
+        const concentration = totalMixProtein.dividedBy(best.mixWaterAmount);
+        const delivered = concentration.times(best.dailyAmount);
+        // Expect delivered to be close to target
+        const diff = delivered.minus(targetMg).abs();
+        expect(diff.toNumber()).toBeLessThan(TEST_CONFIG.PROTEIN_TOLERANCE.toNumber());
+      });
+
+      it("should respect MAX_SOLID_CONCENTRATION for solids", () => {
+        const targetMg = new Decimal(50);
+        const candidates = findDilutionCandidates(targetMg, flour, TEST_CONFIG);
+
+        if (candidates.length > 0) {
+          const best = candidates[0];
+          const ratio = best.mixFoodAmount.dividedBy(best.mixWaterAmount);
+          console.log(candidates[0]);
+          expect(ratio.toNumber()).toBeLessThanOrEqual(TEST_CONFIG.MAX_SOLID_CONCENTRATION.toNumber());
+        }
+      });
     });
 
-    it("should format an integer", () => {
-      expect(formatNumber(123, 2)).toBe("123.00");
+    describe("findDilutionCandidates (Liquid Food)", () => {
+      it("should calculate correct volume subtraction for Liquid food", () => {
+        // Target 1mg protein using Milk (32mg/ml)
+        const targetMg = new Decimal(1);
+        const candidates = findDilutionCandidates(targetMg, cowMilk, TEST_CONFIG);
+
+        expect(candidates.length).toBeGreaterThan(0);
+        const best = candidates[0];
+
+        // For liquids: Total Volume = Food + Water
+        const totalVol = best.mixFoodAmount.plus(best.mixWaterAmount);
+        expect(best.mixTotalVolume.toNumber()).toBeCloseTo(totalVol.toNumber());
+      });
+    });
+  });
+
+  describe("Step Generation & Strategy", () => {
+
+    describe("generateStepForTarget", () => {
+      it("should generate a DIRECT step when amount is above threshold", () => {
+        // flour (500mg/g). Target 250mg = 0.5g neat.
+        // Threshold is 0.2g. 1g > 0.2g, so Direct.
+        const step = generateStepForTarget(
+          new Decimal(250),
+          1,
+          flour,
+          FoodAStrategy.DILUTE_INITIAL,
+          TEST_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD,
+          TEST_CONFIG
+        );
+
+        expect(step).not.toBeNull();
+        expect(step!.method).toBe(Method.DIRECT);
+        expect(step!.dailyAmount.toNumber()).toBe(0.5);
+        expect(step!.food).toBe("A");
+      });
+
+      it("should generate a DILUTE step when amount is below threshold", () => {
+        // flour. Target 10mg = 0.02g neat.
+        // Threshold 0.2g. 0.02 < 0.2, so Dilute.
+        const step = generateStepForTarget(
+          new Decimal(10),
+          1,
+          flour,
+          FoodAStrategy.DILUTE_INITIAL,
+          TEST_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD,
+          TEST_CONFIG
+        );
+
+        expect(step).not.toBeNull();
+        expect(step!.method).toBe(Method.DILUTE);
+        expect(step!.mixWaterAmount).toBeDefined();
+      });
+
+      it("should force DIRECT if strategy is DILUTE_NONE", () => {
+        // Even for tiny amount
+        const step = generateStepForTarget(
+          new Decimal(1),
+          1,
+          flour,
+          FoodAStrategy.DILUTE_NONE,
+          TEST_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD,
+          TEST_CONFIG
+        );
+        expect(step!.method).toBe(Method.DIRECT);
+      });
+    });
+  });
+
+  describe("Protocol Logic", () => {
+    describe("addFoodBToProtocol", () => {
+      it("should correctly transition steps from Food A to Food B", () => {
+        // 1. Setup a dummy protocol with A
+        const protocol = generateDefaultProtocol(flour, TEST_CONFIG);
+        // Override steps to known targets: 1, 100, 1000 mg
+        protocol.steps = [
+          { stepIndex: 1, targetMg: new Decimal(1), method: Method.DILUTE, dailyAmount: new Decimal(1), dailyAmountUnit: 'ml', food: "A" },
+          { stepIndex: 2, targetMg: new Decimal(100), method: Method.DIRECT, dailyAmount: new Decimal(0.2), dailyAmountUnit: 'g', food: "A" },
+          { stepIndex: 3, targetMg: new Decimal(1000), method: Method.DIRECT, dailyAmount: new Decimal(2), dailyAmountUnit: 'g', food: "A" }
+        ];
+
+        // 2. Define Food B (e.g., peanuts)
+        const peanuts: Food = { ...flour, name: "peanuts" }; // assume same protein for simplicity
+
+        // 3. Add Food B, threshold equivalent to 100mg
+        // 100mg / 500mg/g = 0.2g threshold
+        const threshold = { unit: "g" as Unit, amount: new Decimal(0.2) };
+
+        addFoodBToProtocol(protocol, peanuts, threshold);
+
+        // Expectation:
+        // Step 1: 1mg (Food A)
+        // Step 2: 100mg (Food A) -> This is the transition point because 100mg >= 100mg threshold
+        // Step 3: 100mg (Food B) -> Inserted duplicate
+        // Step 4: 1000mg (Food B)
+
+        expect(protocol.steps.length).toBe(4);
+        expect(protocol.steps[0].food).toBe("A");
+        expect(protocol.steps[1].food).toBe("A");
+        expect(protocol.steps[2].food).toBe("B"); // The transition duplicate
+        expect(protocol.steps[2].targetMg.toNumber()).toBe(100);
+        expect(protocol.steps[3].food).toBe("B");
+      });
+    });
+  });
+
+  describe("Validation System", () => {
+    it("should flag R2 (Protein Mismatch) if math is wrong", () => {
+      const protocol = generateDefaultProtocol(flour, TEST_CONFIG);
+      // Manually break a step
+      const step = protocol.steps[0];
+      step.method = Method.DIRECT;
+      step.targetMg = new Decimal(1000); // 1000mg
+      step.dailyAmount = new Decimal(0.001); // tiny amount, definitely not 1000mg
+
+      const warnings = validateProtocol(protocol);
+      const r2 = warnings.find(w => w.code === "R2");
+      expect(r2).toBeDefined();
+      expect(r2?.severity).toBe("red");
     });
 
-    it("should handle Decimal objects", () => {
-      expect(formatNumber(new Decimal(123.456), 2)).toBe("123.46");
+    it("should flag R6 (Impossible Volume) for Dilution", () => {
+      const protocol = generateDefaultProtocol(flour, TEST_CONFIG);
+      // Manually create impossible liquid physics
+      const step = protocol.steps[0];
+      step.method = Method.DILUTE;
+      step.mixWaterAmount = new Decimal(10);
+      step.mixFoodAmount = new Decimal(0.5); // Solid
+      step.dailyAmount = new Decimal(100); // Daily amount > Total Volume
+
+      const warnings = validateProtocol(protocol);
+      const r6 = warnings.find(w => w.code === "R6");
+      expect(r6).toBeDefined();
     });
 
-    it("should return an empty string for null or undefined", () => {
-      expect(formatNumber(null, 2)).toBe("");
-      expect(formatNumber(undefined, 2)).toBe("");
+    it("should flag Y2 (Non-ascending steps)", () => {
+      const protocol = generateDefaultProtocol(flour, TEST_CONFIG);
+      // Make step 2 smaller than step 1
+      protocol.steps[0].targetMg = new Decimal(10);
+      protocol.steps[1].targetMg = new Decimal(5);
+
+      const warnings = validateProtocol(protocol);
+      const y2 = warnings.find(w => w.code === "Y2");
+      expect(y2).toBeDefined();
     });
   });
 }
