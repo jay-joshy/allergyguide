@@ -50,7 +50,10 @@
   baseline: 2pt,
 )
 
-// --- TITLE ---
+This document was generated using an open-source tool. The treating physician has reviewed and approved all dosing and safety instructions. In the event of a discrepancy between this handout and your physician's verbal instructions, follow your physician's instructions."
+
+#pagebreak()
+
 #align(center)[
   #text(size: 24pt, weight: "bold")[Oral Immunotherapy (OIT)]\
   #v(0.1pt)
