@@ -6,16 +6,21 @@
   paper: "us-letter",
   margin: (x: 0.75in, y: 0.75in),
   numbering: "— 1 —",
-  header: {
-    align(right)[#image("banner_two.png", width: 15%)]
+  footer: {
+    grid(
+      columns: (auto, 1fr),
+      align: horizon,
+      align(left)[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION],
+      align(right)[#v(0.5em)#image("banner_two.png", width: 40%)],
+    )
   },
-  footer: context {
+  header: context {
     if counter(page).get().first() in (1, 2) {
       align(right)[GENERAL INFORMATION - #counter(page).display("1")]
     } else if counter(page).get().first() in (3, 4) {
       align(right)[EQUIPMENT - #counter(page).display("1")]
     } else {
-      align(right)[#counter(page).display("1")]
+      align(right)[X - #counter(page).display("1")]
     }
   },
 )
