@@ -3348,8 +3348,53 @@ async function initializeCalculator(): Promise<void> {
 }
 
 // Initialize when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeCalculator);
-} else {
-  initializeCalculator();
+if (typeof import.meta.vitest === 'undefined') {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeCalculator);
+  } else {
+    initializeCalculator();
+  }
+}
+
+// ============================================
+// TESTS
+// ============================================
+if (import.meta.vitest) {
+  const { it, expect, describe } = import.meta.vitest;
+
+  describe("escapeHtml", () => {
+    it("should escape special HTML characters", () => {
+      const input = "<script>alert('xss & stuff')</script>";
+      const expected = "&lt;script&gt;alert(&#039;xss &amp; stuff&#039;)&lt;/script&gt;";
+      expect(escapeHtml(input)).toBe(expected);
+    });
+
+    it("should return the same string if no special characters are present", () => {
+      const input = "this is a safe string";
+      expect(escapeHtml(input)).toBe(input);
+    });
+
+    it("should handle empty strings", () => {
+      expect(escapeHtml("")).toBe("");
+    });
+  });
+
+  describe("formatNumber", () => {
+    it("should format a number to a fixed number of decimal places", () => {
+      expect(formatNumber(123.456, 2)).toBe("123.46");
+    });
+
+    it("should format an integer", () => {
+      expect(formatNumber(123, 2)).toBe("123.00");
+    });
+
+    it("should handle Decimal objects", () => {
+      expect(formatNumber(new Decimal(123.456), 2)).toBe("123.46");
+    });
+
+    it("should return an empty string for null or undefined", () => {
+      expect(formatNumber(null, 2)).toBe("");
+      expect(formatNumber(undefined, 2)).toBe("");
+    });
+  });
 }
