@@ -228,6 +228,10 @@ const DAILY_AMOUNT_CANDIDATES = [
 ].map((num) => new Decimal(num));
 const MAX_MIX_WATER = new Decimal(500);
 
+// For clickwrap token for export PDF
+const OIT_CLICKWRAP_ACCEPTED_KEY = "oit_clickwrap_accepted_v1";
+const CLICKWRAP_EXPIRY_DAYS = 7;
+
 let DEFAULT_CONFIG: ProtocolConfig;
 DEFAULT_CONFIG = {
   minMeasurableMass: new Decimal(0.2), // assume that scales for patients have resolution of 0.01g
@@ -249,6 +253,14 @@ let fuzzySortPreparedFoods: any[] = [];
 let fuzzySortPreparedProtocols: any[] = [];
 let customNote: string = "";
 let warningsPageURL = "";
+
+// Clickwrap modal elements
+let clickwrapModal: HTMLElement | null = null;
+let clickwrapCheckbox1: HTMLInputElement | null = null;
+let clickwrapCheckbox2: HTMLInputElement | null = null;
+let clickwrapCheckbox3: HTMLInputElement | null = null;
+let clickwrapGenerateBtn: HTMLButtonElement | null = null;
+let clickwrapCancelBtn: HTMLButtonElement | null = null;
 
 // Debounce timers
 let searchDebounceTimer: number | null = null;
@@ -333,6 +345,59 @@ function getMeasuringUnit(food: Food): Unit {
     return "ml";
   } else {
     return "g";
+  }
+}
+
+// ============================================
+// CLICKWRAP MODAL FUNCTIONS
+// ============================================
+
+/**
+ * Checks if the user has a valid, non-expired clickwrap acceptance token.
+ * @returns {boolean} True if the token is valid, false otherwise.
+ */
+function isClickwrapAccepted(): boolean {
+  const stored = localStorage.getItem(OIT_CLICKWRAP_ACCEPTED_KEY);
+  if (!stored) return false;
+
+  try {
+    const { expiry } = JSON.parse(stored);
+    if (typeof expiry !== 'number') return false;
+    return new Date().getTime() < expiry;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * Stores a clickwrap acceptance token in localStorage with a X-day expiry.
+ */
+function setClickwrapAcceptToken(): void {
+  const expiry = new Date().getTime() + CLICKWRAP_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+  localStorage.setItem(OIT_CLICKWRAP_ACCEPTED_KEY, JSON.stringify({ expiry }));
+}
+
+/**
+ * Displays the clickwrap modal.
+ */
+function showClickwrapModal(): void {
+  if (clickwrapModal) {
+    clickwrapModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Lock scroll
+  }
+}
+
+/**
+ * Hides the clickwrap modal and resets its state.
+ */
+function hideClickwrapModal(): void {
+  if (clickwrapModal) {
+    clickwrapModal.style.display = 'none';
+    document.body.style.overflow = ''; // Restore scroll
+    if (clickwrapCheckbox1) clickwrapCheckbox1.checked = false;
+    if (clickwrapCheckbox2) clickwrapCheckbox2.checked = false;
+    if (clickwrapCheckbox3) clickwrapCheckbox3.checked = false;
+    if (clickwrapGenerateBtn) clickwrapGenerateBtn.disabled = true;
   }
 }
 
@@ -2687,32 +2752,54 @@ function attachExportEventListeners(): void {
 
   const pdfBtn = document.getElementById("export-pdf");
   if (pdfBtn) {
-    pdfBtn.addEventListener("click", async () => {
-      const pdfBtn = document.getElementById("export-pdf");
-      if (pdfBtn) {
-        pdfBtn.textContent = "Generating...";
-        pdfBtn.setAttribute("disabled", "true");
-      }
+    pdfBtn.addEventListener("click", handleExportPdfClick);
+  }
+}
 
-      try {
-        // Dynamically import the libraries ONLY when the button is clicked
-        const { jsPDF } = await import('jspdf');
-        const { applyPlugin } = await import('jspdf-autotable');
+/**
+ * Handles the primary "Export PDF" button click, checking for clickwrap agreement.
+ */
+async function handleExportPdfClick(): Promise<void> {
+  if (isClickwrapAccepted()) {
+    await triggerPdfGeneration();
+  } else {
+    showClickwrapModal();
+  }
+}
 
-        applyPlugin(jsPDF);
-        exportPDF(jsPDF);
+/**
+ * Loads PDF libraries and triggers the PDF generation.
+ */
+async function triggerPdfGeneration(): Promise<void> {
+  const pdfBtn = document.getElementById("export-pdf");
+  const modalPdfBtn = document.getElementById("clickwrap-generate-btn");
 
-      } catch (error) {
-        console.error("Failed to load PDF libraries or generate PDF: ", error)
-        alert("Error generating PDF. Please check the console for details.");
-      } finally {
-        if (pdfBtn) {
-          pdfBtn.textContent = "Export PDF";
-          pdfBtn.removeAttribute("disabled");
-        }
-      }
+  if (pdfBtn) {
+    pdfBtn.textContent = "Generating...";
+    pdfBtn.setAttribute("disabled", "true");
+  }
+  if (modalPdfBtn) {
+    modalPdfBtn.textContent = "Generating...";
+    modalPdfBtn.setAttribute("disabled", "true");
+  }
 
-    });
+  try {
+    const { jsPDF } = await import('jspdf');
+    const { applyPlugin } = await import('jspdf-autotable');
+    applyPlugin(jsPDF);
+    _generatePdf(jsPDF);
+  } catch (error) {
+    console.error("Failed to load PDF libraries or generate PDF: ", error);
+    alert("Error generating PDF. Please check the console for details.");
+  } finally {
+    if (pdfBtn) {
+      pdfBtn.textContent = "Export PDF";
+      pdfBtn.removeAttribute("disabled");
+    }
+    if (modalPdfBtn) {
+      modalPdfBtn.textContent = "Generate PDF";
+      // The disabled state will be reset by the checkbox handler
+    }
   }
 }
 
@@ -2749,6 +2836,45 @@ function attachCustomNoteListener(): void {
   });
 }
 
+function attachClickwrapEventListeners(): void {
+  clickwrapModal = document.getElementById('oit-clickwrap-modal');
+  clickwrapCheckbox1 = document.getElementById('clickwrap-checkbox-1') as HTMLInputElement;
+  clickwrapCheckbox2 = document.getElementById('clickwrap-checkbox-2') as HTMLInputElement;
+  clickwrapCheckbox3 = document.getElementById('clickwrap-checkbox-3') as HTMLInputElement;
+  clickwrapGenerateBtn = document.getElementById('clickwrap-generate-btn') as HTMLButtonElement;
+  clickwrapCancelBtn = document.getElementById('clickwrap-cancel-btn') as HTMLButtonElement;
+
+  if (!clickwrapModal || !clickwrapCheckbox1 || !clickwrapCheckbox2 || !clickwrapCheckbox3 || !clickwrapGenerateBtn || !clickwrapCancelBtn) {
+    return;
+  }
+
+  const validateCheckboxes = () => {
+    if (clickwrapGenerateBtn) {
+      clickwrapGenerateBtn.disabled = !(clickwrapCheckbox1?.checked && clickwrapCheckbox2?.checked && clickwrapCheckbox3?.checked);
+    }
+  };
+
+  clickwrapCheckbox1.addEventListener('change', validateCheckboxes);
+  clickwrapCheckbox2.addEventListener('change', validateCheckboxes);
+  clickwrapCheckbox3.addEventListener('change', validateCheckboxes);
+  clickwrapCancelBtn.addEventListener('click', hideClickwrapModal);
+
+  // allow ESC to get out of modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape" && clickwrapModal && clickwrapModal.style.display === 'flex') {
+      hideClickwrapModal();
+    }
+  });
+
+  // on clicking of generation button once available, set token, hide modal, and trigger PDF gen
+  clickwrapGenerateBtn.addEventListener('click', async () => {
+    setClickwrapAcceptToken();
+    hideClickwrapModal();
+    await triggerPdfGeneration();
+  });
+}
+
+
 // ============================================
 // EXPORT FUNCTIONS
 // ============================================
@@ -2764,9 +2890,10 @@ function attachCustomNoteListener(): void {
  *
  * Opens in a new tab where possible; falls back to direct download.
  *
+ * @param jsPDF The jsPDF constructor
  * @returns void
  */
-function exportPDF(jsPDF: any): void {
+function _generatePdf(jsPDF: any): void {
   if (!currentProtocol) return;
 
   const doc: any = new jsPDF({
@@ -3340,6 +3467,9 @@ async function initializeCalculator(): Promise<void> {
   if (clearFoodBBtn) {
     clearFoodBBtn.addEventListener("click", clearFoodB);
   }
+
+  // Set up clickwrap modal listeners
+  attachClickwrapEventListeners();
 
   console.log("OIT Calculator initialized");
 }

@@ -67,8 +67,37 @@
 			<!-- Export buttons will be dynamically inserted here -->
 			<!-- Warnings Sidebar -->
 			<div class="warnings-container oit-hidden-on-init">
-				<div class="no-warnings">✓ No warnings</div>
+				<div class="no-warnings">Protocol passes internal checks.</div>
 			</div>
+		</div>
+	</div>
+</div>
+<!-- Clickwrap Modal -->
+<div id="oit-clickwrap-modal" class="oit-modal-overlay" style="display: none;">
+	<div class="oit-modal-content">
+		<h2>Provider Attestation</h2>
+		<p><i>This tool is strictly for use by licensed healthcare professionals.</i>
+		The generated OIT protocol is a draft and <b>must be reviewed and approved by a qualified healthcare professional before use</b>. To generate the PDF, you must confirm the following:</p>
+		<div class="oit-modal-checkbox-container">
+			<label>
+				<input type="checkbox" id="clickwrap-checkbox-1">
+				<span><b>I certify that I am a licensed physician or a healthcare professional acting under the direct supervision of a licensed physician.</b>
+				I understand that using this tool without professional medical credentials or using it to self-treat without the supervision of a qualified healthcare professional is a violation of the Terms of Use.</span>
+			</label>
+			<label>
+				<input type="checkbox" id="clickwrap-checkbox-2">
+				<span><b>I acknowledge this tool is for informational and operational support only.</b>
+				It provides mathematical support for dosing schedules and standardized educational templates but does not exercise clinical judgment. I assume full responsibility for assessing the patient as an appropriate candidate for OIT, verifying all calculations, and reviewing the provided patient instructions before clinical use.</span>
+			</label>
+			<label>
+				<input type="checkbox" id="clickwrap-checkbox-3">
+				<span><b>I understand this produces a draft document.</b>
+				It is not valid until I have physically reviewed its contents and signed its first page.</span>
+			</label>
+		</div>
+		<div class="oit-modal-buttons">
+			<button id="clickwrap-cancel-btn" class="btn-secondary">Cancel</button>
+			<button id="clickwrap-generate-btn" class="btn-export" disabled>Generate PDF</button>
 		</div>
 	</div>
 </div>
