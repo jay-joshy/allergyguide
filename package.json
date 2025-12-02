@@ -12,8 +12,9 @@
     "elasticlunr": "npm run abridge -- elasticlunr",
     "pagefind": "npm run abridge -- pagefind",
     "tinysearch": "npm run abridge -- tinysearch",
+    "test": "vitest",
     "check:ts": "tsc --noEmit",
-    "build:ts": "npm run check:ts && esbuild static/ts/**/*.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2017 --minify --chunk-names=chunks/[name]-[hash]"
+    "build:ts": "npm run check:ts && esbuild static/ts/**/*.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2022 --minify --chunk-names=chunks/[name]-[hash] --define:import.meta.vitest=undefined"
   },
   "dependencies": {
     "ascii-table3": "^1.0.1",
@@ -30,6 +31,8 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "esbuild": "^0.27.0",
-    "typescript": "^5.9.3"
+    "jsdom": "^27.2.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
   }
 }
