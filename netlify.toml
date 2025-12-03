@@ -1,6 +1,6 @@
 [build]
 publish = "public"
-command = "npm run build -- '--base-url /' || (npm ci && npm run build -- '--base-url /')"
+command = "npm run build -- '--base-url /' || (npm ci && npm run abridge -- '--base-url /')"
 
 [build.environment]
 ZOLA_VERSION = "0.20.0"
