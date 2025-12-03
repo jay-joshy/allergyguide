@@ -14,7 +14,7 @@
     "tinysearch": "npm run abridge -- tinysearch",
     "test": "vitest",
     "check:ts": "tsc --noEmit",
-    "build:ts": "npm run check:ts && esbuild static/ts/**/*.ts --bundle --outdir=static/js/ --format=esm --splitting --target=es2022 --minify --chunk-names=chunks/[name]-[hash] --define:import.meta.vitest=undefined"
+    "build:ts": "npm run check:ts && node build.mjs"
   },
   "dependencies": {
     "ascii-table3": "^1.0.1",
