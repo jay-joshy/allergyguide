@@ -14,7 +14,8 @@
     "tinysearch": "npm run abridge -- tinysearch",
     "test": "vitest",
     "check:ts": "tsc --noEmit",
-    "build:ts": "npm run check:ts && node build.mjs"
+    "build:ts": "npm run check:ts && node build.mjs",
+    "build": "npm run build:ts && npm run abridge --"
   },
   "dependencies": {
     "ascii-table3": "^1.0.1",
