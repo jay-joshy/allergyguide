@@ -15,7 +15,8 @@ authors = ["Joshua Yu"]
 </br>
 </br>
 {% admonition(type="tip", icon="tip", title="Quick start") %}
-Click on a food name to view corresponding [PRACTALL](https://pubmed.ncbi.nlm.nih.gov/39560049/) food challenge protocol. If needed, edit the food name, protein content per 100g, and protein content per step. Data obtained from Health Canada [(Canadian Nutrient File, Health Canada, 2015)](https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-about-us.html)
+
+Click on a food name to view corresponding [PRACTALL](https://pubmed.ncbi.nlm.nih.gov/39560049/) food challenge protocol. If needed, edit the food name, protein content per serving size, and protein content per step. Data are obtained from Health Canada [(Canadian Nutrient File, Health Canada, 2015)](https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-about-us.html) **and are estimates; the actual Nutrition Facts label should always be preferred if available**.
 
 {% end %}
 
