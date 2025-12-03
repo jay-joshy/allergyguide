@@ -1,5 +1,8 @@
 [build]
 publish = "public"
+# For some reason this has to be done for the site to build properly. Not quite sure why
+# If you try to change this make sure to review the netlify build logs
+# Much of the problems likely stem from the package abridge js and the underlying theme
 command = "npm run build -- '--base-url /' || (npm ci && npm run abridge -- '--base-url /')"
 
 [build.environment]
