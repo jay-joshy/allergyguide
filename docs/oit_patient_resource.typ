@@ -7,12 +7,7 @@
   margin: (x: 0.75in, y: 0.75in),
   numbering: "— 1 —",
   footer: {
-    grid(
-      columns: (auto, 1fr),
-      align: horizon,
-      align(left)[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION],
-      align(right)[#v(0.5em)#image("banner_two.png", width: 40%)],
-    )
+    align(right)[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION],
   },
   header: context {
     if counter(page).get().first() in (1, 2) {
