@@ -16,6 +16,9 @@ import { AsciiTable3 } from "ascii-table3";
 // Configure Decimal.js
 Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 
+// commit hash
+declare const __COMMIT_HASH__: string;
+
 // ============================================
 // ENUMS
 // ============================================
@@ -3143,7 +3146,7 @@ function _generatePdf(jsPDF: any): void {
     doc.setFont("helvetica", "italic");
     doc.setTextColor(100);
     doc.text("", 40, 760);
-    doc.text("Always verify calculations before clinical use.", 40, 772);
+    doc.text(`Always verify calculations before clinical use. Current tool version-hash: ${__COMMIT_HASH__}`, 40, 772);
     doc.setTextColor(0);
   }
 
