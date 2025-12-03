@@ -256,6 +256,7 @@ let warningsPageURL = "";
 
 // Clickwrap modal elements
 let clickwrapModal: HTMLElement | null = null;
+let clickwrapCheckbox0: HTMLInputElement | null = null;
 let clickwrapCheckbox1: HTMLInputElement | null = null;
 let clickwrapCheckbox2: HTMLInputElement | null = null;
 let clickwrapCheckbox3: HTMLInputElement | null = null;
@@ -394,6 +395,7 @@ function hideClickwrapModal(): void {
   if (clickwrapModal) {
     clickwrapModal.style.display = 'none';
     document.body.style.overflow = ''; // Restore scroll
+    if (clickwrapCheckbox0) clickwrapCheckbox0.checked = false;
     if (clickwrapCheckbox1) clickwrapCheckbox1.checked = false;
     if (clickwrapCheckbox2) clickwrapCheckbox2.checked = false;
     if (clickwrapCheckbox3) clickwrapCheckbox3.checked = false;
@@ -2838,22 +2840,24 @@ function attachCustomNoteListener(): void {
 
 function attachClickwrapEventListeners(): void {
   clickwrapModal = document.getElementById('oit-clickwrap-modal');
+  clickwrapCheckbox0 = document.getElementById('clickwrap-checkbox-0') as HTMLInputElement;
   clickwrapCheckbox1 = document.getElementById('clickwrap-checkbox-1') as HTMLInputElement;
   clickwrapCheckbox2 = document.getElementById('clickwrap-checkbox-2') as HTMLInputElement;
   clickwrapCheckbox3 = document.getElementById('clickwrap-checkbox-3') as HTMLInputElement;
   clickwrapGenerateBtn = document.getElementById('clickwrap-generate-btn') as HTMLButtonElement;
   clickwrapCancelBtn = document.getElementById('clickwrap-cancel-btn') as HTMLButtonElement;
 
-  if (!clickwrapModal || !clickwrapCheckbox1 || !clickwrapCheckbox2 || !clickwrapCheckbox3 || !clickwrapGenerateBtn || !clickwrapCancelBtn) {
+  if (!clickwrapModal || !clickwrapCheckbox0 || !clickwrapCheckbox1 || !clickwrapCheckbox2 || !clickwrapCheckbox3 || !clickwrapGenerateBtn || !clickwrapCancelBtn) {
     return;
   }
 
   const validateCheckboxes = () => {
     if (clickwrapGenerateBtn) {
-      clickwrapGenerateBtn.disabled = !(clickwrapCheckbox1?.checked && clickwrapCheckbox2?.checked && clickwrapCheckbox3?.checked);
+      clickwrapGenerateBtn.disabled = !(clickwrapCheckbox0?.checked && clickwrapCheckbox1?.checked && clickwrapCheckbox2?.checked && clickwrapCheckbox3?.checked);
     }
   };
 
+  clickwrapCheckbox0.addEventListener('change', validateCheckboxes);
   clickwrapCheckbox1.addEventListener('change', validateCheckboxes);
   clickwrapCheckbox2.addEventListener('change', validateCheckboxes);
   clickwrapCheckbox3.addEventListener('change', validateCheckboxes);
