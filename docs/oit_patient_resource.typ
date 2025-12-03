@@ -7,7 +7,7 @@
   margin: (x: 0.75in, y: 0.75in),
   numbering: "— 1 —",
   footer: {
-    align(right)[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION],
+    align(right)[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION]
   },
   header: context {
     if counter(page).get().first() in (1, 2) {
