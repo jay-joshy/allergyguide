@@ -13,11 +13,11 @@ authors = ["Joshua Yu"]
 
 Oral Immunotherapy (OIT) is a treatment for IgE-mediated food allergies that involves gradually introducing increasing amounts of allergen to desensitize the patient. Implementing effective OIT protocols for at-home use by patients and their families requires careful planning; however, existing tooling for generating OIT protocols are sparse and do not offer sufficient flexibility for the diversity of protocol phenotypes seen in clinical practice.
 
-This open-source tool addresses these challenges by providing a robust and flexible platform to generate safe and customizable OIT protocols. It aims to simplify protocol creation, reduce manual errors, and support clinicians and patients with clear, exportable plans.
+This open-source tool aims to addresses these challenges by providing a robust and flexible platform to generate safe and customizable OIT protocols. It aims to simplify protocol creation, reduce manual errors, and support clinicians and patients with clear, exportable, and verifiable plans.
 
 **Key Capabilities:**
 
-- **Customizable Dose Progression:** Generate OIT protocols with configurable dose progressions, with sensible initial defaults.
+- **Customizable Dose Progression:** Generate OIT protocols with configurable dose progressions, with sensible initial defaults based on existing published literature.
 - **Diverse Food Support:** Handle both solid and liquid foods, performing automatic dilution calculations where necessary.
 - **Food Transitioning:** Support transitions from a primary food (Food A) to a secondary food (Food B) at a customizable threshold.
 - **Interactive Protocol Tables:** Fully editable tables for protocol steps, food characteristics, and dilution strategies.
@@ -26,21 +26,21 @@ This open-source tool addresses these challenges by providing a robust and flexi
 
 **Future Enhancements:**
 
-- Implement warnings for excessively high target protein doses (>5000mg).
+- Implement warnings for very high target protein doses (>5000mg).
 - Expand PDF export to include comprehensive patient information about OIT at home.
 
 ### 1.1 There is substantial variability in OIT implementation
 
-OIT protocols involve a series of increasing allergen doses over time. The specific progression of protein targets, food form (e.g., powder, whole food, liquid), dilution methods, and total steps can vary significantly between clinicians, even within a single food. This heterogeneity makes standardized protocol generation difficult: manual methods are time-consuming and are more prone to human error.
+OIT protocols involve a series of increasing allergen doses over time. The specific progression of protein targets, food form (e.g., powder, whole food, liquid), dilution methods, and total steps can vary significantly between clinicians, even within a single food. This heterogeneity makes standardized protocol generation difficult: while the calculations are easy, there are many steps and repetitions: manual methods are time-consuming and are more prone to human error.
 
 ### 1.2 Underlying Assumptions and Defaults
 
 The calculator operates based on a set of clinical and practical assumptions to ensure generated protocols are both safe and measurable in a home setting:
 
-- **Dosing Strategies:** Three common protein dose progression strategies are provided as starting points: Standard, Slow, and Rapid. These can be adjusted by the user, but also on the backend (ie. new starting strategies can be added to the tool).
+- **Dosing Strategies:** Three common protein dose progression strategies are provided as starting points: Standard, Slow, and Rapid. These can be adjusted by the user, but also on the backend (ie. new starting strategies can be added to the tool). The standard progression comes directly from published papers.
   - **Standard** (11 steps): [1, 2.5, 5, 10, 20, 40, 80, 120, 160, 240, 300] mg
   - **Slow** (19 steps): [0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 220, 260, 300] mg
-- **OIT Phenotypes:** We assume four main OIT implementation types:
+- **OIT Phenotypes:** We assume four main OIT implementation types based on the author's observations:
   1. _Food A with initial dilutions_, transitioning to direct dosing once the weight of undiluted food is easily measurable. By default, that threshold is set at 0.2 grams or 0.2 ml.
   2. _Food A with dilutions maintained throughout the protocol._
   3. _Food A with no dilutions_. Usually not feasible especially with low dose steps; can be done if compounded by pharmacy but not widely available.
@@ -51,8 +51,8 @@ The calculator operates based on a set of clinical and practical assumptions to 
   - Dilution calculations prioritize practical patient measurements (e.g., minimum measurable mass/volume by standard scales/syringes - see below). They also aim to make at least 3 servings of daily doses for ease of use.
 - **Measurement resolution:** We assume default precision settings for scales (0.01g resolution) and syringes (0.1ml resolution).
 - **Practical minimum measurements:** We assume the minimum measurable mass and volume are 0.2g and 0.2ml, respectively. This is arbitrary but comes from personal experience.
-- **Validation:** Because of the freedom provided to the user to edit a protocol, unintended side-effects inevitably can arise despite best efforts to programmatically limit 'unreachable' or 'unrealistic' scenarios. Protocols are therefore continuously validated against a set of rules (critical "red" warnings and cautionary "yellow" warnings) to highlight potential issues _without blocking_ the user's workflow. Detailed validation rules are available [here](@/tools/resources/oit_calculator_validation.md).
-- **Pre-defined Foods:** The tool utilizes food protein data from Health Canada's Canadian Nutrient File (2015). The original dataset does not specify what is a solid versus a liquid, and _that characteristic has been added in with an error-prone method_. An assumption is made that for liquids, 100g is approximately equivalent to 100ml for protein concentration purposes; however, users should verify this in practice.
+- **Validation:** Because of the freedom provided to the user to edit a protocol, unintended side-effects inevitably can arise despite best efforts to programmatically limit 'unreachable' or 'unrealistic' scenarios. Protocols are therefore continuously validated against a set of rules (critical "red" warnings and cautionary "yellow" warnings) to highlight potential issues _without blocking_ the user's workflow. Detailed validation rules are available [here](@/tools/resources/oit_calculator_validation.md). These validation rules **ARE NOT EXHAUSTIVE** and it is stressed that the tool user still has to self-verify the outputs.
+- **Pre-defined Foods:** The tool utilizes food protein data from Health Canada's Canadian Nutrient File (2015). If an actual Nutrition Facts label is available, it should ALWAYS be used for accuracy. The original CNF 2015 dataset does not specify what is a solid versus a liquid, and _that characteristic has been added in with an error-prone method_. An assumption is made that for liquids, 100g is approximately equivalent to 100ml for protein concentration purposes; however, users should verify this in practice.
 - **Pre-defined protocols:** existing protocols with real-world use can be added on the backend and be available for search. These protocols are loaded 'as-is', but can still be edited by the user after.
 
 ### 1.3 User Workflow
@@ -216,5 +216,5 @@ A JSON array of pre-defined `ProtocolData` objects, serving as starting points f
 To build the TypeScript code for the OIT Calculator, navigate to the `allergyguide` directory and run:
 
 ```bash
-npm run build_oit
+npm run build:ts
 ```

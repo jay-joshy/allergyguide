@@ -45,7 +45,7 @@ author: Joshua Yu
 
 > Existing tooling for generating OIT protocols are sparse and _do not offer sufficient flexibility for the diversity of protocol phenotypes seen in clinical practice_.
 
-- Manual protocol generation is tedious and time-consuming; human error
+- While all discrete calculations for a protocol are easy/trivial, manual protocol generation is tedious and time-consuming; human error more likely
 - Lack of standardization = constantly reinventing the wheel
 
 <!-- end_slide -->
@@ -56,7 +56,7 @@ author: Joshua Yu
 
 <!-- list_item_newlines: 2 -->
 
-- _**<span style="color: yellow">Customizable Dose Progression</span>**_: Generate OIT protocols with editable dose progressions: sensible (but opinionated) initial defaults.
+- _**<span style="color: yellow">Customizable Dose Progression</span>**_: Generate OIT protocols with editable dose progressions: sensible (but opinionated) initial defaults. Base on published papers if available.
 - _**<span style="color: yellow">Diverse Food Support</span>**_: Handle both solid and liquid foods, performing automatic dilution calculations where necessary.
 - _**<span style="color: yellow">Food Transitioning</span>**_: Support transitions from a primary food (Food A) to a secondary food (Food B) at a customizable threshold.
 - _**<span style="color: yellow">Interactive Protocol Tables</span>**_: Fully editable tables for protocol steps, food characteristics, and dilution strategies.
@@ -185,6 +185,8 @@ SLOW: [ 0.5, 1, 1.5, 2.5, 5, 10, 20, 30, 40, 60, 80, 100, 120, 140, 160, 190, 22
 
 - <span style="color: #FFA500">**Yellow Warnings (Caution):**</span> For things that might be impractical or unusual.
   - _Example: Non-Ascending Doses, Impractical Measurements_
+
+These checks are NOT EXHAUSTIVE. They do NOT GUARANTEE that the protocol is 'correct'.
 
 <!-- end_slide -->
 

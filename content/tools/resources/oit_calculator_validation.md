@@ -9,9 +9,9 @@ toc = true
 authors = ["Joshua Yu"]
 +++
 
-Each time a protocol is loaded or edited in the OIT Calculator, it is validated against a set of rules that assess for both **critical issues** and **practical cautions**.
+Each time a protocol is loaded or edited in the OIT Calculator, it is validated against a set of rules that assess for both **critical issues** and **practical cautions**. These checks are **NOT EXHAUSTIVE** and **DO NOT GUARANTEE** the protocol is 'correct' - it _does not replace clinical judgement_. The protocol should always be checked by the physician.
 
-- **Critical issues** represent serious flaws in the protocol that could compromise patient safety or make the protocol impossible to follow.
+- **Critical issues** represent potential serious flaws in the protocol that could compromise safety or make the protocol impossible to follow.
 - **Practical cautions** are potential non-threatening issues that could be acceptable under the right clinical context, but in many circumstances may hinder implementation of the protocol or violate assumptions made by the tool.
 
 <br>
@@ -20,7 +20,7 @@ Each time a protocol is loaded or edited in the OIT Calculator, it is validated 
 
 **Protocol too rapid**
 
-- A protocol with fewer than 5 steps is too accelerated for a standard oral immunotherapy schedule.
+- A protocol with fewer than 5 steps is short for a standard full immunotherapy schedule. May be acceptable if the protocol being built is for a patient already tolerating certain doses of allergen (e.g. already finished a portion of the OIT build-up phase).
 
 <div style="height:0.75rem;"> </div>
 
