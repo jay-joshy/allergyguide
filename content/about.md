@@ -48,8 +48,10 @@ This project is open-source and built using the excellent static website generat
 
 # Medical Disclaimer
 
+See [full terms of use here](/termsofuse).
+
 {% important(header = "PLEASE NOTE:") %}
-**This information is for educational and informational purposes only and does not replace professional medical advice.** The content is not meant to be complete or exhaustive or to be applicable to any specific individual's medical condition. Always consult a licensed healthcare provider for concerns about your health -- the content of this website is not a substitute for professional medical advice, diagnosis, or treatment.
+**This information is for educational and informational purposes only and does not replace professional medical advice.** The content is not meant to be complete or exhaustive or to be applicable to any specific individual's medical condition. Always consult a licensed healthcare provider for concerns about your health - the content of this website is not a substitute for professional medical advice, diagnosis, or treatment.
 
 We assume no legal duty to correct or update the website nor to resolve or clarify any inconsistent information that might be a part of the website.
 {% end %}

@@ -6,7 +6,6 @@
   --ref_border: #444;
   --ref_shadow: rgba(0, 0, 0, 0.5);
   --ref_link: #1e90ff;
-  --ref_icon: #ffa500;
 }
 
 :root.switch {
@@ -16,7 +15,6 @@
   --ref_border: #ccc;
   --ref_shadow: rgba(0, 0, 0, 0.1);
   --ref_link: #0645ad;
-  --ref_icon: #ff4500;
 }
 
 /* Popup overlay (hidden by default) */
@@ -90,7 +88,7 @@
 
 .ref-icon svg {
   transition: fill 0.2s;
-  fill: var(--ref_icon); // Your highlight color
+  fill: var(--a1); // Your highlight color
 
   width: 1rem;
   height: 1rem;
@@ -98,7 +96,7 @@
 }
 
 .ref-icon svg:hover {
-  fill: var(--ref_icon); // Your highlight color
+  fill: var(--a1); // Your highlight color
   transform: scale(1.5);
 }
 
@@ -133,7 +131,7 @@ a {
 }
 
 .ref-notes {
-  color: var(--ref_icon)
+  color: var(--a1)
 }
 
 /* Link styling */
@@ -148,7 +146,7 @@ a {
 .ref-separator {
   border: none;
   height: 1px;
-  background: linear-gradient(to right, var(--ref_icon), transparent);
+  background: linear-gradient(to right, var(--a1), transparent);
   margin: 12px 0;
 }
 

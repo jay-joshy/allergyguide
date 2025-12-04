@@ -53,7 +53,7 @@
   --food-text: #e6e6e6;
   --food-border: #454545;
   --food-header-bg: #181818;
-  --food-hover: rgba(66, 133, 244, 0.10);
+  --food-hover: rgba(66, 133, 244, 0.1);
   --food-input-bg: #1a1a1a;
   --food-input-border: #5a5a5a;
   --food-input-focus: #ff8c00;
@@ -147,7 +147,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--food-bg);
   color: var(--food-text);
 
@@ -166,7 +167,9 @@
       font-size: 16px;
       background: var(--food-input-bg);
       color: var(--food-text);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
       caret-color: var(--food-input-focus);
 
       &:hover {
@@ -460,12 +463,12 @@
             font-weight: 600;
             color: var(--food-mean-value);
             text-align: right;
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: "Monaco", "Menlo", monospace;
           }
 
           &.standard-error {
             text-align: right;
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: "Monaco", "Menlo", monospace;
             color: var(--food-no-data);
 
             .no-data {
@@ -637,7 +640,9 @@
   border-radius: 8px;
   padding: 6px 8px;
   font: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   outline: none;
   width: 6em;
 }
@@ -660,7 +665,9 @@
   border: 2px dashed var(--food-input-border);
   border-radius: 8px;
   padding: 4px 6px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .fpi-modal [contenteditable="true"]:focus {
@@ -679,7 +686,9 @@
   border: none;
   color: var(--food-text);
   cursor: pointer;
-  transition: color 0.2s ease, transform 0.05s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.05s ease;
 }
 
 .fpi-modal-close:hover {
@@ -698,7 +707,9 @@
   text-decoration: underline;
   text-decoration-color: var(--food-input-focus);
   text-underline-offset: 2px;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
 }
 
 .food-name-btn:hover {
@@ -803,4 +814,35 @@
 .fpi-modal .protein-per-100g-input {
   width: 7em;
   margin-right: 4px;
+}
+
+.fpi-modal .serving-size-input {
+  width: 5em;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.fpi-inputs-container {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--food-input-bg);
+  border: 1px solid var(--food-border);
+  border-radius: 8px;
+
+  p {
+    margin: 0;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  i {
+    padding-bottom: 0.5rem;
+  }
 }

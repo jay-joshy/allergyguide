@@ -65,7 +65,7 @@ menu_footer = [
   { url = "about", name = "About", slash = true, blank = false, size = "s90" },
   { url = "contribute", name = "Contribute", slash = true, blank = false, size = "s90" },
   { url = "privacy", name = "Privacy", slash = true, blank = false, size = "s90" },
-  { url = "disclaimer", name = "Disclaimer", slash = true, blank = false, size = "s90" },
+  { url = "termsofuse", name = "Terms of Use", slash = true, blank = false, size = "s90" },
   { url = "sitemap.xml", name = "Sitemap", slash = false, blank = true, size = "s90" },
 ]
 
@@ -199,7 +199,7 @@ webmanifest = "/manifest.min.json" # Required for PWAs
 ###############################################################################
 
 pwa = true         # true to load the service worker
-pwa_VER = '3.12.1' # Service Worker cache version. (increment if you need to force a new cache)
+pwa_VER = '3.12.2' # Service Worker cache version. (increment if you need to force a new cache)
 
 ### 3600=1hour, 28800=8hours, 86400=1day, 604800=1week, 1209600=2weeks
 pwa_NORM_TTL = 0 #  86400 is reasonable. html, json, xml, anything else undefined
