@@ -26,6 +26,7 @@
     "jspdf": "^3.0.4",
     "jspdf-autotable": "^5.0.2",
     "pagefind": "^1.1.0",
+    "pdf-lib": "^1.17.1",
     "replace-in-file": "^8.1.0",
     "uglify-js": "^3.17.4"
   },

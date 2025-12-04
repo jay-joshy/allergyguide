@@ -2535,9 +2535,11 @@ async function triggerPdfGeneration(): Promise<void> {
 
   try {
     const { jsPDF } = await import('jspdf');
+    const { PDFDocument } = await import('pdf-lib');
     const { applyPlugin } = await import('jspdf-autotable');
     applyPlugin(jsPDF);
-    _generatePdf(jsPDF);
+
+    await _generatePdf(jsPDF, PDFDocument);
   } catch (error) {
     console.error("Failed to load PDF libraries or generate PDF: ", error);
     alert("Error generating PDF. Please check the console for details.");
@@ -2548,7 +2550,6 @@ async function triggerPdfGeneration(): Promise<void> {
     }
     if (modalPdfBtn) {
       modalPdfBtn.textContent = "Generate PDF";
-      // The disabled state will be reset by the checkbox handler
     }
   }
 }
@@ -2645,9 +2646,17 @@ function attachClickwrapEventListeners(): void {
  * @param jsPDF The jsPDF constructor
  * @returns void
  */
-function _generatePdf(jsPDF: any): void {
+async function _generatePdf(jsPDF: any, PDFDocument: any): Promise<void> {
   if (!currentProtocol) return;
 
+  // fetch physician review sheet and education handout pdfs
+  const reviewSheetPromise = fetch('/tool_assets/oit_patient_resource_terms.pdf')
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to load review sheet PDF");
+      return res.arrayBuffer();
+    });
+
+  // generate main protocol doc table
   const doc: any = new jsPDF({
     unit: "pt",
     format: "letter",
@@ -2895,6 +2904,30 @@ function _generatePdf(jsPDF: any): void {
     doc.setTextColor(0);
   }
 
+  // doc is complete
+  // prep for merge: need array buffers for pdf-lib
+  const jsPdfBytes = doc.output('arraybuffer');
+  const reviewSheetBytes = await reviewSheetPromise;
+
+  // merge
+  const mergedPdf = await PDFDocument.create();
+  const protocolPdf = await PDFDocument.load(jsPdfBytes);
+  const reviewSheetPdf = await PDFDocument.load(reviewSheetBytes);
+
+  // order of pdfs
+  const reviewSheetPages = await mergedPdf.copyPages(reviewSheetPdf, reviewSheetPdf.getPageIndices());
+  reviewSheetPages.forEach((page: any) => mergedPdf.addPage(page));
+  const protocolPages = await mergedPdf.copyPages(protocolPdf, protocolPdf.getPageIndices());
+  protocolPages.forEach((page: any) => mergedPdf.addPage(page));
+
+  // create blob
+  const mergedPdfBytes = await mergedPdf.save();
+  const pdfBlob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+  const blobUrl = URL.createObjectURL(pdfBlob);
+
+  // const pdfBlob = doc.output("blob");
+  // const blobUrl = URL.createObjectURL(pdfBlob);
+
   // Detect if user is on mobile device
   // Combines user agent check with touch capability and screen size for better accuracy
   const isMobile =
@@ -2902,9 +2935,6 @@ function _generatePdf(jsPDF: any): void {
     (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ||
     (("ontouchstart" in window || navigator.maxTouchPoints > 0) &&
       window.innerWidth <= 1024);
-
-  const pdfBlob = doc.output("blob");
-  const blobUrl = URL.createObjectURL(pdfBlob);
 
   if (isMobile) {
     // Mobile: Use download link approach for better compatibility
@@ -2920,7 +2950,7 @@ function _generatePdf(jsPDF: any): void {
     // Clean up the blob URL after a short delay
     setTimeout(() => {
       URL.revokeObjectURL(blobUrl);
-    }, 100);
+    }, 1000);
   } else {
     // Desktop: Open in new tab (original behavior)
     const w = window.open(blobUrl, "_blank");
