@@ -13,6 +13,9 @@ import Decimal from "decimal.js";
 import fuzzysort from "fuzzysort";
 import { AsciiTable3 } from "ascii-table3";
 
+import type { jsPDF } from 'jspdf';
+import type { PDFDocument } from 'pdf-lib';
+
 // Configure Decimal.js
 Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
 
@@ -2643,10 +2646,11 @@ function attachClickwrapEventListeners(): void {
  *
  * Opens in a new tab where possible; falls back to direct download.
  *
- * @param jsPDF The jsPDF constructor
+ * @param JsPdfClass  - the jsPDF constructor
+ * @param PdfDocClass - static class for PDFDocument
  * @returns void
  */
-async function _generatePdf(jsPDF: any, PDFDocument: any): Promise<void> {
+async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
   if (!currentProtocol) return;
 
   // fetch physician review sheet and education handout pdfs
@@ -2657,7 +2661,7 @@ async function _generatePdf(jsPDF: any, PDFDocument: any): Promise<void> {
     });
 
   // generate main protocol doc table
-  const doc: any = new jsPDF({
+  const doc: any = new JsPdfClass({
     unit: "pt",
     format: "letter",
   });
@@ -2910,9 +2914,9 @@ async function _generatePdf(jsPDF: any, PDFDocument: any): Promise<void> {
   const reviewSheetBytes = await reviewSheetPromise;
 
   // merge
-  const mergedPdf = await PDFDocument.create();
-  const protocolPdf = await PDFDocument.load(jsPdfBytes);
-  const reviewSheetPdf = await PDFDocument.load(reviewSheetBytes);
+  const mergedPdf = await PdfDocClass.create();
+  const protocolPdf = await PdfDocClass.load(jsPdfBytes);
+  const reviewSheetPdf = await PdfDocClass.load(reviewSheetBytes);
 
   // order of pdfs
   const reviewSheetPages = await mergedPdf.copyPages(reviewSheetPdf, reviewSheetPdf.getPageIndices());
@@ -2922,7 +2926,11 @@ async function _generatePdf(jsPDF: any, PDFDocument: any): Promise<void> {
 
   // create blob
   const mergedPdfBytes = await mergedPdf.save();
-  const pdfBlob = new Blob([mergedPdfBytes], { type: "application/pdf" });
+  const pdfBlob = new Blob(
+    [mergedPdfBytes as Uint8Array<ArrayBuffer>],
+    { type: "application/pdf" }
+  );
+
   const blobUrl = URL.createObjectURL(pdfBlob);
 
   // const pdfBlob = doc.output("blob");
