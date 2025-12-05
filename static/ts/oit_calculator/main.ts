@@ -78,7 +78,8 @@ import {
 // ============================================
 import {
   recalculateProtocol,
-  addFoodBToProtocol
+  addFoodBToProtocol,
+  recalculateStepMethods
 } from "./core/protocol"
 
 // ============================================
@@ -258,52 +259,6 @@ function getFoodAStepCount(protocol: Protocol): number {
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Recompute per-step methods (DIRECT vs DILUTE) without changing targets/foods.
- *
- * For Food B steps, always enforce DILUTE_NONE. For Food A steps, use the current Food A strategy and diThreshold. Triggers UI updates.
- *
- * Mutates global currentProtocol.
- *
- * @returns void
- */
-function recalculateStepMethods(): void {
-  if (!currentProtocol) return;
-
-  // Preserve existing targets and food properties but recalculate methods
-  const preservedTargets = currentProtocol.steps.map((s) => s.targetMg);
-  const preservedFoods = currentProtocol.steps.map((s) => s.food);
-
-  const steps: Step[] = [];
-
-  for (let i = 0; i < preservedTargets.length; i++) {
-    const targetMg = preservedTargets[i];
-    const isStepFoodB = preservedFoods[i] === "B";
-    const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
-    const foodAStrategy = isStepFoodB
-      ? FoodAStrategy.DILUTE_NONE
-      : currentProtocol.foodAStrategy;
-
-    const step = generateStepForTarget(
-      targetMg,
-      i + 1,
-      food,
-      foodAStrategy,
-      currentProtocol.diThreshold,
-      currentProtocol.config,
-    );
-
-    if (step) {
-      step.food = preservedFoods[i]; // Preserve the original food property
-      steps.push(step);
-    }
-  }
-
-  currentProtocol.steps = steps;
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Handle user change to a step's target protein (mg).
@@ -1600,7 +1555,9 @@ function attachSettingsEventListeners(): void {
         (e.target as HTMLInputElement).value = value.toFixed(1);
         // Change protocol state
         currentProtocol.foodA.servingSize = new Decimal(value);
-        recalculateStepMethods();
+        currentProtocol = recalculateStepMethods(currentProtocol);
+        renderProtocolTable();
+        updateWarnings();
       }
     });
   }
@@ -1620,7 +1577,10 @@ function attachSettingsEventListeners(): void {
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
         currentProtocol.foodA.gramsInServing = new Decimal(value);
-        recalculateStepMethods();
+        currentProtocol = recalculateStepMethods(currentProtocol);
+        renderProtocolTable();
+        updateWarnings();
+
       }
     });
   }
@@ -1635,7 +1595,10 @@ function attachSettingsEventListeners(): void {
         currentProtocol.diThreshold = new Decimal(
           (e.target as HTMLInputElement).value,
         );
-        recalculateStepMethods();
+        currentProtocol = recalculateStepMethods(currentProtocol);
+        renderProtocolTable();
+        updateWarnings();
+
       }
     });
   }
@@ -1780,17 +1743,26 @@ function attachSettingsEventListeners(): void {
           break;
         case "food-a-strategy-initial":
           currentProtocol.foodAStrategy = FoodAStrategy.DILUTE_INITIAL;
-          recalculateStepMethods();
+          currentProtocol = recalculateStepMethods(currentProtocol);
+          renderProtocolTable();
+          updateWarnings();
+
           renderFoodSettings();
           break;
         case "food-a-strategy-all":
           currentProtocol.foodAStrategy = FoodAStrategy.DILUTE_ALL;
-          recalculateStepMethods();
+          currentProtocol = recalculateStepMethods(currentProtocol);
+          renderProtocolTable();
+          updateWarnings();
+
           renderFoodSettings();
           break;
         case "food-a-strategy-none":
           currentProtocol.foodAStrategy = FoodAStrategy.DILUTE_NONE;
-          recalculateStepMethods();
+          currentProtocol = recalculateStepMethods(currentProtocol);
+          renderProtocolTable();
+          updateWarnings();
+
           renderFoodSettings();
           break;
       }

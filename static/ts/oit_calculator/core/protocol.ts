@@ -174,4 +174,48 @@ export function recalculateProtocol(oldProtocol: Protocol): Protocol {
   return newProtocol;
 }
 
+/**
+ * Recompute per-step methods (DIRECT vs DILUTE) without changing targets/foods.
+ *
+ * For Food B steps, always enforce DILUTE_NONE. For Food A steps, use the current Food A strategy and diThreshold. 
+ *
+ * @param oldProtocol
+ * @returns Protocol
+ */
+export function recalculateStepMethods(oldProtocol: Protocol): Protocol {
+  const newProtocol = { ...oldProtocol };
+
+  // Preserve existing targets and food properties but recalculate methods
+  const preservedTargets = newProtocol.steps.map((s) => s.targetMg);
+  const preservedFoods = newProtocol.steps.map((s) => s.food);
+
+  const steps: Step[] = [];
+
+  for (let i = 0; i < preservedTargets.length; i++) {
+    const targetMg = preservedTargets[i];
+    const isStepFoodB = preservedFoods[i] === "B";
+    const food = isStepFoodB ? newProtocol.foodB! : newProtocol.foodA;
+    const foodAStrategy = isStepFoodB
+      ? FoodAStrategy.DILUTE_NONE
+      : newProtocol.foodAStrategy;
+
+    const step = generateStepForTarget(
+      targetMg,
+      i + 1,
+      food,
+      foodAStrategy,
+      newProtocol.diThreshold,
+      newProtocol.config,
+    );
+
+    if (step) {
+      step.food = preservedFoods[i]; // Preserve the original food property
+      steps.push(step);
+    }
+  }
+
+  newProtocol.steps = steps;
+
+  return newProtocol;
+}
 
