@@ -1,0 +1,177 @@
+import Decimal from "decimal.js";
+
+import {
+  DosingStrategy,
+  FoodType,
+  Method,
+  FoodAStrategy,
+} from "../types"
+
+import type {
+  Unit,
+  Food,
+  Step,
+  ProtocolConfig,
+  Protocol,
+  Candidate,
+  FoodData,
+  ProtocolData,
+  Warning
+} from "../types"
+
+import {
+  DOSING_STRATEGIES,
+  OIT_CLICKWRAP_ACCEPTED_KEY,
+  CLICKWRAP_EXPIRY_DAYS,
+  DEFAULT_CONFIG,
+} from "../constants"
+
+import {
+  generateStepForTarget
+} from "./calculator"
+
+/**
+ * Inject a Food B transition into an existing protocol.
+ *
+ * Finds the first step where targetMg ≥ (threshold.amount × foodB.mgPerUnit) and transitions at that point by:
+ * - duplicating the transition target as the first Food B step
+ * - converting all subsequent targets to Food B DIRECT steps
+ * - reindexing steps
+ *
+ * Protocol.foodB and .foodBThreshold are assigned even if no transition point is found; the validation system will surface a warning in that case.
+ *
+ *
+ * @param oldProtocol Protocol - a new protocol with the modifications based on this will be done
+ * @param foodB Food B definition
+ * @param threshold Threshold to begin Food B, unit-specific amount (g/ml)
+ * @returns Protocol - the new protocol with food B steps added
+ */
+export function addFoodBToProtocol(
+  oldProtocol: Protocol,
+  foodB: Food,
+  threshold: { unit: Unit; amount: Decimal },
+): Protocol {
+  const newProtocol = { ...oldProtocol };
+
+  // Calculate foodBmgThreshold
+  const foodBmgThreshold = threshold.amount.times(foodB.getMgPerUnit());
+
+  // Set Food B in protocol (even if no transition point found, so threshold changes can be detected)
+  newProtocol.foodB = foodB;
+  newProtocol.foodBThreshold = threshold;
+
+  // Find transition point
+  let transitionIndex = -1;
+  for (let i = 0; i < newProtocol.steps.length; i++) {
+    if (newProtocol.steps[i].targetMg.greaterThanOrEqualTo(foodBmgThreshold)) {
+      transitionIndex = i;
+      break;
+    }
+  }
+
+  if (transitionIndex === -1) {
+    // No transition point found - emit warning
+    // warning is picked up by validation system
+    // new protocol basically isn't changed
+    return newProtocol;
+  }
+
+  // Get the original target sequence after transition
+  const originalTargets: any[] = [];
+  for (let i = transitionIndex + 1; i < newProtocol.steps.length; i++) {
+    originalTargets.push(newProtocol.steps[i].targetMg);
+  }
+
+  // Insert duplicate at transition point
+  const transitionTargetMg = newProtocol.steps[transitionIndex].targetMg;
+
+  // Build Food B steps
+  const foodBSteps: Step[] = [];
+  const foodBUnit: Unit = foodB.type === FoodType.SOLID ? "g" : "ml";
+
+  // First Food B step uses same target as last Food A step
+  const firstBTargetMg = transitionTargetMg;
+  const firstBNeatMass = firstBTargetMg.dividedBy(foodB.getMgPerUnit());
+  foodBSteps.push({
+    stepIndex: transitionIndex + 2, // Will be reindexed later
+    targetMg: firstBTargetMg,
+    method: Method.DIRECT,
+    dailyAmount: firstBNeatMass,
+    dailyAmountUnit: foodBUnit,
+    food: "B",
+  });
+
+  // Remaining Food B steps
+  for (const targetMg of originalTargets) {
+    const neatMass = targetMg.dividedBy(foodB.getMgPerUnit());
+    foodBSteps.push({
+      stepIndex: 0, // Will be reindexed
+      targetMg,
+      method: Method.DIRECT,
+      dailyAmount: neatMass,
+      dailyAmountUnit: foodBUnit,
+      food: "B",
+    });
+  }
+
+  // Truncate protocol.steps at transition point
+  newProtocol.steps = newProtocol.steps.slice(0, transitionIndex + 1);
+
+  // Add Food B steps
+  newProtocol.steps.push(...foodBSteps);
+
+  // Reindex
+  for (let i = 0; i < newProtocol.steps.length; i++) {
+    newProtocol.steps[i].stepIndex = i + 1;
+  }
+
+  // tada new protocol
+  return newProtocol;
+}
+
+
+/**
+ * Recompute the entire protocol step sequence from current high-level settings.
+ *
+ * Rebuilds Food A steps from the selected dosing strategy and Food A strategy, then re-applies Food B transition if present. Triggers UI updates.
+ *
+ * @param oldProtocol Protocol - old protocol to recalculate based on its config
+ * @returns Protocol
+ */
+export function recalculateProtocol(oldProtocol: Protocol): Protocol {
+
+  const newProtocol = { ...oldProtocol };
+
+  const targetProteins = DOSING_STRATEGIES[newProtocol.dosingStrategy];
+  const steps: Step[] = [];
+
+  // Regenerate Food A steps
+  for (let i = 0; i < targetProteins.length; i++) {
+    const step = generateStepForTarget(
+      targetProteins[i],
+      i + 1,
+      newProtocol.foodA,
+      newProtocol.foodAStrategy,
+      newProtocol.diThreshold,
+      newProtocol.config,
+    );
+    if (step) {
+      steps.push(step);
+    }
+  }
+
+  newProtocol.steps = steps;
+
+  // Re-add Food B if it exists
+  if (newProtocol.foodB && newProtocol.foodBThreshold) {
+    return addFoodBToProtocol(
+      newProtocol,
+      newProtocol.foodB,
+      newProtocol.foodBThreshold,
+    );
+  }
+
+  return newProtocol;
+}
+
+

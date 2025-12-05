@@ -74,6 +74,14 @@ import {
 } from "./core/calculator"
 
 // ============================================
+// Protocol
+// ============================================
+import {
+  recalculateProtocol,
+  addFoodBToProtocol
+} from "./core/protocol"
+
+// ============================================
 // GLOBAL STATE
 // ============================================
 
@@ -246,147 +254,10 @@ function getFoodAStepCount(protocol: Protocol): number {
   return protocol.steps.length;
 }
 
-/**
- * Inject a Food B transition into an existing protocol.
- *
- * Finds the first step where targetMg ≥ (threshold.amount × foodB.mgPerUnit) and transitions at that point by:
- * - duplicating the transition target as the first Food B step
- * - converting all subsequent targets to Food B DIRECT steps
- * - reindexing steps
- *
- * Protocol.foodB and .foodBThreshold are assigned even if no transition point is found; the validation system will surface a warning in that case.
- *
- * Mutates the provided protocol in place.
- *
- * @param protocol Protocol to modify (mutated)
- * @param foodB Food B definition
- * @param threshold Threshold to begin Food B, unit-specific amount (g/ml)
- */
-function addFoodBToProtocol(
-  protocol: Protocol,
-  foodB: Food,
-  threshold: { unit: Unit; amount: Decimal },
-): void {
-  // Calculate foodBmgThreshold
-  const foodBmgThreshold = threshold.amount.times(foodB.getMgPerUnit());
-
-  // Set Food B in protocol (even if no transition point found, so threshold changes can be detected)
-  protocol.foodB = foodB;
-  protocol.foodBThreshold = threshold;
-
-  // Find transition point
-  let transitionIndex = -1;
-  for (let i = 0; i < protocol.steps.length; i++) {
-    if (protocol.steps[i].targetMg.greaterThanOrEqualTo(foodBmgThreshold)) {
-      transitionIndex = i;
-      break;
-    }
-  }
-
-  if (transitionIndex === -1) {
-    // No transition point found - emit warning
-    // warning is picked up by validation system
-    return;
-  }
-
-  // Get the original target sequence after transition
-  const originalTargets: any[] = [];
-  for (let i = transitionIndex + 1; i < protocol.steps.length; i++) {
-    originalTargets.push(protocol.steps[i].targetMg);
-  }
-
-  // Insert duplicate at transition point
-  const transitionTargetMg = protocol.steps[transitionIndex].targetMg;
-
-  // Build Food B steps
-  const foodBSteps: Step[] = [];
-  const foodBUnit: Unit = foodB.type === FoodType.SOLID ? "g" : "ml";
-
-  // First Food B step uses same target as last Food A step
-  const firstBTargetMg = transitionTargetMg;
-  const firstBNeatMass = firstBTargetMg.dividedBy(foodB.getMgPerUnit());
-  foodBSteps.push({
-    stepIndex: transitionIndex + 2, // Will be reindexed later
-    targetMg: firstBTargetMg,
-    method: Method.DIRECT,
-    dailyAmount: firstBNeatMass,
-    dailyAmountUnit: foodBUnit,
-    food: "B",
-  });
-
-  // Remaining Food B steps
-  for (const targetMg of originalTargets) {
-    const neatMass = targetMg.dividedBy(foodB.getMgPerUnit());
-    foodBSteps.push({
-      stepIndex: 0, // Will be reindexed
-      targetMg,
-      method: Method.DIRECT,
-      dailyAmount: neatMass,
-      dailyAmountUnit: foodBUnit,
-      food: "B",
-    });
-  }
-
-  // Truncate protocol.steps at transition point
-  protocol.steps = protocol.steps.slice(0, transitionIndex + 1);
-
-  // Add Food B steps
-  protocol.steps.push(...foodBSteps);
-
-  // Reindex
-  for (let i = 0; i < protocol.steps.length; i++) {
-    protocol.steps[i].stepIndex = i + 1;
-  }
-}
 
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Recompute the entire protocol step sequence from current high-level settings.
- *
- * Rebuilds Food A steps from the selected dosing strategy and Food A strategy, then re-applies Food B transition if present. Triggers UI updates.
- *
- * Mutates global currentProtocol.
- *
- * @returns void
- */
-function recalculateProtocol(): void {
-  if (!currentProtocol) return;
-
-  const targetProteins = DOSING_STRATEGIES[currentProtocol.dosingStrategy];
-  const steps: Step[] = [];
-
-  // Regenerate Food A steps
-  for (let i = 0; i < targetProteins.length; i++) {
-    const step = generateStepForTarget(
-      targetProteins[i],
-      i + 1,
-      currentProtocol.foodA,
-      currentProtocol.foodAStrategy,
-      currentProtocol.diThreshold,
-      currentProtocol.config,
-    );
-    if (step) {
-      steps.push(step);
-    }
-  }
-
-  currentProtocol.steps = steps;
-
-  // Re-add Food B if it exists
-  if (currentProtocol.foodB && currentProtocol.foodBThreshold) {
-    addFoodBToProtocol(
-      currentProtocol,
-      currentProtocol.foodB,
-      currentProtocol.foodBThreshold,
-    );
-  }
-
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Recompute per-step methods (DIRECT vs DILUTE) without changing targets/foods.
@@ -918,7 +789,9 @@ function renderDosingStrategy(): void {
       ) as DosingStrategy;
       if (currentProtocol && strategy !== currentProtocol.dosingStrategy) {
         currentProtocol.dosingStrategy = strategy;
-        recalculateProtocol();
+        currentProtocol = recalculateProtocol(currentProtocol);
+        renderProtocolTable();
+        updateWarnings();
         renderDosingStrategy();
       }
     });
@@ -1444,7 +1317,7 @@ function selectFoodB(foodData: FoodData): void {
     amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
   };
 
-  addFoodBToProtocol(currentProtocol, food, threshold);
+  currentProtocol = addFoodBToProtocol(currentProtocol, food, threshold);
 
   renderFoodSettings();
   renderProtocolTable();
@@ -1488,7 +1361,7 @@ function selectCustomFood(name: string, inputId: string): void {
       unit: "g" as Unit,
       amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
     };
-    addFoodBToProtocol(currentProtocol, food, threshold);
+    currentProtocol = addFoodBToProtocol(currentProtocol, food, threshold);
     renderFoodSettings();
     renderProtocolTable();
     updateWarnings();
@@ -1627,7 +1500,7 @@ function clearFoodB(): void {
   currentProtocol.foodBThreshold = undefined;
 
   // Regenerate steps without Food B
-  recalculateProtocol();
+  currentProtocol = recalculateProtocol(currentProtocol);
 
   renderFoodSettings();
   renderProtocolTable();
@@ -1801,8 +1674,9 @@ function attachSettingsEventListeners(): void {
           const tempThreshold = currentProtocol.foodBThreshold;
           currentProtocol.foodB = undefined;
           currentProtocol.foodBThreshold = undefined;
-          recalculateProtocol();
-          addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
+          currentProtocol = recalculateProtocol(currentProtocol);
+
+          currentProtocol = addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
           renderProtocolTable();
           updateWarnings();
         }
@@ -1831,8 +1705,9 @@ function attachSettingsEventListeners(): void {
           const tempThreshold = currentProtocol.foodBThreshold;
           currentProtocol.foodB = undefined;
           currentProtocol.foodBThreshold = undefined;
-          recalculateProtocol();
-          addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
+          currentProtocol = recalculateProtocol(currentProtocol);
+
+          currentProtocol = addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
           renderProtocolTable();
           updateWarnings();
         }
@@ -1860,8 +1735,9 @@ function attachSettingsEventListeners(): void {
         const tempThreshold = currentProtocol.foodBThreshold;
         currentProtocol.foodB = undefined;
         currentProtocol.foodBThreshold = undefined;
-        recalculateProtocol();
-        addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
+        currentProtocol = recalculateProtocol(currentProtocol);
+
+        currentProtocol = addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
         renderProtocolTable();
         updateWarnings();
       }
@@ -2970,7 +2846,7 @@ if (import.meta.vitest) {
         // 100mg / 500mg/g = 0.2g threshold
         const threshold = { unit: "g" as Unit, amount: new Decimal(0.2) };
 
-        addFoodBToProtocol(protocol, peanuts, threshold);
+        currentProtocol = addFoodBToProtocol(protocol, peanuts, threshold);
 
         // Expectation:
         // Step 1: 1mg (Food A)

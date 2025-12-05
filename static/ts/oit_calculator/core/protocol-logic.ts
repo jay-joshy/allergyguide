@@ -1,3 +1,0 @@
-// generateDefaultProtocol
-// addFoodBToProtocol
-// recalculateProtocol
