@@ -4,15 +4,21 @@ import {
   FoodType,
   Method,
   FoodAStrategy,
+  DosingStrategy,
 } from "../types"
 
 import type {
   Food,
   Step,
   Unit,
+  Protocol,
   ProtocolConfig,
   Candidate,
 } from "../types"
+
+import {
+  DOSING_STRATEGIES,
+} from "../constants"
 
 /**
  * Compute feasible dilution candidates for a target protein dose.
@@ -230,3 +236,61 @@ export function generateStepForTarget(
   }
 }
 
+/**
+ * Build a default protocol for Food A using the default dosing strategy.
+ *
+ * Uses:
+ * - dosingStrategy: STANDARD
+ * - foodAStrategy: DILUTE_INITIAL
+ * - diThreshold: DEFAULT_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD
+ *
+ * Steps are generated with generateStepForTarget. If a dilution is required but not feasible for a target, a DIRECT fallback step is emitted so the sequence remains continuous (validation will flag any issues).
+ *
+ * @param food Food A
+ * @param config Protocol configuration and constraints
+ * @returns Protocol with Food A steps populated
+ */
+export function generateDefaultProtocol(food: Food, config: ProtocolConfig): Protocol {
+  const dosingStrategy = DosingStrategy.STANDARD;
+  const foodAStrategy = FoodAStrategy.DILUTE_INITIAL;
+  const unit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
+  const diThreshold = config.DEFAULT_FOOD_A_DILUTION_THRESHOLD;
+
+  const targetProteins = DOSING_STRATEGIES[dosingStrategy];
+  const steps: Step[] = [];
+
+  for (let i = 0; i < targetProteins.length; i++) {
+    const step = generateStepForTarget(
+      targetProteins[i],
+      i + 1,
+      food,
+      foodAStrategy,
+      diThreshold,
+      config,
+    );
+    if (step) {
+      steps.push(step);
+    } else {
+      // Cannot generate step - still add it as direct with warning
+      const P = targetProteins[i];
+      const neatMass = P.dividedBy(food.getMgPerUnit());
+      steps.push({
+        stepIndex: i + 1,
+        targetMg: P,
+        method: Method.DIRECT,
+        dailyAmount: neatMass,
+        dailyAmountUnit: unit,
+        food: "A",
+      });
+    }
+  }
+
+  return {
+    dosingStrategy: dosingStrategy,
+    foodA: food,
+    foodAStrategy: foodAStrategy,
+    diThreshold: diThreshold,
+    steps: steps,
+    config: config,
+  };
+}
