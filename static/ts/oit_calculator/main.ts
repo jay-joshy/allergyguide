@@ -83,7 +83,8 @@ import {
   getFoodAStepCount,
   updateStepTargetMg,
   updateStepDailyAmount,
-  updateStepMixFoodAmount
+  updateStepMixFoodAmount,
+  addStepAfter
 } from "./core/protocol"
 
 // ============================================
@@ -180,47 +181,6 @@ function hideClickwrapModal(): void {
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Duplicate a step and insert it immediately after the original.
- *
- * Copies all step fields; for DILUTE steps also copies mix amounts and servings. Reindexes all subsequent steps. Triggers UI update.
- *
- * @param stepIndex 1-based index after which to insert the new step
- * @returns void
- */
-function addStepAfter(stepIndex: number): void {
-  if (!currentProtocol) return;
-
-  const step = currentProtocol.steps[stepIndex - 1];
-  if (!step) return;
-
-  // Duplicate the step
-  const newStep: Step = {
-    stepIndex: step.stepIndex + 1,
-    targetMg: step.targetMg,
-    method: step.method,
-    dailyAmount: step.dailyAmount,
-    dailyAmountUnit: step.dailyAmountUnit,
-    food: step.food,
-  };
-
-  if (step.method === Method.DILUTE) {
-    newStep.mixFoodAmount = step.mixFoodAmount;
-    newStep.mixWaterAmount = step.mixWaterAmount;
-    newStep.servings = step.servings;
-  }
-
-  currentProtocol.steps.splice(stepIndex, 0, newStep);
-
-  // Reindex
-  for (let i = 0; i < currentProtocol.steps.length; i++) {
-    currentProtocol.steps[i].stepIndex = i + 1;
-  }
-
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Remove a step from the protocol and reindex the remaining steps.
@@ -1605,7 +1565,10 @@ function attachTableEventListeners(): void {
       const stepIndex = parseInt(
         (e.target as HTMLElement).getAttribute("data-step")!,
       );
-      addStepAfter(stepIndex);
+      currentProtocol = addStepAfter(currentProtocol!, stepIndex);
+      renderProtocolTable();
+      updateWarnings();
+
     });
   });
 

@@ -379,3 +379,46 @@ export function updateStepMixFoodAmount(
   return newProtocol;
 }
 
+/**
+ * Duplicate a step and insert it immediately after the original.
+ *
+ * Copies all step fields; for DILUTE steps also copies mix amounts and servings. Reindexes all subsequent steps.  
+ *
+ * @param oldProtocol Protocol
+ * @param stepIndex 1-based index after which to insert the new step
+ * @returns Protocol
+ */
+export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol {
+  if (!oldProtocol) return oldProtocol;
+
+  const newProtocol = { ...oldProtocol };
+
+  const step = newProtocol.steps[stepIndex - 1];
+  if (!step) return newProtocol;
+
+  // Duplicate the step
+  const newStep: Step = {
+    stepIndex: step.stepIndex + 1,
+    targetMg: step.targetMg,
+    method: step.method,
+    dailyAmount: step.dailyAmount,
+    dailyAmountUnit: step.dailyAmountUnit,
+    food: step.food,
+  };
+
+  if (step.method === Method.DILUTE) {
+    newStep.mixFoodAmount = step.mixFoodAmount;
+    newStep.mixWaterAmount = step.mixWaterAmount;
+    newStep.servings = step.servings;
+  }
+
+  newProtocol.steps.splice(stepIndex, 0, newStep);
+
+  // Reindex
+  for (let i = 0; i < newProtocol.steps.length; i++) {
+    newProtocol.steps[i].stepIndex = i + 1;
+  }
+
+  return newProtocol;
+}
+
