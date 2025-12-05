@@ -96,6 +96,11 @@ export interface ProtocolConfig {
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: Decimal; // At what amount of Food A do you switch to direct dosing?
   DEFAULT_FOOD_B_THRESHOLD: Decimal; // At what amount of Food B do you switch from Food A to Food B?
   MAX_SOLID_CONCENTRATION: Decimal; //  max g/ml ratio for solid diluted into liquids (default 0.05). Assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
+  MAX_MIX_WATER: Decimal;
+  // Default candidate options for various parameters used to calculate optimal dilutions
+  SOLID_MIX_CANDIDATES: Decimal[];
+  LIQUID_MIX_CANDIDATES: Decimal[];
+  DAILY_AMOUNT_CANDIDATES: Decimal[];
 }
 
 /**

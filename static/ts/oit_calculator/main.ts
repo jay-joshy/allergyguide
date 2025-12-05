@@ -53,10 +53,6 @@ import {
   SOLID_RESOLUTION,
   LIQUID_RESOLUTION,
   DOSING_STRATEGIES,
-  SOLID_MIX_CANDIDATES,
-  LIQUID_MIX_CANDIDATES,
-  DAILY_AMOUNT_CANDIDATES,
-  MAX_MIX_WATER,
   OIT_CLICKWRAP_ACCEPTED_KEY,
   CLICKWRAP_EXPIRY_DAYS,
   DEFAULT_CONFIG,
@@ -186,7 +182,7 @@ function findDilutionCandidates(
 ): Candidate[] {
   const candidates: Candidate[] = [];
   const mixCandidates =
-    food.type === FoodType.SOLID ? SOLID_MIX_CANDIDATES : LIQUID_MIX_CANDIDATES;
+    food.type === FoodType.SOLID ? config.SOLID_MIX_CANDIDATES : config.LIQUID_MIX_CANDIDATES;
 
   // Calculate minimum dailyAmount to achieve `dailyAmount > P / (MAX_SOLID_CONCENTRATION × mgPerUnit)`
   // For ratio = mixFood / mixWaterAmount < MAX_SOLID_CONCENTRATION
@@ -203,7 +199,7 @@ function findDilutionCandidates(
   for (const mixFoodValue of mixCandidates) {
     const mixFood: Decimal = mixFoodValue;
 
-    for (const dailyAmountValue of DAILY_AMOUNT_CANDIDATES) {
+    for (const dailyAmountValue of config.DAILY_AMOUNT_CANDIDATES) {
       const dailyAmount: Decimal = dailyAmountValue;
 
       if (food.type === FoodType.SOLID) {
@@ -219,7 +215,7 @@ function findDilutionCandidates(
         // Validate constraints
         if (mixFood.lessThan(config.minMeasurableMass)) continue;
         if (dailyAmount.lessThan(config.minMeasurableVolume)) continue;
-        if (mixWaterAmount.greaterThan(MAX_MIX_WATER)) continue;
+        if (mixWaterAmount.greaterThan(config.MAX_MIX_WATER)) continue;
         if (mixWaterAmount.lessThan(config.minMeasurableVolume)) continue;
 
         // Check protein tolerance
@@ -254,7 +250,7 @@ function findDilutionCandidates(
         if (mixWaterAmount.lessThan(0)) continue;
         if (mixFood.lessThan(config.minMeasurableVolume)) continue;
         if (dailyAmount.lessThan(config.minMeasurableVolume)) continue;
-        if (mixWaterAmount.greaterThan(MAX_MIX_WATER)) continue;
+        if (mixWaterAmount.greaterThan(config.MAX_MIX_WATER)) continue;
         if (mixWaterAmount.lessThan(config.minMeasurableVolume)) continue;
 
         const actualProteinPerMl = totalMixProtein.dividedBy(mixTotalVolume);
@@ -3288,6 +3284,16 @@ if (import.meta.vitest) {
     DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
     DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
     MAX_SOLID_CONCENTRATION: new Decimal(0.05),
+    MAX_MIX_WATER: new Decimal(500),
+    SOLID_MIX_CANDIDATES: [
+      0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10, 12, 14, 16, 18, 20, 25, 30
+    ].map((num) => new Decimal(num)),
+    LIQUID_MIX_CANDIDATES: [
+      0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 14, 16, 18, 20, 25, 30
+    ].map((num) => new Decimal(num)),
+    DAILY_AMOUNT_CANDIDATES: [
+      0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
+    ].map((num) => new Decimal(num))
   };
 
   // Mock Food: flour (Solid, High Protein)

@@ -24,22 +24,6 @@ export const DOSING_STRATEGIES: { [key: string]: Decimal[] } = {
   ].map((num) => new Decimal(num)),
 };
 
-// Default candidate options for various parameters used to calculate optimal dilutions
-export const SOLID_MIX_CANDIDATES = [
-  0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10, 12, 14, 16, 18, 20, 25, 30
-].map((num) => new Decimal(num));
-export const LIQUID_MIX_CANDIDATES = [
-  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 14, 16, 18, 20, 25, 30
-].map((num) => new Decimal(num));
-export const DAILY_AMOUNT_CANDIDATES = [
-  0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
-].map((num) => new Decimal(num));
-export const MAX_MIX_WATER = new Decimal(500);
-
-// For clickwrap token for export PDF
-export const OIT_CLICKWRAP_ACCEPTED_KEY = "oit_clickwrap_accepted_v1";
-export const CLICKWRAP_EXPIRY_DAYS = 7;
-
 export let DEFAULT_CONFIG: ProtocolConfig;
 DEFAULT_CONFIG = {
   minMeasurableMass: new Decimal(0.2), // assume that scales for patients have resolution of 0.01g
@@ -49,4 +33,19 @@ DEFAULT_CONFIG = {
   DEFAULT_FOOD_A_DILUTION_THRESHOLD: new Decimal(0.2),
   DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
   MAX_SOLID_CONCENTRATION: new Decimal(0.05),
+  MAX_MIX_WATER: new Decimal(500),
+  SOLID_MIX_CANDIDATES: [
+    0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10, 12, 14, 16, 18, 20, 25, 30
+  ].map((num) => new Decimal(num)),
+  LIQUID_MIX_CANDIDATES: [
+    0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 14, 16, 18, 20, 25, 30
+  ].map((num) => new Decimal(num)),
+  DAILY_AMOUNT_CANDIDATES: [
+    0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 7, 9, 10, 11, 12,
+  ].map((num) => new Decimal(num))
 };
+
+// For clickwrap token for export PDF
+export const OIT_CLICKWRAP_ACCEPTED_KEY = "oit_clickwrap_accepted_v1";
+export const CLICKWRAP_EXPIRY_DAYS = 7;
+
