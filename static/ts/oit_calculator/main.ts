@@ -69,7 +69,8 @@ import {
 // ============================================
 
 import {
-  findDilutionCandidates
+  findDilutionCandidates,
+  generateStepForTarget
 } from "./core/calculator"
 
 // ============================================
@@ -167,71 +168,6 @@ function hideClickwrapModal(): void {
 // CORE ALGORITHMS
 // ============================================
 
-/**
- * For a given target protein in a step, calculate the remaining numbers to formally define a step if possible.
- *
- * When diluting, picks the first (best) candidate from findDilutionCandidates.
- * Returns null only when a dilution is required but no feasible candidate exists.
- *
- * Side effects: none (pure)
- *
- * @param targetMg Target protein amount for this step (mg)
- * @param stepIndex
- * @param food Food to base the step on (Food A or Food B)
- * @param foodAStrategy Strategy controlling Food A dilution behavior
- * @param diThreshold Threshold neat amount at/above which DIRECT is acceptable, for dilution initial strategy
- * @param config Protocol constraints and tolerances
- * @returns Step definition or null if a required dilution cannot be constructed
- */
-function generateStepForTarget(
-  targetMg: Decimal,
-  stepIndex: number,
-  food: Food,
-  foodAStrategy: FoodAStrategy,
-  diThreshold: Decimal,
-  config: ProtocolConfig,
-): Step | null {
-  const P = targetMg;
-  const neatMass = P.dividedBy(food.getMgPerUnit());
-  const unit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-
-  let needsDilution = false;
-  if (foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
-    needsDilution = neatMass.lessThan(diThreshold);
-  } else if (foodAStrategy === FoodAStrategy.DILUTE_ALL) {
-    needsDilution = true;
-  } else {
-    needsDilution = false;
-  }
-
-  if (needsDilution) {
-    const candidates: Candidate[] = findDilutionCandidates(P, food, config);
-    if (candidates.length === 0) {
-      return null; // Cannot dilute
-    }
-    const best = candidates[0];
-    return {
-      stepIndex,
-      targetMg: P,
-      method: Method.DILUTE,
-      dailyAmount: best.dailyAmount,
-      dailyAmountUnit: "ml",
-      mixFoodAmount: best.mixFoodAmount,
-      mixWaterAmount: best.mixWaterAmount,
-      servings: best.servings,
-      food: "A",
-    };
-  } else {
-    return {
-      stepIndex,
-      targetMg: P,
-      method: Method.DIRECT,
-      dailyAmount: neatMass,
-      dailyAmountUnit: unit,
-      food: "A",
-    };
-  }
-}
 
 /**
  * Build a default protocol for Food A using the default dosing strategy.
@@ -2920,7 +2856,7 @@ if (import.meta.vitest) {
         // Target 10mg protein using Flour (500mg/g)
         // 10mg requires 0.02g of neat flour. This is < minMeasurableMass (0.05), so it must dilute.
         const targetMg = new Decimal(10);
-        const candidates = findDilutionCandidates(targetMg, flour, TEST_CONFIG);
+        const candidates: Candidate[] = findDilutionCandidates(targetMg, flour, TEST_CONFIG);
 
         expect(candidates.length).toBeGreaterThan(0);
 

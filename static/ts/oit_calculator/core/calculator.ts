@@ -2,10 +2,14 @@ import Decimal from "decimal.js";
 
 import {
   FoodType,
+  Method,
+  FoodAStrategy,
 } from "../types"
 
 import type {
   Food,
+  Step,
+  Unit,
   ProtocolConfig,
   Candidate,
 } from "../types"
@@ -158,5 +162,71 @@ export function findDilutionCandidates(
   });
 
   return candidates;
+}
+
+/**
+ * For a given target protein in a step, calculate the remaining numbers to formally define a step if possible.
+ *
+ * When diluting, picks the first (best) candidate from findDilutionCandidates.
+ * Returns null only when a dilution is required but no feasible candidate exists.
+ *
+ * Side effects: none (pure)
+ *
+ * @param targetMg Target protein amount for this step (mg)
+ * @param stepIndex
+ * @param food Food to base the step on (Food A or Food B)
+ * @param foodAStrategy Strategy controlling Food A dilution behavior
+ * @param diThreshold Threshold neat amount at/above which DIRECT is acceptable, for dilution initial strategy
+ * @param config Protocol constraints and tolerances
+ * @returns Step definition or null if a required dilution cannot be constructed
+ */
+export function generateStepForTarget(
+  targetMg: Decimal,
+  stepIndex: number,
+  food: Food,
+  foodAStrategy: FoodAStrategy,
+  diThreshold: Decimal,
+  config: ProtocolConfig,
+): Step | null {
+  const P = targetMg;
+  const neatMass = P.dividedBy(food.getMgPerUnit());
+  const unit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
+
+  let needsDilution = false;
+  if (foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
+    needsDilution = neatMass.lessThan(diThreshold);
+  } else if (foodAStrategy === FoodAStrategy.DILUTE_ALL) {
+    needsDilution = true;
+  } else {
+    needsDilution = false;
+  }
+
+  if (needsDilution) {
+    const candidates: Candidate[] = findDilutionCandidates(P, food, config);
+    if (candidates.length === 0) {
+      return null; // Cannot dilute
+    }
+    const best = candidates[0];
+    return {
+      stepIndex,
+      targetMg: P,
+      method: Method.DILUTE,
+      dailyAmount: best.dailyAmount,
+      dailyAmountUnit: "ml",
+      mixFoodAmount: best.mixFoodAmount,
+      mixWaterAmount: best.mixWaterAmount,
+      servings: best.servings,
+      food: "A",
+    };
+  } else {
+    return {
+      stepIndex,
+      targetMg: P,
+      method: Method.DIRECT,
+      dailyAmount: neatMass,
+      dailyAmountUnit: unit,
+      food: "A",
+    };
+  }
 }
 
