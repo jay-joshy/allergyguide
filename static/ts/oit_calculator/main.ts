@@ -56,12 +56,14 @@ import {
 } from "./constants"
 
 // ============================================
-// VALIDATOR
+// UTILITY FUNCTIONS
 // ============================================
 
 import {
-  validateProtocol
-} from "./core/validator"
+  escapeHtml,
+  formatNumber,
+  formatAmount,
+} from "./utils"
 
 // ============================================
 // CORE
@@ -90,6 +92,14 @@ import {
 } from "./core/protocol"
 
 // ============================================
+// VALIDATOR
+// ============================================
+
+import {
+  validateProtocol
+} from "./core/validator"
+
+// ============================================
 // GLOBAL STATE
 // ============================================
 
@@ -115,16 +125,6 @@ let searchDebounceTimer: number | null = null;
 // Dropdown navigation state
 let currentDropdownIndex: number = -1;
 let currentDropdownInputId: string = "";
-
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-
-import {
-  escapeHtml,
-  formatNumber,
-  formatAmount,
-} from "./utils"
 
 // ============================================
 // CLICKWRAP MODAL FUNCTIONS
@@ -179,11 +179,6 @@ function hideClickwrapModal(): void {
     if (clickwrapGenerateBtn) clickwrapGenerateBtn.disabled = true;
   }
 }
-
-// ============================================
-// PROTOCOL MODIFICATION FUNCTIONS
-// ============================================
-
 
 // ============================================
 // UI RENDERING FUNCTIONS
