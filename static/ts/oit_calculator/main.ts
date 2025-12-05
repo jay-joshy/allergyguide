@@ -81,7 +81,8 @@ import {
   addFoodBToProtocol,
   recalculateStepMethods,
   getFoodAStepCount,
-  updateStepTargetMg
+  updateStepTargetMg,
+  updateStepDailyAmount
 } from "./core/protocol"
 
 // ============================================
@@ -178,52 +179,6 @@ function hideClickwrapModal(): void {
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Handle user change to a step's daily amount (g/ml).
- *
- * Updates dependent fields:
- * - DIRECT: recompute targetMg = dailyAmount × mgPerUnit
- * - DILUTE: recompute servings and mixWaterAmount to preserve targetMg and mixFoodAmount
- *
- * Triggers UI and warnings re-render.
- *
- * @param stepIndex 1-based index of the step to update
- * @param newDailyAmount New amount (g or ml), number-like
- * @returns void
- */
-function updateStepDailyAmount(stepIndex: number, newDailyAmount: any): void {
-  // new daily amount should be any since it accepts value from UI in event handler
-  if (!currentProtocol) return;
-
-  const step = currentProtocol.steps[stepIndex - 1];
-  if (!step) return;
-
-  step.dailyAmount = new Decimal(newDailyAmount);
-
-  const isStepFoodB = step.food === "B";
-  const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
-
-  if (step.method === Method.DIRECT) {
-    // Recalculate target protein
-    step.targetMg = step.dailyAmount.times(food.getMgPerUnit());
-  } else {
-    // DILUTE - keep mixFoodAmount fixed, recalculate water
-    const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
-    step.servings = totalMixProtein.dividedBy(step.targetMg);
-
-    if (food.type === FoodType.SOLID) {
-      const mixTotalVolume = step.dailyAmount.times(step.servings);
-      step.mixWaterAmount = mixTotalVolume;
-    } else {
-      const mixTotalVolume = step.dailyAmount.times(step.servings);
-      step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
-    }
-  }
-
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Handle user change to a dilution step's mix food amount.
@@ -1666,7 +1621,10 @@ function attachTableEventListeners(): void {
         renderProtocolTable();
         updateWarnings();
       } else if (field === "dailyAmount") {
-        updateStepDailyAmount(stepIndex, value);
+        currentProtocol = updateStepDailyAmount(currentProtocol!, stepIndex, value);
+        renderProtocolTable();
+        updateWarnings();
+
       } else if (field === "mixFoodAmount") {
         updateStepMixFoodAmount(stepIndex, value);
       }
