@@ -79,7 +79,8 @@ import {
 import {
   recalculateProtocol,
   addFoodBToProtocol,
-  recalculateStepMethods
+  recalculateStepMethods,
+  getFoodAStepCount
 } from "./core/protocol"
 
 // ============================================
@@ -172,30 +173,6 @@ function hideClickwrapModal(): void {
     if (clickwrapGenerateBtn) clickwrapGenerateBtn.disabled = true;
   }
 }
-
-// ============================================
-// CORE ALGORITHMS
-// ============================================
-
-
-/**
- * Count the number of Food A steps in a protocol.
- *
- * @param protocol Protocol to inspect
- * @returns Number of steps that belong to Food A
- */
-function getFoodAStepCount(protocol: Protocol): number {
-  if (!protocol.foodB) return protocol.steps.length;
-
-  // Find first Food B step by checking the food property
-  for (let i = 0; i < protocol.steps.length; i++) {
-    if (protocol.steps[i].food === "B") {
-      return i;
-    }
-  }
-  return protocol.steps.length;
-}
-
 
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
