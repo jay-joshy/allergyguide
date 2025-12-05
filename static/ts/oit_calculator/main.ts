@@ -80,7 +80,8 @@ import {
   recalculateProtocol,
   addFoodBToProtocol,
   recalculateStepMethods,
-  getFoodAStepCount
+  getFoodAStepCount,
+  updateStepTargetMg
 } from "./core/protocol"
 
 // ============================================
@@ -177,60 +178,6 @@ function hideClickwrapModal(): void {
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Handle user change to a step's target protein (mg).
- *
- * Updates dependent fields:
- * - DIRECT: recompute dailyAmount = targetMg / mgPerUnit
- * - DILUTE: recompute servings and mixWaterAmount to preserve dailyAmount and mixFoodAmount
- *
- * Triggers UI and warnings re-render.
- *
- * @param stepIndex 1-based index of the step to update
- * @param newTargetMg New target protein (mg)
- * @returns void
- */
-function updateStepTargetMg(stepIndex: number, newTargetMg: any): void {
-  // newTargetMg has to be any since it accepts update from UI user input
-  // Though it really should only be a number
-  if (!currentProtocol) return;
-
-  const step = currentProtocol.steps[stepIndex - 1];
-  if (!step) return;
-
-  try {
-    step.targetMg = new Decimal(newTargetMg);
-  }
-  catch (error) {
-    console.error("Invalid number format for targetMg:", newTargetMg);
-    return
-  }
-
-  // Determine which food
-  const isStepFoodB = step.food === "B";
-  const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
-
-  if (step.method === Method.DIRECT) {
-    // Recalculate dailyAmount
-    step.dailyAmount = step.targetMg.dividedBy(food.getMgPerUnit());
-  } else {
-    // DILUTE - keep mixFoodAmount and dailyAmount, recalculate servings and water
-    const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
-    step.servings = totalMixProtein.dividedBy(step.targetMg);
-
-    if (food.type === FoodType.SOLID) {
-      const mixTotalVolume = step.dailyAmount.times(step.servings);
-      step.mixWaterAmount = mixTotalVolume;
-    } else {
-      const mixTotalVolume = step.dailyAmount.times(step.servings);
-      step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
-    }
-  }
-
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Handle user change to a step's daily amount (g/ml).
@@ -1715,7 +1662,9 @@ function attachTableEventListeners(): void {
       }
 
       if (field === "targetMg") {
-        updateStepTargetMg(stepIndex, value);
+        currentProtocol = updateStepTargetMg(currentProtocol!, stepIndex, value);
+        renderProtocolTable();
+        updateWarnings();
       } else if (field === "dailyAmount") {
         updateStepDailyAmount(stepIndex, value);
       } else if (field === "mixFoodAmount") {

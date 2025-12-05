@@ -238,3 +238,55 @@ export function recalculateStepMethods(oldProtocol: Protocol): Protocol {
   return newProtocol;
 }
 
+/**
+ * Handle user change to a step's target protein (mg).
+ *
+ * Updates dependent fields:
+ * - DIRECT: recompute dailyAmount = targetMg / mgPerUnit
+ * - DILUTE: recompute servings and mixWaterAmount to preserve dailyAmount and mixFoodAmount
+ *
+ * @param oldProtocol
+ * @param stepIndex 1-based index of the step to update
+ * @param newTargetMg New target protein (mg)
+ * @returns Protocol
+ */
+export function updateStepTargetMg(oldProtocol: Protocol, stepIndex: number, newTargetMg: any): Protocol {
+  if (!oldProtocol) return oldProtocol;
+
+  const newProtocol = { ...oldProtocol };
+
+  const step = newProtocol.steps[stepIndex - 1];
+  if (!step) return newProtocol;
+
+  try {
+    step.targetMg = new Decimal(newTargetMg);
+  }
+  catch (error) {
+    console.error("Invalid number format for targetMg:", newTargetMg);
+    return newProtocol;
+  }
+
+  // Determine which food
+  const isStepFoodB = step.food === "B";
+  const food = isStepFoodB ? newProtocol.foodB! : newProtocol.foodA;
+
+  if (step.method === Method.DIRECT) {
+    // Recalculate dailyAmount
+    step.dailyAmount = step.targetMg.dividedBy(food.getMgPerUnit());
+  } else {
+    // DILUTE - keep mixFoodAmount and dailyAmount, recalculate servings and water
+    const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
+    step.servings = totalMixProtein.dividedBy(step.targetMg);
+
+    if (food.type === FoodType.SOLID) {
+      const mixTotalVolume = step.dailyAmount.times(step.servings);
+      step.mixWaterAmount = mixTotalVolume;
+    } else {
+      const mixTotalVolume = step.dailyAmount.times(step.servings);
+      step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
+    }
+  }
+
+  return newProtocol;
+}
+
