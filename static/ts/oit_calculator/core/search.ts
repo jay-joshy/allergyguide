@@ -1,3 +1,8 @@
+/**
+ * @module
+ *
+ * Fuzzy search capabilities
+ */
 import fuzzysort from "fuzzysort";
 
 

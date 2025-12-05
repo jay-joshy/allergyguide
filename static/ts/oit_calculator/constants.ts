@@ -1,3 +1,8 @@
+/**
+ * @module
+ *
+ * Constants and default configuration values
+ */
 import Decimal from "decimal.js";
 
 import type {

@@ -1,3 +1,8 @@
+/**
+ * @module
+ *
+ * Collection of utility functions
+ */
 import {
   FoodType,
 } from "./types"

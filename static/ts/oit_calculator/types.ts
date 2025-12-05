@@ -1,3 +1,8 @@
+/**
+ * @module
+ *
+ * Core data structures, enumerations, and type aliases
+ */
 import Decimal from "decimal.js";
 
 // ============================================

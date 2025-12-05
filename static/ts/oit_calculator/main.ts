@@ -1,3 +1,12 @@
+/**
+ * @module OIT-Calculator
+ * @author Joshua Yu
+ * @license GPLv3
+ *
+ * Main entry point for OIT Calculator
+ *
+ */
+
 // ============================================
 // OIT CALCULATOR - COMPLETE IMPLEMENTATION
 // Joshua Yu 2025 - allergyguide.ca

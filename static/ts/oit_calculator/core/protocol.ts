@@ -1,3 +1,9 @@
+/**
+ * @module
+ *
+ * Protocol modifying functions
+ *
+ */
 import Decimal from "decimal.js";
 
 import {

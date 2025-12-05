@@ -1,3 +1,8 @@
+/**
+ * @module
+ *
+ * Validation logic for OIT protocols
+ */
 import Decimal from "decimal.js";
 
 import {

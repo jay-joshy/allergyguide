@@ -1,3 +1,12 @@
+/**
+ * @module
+ *
+ * Core calculation logic 
+ *
+ * - find dilution candidates for a given protein target
+ * - generate individual protocol steps (both direct and diluted)
+ * - create a default starting protocol based on a selected food
+ */
 import Decimal from "decimal.js";
 
 import {
