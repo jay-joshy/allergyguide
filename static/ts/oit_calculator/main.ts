@@ -82,7 +82,8 @@ import {
   recalculateStepMethods,
   getFoodAStepCount,
   updateStepTargetMg,
-  updateStepDailyAmount
+  updateStepDailyAmount,
+  updateStepMixFoodAmount
 } from "./core/protocol"
 
 // ============================================
@@ -179,48 +180,6 @@ function hideClickwrapModal(): void {
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Handle user change to a dilution step's mix food amount.
- *
- * Updates dependent fields (servings and mixWaterAmount) while preserving targetMg and dailyAmount.
- *
- * Triggers UI and warnings re-render.
- *
- * @param stepIndex 1-based index of the dilution step
- * @param newMixFoodAmount New amount of food to include in mix (g or ml), number-like
- * @returns void
- */
-function updateStepMixFoodAmount(
-  // newMixFoodAmount must be any since it accepts user input from UI
-  stepIndex: number,
-  newMixFoodAmount: any,
-): void {
-  if (!currentProtocol) return;
-
-  const step = currentProtocol.steps[stepIndex - 1];
-  if (!step || step.method !== Method.DILUTE) return;
-
-  step.mixFoodAmount = new Decimal(newMixFoodAmount);
-
-  const isStepFoodB = step.food === "B";
-  const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
-
-  // Recalculate water to keep P and dailyAmount unchanged
-  const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
-  step.servings = totalMixProtein.dividedBy(step.targetMg);
-
-  if (food.type === FoodType.SOLID) {
-    const mixTotalVolume = step.dailyAmount.times(step.servings);
-    step.mixWaterAmount = mixTotalVolume;
-  } else {
-    const mixTotalVolume = step.dailyAmount.times(step.servings);
-    step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount);
-  }
-
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Duplicate a step and insert it immediately after the original.
@@ -1626,7 +1585,10 @@ function attachTableEventListeners(): void {
         updateWarnings();
 
       } else if (field === "mixFoodAmount") {
-        updateStepMixFoodAmount(stepIndex, value);
+        currentProtocol = updateStepMixFoodAmount(currentProtocol!, stepIndex, value);
+        renderProtocolTable();
+        updateWarnings();
+
       }
     });
 

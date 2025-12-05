@@ -336,3 +336,46 @@ export function updateStepDailyAmount(oldProtocol: Protocol, stepIndex: number, 
   return newProtocol;
 }
 
+/**
+ * Handle user change to a dilution step's mix food amount.
+ *
+ * Updates dependent fields (servings and mixWaterAmount) while preserving targetMg and dailyAmount.
+ *
+ * @param oldProtocol Protocol
+ * @param stepIndex 1-based index of the dilution step
+ * @param newMixFoodAmount New amount of food to include in mix (g or ml), number-like
+ * @returns Protocol
+ */
+export function updateStepMixFoodAmount(
+  oldProtocol: Protocol,
+  // newMixFoodAmount must be any since it accepts user input from UI
+  stepIndex: number,
+  newMixFoodAmount: any,
+): Protocol {
+  if (!oldProtocol) return oldProtocol;
+
+  const newProtocol = { ...oldProtocol };
+
+  const step = newProtocol.steps[stepIndex - 1];
+  if (!step || step.method !== Method.DILUTE) return newProtocol;
+
+  step.mixFoodAmount = new Decimal(newMixFoodAmount);
+
+  const isStepFoodB = step.food === "B";
+  const food = isStepFoodB ? newProtocol.foodB! : newProtocol.foodA;
+
+  // Recalculate water to keep P and dailyAmount unchanged
+  const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
+  step.servings = totalMixProtein.dividedBy(step.targetMg);
+
+  if (food.type === FoodType.SOLID) {
+    const mixTotalVolume = step.dailyAmount.times(step.servings);
+    step.mixWaterAmount = mixTotalVolume;
+  } else {
+    const mixTotalVolume = step.dailyAmount.times(step.servings);
+    step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount);
+  }
+
+  return newProtocol;
+}
+
