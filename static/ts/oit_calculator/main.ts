@@ -19,7 +19,6 @@
 
 // Imports
 import Decimal from "decimal.js";
-import fuzzysort from "fuzzysort";
 import { AsciiTable3 } from "ascii-table3";
 
 import type { jsPDF } from 'jspdf';
@@ -116,13 +115,18 @@ import {
 } from "./core/search"
 
 // ============================================
+// DATABASE LOADING
+// ============================================
+
+import {
+  loadDatabases
+} from "./data/loader"
+
+// ============================================
 // GLOBAL STATE
 // ============================================
 
 let currentProtocol: Protocol | null = null;
-let protocolsDatabase: ProtocolData[] = [];
-let fuzzySortPreparedFoods: any[] = [];
-let fuzzySortPreparedProtocols: any[] = [];
 let customNote: string = "";
 let warningsPageURL = "";
 
@@ -2098,60 +2102,6 @@ function exportASCII(): void {
 }
 
 // ============================================
-// DATABASE LOADING
-// ============================================
-
-/**
- * Load foods and protocol template databases and prepare fuzzy search indices.
- *
- * Fetches:
- * - /tool_assets/typed_foods_rough.json TODO! Change to not rough...
- * - /tool_assets/custom_foods.json
- * - /tool_assets/oit_protocols.json
- *
- * On failure, logs the error and alerts the user that some features may not work.
- *
- * @returns Promise that resolves when databases are loaded
- */
-async function loadDatabases(): Promise<void> {
-  try {
-    // Load foods database
-    // TODO! validate the JSON structure
-    const cnfFoodsResponse = await fetch("/tool_assets/typed_foods_rough.json");
-    const customFoodsResponse = await fetch("/tool_assets/custom_foods.json");
-    const cnfFoodsDatabase = await cnfFoodsResponse.json();
-    const customFoodsDatabase = await customFoodsResponse.json();
-
-    const foodsDatabase = [...cnfFoodsDatabase, ...customFoodsDatabase];
-
-    // Prepare for fuzzy search
-    fuzzySortPreparedFoods = foodsDatabase.map((f) => ({
-      ...f,
-      prepared: fuzzysort.prepare(f.Food),
-    }));
-
-    // Load protocols database
-    const protocolsResponse = await fetch("/tool_assets/oit_protocols.json");
-    protocolsDatabase = await protocolsResponse.json();
-
-    // Prepare for fuzzy search
-    fuzzySortPreparedProtocols = protocolsDatabase.map((p) => ({
-      ...p,
-      prepared: fuzzysort.prepare(p.name),
-    }));
-
-    console.log(
-      `Loaded ${foodsDatabase.length} foods and ${protocolsDatabase.length} protocols`,
-    );
-  } catch (error) {
-    console.error("Error loading databases:", error);
-    alert(
-      "Error loading food and protocol databases. Some features may not work.",
-    );
-  }
-}
-
-// ============================================
 // INITIALIZATION
 // ============================================
 
@@ -2164,7 +2114,9 @@ async function loadDatabases(): Promise<void> {
  */
 async function initializeCalculator(): Promise<void> {
   // Load databases
-  await loadDatabases();
+  // TODO! should be wrapped in try catch later
+  const data = await loadDatabases();
+  const { fuzzySortPreparedFoods, fuzzySortPreparedProtocols } = data;
 
   // Get URL for rules page
   const urlContainer = document.getElementById('url-container');
