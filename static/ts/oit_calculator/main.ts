@@ -84,7 +84,8 @@ import {
   updateStepTargetMg,
   updateStepDailyAmount,
   updateStepMixFoodAmount,
-  addStepAfter
+  addStepAfter,
+  removeStep
 } from "./core/protocol"
 
 // ============================================
@@ -181,29 +182,6 @@ function hideClickwrapModal(): void {
 // ============================================
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
-
-/**
- * Remove a step from the protocol and reindex the remaining steps.
- *
- * Does nothing if there is only one step. Triggers UI update.
- *
- * @param stepIndex 1-based index of the step to remove
- * @returns void
- */
-function removeStep(stepIndex: number): void {
-  if (!currentProtocol) return;
-  if (currentProtocol.steps.length <= 1) return;
-
-  currentProtocol.steps.splice(stepIndex - 1, 1);
-
-  // Reindex
-  for (let i = 0; i < currentProtocol.steps.length; i++) {
-    currentProtocol.steps[i].stepIndex = i + 1;
-  }
-
-  renderProtocolTable();
-  updateWarnings();
-}
 
 /**
  * Toggle the form (SOLID ⇄ LIQUID) for Food A or Food B, updating all steps.
@@ -1578,7 +1556,9 @@ function attachTableEventListeners(): void {
       const stepIndex = parseInt(
         (e.target as HTMLElement).getAttribute("data-step")!,
       );
-      removeStep(stepIndex);
+      currentProtocol = removeStep(currentProtocol!, stepIndex);
+      renderProtocolTable();
+      updateWarnings();
     });
   });
 }

@@ -422,3 +422,29 @@ export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol
   return newProtocol;
 }
 
+/**
+ * Remove a step from the protocol and reindex the remaining steps.
+ *
+ * Does nothing if there is only one step. Triggers UI update.
+ *
+ * @param oldProtocol Protocol
+ * @param stepIndex 1-based index of the step to remove
+ * @returns Protocol
+ */
+export function removeStep(oldProtocol: Protocol, stepIndex: number): Protocol {
+  if (!oldProtocol) return oldProtocol;
+
+  const newProtocol = { ...oldProtocol };
+
+  if (newProtocol.steps.length <= 1) return newProtocol;
+
+  newProtocol.steps.splice(stepIndex - 1, 1);
+
+  // Reindex
+  for (let i = 0; i < newProtocol.steps.length; i++) {
+    newProtocol.steps[i].stepIndex = i + 1;
+  }
+
+  return newProtocol;
+}
+
