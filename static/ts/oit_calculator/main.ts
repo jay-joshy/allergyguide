@@ -85,7 +85,8 @@ import {
   updateStepDailyAmount,
   updateStepMixFoodAmount,
   addStepAfter,
-  removeStep
+  removeStep,
+  toggleFoodType
 } from "./core/protocol"
 
 // ============================================
@@ -183,62 +184,6 @@ function hideClickwrapModal(): void {
 // PROTOCOL MODIFICATION FUNCTIONS
 // ============================================
 
-/**
- * Toggle the form (SOLID ⇄ LIQUID) for Food A or Food B, updating all steps.
- *
- * For DILUTE steps:
- * - ensures dailyAmountUnit is "ml"
- * - recomputes mixWaterAmount based on the new volume model
- *
- * For DIRECT steps:
- * - adjusts dailyAmountUnit to "g" (SOLID) or "ml" (LIQUID)
- *
- * Triggers re-render of settings, table, and warnings.
- *
- * @param isFoodB When true, toggles Food B; otherwise toggles Food A
- * @returns void
- */
-function toggleFoodType(isFoodB: boolean): void {
-  if (!currentProtocol) return;
-
-  const food = isFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
-  food.type = food.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
-
-  // Convert all relevant steps
-  for (const step of currentProtocol.steps) {
-    const stepIsFoodB = step.food === "B";
-    if (stepIsFoodB !== isFoodB) continue;
-    if (step.method === Method.DILUTE) {
-      // Convert mixFoodAmount assuming 1g ≈ 1ml (value stays the same)
-      // Ensure dailyAmountUnit is always "ml" for dilutions
-      step.dailyAmountUnit = "ml";
-
-      // Recalculate servings and water based on new food type
-      const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
-      step.servings = totalMixProtein.dividedBy(step.targetMg);
-
-      if (food.type === FoodType.SOLID) {
-        // Switched to solid (was liquid)
-        // For solid: water = total volume (solid volume negligible)
-        const mixTotalVolume = step.dailyAmount.times(step.servings);
-        step.mixWaterAmount = mixTotalVolume;
-      } else {
-        // Switched to liquid (was solid)
-        // For liquid: water = total - food
-
-        const mixTotalVolume = step.dailyAmount.times(step.servings);
-        step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
-      }
-    } else {
-      // DIRECT - just update unit
-      step.dailyAmountUnit = food.type === FoodType.SOLID ? "g" : "ml";
-    }
-  }
-
-  renderFoodSettings();
-  renderProtocolTable();
-  updateWarnings();
-}
 
 // ============================================
 // UI RENDERING FUNCTIONS
@@ -1434,12 +1379,20 @@ function attachSettingsEventListeners(): void {
       switch (action) {
         case "toggle-food-a-solid":
           if (currentProtocol.foodA.type !== FoodType.SOLID) {
-            toggleFoodType(false);
+            currentProtocol = toggleFoodType(currentProtocol, false);
+            renderFoodSettings();
+            renderProtocolTable();
+            updateWarnings();
+
           }
           break;
         case "toggle-food-a-liquid":
           if (currentProtocol.foodA.type !== FoodType.LIQUID) {
-            toggleFoodType(false);
+            currentProtocol = toggleFoodType(currentProtocol, false);
+            renderFoodSettings();
+            renderProtocolTable();
+            updateWarnings();
+
           }
           break;
         case "toggle-food-b-solid":
@@ -1447,7 +1400,11 @@ function attachSettingsEventListeners(): void {
             currentProtocol.foodB &&
             currentProtocol.foodB.type !== FoodType.SOLID
           ) {
-            toggleFoodType(true);
+            currentProtocol = toggleFoodType(currentProtocol, true);
+            renderFoodSettings();
+            renderProtocolTable();
+            updateWarnings();
+
           }
           break;
         case "toggle-food-b-liquid":
@@ -1455,7 +1412,11 @@ function attachSettingsEventListeners(): void {
             currentProtocol.foodB &&
             currentProtocol.foodB.type !== FoodType.LIQUID
           ) {
-            toggleFoodType(true);
+            currentProtocol = toggleFoodType(currentProtocol, true);
+            renderFoodSettings();
+            renderProtocolTable();
+            updateWarnings();
+
           }
           break;
         case "food-a-strategy-initial":

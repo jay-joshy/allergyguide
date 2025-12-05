@@ -448,3 +448,60 @@ export function removeStep(oldProtocol: Protocol, stepIndex: number): Protocol {
   return newProtocol;
 }
 
+/**
+ * Toggle the form (SOLID ⇄ LIQUID) for Food A or Food B, updating all steps.
+ *
+ * For DILUTE steps:
+ * - ensures dailyAmountUnit is "ml"
+ * - recomputes mixWaterAmount based on the new volume model
+ *
+ * For DIRECT steps:
+ * - adjusts dailyAmountUnit to "g" (SOLID) or "ml" (LIQUID)
+ *
+ * @param oldProtocol Protocol
+ * @param isFoodB When true, toggles Food B; otherwise toggles Food A
+ * @returns Protocol
+ */
+export function toggleFoodType(oldProtocol: Protocol, isFoodB: boolean): Protocol {
+  if (!oldProtocol) return oldProtocol;
+
+  const newProtocol = { ...oldProtocol };
+
+  const food = isFoodB ? newProtocol.foodB! : newProtocol.foodA;
+  food.type = food.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
+
+  // Convert all relevant steps
+  for (const step of newProtocol.steps) {
+    const stepIsFoodB = step.food === "B";
+    if (stepIsFoodB !== isFoodB) continue;
+    if (step.method === Method.DILUTE) {
+      // Convert mixFoodAmount assuming 1g ≈ 1ml (value stays the same)
+      // Ensure dailyAmountUnit is always "ml" for dilutions
+      step.dailyAmountUnit = "ml";
+
+      // Recalculate servings and water based on new food type
+      const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
+      step.servings = totalMixProtein.dividedBy(step.targetMg);
+
+      if (food.type === FoodType.SOLID) {
+        // Switched to solid (was liquid)
+        // For solid: water = total volume (solid volume negligible)
+        const mixTotalVolume = step.dailyAmount.times(step.servings);
+        step.mixWaterAmount = mixTotalVolume;
+      } else {
+        // Switched to liquid (was solid)
+        // For liquid: water = total - food
+
+        const mixTotalVolume = step.dailyAmount.times(step.servings);
+        step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount!);
+      }
+    } else {
+      // DIRECT - just update unit
+      step.dailyAmountUnit = food.type === FoodType.SOLID ? "g" : "ml";
+    }
+  }
+
+  return newProtocol;
+}
+
+
