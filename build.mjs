@@ -20,12 +20,12 @@ const entryPoints = [
 ].join(' ');
 
 // esbuild command 
-const command = `esbuild ${entryPoints} --bundle --outdir=static/js/ --format=esm --splitting --target=es2022 --minify --chunk-names=chunks/[name]-[hash] ${defines}`;
+const command = `esbuild ${entryPoints} --bundle --outdir=static/js/ --format=esm --splitting --target=es2022 --minify --sourcemap --chunk-names=chunks/[name]-[hash] ${defines}`;
 
 // Run
 try {
   execSync(command, { stdio: 'inherit' });
 } catch (error) {
-	console.log("build.mjs failed:", error)
+  console.log("build.mjs failed:", error)
   process.exit(1);
 }
