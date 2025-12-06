@@ -1492,7 +1492,10 @@ function attachTableEventListeners(): void {
 function attachExportEventListeners(): void {
   const asciiBtn = document.getElementById("export-ascii");
   if (asciiBtn) {
-    asciiBtn.addEventListener("click", exportASCII);
+    const current = protocolState.getProtocol();
+    asciiBtn.addEventListener("click", () => {
+      exportASCII(current)
+    });
   }
 
   const pdfBtn = document.getElementById("export-pdf");
@@ -1534,7 +1537,8 @@ async function triggerPdfGeneration(): Promise<void> {
     const { applyPlugin } = await import('jspdf-autotable');
     applyPlugin(jsPDF);
 
-    await _generatePdf(jsPDF, PDFDocument);
+    const current = protocolState.getProtocol();
+    await _generatePdf(current, jsPDF, PDFDocument);
   } catch (error) {
     console.error("Failed to load PDF libraries or generate PDF: ", error);
     alert("Error generating PDF. Please check the console for details.");
@@ -1642,10 +1646,9 @@ function attachClickwrapEventListeners(): void {
  * @param PdfDocClass - static class for PDFDocument
  * @returns void
  */
-async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
-  const currentProtocol = protocolState.getProtocol();
+async function _generatePdf(protocol: Protocol | null, JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
   const customNote = protocolState.getCustomNote();
-  if (!currentProtocol) return;
+  if (!protocol) return;
 
   // fetch physician review sheet and education handout pdfs
   const reviewSheetPromise = fetch('/tool_assets/oit_patient_resource_terms.pdf')
@@ -1669,16 +1672,16 @@ async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDoc
   yPosition += 30;
 
   // Get food information
-  const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
-  const totalSteps = currentProtocol.steps.length;
+  const foodAUnit = protocol.foodA.type === FoodType.SOLID ? "g" : "ml";
+  const foodAStepCount = getFoodAStepCount(protocol);
+  const totalSteps = protocol.steps.length;
 
   // Build Food A table data if it exists (it always should ... unless the user does Food A -> B and then deletes all the Food A steps for some dumb reason)
   if (foodAStepCount > 0) {
     const foodARows: any[] = [];
     for (let i = 0; i < foodAStepCount; i++) {
-      const step = currentProtocol.steps[i];
-      const food = currentProtocol.foodA;
+      const step = protocol.steps[i];
+      const food = protocol.foodA;
 
       let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
       let mixDetails = "N/A";
@@ -1712,13 +1715,13 @@ async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDoc
     // Build Food A section PDF
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text(`${currentProtocol.foodA.name}`, 40, yPosition);
+    doc.text(`${protocol.foodA.name}`, 40, yPosition);
     yPosition += 20;
 
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(
-      `Protein: ${formatNumber(currentProtocol.foodA.gramsInServing, 2)} g per ${currentProtocol.foodA.servingSize} ${foodAUnit} serving.`,
+      `Protein: ${formatNumber(protocol.foodA.gramsInServing, 2)} g per ${protocol.foodA.servingSize} ${foodAUnit} serving.`,
       40,
       yPosition,
     );
@@ -1763,14 +1766,14 @@ async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDoc
   }
 
   // Food B section (if exists)
-  if (currentProtocol.foodB && foodAStepCount < totalSteps) {
+  if (protocol.foodB && foodAStepCount < totalSteps) {
     const foodBUnit =
-      currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
+      protocol.foodB.type === FoodType.SOLID ? "g" : "ml";
 
     // Build Food B table data
     const foodBRows: any[] = [];
     for (let i = foodAStepCount; i < totalSteps; i++) {
-      const step = currentProtocol.steps[i];
+      const step = protocol.steps[i];
 
       let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
       let mixDetails = "N/A"; // default for food B since there is no mix
@@ -1810,13 +1813,13 @@ async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDoc
     yPosition += 10;
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text(`${currentProtocol.foodB.name}`, 40, yPosition);
+    doc.text(`${protocol.foodB.name}`, 40, yPosition);
     yPosition += 20;
 
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(
-      `Protein: ${formatNumber(currentProtocol.foodB.gramsInServing, 2)} g per ${currentProtocol.foodB.servingSize} ${foodBUnit} serving`,
+      `Protein: ${formatNumber(protocol.foodB.gramsInServing, 2)} g per ${protocol.foodB.servingSize} ${foodBUnit} serving`,
       40,
       yPosition,
     );
@@ -1982,10 +1985,9 @@ async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDoc
  *
  * @returns void
  */
-function exportASCII(): void {
-  const currentProtocol = protocolState.getProtocol();
+function exportASCII(protocol: Protocol | null): void {
   const customNote = protocolState.getCustomNote();
-  if (!currentProtocol) return;
+  if (!protocol) return
 
   let text = "";
   let foodAInfo = "";
@@ -1993,24 +1995,24 @@ function exportASCII(): void {
 
   // get food A and B? info
   const foodAType =
-    currentProtocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
-  const foodAUnit = currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-  foodAInfo += `${currentProtocol.foodA.name} (${foodAType}). Protein: ${formatNumber(currentProtocol.foodA.getMgPerUnit(), 1)} mg/${foodAUnit}`;
-  if (currentProtocol.foodB) {
+    protocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
+  const foodAUnit = protocol.foodA.type === FoodType.SOLID ? "g" : "ml";
+  foodAInfo += `${protocol.foodA.name} (${foodAType}). Protein: ${formatNumber(protocol.foodA.getMgPerUnit(), 1)} mg/${foodAUnit}`;
+  if (protocol.foodB) {
     const foodBType =
-      currentProtocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
+      protocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
     const foodBUnit =
-      currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-    foodBInfo += `${currentProtocol.foodB.name} (${foodBType}). Protein: ${formatNumber(currentProtocol.foodB.getMgPerUnit(), 1)} mg/${foodBUnit}`;
+      protocol.foodB.type === FoodType.SOLID ? "g" : "ml";
+    foodBInfo += `${protocol.foodB.name} (${foodBType}). Protein: ${formatNumber(protocol.foodB.getMgPerUnit(), 1)} mg/${foodBUnit}`;
   }
 
   // GENERATE TABLES
-  const totalSteps = currentProtocol.steps.length;
-  const foodAStepCount = getFoodAStepCount(currentProtocol);
+  const totalSteps = protocol.steps.length;
+  const foodAStepCount = getFoodAStepCount(protocol);
 
   // Create separate tables for each food
-  const foodATable = new AsciiTable3(currentProtocol.foodA.name);
-  const foodBTable = new AsciiTable3(currentProtocol.foodB?.name);
+  const foodATable = new AsciiTable3(protocol.foodA.name);
+  const foodBTable = new AsciiTable3(protocol.foodB?.name);
 
   foodATable.setHeading(
     "Step",
@@ -2028,9 +2030,9 @@ function exportASCII(): void {
   );
 
   // Iterate over steps and build rows for each table
-  for (const step of currentProtocol.steps) {
+  for (const step of protocol.steps) {
     const isStepFoodB = step.food === "B";
-    const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
+    const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
 
     // Create table for this step
     let table: AsciiTable3;
@@ -2058,7 +2060,7 @@ function exportASCII(): void {
   }
 
   // Baseline data
-  if (currentProtocol.foodB) {
+  if (protocol.foodB) {
     text += foodAInfo + "\n" + foodBInfo + "\n\n";
   } else {
     text += foodAInfo + "\n\n";
