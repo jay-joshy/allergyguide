@@ -56,6 +56,94 @@ export function getFoodAStepCount(protocol: Protocol): number {
 }
 
 /**
+ * Pure function to update properties of Food A or Food B.
+ * @returns Protocol 
+ */
+export function updateFoodDetails(
+  protocol: Protocol,
+  food: 'A' | 'B',
+  updates: Partial<Food>
+): Protocol {
+  // Shallow copy 
+  const newProtocol = { ...protocol };
+
+  const currentFood = food === 'A' ? protocol.foodA : protocol.foodB;
+  if (!currentFood) return protocol;
+
+  // create new Food object with the updates applied
+  const newFood = { ...currentFood, ...updates };
+
+  // assign back to the new protocol
+  if (food === 'A') {
+    newProtocol.foodA = newFood;
+  } else {
+    newProtocol.foodB = newFood;
+  }
+
+  return newProtocol;
+}
+
+/**
+ * Updates Food B details
+ * if a threshold exists: recalculate the transition point
+ */
+export function updateFoodBAndRecalculate(
+  protocol: Protocol,
+  updates: Partial<Food>
+): Protocol {
+  // Update the food object and create shallow copy of protocol
+  let newProtocol = updateFoodDetails(protocol, 'B', updates);
+
+  // If we have a threshold, must re-calculate the transition because a change in Protein/Serving size changes WHERE the transition happens
+  if (newProtocol.foodB && newProtocol.foodBThreshold) {
+    const tempFoodB = newProtocol.foodB;
+    const tempThreshold = newProtocol.foodBThreshold;
+
+    // Reset Food B state to force clean recalculation of Food A steps
+    newProtocol.foodB = undefined;
+    newProtocol.foodBThreshold = undefined;
+
+    // Recalculate Food A steps
+    newProtocol = recalculateProtocol(newProtocol);
+
+    // Re-add B (This finds the new transition index)
+    newProtocol = addFoodBToProtocol(newProtocol, tempFoodB, tempThreshold);
+  }
+
+  return newProtocol;
+}
+
+/**
+ * Updates the Food B transition threshold and recalculates the step sequence.
+ */
+export function updateFoodBThreshold(
+  protocol: Protocol,
+  newAmount: Decimal
+): Protocol {
+  // Create shallow copy
+  let newProtocol = { ...protocol };
+
+  // verify Food B exists to update ... though it should always ...
+  if (newProtocol.foodB && newProtocol.foodBThreshold) {
+    const tempFoodB = newProtocol.foodB;
+
+    // Create new temp threshold object with the updated amount
+    const newThreshold = {
+      ...newProtocol.foodBThreshold,
+      amount: newAmount
+    };
+
+    // Reset Food B state to force clean recalculation of Food A steps then add Food A
+    newProtocol.foodB = undefined;
+    newProtocol.foodBThreshold = undefined;
+
+    newProtocol = recalculateProtocol(newProtocol);
+    newProtocol = addFoodBToProtocol(newProtocol, tempFoodB, newThreshold);
+  }
+  return newProtocol;
+}
+
+/**
  * Inject a Food B transition into an existing protocol.
  *
  * Finds the first step where targetMg ≥ (threshold.amount × foodB.mgPerUnit) and transitions at that point by:

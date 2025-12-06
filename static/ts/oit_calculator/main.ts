@@ -96,7 +96,10 @@ import {
   updateStepMixFoodAmount,
   addStepAfter,
   removeStep,
-  toggleFoodType
+  toggleFoodType,
+  updateFoodDetails,
+  updateFoodBAndRecalculate,
+  updateFoodBThreshold
 } from "./core/protocol"
 
 // ============================================
@@ -126,9 +129,15 @@ import {
 // GLOBAL STATE
 // ============================================
 
-let currentProtocol: Protocol | null = null;
-let customNote: string = "";
-let warningsPageURL = "";
+import {
+  AppState
+} from "./state/appState"
+import {
+  ProtocolState
+} from "./state/protocolState"
+
+const protocolState = new ProtocolState();
+let appState: AppState; // init in initializeCalc
 
 // Clickwrap modal elements
 let clickwrapModal: HTMLElement | null = null;
@@ -227,13 +236,13 @@ function showProtocolUI(): void {
 /**
  * Render Food A and (optionally) Food B settings panels into the DOM.
  *
- * Uses currentProtocol to populate controls and attaches event listeners.
+ * populate controls and attaches event listeners.
  * Safe to call repeatedly; replaces existing settings blocks in-place.
  *
  * @returns void
  */
-function renderFoodSettings(): void {
-  if (!currentProtocol) return;
+function renderFoodSettings(protocol: Protocol | null): void {
+  if (!protocol) return;
 
   const foodAContainer = document.querySelector(
     ".food-a-container",
@@ -249,7 +258,7 @@ function renderFoodSettings(): void {
         type="text"
         class="food-name-input"
         id="food-a-name"
-        value="${escapeHtml(currentProtocol.foodA.name)}"
+        value="${escapeHtml(protocol.foodA.name)}"
       />
       <div class="setting-row">
         <label>Protein:</label>
@@ -257,9 +266,9 @@ function renderFoodSettings(): void {
         <input
           type="number"
           min="0"
-          max="${currentProtocol.foodA.servingSize}"
+          max="${protocol.foodA.servingSize}"
           id="food-a-protein"
-          value="${currentProtocol.foodA.gramsInServing.toFixed(1)}"
+          value="${protocol.foodA.gramsInServing.toFixed(1)}"
           step="0.1"
         />
         <span>g per</span>
@@ -267,28 +276,28 @@ function renderFoodSettings(): void {
           type="number"
           min="0"
           id="food-a-serving-size"
-          value="${currentProtocol.foodA.servingSize.toFixed(1)}"
+          value="${protocol.foodA.servingSize.toFixed(1)}"
           step="0.1"
         />
-        <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+        <span>${protocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
       </div>
       </div>
       <div class="setting-row">
         <label>Form:</label>
         <div class="toggle-group">
-          <button class="toggle-btn ${currentProtocol.foodA.type === FoodType.SOLID ? "active" : ""}" data-action="toggle-food-a-solid">Solid</button>
-          <button class="toggle-btn ${currentProtocol.foodA.type === FoodType.LIQUID ? "active" : ""}" data-action="toggle-food-a-liquid">Liquid</button>
+          <button class="toggle-btn ${protocol.foodA.type === FoodType.SOLID ? "active" : ""}" data-action="toggle-food-a-solid">Solid</button>
+          <button class="toggle-btn ${protocol.foodA.type === FoodType.LIQUID ? "active" : ""}" data-action="toggle-food-a-liquid">Liquid</button>
         </div>
       </div>
       <div class="setting-row">
         <label>Dilution strategy:</label>
         <div class="toggle-group">
-          <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL ? "active" : ""}" data-action="food-a-strategy-initial">Initial dilution</button>
-          <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_ALL ? "active" : ""}" data-action="food-a-strategy-all">Dilution throughout</button>
-          <button class="toggle-btn ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
+          <button class="toggle-btn ${protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL ? "active" : ""}" data-action="food-a-strategy-initial">Initial dilution</button>
+          <button class="toggle-btn ${protocol.foodAStrategy === FoodAStrategy.DILUTE_ALL ? "active" : ""}" data-action="food-a-strategy-all">Dilution throughout</button>
+          <button class="toggle-btn ${protocol.foodAStrategy === FoodAStrategy.DILUTE_NONE ? "active" : ""}" data-action="food-a-strategy-none">No dilutions</button>
         </div>
       </div>
-      ${currentProtocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
+      ${protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL
       ? `
       <div class="setting-row threshold-setting">
         <label>Directly dose when neat amount ≥</label>
@@ -297,10 +306,10 @@ function renderFoodSettings(): void {
             type="number"
             id="food-a-threshold"
             min="0"
-            value="${formatAmount(currentProtocol.diThreshold, currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml")}"
+            value="${formatAmount(protocol.diThreshold, protocol.foodA.type === FoodType.SOLID ? "g" : "ml")}"
             step="0.1"
           />
-          <span>${currentProtocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+          <span>${protocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
         </div>
       </div>
       `
@@ -317,14 +326,14 @@ function renderFoodSettings(): void {
   }
 
   // Render Food B settings if present
-  if (currentProtocol.foodB) {
+  if (protocol.foodB) {
     let foodBHTML = `
       <div class="food-b-settings">
         <input
           type="text"
           class="food-name-input"
           id="food-b-name"
-          value="${escapeHtml(currentProtocol.foodB.name)}"
+          value="${escapeHtml(protocol.foodB.name)}"
         />
         <div class="setting-row">
           <label>Protein:</label>
@@ -333,8 +342,8 @@ function renderFoodSettings(): void {
               type="number"
               id="food-b-protein"
               min="0"
-              max="${currentProtocol.foodB.servingSize}"
-              value="${currentProtocol.foodB.gramsInServing.toFixed(1)}"
+              max="${protocol.foodB.servingSize}"
+              value="${protocol.foodB.gramsInServing.toFixed(1)}"
               step="0.1"
             />
             <span>g per</span>
@@ -342,17 +351,17 @@ function renderFoodSettings(): void {
               type="number"
               id="food-b-serving-size"
               min="0"
-              value="${currentProtocol.foodB.servingSize.toFixed(1)}"
+              value="${protocol.foodB.servingSize.toFixed(1)}"
               step="0.1"
             />
-            <span>${currentProtocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
+            <span>${protocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
           </div>
         </div>
         <div class="setting-row">
           <label>Form:</label>
           <div class="toggle-group">
-            <button class="toggle-btn ${currentProtocol.foodB.type === FoodType.SOLID ? "active" : ""}" data-action="toggle-food-b-solid">Solid</button>
-            <button class="toggle-btn ${currentProtocol.foodB.type === FoodType.LIQUID ? "active" : ""}" data-action="toggle-food-b-liquid">Liquid</button>
+            <button class="toggle-btn ${protocol.foodB.type === FoodType.SOLID ? "active" : ""}" data-action="toggle-food-b-solid">Solid</button>
+            <button class="toggle-btn ${protocol.foodB.type === FoodType.LIQUID ? "active" : ""}" data-action="toggle-food-b-liquid">Liquid</button>
           </div>
         </div>
         <div class="setting-row threshold-setting">
@@ -361,11 +370,11 @@ function renderFoodSettings(): void {
             <input
               type="number"
               id="food-b-threshold"
-              value="${formatAmount(currentProtocol.foodBThreshold!.amount, currentProtocol.foodBThreshold!.unit)}"
+              value="${formatAmount(protocol.foodBThreshold!.amount, protocol.foodBThreshold!.unit)}"
               step="0.1"
               min="0"
             />
-            <span>${currentProtocol.foodBThreshold!.unit}</span>
+            <span>${protocol.foodBThreshold!.unit}</span>
           </div>
         </div>
       </div>
@@ -394,8 +403,8 @@ function renderFoodSettings(): void {
  *
  * @returns void
  */
-function renderDosingStrategy(): void {
-  if (!currentProtocol) return;
+function renderDosingStrategy(protocol: Protocol | null): void {
+  if (!protocol) return;
 
   const container = document.querySelector(
     ".dosing-strategy-container",
@@ -405,8 +414,8 @@ function renderDosingStrategy(): void {
     <h3>Dosing Strategy (resets all steps on change)</h3>
     <div class="setting-row">
       <div class="toggle-group">
-        <button class="toggle-btn ${currentProtocol.dosingStrategy === DosingStrategy.STANDARD ? "active" : ""}" data-strategy="STANDARD">Standard</button>
-        <button class="toggle-btn ${currentProtocol.dosingStrategy === DosingStrategy.SLOW ? "active" : ""}" data-strategy="SLOW">Slow</button>
+        <button class="toggle-btn ${protocol.dosingStrategy === DosingStrategy.STANDARD ? "active" : ""}" data-strategy="STANDARD">Standard</button>
+        <button class="toggle-btn ${protocol.dosingStrategy === DosingStrategy.SLOW ? "active" : ""}" data-strategy="SLOW">Slow</button>
       </div>
     </div>
   `;
@@ -419,12 +428,12 @@ function renderDosingStrategy(): void {
       const strategy = (e.target as HTMLElement).getAttribute(
         "data-strategy",
       ) as DosingStrategy;
-      if (currentProtocol && strategy !== currentProtocol.dosingStrategy) {
-        currentProtocol.dosingStrategy = strategy;
-        currentProtocol = recalculateProtocol(currentProtocol);
-        renderProtocolTable();
-        updateWarnings();
-        renderDosingStrategy();
+      if (protocol && strategy !== protocol.dosingStrategy) {
+        protocol.dosingStrategy = strategy;
+        protocol = recalculateProtocol(protocol);
+        renderProtocolTable(protocol, protocolState.getCustomNote());
+        updateWarnings(protocol, appState.warningsPageURL);
+        renderDosingStrategy(protocol);
       }
     });
   });
@@ -437,8 +446,8 @@ function renderDosingStrategy(): void {
  *
  * @returns void
  */
-function renderProtocolTable(): void {
-  if (!currentProtocol) return;
+function renderProtocolTable(protocol: Protocol | null, customNote: string): void {
+  if (!protocol) return;
 
   const tableContainer = document.querySelector(
     ".output-container table",
@@ -461,7 +470,7 @@ function renderProtocolTable(): void {
   let lastWasFootA = true;
 
   // Get warnings to check for step highlights
-  const warnings: Warning[] = validateProtocol(currentProtocol);
+  const warnings: Warning[] = validateProtocol(protocol);
   const stepWarnings = new Map<number, "red" | "yellow">();
   for (const warning of warnings) {
     if (warning.stepIndex !== undefined) {
@@ -473,22 +482,22 @@ function renderProtocolTable(): void {
     }
   }
 
-  for (const step of currentProtocol.steps) {
+  for (const step of protocol.steps) {
     const isStepFoodB = step.food === "B";
-    const food = isStepFoodB ? currentProtocol.foodB! : currentProtocol.foodA;
+    const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
 
     // Add food header if transitioning
     if (isStepFoodB && lastWasFootA) {
       html += `
         <tr class="food-section-header">
-          <td colspan="6">${escapeHtml(currentProtocol.foodB!.name)}</td>
+          <td colspan="6">${escapeHtml(protocol.foodB!.name)}</td>
         </tr>
       `;
       lastWasFootA = false;
     } else if (!isStepFoodB && step.stepIndex === 1) {
       html += `
         <tr class="food-section-header">
-          <td colspan="6">${escapeHtml(currentProtocol.foodA.name)}</td>
+          <td colspan="6">${escapeHtml(protocol.foodA.name)}</td>
         </tr>
       `;
     }
@@ -624,10 +633,10 @@ function renderProtocolTable(): void {
  *
  * @returns void
  */
-function updateWarnings(): void {
-  if (!currentProtocol) return;
+function updateWarnings(protocol: Protocol | null, rulesURL: string): void {
+  if (!protocol) return;
 
-  const warnings = validateProtocol(currentProtocol);
+  const warnings = validateProtocol(protocol);
   const container = document.querySelector(
     ".warnings-container",
   ) as HTMLElement;
@@ -635,7 +644,7 @@ function updateWarnings(): void {
   if (warnings.length === 0) {
     container.innerHTML = `
       <div class="no-warnings">
-      ✓ Protocol passes internal checks: see <a href="${warningsPageURL}" target="_blank">here</a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS SAFE. DOSES MUST STILL BE VERIFIED/REVIEWED.
+      ✓ Protocol passes internal checks: see <a href="${rulesURL}" target="_blank">here</a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS SAFE. DOSES MUST STILL BE VERIFIED/REVIEWED.
       </div>
     `;
     return;
@@ -872,15 +881,10 @@ function selectFoodA(foodData: FoodData): void {
     },
   };
 
-  currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+  const newProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+  protocolState.setProtocol(newProtocol);
 
-  showProtocolUI();
-  renderFoodSettings();
-  renderDosingStrategy();
-  renderProtocolTable();
-  updateWarnings();
-  updateFoodBDisabledState();
-
+  // clear search box after
   (document.getElementById("food-a-search") as HTMLInputElement).value = "";
 }
 
@@ -894,7 +898,8 @@ function selectFoodA(foodData: FoodData): void {
  * @returns void
  */
 function selectFoodB(foodData: FoodData): void {
-  if (!currentProtocol) return;
+  const current = protocolState.getProtocol();
+  if (!current) return;
 
   const food: Food = {
     name: foodData.Food,
@@ -911,12 +916,10 @@ function selectFoodB(foodData: FoodData): void {
     amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
   };
 
-  currentProtocol = addFoodBToProtocol(currentProtocol, food, threshold);
+  const updated = addFoodBToProtocol(current, food, threshold);
+  protocolState.setProtocol(updated);
 
-  renderFoodSettings();
-  renderProtocolTable();
-  updateWarnings();
-
+  // clear searchbar after
   (document.getElementById("food-b-search") as HTMLInputElement).value = "";
 }
 
@@ -942,23 +945,17 @@ function selectCustomFood(name: string, inputId: string): void {
   };
 
   if (inputId === "food-a-search") {
-    currentProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
-    showProtocolUI();
-    renderFoodSettings();
-    renderDosingStrategy();
-    renderProtocolTable();
-    updateWarnings();
-    updateFoodBDisabledState();
+    const newProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+    protocolState.setProtocol(newProtocol)
   } else {
-    if (!currentProtocol) return;
+    const current = protocolState.getProtocol();
+    if (!current) return;
     const threshold = {
       unit: "g" as Unit,
       amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
     };
-    currentProtocol = addFoodBToProtocol(currentProtocol, food, threshold);
-    renderFoodSettings();
-    renderProtocolTable();
-    updateWarnings();
+    const updated = addFoodBToProtocol(current, food, threshold);
+    protocolState.setProtocol(updated);
   }
 
   (document.getElementById(inputId) as HTMLInputElement).value = "";
@@ -1002,7 +999,7 @@ function selectProtocol(protocolData: ProtocolData): void {
 
   // Load custom note if it exists in global
   if (protocolData.custom_note) {
-    customNote = protocolData.custom_note;
+    protocolState.setCustomNote(protocolData.custom_note);
   }
 
   // load steps from the relevant table (table_di, table_dn, or table_da
@@ -1067,15 +1064,9 @@ function selectProtocol(protocolData: ProtocolData): void {
     }
   }
 
-  currentProtocol = protocol;
+  protocolState.setProtocol(protocol);
 
-  showProtocolUI();
-  renderFoodSettings();
-  renderDosingStrategy();
-  renderProtocolTable();
-  updateWarnings();
-  updateFoodBDisabledState();
-
+  // clear search
   (document.getElementById("food-a-search") as HTMLInputElement).value = "";
 }
 
@@ -1087,18 +1078,19 @@ function selectProtocol(protocolData: ProtocolData): void {
  * @returns void
  */
 function clearFoodB(): void {
-  if (!currentProtocol) return;
+  const current = protocolState.getProtocol();
+  if (!current) return;
 
   // Remove Food B and recalculate
-  currentProtocol.foodB = undefined;
-  currentProtocol.foodBThreshold = undefined;
+  const protocolWithoutB: Protocol = {
+    ...current,
+    foodB: undefined,
+    foodBThreshold: undefined
+  };
 
   // Regenerate steps without Food B
-  currentProtocol = recalculateProtocol(currentProtocol);
-
-  renderFoodSettings();
-  renderProtocolTable();
-  updateWarnings();
+  const updated = recalculateProtocol(protocolWithoutB);
+  protocolState.setProtocol(updated);
 }
 
 /**
@@ -1108,13 +1100,13 @@ function clearFoodB(): void {
  *
  * @returns void
  */
-function updateFoodBDisabledState(): void {
+function updateFoodBDisabledState(protocol: Protocol): void {
   const foodBContainer = document.querySelector(
     ".food-b-container",
   ) as HTMLElement;
   if (!foodBContainer) return;
 
-  const hasFoodA = currentProtocol && currentProtocol.foodA;
+  const hasFoodA = protocol && protocol.foodA;
 
   if (hasFoodA) {
     foodBContainer.classList.remove("disabled");
@@ -1167,11 +1159,15 @@ function attachSettingsEventListeners(): void {
   const foodANameInput = document.getElementById(
     "food-a-name",
   ) as HTMLInputElement;
+
   if (foodANameInput) {
     foodANameInput.addEventListener("input", (e) => {
-      if (currentProtocol) {
-        currentProtocol.foodA.name = (e.target as HTMLInputElement).value;
-        renderProtocolTable();
+      const current = protocolState.getProtocol();
+      if (current) {
+        const updated = updateFoodDetails(current, 'A', {
+          name: (e.target as HTMLInputElement).value
+        });
+        protocolState.setProtocol(updated);
       }
     });
   }
@@ -1183,7 +1179,8 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodAServingSizeInput) {
     foodAServingSizeInput.addEventListener("change", (e) => {
-      if (currentProtocol) {
+      const current = protocolState.getProtocol();
+      if (current) {
         let value = parseFloat((e.target as HTMLInputElement).value);
         // Clamp value >0, cannot be NaN. Doesn't make sense to have a serving size of 0...
         // Serving size <= 1000, 1kg or 1L of food is crazy and not an applicable serving size
@@ -1192,11 +1189,12 @@ function attachSettingsEventListeners(): void {
         if (Number.isNaN(value)) value = 1;
         // Display
         (e.target as HTMLInputElement).value = value.toFixed(1);
+
         // Change protocol state
-        currentProtocol.foodA.servingSize = new Decimal(value);
-        currentProtocol = recalculateStepMethods(currentProtocol);
-        renderProtocolTable();
-        updateWarnings();
+        const updated = updateFoodDetails(current, 'A', {
+          servingSize: new Decimal(value),
+        });
+        protocolState.setProtocol(recalculateStepMethods(updated));
       }
     });
   }
@@ -1208,18 +1206,20 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodAProteinInput) {
     foodAProteinInput.addEventListener("change", (e) => {
-      if (currentProtocol) {
+      const current = protocolState.getProtocol();
+      if (current) {
         let value = parseFloat((e.target as HTMLInputElement).value);
         // Clamp value between 0 and serving size (impossible to have more grams of protein than grams of substance... lol)
         if (value < 0) value = 0;
-        if (value > currentProtocol.foodA.servingSize.toNumber()) value = currentProtocol.foodA.servingSize.toNumber();
+        if (value > current.foodA.servingSize.toNumber()) value = current.foodA.servingSize.toNumber();
         if (Number.isNaN(value)) value = 0;
         (e.target as HTMLInputElement).value = value.toFixed(1);
-        currentProtocol.foodA.gramsInServing = new Decimal(value);
-        currentProtocol = recalculateStepMethods(currentProtocol);
-        renderProtocolTable();
-        updateWarnings();
 
+        // create shallow copy and mutate it
+        const updated = updateFoodDetails(current, 'A', {
+          gramsInServing: new Decimal(value)
+        });
+        protocolState.setProtocol(recalculateStepMethods(updated));
       }
     });
   }
@@ -1230,14 +1230,16 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodAThresholdInput) {
     foodAThresholdInput.addEventListener("change", (e) => {
-      if (currentProtocol) {
-        currentProtocol.diThreshold = new Decimal(
-          (e.target as HTMLInputElement).value,
-        );
-        currentProtocol = recalculateStepMethods(currentProtocol);
-        renderProtocolTable();
-        updateWarnings();
-
+      const current = protocolState.getProtocol();
+      if (current) {
+        // make shallow copy with updated diThreshold
+        const updated: Protocol = {
+          ...current,
+          diThreshold: new Decimal((e.target as HTMLInputElement).value)
+        }
+        protocolState.setProtocol(
+          recalculateStepMethods(updated)
+        )
       }
     });
   }
@@ -1248,9 +1250,12 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodBNameInput) {
     foodBNameInput.addEventListener("input", (e) => {
-      if (currentProtocol && currentProtocol.foodB) {
-        currentProtocol.foodB.name = (e.target as HTMLInputElement).value;
-        renderProtocolTable();
+      const current = protocolState.getProtocol();
+      if (current && current.foodB) {
+        const updated = updateFoodDetails(current, "B", {
+          name: (e.target as HTMLInputElement).value
+        });
+        protocolState.setProtocol(updated);
       }
     });
   }
@@ -1261,28 +1266,22 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodBServingSizeInput) {
     foodBServingSizeInput.addEventListener("change", (e) => {
-      if (currentProtocol && currentProtocol.foodB) {
-        let value = parseFloat((e.target as HTMLInputElement).value);
-        // serving size must be > 0 and < 1000 (1L or 1kg of food is CRAZY)
-        if (value <= 0) value = 1;
-        if (value > 1000) value = 1000;
-        if (Number.isNaN(value)) value = 1;
-        (e.target as HTMLInputElement).value = value.toFixed(1);
-        currentProtocol.foodB.servingSize = new Decimal(value);
+      const current = protocolState.getProtocol();
+      if (!current || !current.foodB) return;
 
-        // Recalculate Food B steps
-        if (currentProtocol.foodBThreshold) {
-          const tempFoodB = currentProtocol.foodB;
-          const tempThreshold = currentProtocol.foodBThreshold;
-          currentProtocol.foodB = undefined;
-          currentProtocol.foodBThreshold = undefined;
-          currentProtocol = recalculateProtocol(currentProtocol);
+      let value = parseFloat((e.target as HTMLInputElement).value);
+      // serving size must be > 0 and < 1000 (1L or 1kg of food is CRAZY)
+      if (value <= 0) value = 1;
+      if (value > 1000) value = 1000;
+      if (Number.isNaN(value)) value = 1;
 
-          currentProtocol = addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
-          renderProtocolTable();
-          updateWarnings();
-        }
-      }
+      // UI target updated
+      (e.target as HTMLInputElement).value = value.toFixed(1);
+
+      const updated = updateFoodBAndRecalculate(current, {
+        servingSize: new Decimal(value)
+      });
+      protocolState.setProtocol(updated);
     });
   }
 
@@ -1292,28 +1291,24 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodBProteinInput) {
     foodBProteinInput.addEventListener("change", (e) => {
-      if (currentProtocol && currentProtocol.foodB) {
-        let value = parseFloat((e.target as HTMLInputElement).value);
-        // Clamp value between 0 and serving size
-        if (value < 0) value = 0;
-        if (value > currentProtocol.foodB.servingSize.toNumber()) value = currentProtocol.foodB.servingSize.toNumber();
-        if (Number.isNaN(value)) value = 0;
-        (e.target as HTMLInputElement).value = value.toFixed(1);
-        currentProtocol.foodB.gramsInServing = new Decimal(value);
+      const current = protocolState.getProtocol();
+      if (!current || !current.foodB) return;
 
-        // Recalculate Food B steps
-        if (currentProtocol.foodBThreshold) {
-          const tempFoodB = currentProtocol.foodB;
-          const tempThreshold = currentProtocol.foodBThreshold;
-          currentProtocol.foodB = undefined;
-          currentProtocol.foodBThreshold = undefined;
-          currentProtocol = recalculateProtocol(currentProtocol);
+      // get value and clamp
+      let value = parseFloat((e.target as HTMLInputElement).value);
+      // Clamp value between 0 and serving size
+      if (value < 0) value = 0;
+      if (value > current.foodB.servingSize.toNumber()) value = current.foodB.servingSize.toNumber();
+      if (Number.isNaN(value)) value = 0;
 
-          currentProtocol = addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
-          renderProtocolTable();
-          updateWarnings();
-        }
-      }
+      // update UI
+      (e.target as HTMLInputElement).value = value.toFixed(1);
+
+      // shallow copy and recalc food B steps if needed
+      const updated = updateFoodBAndRecalculate(current, {
+        gramsInServing: new Decimal(value)
+      });
+      protocolState.setProtocol(updated);
     });
   }
 
@@ -1323,26 +1318,14 @@ function attachSettingsEventListeners(): void {
   ) as HTMLInputElement;
   if (foodBThresholdInput) {
     foodBThresholdInput.addEventListener("change", (e) => {
-      if (
-        currentProtocol &&
-        currentProtocol.foodB &&
-        currentProtocol.foodBThreshold
-      ) {
-        currentProtocol.foodBThreshold.amount = new Decimal(
+      const current = protocolState.getProtocol();
+      if (!current || !current.foodB || !current.foodBThreshold) return;
+
+      const updated = updateFoodBThreshold(current,
+        new Decimal(
           (e.target as HTMLInputElement).value,
-        );
-
-        // Recalculate transition
-        const tempFoodB = currentProtocol.foodB;
-        const tempThreshold = currentProtocol.foodBThreshold;
-        currentProtocol.foodB = undefined;
-        currentProtocol.foodBThreshold = undefined;
-        currentProtocol = recalculateProtocol(currentProtocol);
-
-        currentProtocol = addFoodBToProtocol(currentProtocol, tempFoodB, tempThreshold);
-        renderProtocolTable();
-        updateWarnings();
-      }
+        ))
+      protocolState.setProtocol(updated);
     });
   }
 
@@ -1351,74 +1334,68 @@ function attachSettingsEventListeners(): void {
     btn.addEventListener("click", (e) => {
       const action = (e.target as HTMLElement).getAttribute("data-action");
 
-      if (!currentProtocol) return;
+      const current = protocolState.getProtocol();
+
+      if (!current) return;
 
       switch (action) {
         case "toggle-food-a-solid":
-          if (currentProtocol.foodA.type !== FoodType.SOLID) {
-            currentProtocol = toggleFoodType(currentProtocol, false);
-            renderFoodSettings();
-            renderProtocolTable();
-            updateWarnings();
-
+          if (current.foodA.type !== FoodType.SOLID) {
+            protocolState.setProtocol(
+              toggleFoodType(current, false)
+            )
           }
           break;
         case "toggle-food-a-liquid":
-          if (currentProtocol.foodA.type !== FoodType.LIQUID) {
-            currentProtocol = toggleFoodType(currentProtocol, false);
-            renderFoodSettings();
-            renderProtocolTable();
-            updateWarnings();
-
+          if (current.foodA.type !== FoodType.LIQUID) {
+            protocolState.setProtocol(
+              toggleFoodType(current, false)
+            );
           }
           break;
         case "toggle-food-b-solid":
           if (
-            currentProtocol.foodB &&
-            currentProtocol.foodB.type !== FoodType.SOLID
+            current.foodB &&
+            current.foodB.type !== FoodType.SOLID
           ) {
-            currentProtocol = toggleFoodType(currentProtocol, true);
-            renderFoodSettings();
-            renderProtocolTable();
-            updateWarnings();
-
+            protocolState.setProtocol(
+              toggleFoodType(current, true)
+            );
           }
           break;
         case "toggle-food-b-liquid":
           if (
-            currentProtocol.foodB &&
-            currentProtocol.foodB.type !== FoodType.LIQUID
+            current.foodB &&
+            current.foodB.type !== FoodType.LIQUID
           ) {
-            currentProtocol = toggleFoodType(currentProtocol, true);
-            renderFoodSettings();
-            renderProtocolTable();
-            updateWarnings();
-
+            protocolState.setProtocol(
+              toggleFoodType(current, true)
+            );
           }
           break;
         case "food-a-strategy-initial":
-          currentProtocol.foodAStrategy = FoodAStrategy.DILUTE_INITIAL;
-          currentProtocol = recalculateStepMethods(currentProtocol);
-          renderProtocolTable();
-          updateWarnings();
-
-          renderFoodSettings();
+          protocolState.setProtocol(
+            recalculateStepMethods({
+              ...current,
+              foodAStrategy: FoodAStrategy.DILUTE_INITIAL
+            })
+          );
           break;
         case "food-a-strategy-all":
-          currentProtocol.foodAStrategy = FoodAStrategy.DILUTE_ALL;
-          currentProtocol = recalculateStepMethods(currentProtocol);
-          renderProtocolTable();
-          updateWarnings();
-
-          renderFoodSettings();
+          protocolState.setProtocol(
+            recalculateStepMethods({
+              ...current,
+              foodAStrategy: FoodAStrategy.DILUTE_ALL
+            })
+          );
           break;
         case "food-a-strategy-none":
-          currentProtocol.foodAStrategy = FoodAStrategy.DILUTE_NONE;
-          currentProtocol = recalculateStepMethods(currentProtocol);
-          renderProtocolTable();
-          updateWarnings();
-
-          renderFoodSettings();
+          protocolState.setProtocol(
+            recalculateStepMethods({
+              ...current,
+              foodAStrategy: FoodAStrategy.DILUTE_NONE
+            })
+          );
           break;
       }
     });
@@ -1451,20 +1428,22 @@ function attachTableEventListeners(): void {
         target.value = value.toString();
       }
 
+      const current = protocolState.getProtocol();
       if (field === "targetMg") {
-        currentProtocol = updateStepTargetMg(currentProtocol!, stepIndex, value);
-        renderProtocolTable();
-        updateWarnings();
+        if (current) {
+          const updated = updateStepTargetMg(current, stepIndex, value);
+          protocolState.setProtocol(updated);
+        }
       } else if (field === "dailyAmount") {
-        currentProtocol = updateStepDailyAmount(currentProtocol!, stepIndex, value);
-        renderProtocolTable();
-        updateWarnings();
-
+        if (current) {
+          const updated = updateStepDailyAmount(current, stepIndex, value);
+          protocolState.setProtocol(updated);
+        }
       } else if (field === "mixFoodAmount") {
-        currentProtocol = updateStepMixFoodAmount(currentProtocol!, stepIndex, value);
-        renderProtocolTable();
-        updateWarnings();
-
+        if (current) {
+          const updated = updateStepMixFoodAmount(current, stepIndex, value);
+          protocolState.setProtocol(updated);
+        }
       }
     });
 
@@ -1481,10 +1460,12 @@ function attachTableEventListeners(): void {
       const stepIndex = parseInt(
         (e.target as HTMLElement).getAttribute("data-step")!,
       );
-      currentProtocol = addStepAfter(currentProtocol!, stepIndex);
-      renderProtocolTable();
-      updateWarnings();
+      const current = protocolState.getProtocol();
 
+      if (current) {
+        const updated = addStepAfter(current, stepIndex)
+        protocolState.setProtocol(updated);
+      };
     });
   });
 
@@ -1494,9 +1475,12 @@ function attachTableEventListeners(): void {
       const stepIndex = parseInt(
         (e.target as HTMLElement).getAttribute("data-step")!,
       );
-      currentProtocol = removeStep(currentProtocol!, stepIndex);
-      renderProtocolTable();
-      updateWarnings();
+      const current = protocolState.getProtocol();
+
+      if (current) {
+        const updated = removeStep(current, stepIndex);
+        protocolState.setProtocol(updated);
+      }
     });
   });
 }
@@ -1580,7 +1564,7 @@ function attachCustomNoteListener(): void {
   if (!textarea) return;
 
   // Set initial value
-  textarea.value = customNote;
+  textarea.value = protocolState.getCustomNote();
 
   // Handle input with debouncing
   let noteDebounceTimer: number | null = null;
@@ -1594,7 +1578,7 @@ function attachCustomNoteListener(): void {
       // Sanitize the input by creating a temporary element
       const temp = document.createElement("div");
       temp.textContent = rawValue;
-      customNote = temp.textContent || "";
+      protocolState.setCustomNote(temp.textContent || "", { skipRender: true });
     }, 300);
   });
 }
@@ -1660,6 +1644,8 @@ function attachClickwrapEventListeners(): void {
  * @returns void
  */
 async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
+  const currentProtocol = protocolState.getProtocol();
+  const customNote = protocolState.getCustomNote();
   if (!currentProtocol) return;
 
   // fetch physician review sheet and education handout pdfs
@@ -1998,6 +1984,8 @@ async function _generatePdf(JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDoc
  * @returns void
  */
 function exportASCII(): void {
+  const currentProtocol = protocolState.getProtocol();
+  const customNote = protocolState.getCustomNote();
   if (!currentProtocol) return;
 
   let text = "";
@@ -2116,14 +2104,32 @@ async function initializeCalculator(): Promise<void> {
   // Load databases
   // TODO! should be wrapped in try catch later
   const data = await loadDatabases();
-  const { fuzzySortPreparedFoods, fuzzySortPreparedProtocols } = data;
 
   // Get URL for rules page
   const urlContainer = document.getElementById('url-container');
-  if (urlContainer) {
-    // Note: data-target-url becomes dataset.targetUrl in JS (camelCase)
-    warningsPageURL = urlContainer.dataset.targetUrl!;
-  }
+  const rulesUrl = urlContainer ? urlContainer.dataset.targetUrl! : "";
+
+  // set up appState
+  appState = new AppState(data, rulesUrl);
+
+  // subscribe protocol
+  protocolState.subscribe((protocol, note) => {
+    // block runs whenever state changes
+    if (protocol) {
+      showProtocolUI();
+      renderFoodSettings(protocol);
+      renderDosingStrategy(protocol);
+      renderProtocolTable(protocol, note);
+      updateWarnings(protocol, appState.warningsPageURL);
+      updateFoodBDisabledState(protocol);
+    } else {
+      // TODO! ? clear state
+      // should be impossible for protocol to be null tbh...
+      // document.querySelector(".output-container table")!.innerHTML = "";
+      // document.querySelector(".dosing-strategy-container")?.classList.add("oit-hidden-on-init");
+    }
+  });
+
   // Set up search input listeners
   const foodASearchInput = document.getElementById(
     "food-a-search",
@@ -2137,7 +2143,7 @@ async function initializeCalculator(): Promise<void> {
       }
 
       searchDebounceTimer = window.setTimeout(() => {
-        const results = performSearch(query, "protocol", fuzzySortPreparedFoods, fuzzySortPreparedProtocols);
+        const results = performSearch(query, "protocol", appState.foodsIndex, appState.protocolsIndex);
         showSearchDropdown("food-a-search", results, query);
       }, 150);
     });
@@ -2178,7 +2184,7 @@ async function initializeCalculator(): Promise<void> {
       }
 
       searchDebounceTimer = window.setTimeout(() => {
-        const results = performSearch(query, "food", fuzzySortPreparedFoods, fuzzySortPreparedProtocols);
+        const results = performSearch(query, "food", appState.foodsIndex, appState.protocolsIndex);
         showSearchDropdown("food-b-search", results, query);
       }, 150);
     });
@@ -2434,7 +2440,7 @@ if (import.meta.vitest) {
         // 100mg / 500mg/g = 0.2g threshold
         const threshold = { unit: "g" as Unit, amount: new Decimal(0.2) };
 
-        currentProtocol = addFoodBToProtocol(protocol, peanuts, threshold);
+        const updated = addFoodBToProtocol(protocol, peanuts, threshold);
 
         // Expectation:
         // Step 1: 1mg (Food A)
@@ -2442,12 +2448,12 @@ if (import.meta.vitest) {
         // Step 3: 100mg (Food B) -> Inserted duplicate
         // Step 4: 1000mg (Food B)
 
-        expect(protocol.steps.length).toBe(4);
-        expect(protocol.steps[0].food).toBe("A");
-        expect(protocol.steps[1].food).toBe("A");
-        expect(protocol.steps[2].food).toBe("B"); // The transition duplicate
-        expect(protocol.steps[2].targetMg.toNumber()).toBe(100);
-        expect(protocol.steps[3].food).toBe("B");
+        expect(updated.steps.length).toBe(4);
+        expect(updated.steps[0].food).toBe("A");
+        expect(updated.steps[1].food).toBe("A");
+        expect(updated.steps[2].food).toBe("B"); // The transition duplicate
+        expect(updated.steps[2].targetMg.toNumber()).toBe(100);
+        expect(updated.steps[3].food).toBe("B");
       });
     });
   });
