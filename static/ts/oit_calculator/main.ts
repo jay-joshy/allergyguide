@@ -133,10 +133,9 @@ import {
   AppState
 } from "./state/appState"
 import {
-  ProtocolState
-} from "./state/protocolState"
+  protocolState
+} from "./state/instances"
 
-const protocolState = new ProtocolState();
 let appState: AppState; // init in initializeCalc
 
 // Clickwrap modal elements
