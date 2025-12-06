@@ -1493,8 +1493,9 @@ function attachExportEventListeners(): void {
   const asciiBtn = document.getElementById("export-ascii");
   if (asciiBtn) {
     const current = protocolState.getProtocol();
+    const customNote = protocolState.getCustomNote();
     asciiBtn.addEventListener("click", () => {
-      exportASCII(current)
+      exportASCII(current, customNote)
     });
   }
 
@@ -1985,8 +1986,7 @@ async function _generatePdf(protocol: Protocol | null, customNote: string, JsPdf
  *
  * @returns void
  */
-function exportASCII(protocol: Protocol | null): void {
-  const customNote = protocolState.getCustomNote();
+function exportASCII(protocol: Protocol | null, customNote: string): void {
   if (!protocol) return
 
   let text = "";
