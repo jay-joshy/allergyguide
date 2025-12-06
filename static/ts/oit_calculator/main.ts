@@ -1538,7 +1538,8 @@ async function triggerPdfGeneration(): Promise<void> {
     applyPlugin(jsPDF);
 
     const current = protocolState.getProtocol();
-    await _generatePdf(current, jsPDF, PDFDocument);
+    const customNote = protocolState.getCustomNote();
+    await _generatePdf(current, customNote, jsPDF, PDFDocument);
   } catch (error) {
     console.error("Failed to load PDF libraries or generate PDF: ", error);
     alert("Error generating PDF. Please check the console for details.");
@@ -1646,8 +1647,7 @@ function attachClickwrapEventListeners(): void {
  * @param PdfDocClass - static class for PDFDocument
  * @returns void
  */
-async function _generatePdf(protocol: Protocol | null, JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
-  const customNote = protocolState.getCustomNote();
+async function _generatePdf(protocol: Protocol | null, customNote: string, JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
   if (!protocol) return;
 
   // fetch physician review sheet and education handout pdfs
