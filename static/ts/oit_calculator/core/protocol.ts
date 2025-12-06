@@ -7,7 +7,6 @@
 import Decimal from "decimal.js";
 
 import {
-  DosingStrategy,
   FoodType,
   Method,
   FoodAStrategy,
@@ -17,19 +16,11 @@ import type {
   Unit,
   Food,
   Step,
-  ProtocolConfig,
   Protocol,
-  Candidate,
-  FoodData,
-  ProtocolData,
-  Warning
 } from "../types"
 
 import {
   DOSING_STRATEGIES,
-  OIT_CLICKWRAP_ACCEPTED_KEY,
-  CLICKWRAP_EXPIRY_DAYS,
-  DEFAULT_CONFIG,
 } from "../constants"
 
 import {
@@ -165,6 +156,38 @@ export function addFoodBToProtocol(
   threshold: { unit: Unit; amount: Decimal },
 ): Protocol {
   const newProtocol = { ...oldProtocol };
+
+  // Normalize all existing steps to be valid Food A steps
+  // => if the transition point moves "later" (ie. another food B is chosen), steps before it which might have been Food B previously are correctly recalculated as Food A using `generateStepForTarget`
+  const normalizedSteps: Step[] = [];
+  for (const existingStep of newProtocol.steps) {
+    const step = generateStepForTarget(
+      existingStep.targetMg,
+      existingStep.stepIndex,
+      newProtocol.foodA,
+      newProtocol.foodAStrategy,
+      newProtocol.diThreshold,
+      newProtocol.config
+    );
+
+    if (step) {
+      normalizedSteps.push(step);
+    } else {
+      // Fallback DIRECT if dilution generation fails
+      const P = existingStep.targetMg;
+      const neatMass = P.dividedBy(newProtocol.foodA.getMgPerUnit());
+      const unit: Unit = newProtocol.foodA.type === FoodType.SOLID ? "g" : "ml";
+      normalizedSteps.push({
+        stepIndex: existingStep.stepIndex,
+        targetMg: P,
+        method: Method.DIRECT,
+        dailyAmount: neatMass,
+        dailyAmountUnit: unit,
+        food: "A",
+      });
+    }
+  }
+  newProtocol.steps = normalizedSteps;
 
   // Calculate foodBmgThreshold
   const foodBmgThreshold = threshold.amount.times(foodB.getMgPerUnit());
