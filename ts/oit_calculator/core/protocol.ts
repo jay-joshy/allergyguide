@@ -236,7 +236,7 @@ export function addFoodBToProtocol(
   }
 
   // Get the original target sequence after transition
-  const originalTargets: any[] = [];
+  const originalTargets: Decimal[] = [];
   for (let i = transitionIndex + 1; i < newProtocol.steps.length; i++) {
     originalTargets.push(newProtocol.steps[i].targetMg);
   }
