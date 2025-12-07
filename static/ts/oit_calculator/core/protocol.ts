@@ -370,22 +370,27 @@ export function recalculateStepMethods(oldProtocol: Protocol): Protocol {
 export function updateStepTargetMg(oldProtocol: Protocol, stepIndex: number, newTargetMg: any): Protocol {
   if (!oldProtocol) return oldProtocol;
 
-  const newProtocol = { ...oldProtocol };
+  // Shallow copy steps array
+  const newSteps = [...oldProtocol.steps];
 
-  const step = newProtocol.steps[stepIndex - 1];
-  if (!step) return newProtocol;
+  // does it exist
+  const originalStep = newSteps[stepIndex - 1];
+  if (!originalStep) return oldProtocol;
+
+  // shallow copy SPECIFIC step to modify
+  const step = { ...originalStep };
 
   try {
     step.targetMg = new Decimal(newTargetMg);
   }
   catch (error) {
     console.error("Invalid number format for targetMg:", newTargetMg);
-    return newProtocol;
+    return oldProtocol;
   }
 
   // Determine which food
   const isStepFoodB = step.food === "B";
-  const food = isStepFoodB ? newProtocol.foodB! : newProtocol.foodA;
+  const food = isStepFoodB ? oldProtocol.foodB! : oldProtocol.foodA;
 
   if (step.method === Method.DIRECT) {
     // Recalculate dailyAmount
@@ -404,7 +409,8 @@ export function updateStepTargetMg(oldProtocol: Protocol, stepIndex: number, new
     }
   }
 
-  return newProtocol;
+  newSteps[stepIndex - 1] = step;
+  return { ...oldProtocol, steps: newSteps };
 }
 
 /**
