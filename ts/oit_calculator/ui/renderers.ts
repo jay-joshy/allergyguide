@@ -37,7 +37,11 @@ interface StepRowSpec {
  */
 export type RowSpec = HeaderRowSpec | StepRowSpec;
 
-
+/**
+ * Update undo redo button status states
+ *
+ * @returns void
+ */
 export function updateUndoRedoButtons(canUndo: boolean, canRedo: boolean): void {
   const undoBtn = document.getElementById("btn-undo") as HTMLButtonElement;
   const redoBtn = document.getElementById("btn-redo") as HTMLButtonElement;

@@ -15,6 +15,10 @@ let currentDropdownIndex: number = -1;
 let currentDropdownInputId: string = "";
 let searchDebounceTimer: number | null = null;
 
+/**
+ * Interface defining the callback handlers for various search selection events
+ * helps decouple the UI interaction (selecting an item) from specific state update logic in `actions.ts`
+ */
 export interface SearchCallbacks {
   onSelectCustom: (name: string, inputId: string) => void;
   onSelectProtocol: (data: ProtocolData) => void;
@@ -23,8 +27,13 @@ export interface SearchCallbacks {
 }
 
 /**
- * Initialize search input listeners.
- * Works for both food A and B search inputs
+ * Initialize search input listeners for Food A and Food B
+ * Sets up following behavior for both search inputs:
+ * 1. Input: Triggers a debounced (150ms) fuzzy search against the AppState indices
+ * 2. Keydown: Handles keyboard navigation (ArrowUp, ArrowDown, Enter, Escape)
+ * 3. Blur: Hides the dropdown after a short delay (to allow click events to register)
+ *
+ * @param appState - The application state containing the prepared Fuse.js/Fuzzysort indices.
  */
 export function initSearchEvents(appState: AppState): void {
   const setupSearch = (inputId: string, type: "protocol" | "food") => {
@@ -63,10 +72,17 @@ export function initSearchEvents(appState: AppState): void {
 }
 
 /**
- * Render the autocomplete dropdown below a search input
- *
- * Always includes a "Custom" item (index 0)
- */
+* Render the autocomplete dropdown below a specific search input
+* Constructs dropdown menu, including:
+* - custom (always index 0) 
+* - A list of up to 50 search results (Protocols or Foods)
+* - Attaches click listeners to each item to trigger the appropriate callback
+*
+* @param inputId - DOM ID of the input element (e.g., "food-a-search").
+* @param results - Array of search results (mixed objects of ProtocolData or FoodData)
+* @param query - current text value of the input, used for the "Custom" entry
+* @param callbacks - interface containing methods to handle selection
+*/
 export function showSearchDropdown(
   inputId: string,
   results: any[],
@@ -146,6 +162,10 @@ export function showSearchDropdown(
 
 /**
  * Remove and reset the autocomplete dropdown for a given input
+ * removes `.search-dropdown` element
+ * Resets internal navigation state (`currentDropdownIndex`)
+ *
+ * @param inputId - DOM ID of the input associated with the dropdown to hide
  */
 export function hideSearchDropdown(inputId: string): void {
   const input = document.getElementById(inputId) as HTMLInputElement;

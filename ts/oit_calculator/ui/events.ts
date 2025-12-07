@@ -38,7 +38,7 @@ let foodBDebounceTimer: number | null = null;
 
 /**
  * Initialize global event listeners using delegation
- * Call this once at startup
+ * Call this ONLY ONCE at startup
  */
 export function initGlobalEvents(): void {
   attachSettingsDelegation();
@@ -54,6 +54,11 @@ export function initGlobalEvents(): void {
   }
 }
 
+/**
+ * Attaches event listeners for Undo and Redo operations
+ * Wires up the UI buttons (#btn-undo, #btn-redo) to the global protocol state
+ * Excludes the Custom Note textarea from these shortcuts to preserve native browser text editing behavior
+ */
 function attachUndoRedoDelegation() {
   const undoBtn = document.getElementById("btn-undo");
   const redoBtn = document.getElementById("btn-redo");
@@ -77,8 +82,9 @@ function attachUndoRedoDelegation() {
   });
 }
 
-// TODO! bottom section is mix of both export and custom note... decouple?
-// right now this delegation doesn't really care about the export buttons which is good
+/**
+ * Attaches event listeners for the Custom Note section
+ */
 function attachCustomNoteDelegation() {
   const bottomSection = document.querySelector(".bottom-section");
   if (bottomSection) {
@@ -98,6 +104,15 @@ function attachCustomNoteDelegation() {
   }
 }
 
+/**
+ * Attaches event delegation logic for Food A and Food B settings panels
+ * Handles three types of interactions:
+ * 1. `input`: For text fields like Food Name (debounced)
+ * 2. `change`: For numeric inputs (Protein, Serving Size, Thresholds). Updates trigger immediate protocol recalculations 
+ * 3. `click`: For toggle buttons (Solid/Liquid form, Dilution Strategies)
+ *
+ * Parses and validates numeric inputs before updating the state
+ */
 function attachSettingsDelegation() {
   // Food A Settings Delegation
   const foodAContainer = document.querySelector(".food-a-container");
@@ -260,6 +275,9 @@ function attachSettingsDelegation() {
   }
 }
 
+/**
+ * Attaches click delegation for the Dosing Strategy selection buttons
+ */
 function attachDosingStrategyDelegation() {
   const container = document.querySelector(".dosing-strategy-container");
   if (container) {
@@ -276,6 +294,15 @@ function attachDosingStrategyDelegation() {
   }
 }
 
+/**
+ * Attaches event delegation for the main Protocol Output Table
+ * Handles:
+ * - Row Actions: Clicks on "Add Step" (+) and "Remove Step" (-) buttons
+ * - Data Editing: Input events on editable cells (Target Mg, Daily Amount, Mix Food Amount)
+ * - Uses a 150ms debounce timer for smoother typing
+ * - Clamps negative values to 0
+ * - UX: Handles 'Enter' keypresses to blur inputs
+ */
 function attachTableDelegation() {
   const tableContainer = document.querySelector(".output-container table");
   if (!tableContainer) return;

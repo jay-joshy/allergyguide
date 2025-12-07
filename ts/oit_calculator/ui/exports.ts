@@ -8,7 +8,12 @@ import { isClickwrapAccepted, showClickwrapModal } from "./modals";
 import { exportASCII, generatePdf } from "../export/exports"
 
 /**
- * init export button listeners
+ * Initialize event listeners for the export action buttons
+ * listen for clicks on:
+ * - `#export-ascii`
+ * - `#export-pdf`: Checks for a valid clickwrap acceptance token first
+ * - If accepted: Immediately triggers the PDF generation workflow
+ * - If NOT accepted: Opens the Clickwrap Modal to enforce terms of use acceptance
  */
 export function initExportEvents(): void {
   document.addEventListener('click', async (e) => {
@@ -25,6 +30,11 @@ export function initExportEvents(): void {
   });
 }
 
+/**
+ * Orchestrates the PDF generation workflow with UI feedback and dynamic loading
+ *
+ * @returns promise that resolves when the generation is complete (or failed)
+ */
 export async function triggerPdfGeneration(): Promise<void> {
   const pdfBtn = document.getElementById("export-pdf");
   const modalPdfBtn = document.getElementById("clickwrap-generate-btn");
