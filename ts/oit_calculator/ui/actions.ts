@@ -31,7 +31,7 @@ export function selectFoodA(foodData: FoodData): void {
   };
 
   const newProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
-  protocolState.setProtocol(newProtocol);
+  protocolState.setProtocol(newProtocol, `Selected Food A: ${food.name}`);
 
   // clear search bar input after
   const input = document.getElementById("food-a-search") as HTMLInputElement;
@@ -67,7 +67,7 @@ export function selectFoodB(foodData: FoodData): void {
   };
 
   const updated = addFoodBToProtocol(current, food, threshold);
-  protocolState.setProtocol(updated);
+  protocolState.setProtocol(updated, `Selected Food B: ${food.name}`);
 
   // clear food B searchbar input after
   const input = document.getElementById("food-b-search") as HTMLInputElement;
@@ -98,7 +98,7 @@ export function selectCustomFood(name: string, inputId: string): void {
 
   if (inputId === "food-a-search") {
     const newProtocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
-    protocolState.setProtocol(newProtocol)
+    protocolState.setProtocol(newProtocol, `Selected Custom Food A: ${food.name}`)
   } else {
     const current = protocolState.getProtocol();
     if (!current) return;
@@ -107,7 +107,7 @@ export function selectCustomFood(name: string, inputId: string): void {
       amount: DEFAULT_CONFIG.DEFAULT_FOOD_B_THRESHOLD,
     };
     const updated = addFoodBToProtocol(current, food, threshold);
-    protocolState.setProtocol(updated);
+    protocolState.setProtocol(updated, `Selected Custom Food B: ${food.name}`);
   }
 
   // clear input bar, whatever one it was
@@ -203,7 +203,7 @@ export function selectProtocol(protocolData: ProtocolData): void {
       };
     }
   }
-  protocolState.setProtocol(protocol);
+  protocolState.setProtocol(protocol, `Loaded protocol: ${protocolData.name}`);
 
   // clear search 
   const input = document.getElementById("food-a-search") as HTMLInputElement;
@@ -228,5 +228,5 @@ export function clearFoodB(): void {
     foodBThreshold: undefined
   };
   const updated = recalculateProtocol(protocolWithoutB);
-  protocolState.setProtocol(updated);
+  protocolState.setProtocol(updated, "Cleared Food B");
 }

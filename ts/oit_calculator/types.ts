@@ -188,3 +188,57 @@ export interface ProtocolData {
   table_da: any[]; // steps for protocol using dilution all strategy
   custom_note?: string;
 }
+
+// ============================================
+// HISTORY INTERFACES
+// ============================================
+
+/**
+ * Rich history item for internal application state
+ * Maintains full object fidelity and precise timestamps 
+ */
+export interface HistoryItem {
+  protocol: Protocol;
+  label: string;      // Human-readable action description
+  timestamp: number;  // Unix timestamp 
+}
+
+// --- MINIFIED INTERFACES FOR QR PAYLOAD ---
+
+export interface MFood {
+  n: string; // name
+  t: number; // 0=SOLID, 1=LIQUID
+  p: number; // gramsInServing
+  s: number; // servingSize
+}
+
+export interface MStep {
+  i: number; // stepIndex
+  t: number; // targetMg
+  m: number; // 0=DIRECT, 1=DILUTE
+  d: number; // dailyAmount
+  mf?: number; // mixFoodAmount (optional)
+  mw?: number; // mixWaterAmount (optional)
+  sv?: number; // servings (optional)
+  f: number; // 0=Food A, 1=Food B
+}
+
+export interface MProtocol {
+  ds: number;   // DosingStrategy: 0=STANDARD, 1=SLOW
+  fas: number;  // FoodAStrategy: 0=INIT, 1=ALL, 2=NONE
+  dt: number;   // diThreshold
+  fbt?: number; // foodBThreshold amount
+  fa: MFood;    // Food A
+  fb?: MFood;   // Food B
+  s: MStep[];   // Steps
+}
+
+/**
+ * The final payload structure to be compressed into the QR code.
+ */
+export interface UserHistoryPayload {
+  v: string;      // semver-hash, ie. 0.8.0-a1213b2c 
+  ts: number;     // Generated At timestamp
+  p: MProtocol;   // Current Protocol State
+  h: string[];    // History of action labels only (stripped timestamps)
+}

@@ -1,4 +1,4 @@
-import type { Protocol } from "../types";
+import type { Protocol, HistoryItem } from "../types";
 
 type Listener = (protocol: Protocol | null, note: string) => void;
 
@@ -7,14 +7,12 @@ type Listener = (protocol: Protocol | null, note: string) => void;
  * Holds central state (Protocol and Custom Notes), manages Undo/Redo history stack, handles event subscriptions for UI updates
  */
 export class ProtocolState {
-  // FOR UNDO/REDO
   private MAX_HISTORY = 100;
-  // Present
-  private protocol: Protocol | null = null;
-  // Past
-  private history: Protocol[] = [];
-  // Future (for Redo)
-  private future: Protocol[] = [];
+
+  // History management 
+  private current: HistoryItem | null = null;
+  private history: HistoryItem[] = []; // Past
+  private future: HistoryItem[] = [];  // Future (Redo)
 
   private customNote: string = "";
   private listeners: Listener[] = [];
@@ -22,39 +20,72 @@ export class ProtocolState {
   /**
    * @returns current Protocol object or null if not yet initialized
    */
-  public getProtocol(): Protocol | null { return this.protocol; }
+  public getProtocol(): Protocol | null {
+    return this.current ? this.current.protocol : null;
+  }
 
   /**
-   * @returns custom note string
+   * @returns Full rich history including current state
    */
-  public getCustomNote(): string { return this.customNote; }
+  public getHistory(): HistoryItem[] {
+    const list = [...this.history];
+    if (this.current) list.push(this.current);
+    return list;
+  }
+
+  public getCustomNote(): string {
+    return this.customNote;
+  }
 
   /**
    * @returns true if there is history available to undo.
    */
-  public getCanUndo(): boolean { return this.history.length > 0; }
+  public getCanUndo(): boolean {
+    return this.history.length > 0;
+  }
 
   /**
    * @returns `true` if there are future states available to redo
    */
-  public getCanRedo(): boolean { return this.future.length > 0; }
+  public getCanRedo(): boolean {
+    return this.future.length > 0;
+  }
 
   /**
-   * Update protocol
+   * Update protocol with a mandatory action label
    * @param p New protocol
-   * @param options.addToHistory Default true. make false for ephemeral updates (ie typing in customNote)
+   * @param label Description of the action (e.g., "Changed target from 100 to 200")
+   * @param options.addToHistory Default true
    */
-  public setProtocol(p: Protocol | null, options: { addToHistory?: boolean } = { addToHistory: true }) {
-    if (this.protocol && options.addToHistory) {
-      // Push current state to history before overwriting
-      this.history.push(this.protocol);
-      if (this.history.length > this.MAX_HISTORY) this.history.shift();
+  public setProtocol(
+    p: Protocol | null,
+    label: string,
+    options: { addToHistory?: boolean } = { addToHistory: true }
+  ) {
+    // If setting null, just clear everything
+    if (!p) {
+      this.current = null;
+      this.history = [];
+      this.future = [];
+      this.notify();
+      return;
+    }
 
-      // Clear future on new action
+    const newItem: HistoryItem = {
+      protocol: p,
+      label: label,
+      timestamp: Date.now()
+    };
+
+    console.log(label);
+
+    if (this.current && options.addToHistory) {
+      this.history.push(this.current);
+      if (this.history.length > this.MAX_HISTORY) this.history.shift();
       this.future = [];
     }
 
-    this.protocol = p;
+    this.current = newItem;
     this.notify();
   }
 
@@ -62,9 +93,9 @@ export class ProtocolState {
     if (this.history.length === 0) return;
 
     const previous = this.history.pop();
-    if (previous && this.protocol) {
-      this.future.push(this.protocol); // Move current to future
-      this.protocol = previous;        // Set current to past
+    if (previous && this.current) {
+      this.future.push(this.current);
+      this.current = previous;
       this.notify();
     }
   }
@@ -73,9 +104,9 @@ export class ProtocolState {
     if (this.future.length === 0) return;
 
     const next = this.future.pop();
-    if (next && this.protocol) {
-      this.history.push(this.protocol); // Move current to history
-      this.protocol = next;             // Set current to future
+    if (next && this.current) {
+      this.history.push(this.current);
+      this.current = next;
       this.notify();
     }
   }
@@ -95,10 +126,12 @@ export class ProtocolState {
 
   public subscribe(listener: Listener) {
     this.listeners.push(listener);
-    listener(this.protocol, this.customNote);
+    // Emit current protocol inside the HistoryItem
+    listener(this.current ? this.current.protocol : null, this.customNote);
   }
 
   private notify() {
-    this.listeners.forEach(fn => fn(this.protocol, this.customNote));
+    const p = this.current ? this.current.protocol : null;
+    this.listeners.forEach(fn => fn(p, this.customNote));
   }
 }

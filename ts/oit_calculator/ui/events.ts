@@ -126,10 +126,11 @@ function attachSettingsDelegation() {
         foodADebounceTimer = window.setTimeout(() => {
           const current = protocolState.getProtocol();
           if (current) {
+            const val = (target as HTMLInputElement).value;
             const updated = updateFoodDetails(current, 'A', {
               name: (target as HTMLInputElement).value
             });
-            protocolState.setProtocol(updated);
+            protocolState.setProtocol(updated, `Renamed Food A: ${val}`);
           }
         }, 300);
       }
@@ -149,7 +150,7 @@ function attachSettingsDelegation() {
         const updated = updateFoodDetails(current, 'A', {
           servingSize: new Decimal(value),
         });
-        protocolState.setProtocol(recalculateStepMethods(updated));
+        protocolState.setProtocol(recalculateStepMethods(updated), `Food A Serving Size changed to: ${value}`);
       } else if (target.id === "food-a-protein") {
         let value = parseFloat((target as HTMLInputElement).value);
         if (value < 0) value = 0;
@@ -158,13 +159,14 @@ function attachSettingsDelegation() {
         const updated = updateFoodDetails(current, 'A', {
           gramsInServing: new Decimal(value)
         });
-        protocolState.setProtocol(recalculateStepMethods(updated));
+        protocolState.setProtocol(recalculateStepMethods(updated), `Food A Protein changed to: ${value}`);
       } else if (target.id === "food-a-threshold") {
+        const val = (target as HTMLInputElement).value;
         const updated: Protocol = {
           ...current,
           diThreshold: new Decimal((target as HTMLInputElement).value)
         }
-        protocolState.setProtocol(recalculateStepMethods(updated));
+        protocolState.setProtocol(recalculateStepMethods(updated), `Food A DI Threshold changed to: ${val}`);
       }
     });
 
@@ -177,27 +179,30 @@ function attachSettingsDelegation() {
       switch (action) {
         case "toggle-food-a-solid":
           if (current.foodA.type !== FoodType.SOLID) {
-            protocolState.setProtocol(toggleFoodType(current, false));
+            protocolState.setProtocol(toggleFoodType(current, false), "Set Food A to Solid");
           }
           break;
         case "toggle-food-a-liquid":
           if (current.foodA.type !== FoodType.LIQUID) {
-            protocolState.setProtocol(toggleFoodType(current, false));
+            protocolState.setProtocol(toggleFoodType(current, false), "Set Food A to Liquid");
           }
           break;
         case "food-a-strategy-initial":
           protocolState.setProtocol(
-            recalculateStepMethods({ ...current, foodAStrategy: FoodAStrategy.DILUTE_INITIAL })
+            recalculateStepMethods({ ...current, foodAStrategy: FoodAStrategy.DILUTE_INITIAL }),
+            "Set Food A Strategy: Dilute Initial"
           );
           break;
         case "food-a-strategy-all":
           protocolState.setProtocol(
-            recalculateStepMethods({ ...current, foodAStrategy: FoodAStrategy.DILUTE_ALL })
+            recalculateStepMethods({ ...current, foodAStrategy: FoodAStrategy.DILUTE_ALL }),
+            "Set Food A Strategy: Dilute All"
           );
           break;
         case "food-a-strategy-none":
           protocolState.setProtocol(
-            recalculateStepMethods({ ...current, foodAStrategy: FoodAStrategy.DILUTE_NONE })
+            recalculateStepMethods({ ...current, foodAStrategy: FoodAStrategy.DILUTE_NONE }),
+            "Set Food A Strategy: Dilute None"
           );
           break;
       }
@@ -215,10 +220,11 @@ function attachSettingsDelegation() {
         foodBDebounceTimer = window.setTimeout(() => {
           const current = protocolState.getProtocol();
           if (current && current.foodB) {
+            const val = (target as HTMLInputElement).value;
             const updated = updateFoodDetails(current, "B", {
               name: (target as HTMLInputElement).value
             });
-            protocolState.setProtocol(updated);
+            protocolState.setProtocol(updated, `Renamed Food B to: ${val}`);
           }
         }, 300);
       }
@@ -237,7 +243,7 @@ function attachSettingsDelegation() {
         const updated = updateFoodBAndRecalculate(current, {
           servingSize: new Decimal(value)
         });
-        protocolState.setProtocol(updated);
+        protocolState.setProtocol(updated, `Food B Serving Size changed to: ${value}`);
       } else if (target.id === "food-b-protein") {
         let value = parseFloat((target as HTMLInputElement).value);
         if (value < 0) value = 0;
@@ -246,10 +252,11 @@ function attachSettingsDelegation() {
         const updated = updateFoodBAndRecalculate(current, {
           gramsInServing: new Decimal(value)
         });
-        protocolState.setProtocol(updated);
+        protocolState.setProtocol(updated, `Food B Protein changed to: ${value}`);
       } else if (target.id === "food-b-threshold") {
+        const val = (target as HTMLInputElement).value;
         const updated = updateFoodBThreshold(current, new Decimal((target as HTMLInputElement).value));
-        protocolState.setProtocol(updated);
+        protocolState.setProtocol(updated, `Food B Threshold changed to: ${val}`);
       }
     });
 
@@ -262,12 +269,12 @@ function attachSettingsDelegation() {
       switch (action) {
         case "toggle-food-b-solid":
           if (current.foodB && current.foodB.type !== FoodType.SOLID) {
-            protocolState.setProtocol(toggleFoodType(current, true));
+            protocolState.setProtocol(toggleFoodType(current, true), "Set Food B to Solid");
           }
           break;
         case "toggle-food-b-liquid":
           if (current.foodB && current.foodB.type !== FoodType.LIQUID) {
-            protocolState.setProtocol(toggleFoodType(current, true));
+            protocolState.setProtocol(toggleFoodType(current, true), "Set Food B to Liquid");
           }
           break;
       }
@@ -288,7 +295,7 @@ function attachDosingStrategyDelegation() {
       if (current && strategy && strategy !== current.dosingStrategy) {
         const updated = recalculateProtocol({ ...current, dosingStrategy: strategy });
 
-        protocolState.setProtocol(updated);
+        protocolState.setProtocol(updated, `Dosing Strategy changed to: ${strategy}`);
       }
     });
   }
@@ -316,11 +323,11 @@ function attachTableDelegation() {
     if (target.classList.contains("btn-add-step")) {
       const stepIndex = parseInt(target.getAttribute("data-step")!);
       const updated = addStepAfter(current, stepIndex);
-      protocolState.setProtocol(updated);
+      protocolState.setProtocol(updated, `Added Step after ${stepIndex}`);
     } else if (target.classList.contains("btn-remove-step")) {
       const stepIndex = parseInt(target.getAttribute("data-step")!);
       const updated = removeStep(current, stepIndex);
-      protocolState.setProtocol(updated);
+      protocolState.setProtocol(updated, `Removed Step ${stepIndex}`);
     }
   });
 
@@ -347,15 +354,23 @@ function attachTableDelegation() {
       if (!current) return;
 
       let updated: Protocol = { ...current };
+      let label = "";
+
       if (field === "targetMg") {
+        const oldTargetMg = current.steps[stepIndex - 1].targetMg.toNumber();
         updated = updateStepTargetMg(current, stepIndex, value);
+        label = `Step ${stepIndex} Target: ${oldTargetMg} -> ${value} mg`;
       } else if (field === "dailyAmount") {
+        const oldDailyAmount = current.steps[stepIndex - 1].dailyAmount.toNumber();
         updated = updateStepDailyAmount(current, stepIndex, value);
+        label = `Step ${stepIndex} Daily Amount: ${oldDailyAmount} -> ${value}`;
       } else if (field === "mixFoodAmount") {
+        const oldMixFoodAmount = current.steps[stepIndex - 1].mixFoodAmount?.toNumber();
         updated = updateStepMixFoodAmount(current, stepIndex, value);
+        label = oldMixFoodAmount ? `Step ${stepIndex} Mix Amount: ${oldMixFoodAmount} -> ${value}` : `Step ${stepIndex} Mix Amount: ${value}`;
       }
 
-      protocolState.setProtocol(updated);
+      protocolState.setProtocol(updated, label);
     }, 150); // 150ms debounce
   });
 
