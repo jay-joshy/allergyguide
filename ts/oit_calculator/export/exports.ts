@@ -11,6 +11,8 @@ import { getFoodAStepCount } from "../core/protocol";
 import type { jsPDF } from 'jspdf';
 import type { PDFDocument } from 'pdf-lib';
 import { AsciiTable3 } from "ascii-table3";
+import { protocolState } from "../state/instances";
+import { generateUserHistoryPayload } from "../core/minify";
 
 // Need global commit hash 
 // And current tool version
@@ -290,6 +292,45 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
     doc.text("", 40, 760);
     doc.text(`Always verify calculations before clinical use. Current tool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`, 40, 772);
     doc.setTextColor(0);
+  }
+
+  // --- QR CODE GENERATION ---
+  try {
+    // get payload
+    const history = protocolState.getHistory();
+    const payload = generateUserHistoryPayload(history);
+
+    if (payload) {
+      const { default: QRCode } = await import('qrcode');
+
+      const { deflate } = await import('pako');
+
+      const jsonStr = JSON.stringify(payload);
+      const compressed = deflate(jsonStr);
+      // Convert to Base64 string for QR
+      let binary = '';
+      const len = compressed.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(compressed[i]);
+      }
+      const b64 = btoa(binary);
+
+      // Generate Data URL
+      const qrDataUrl = await QRCode.toDataURL(b64, {
+        errorCorrectionLevel: 'M',
+        width: 600,
+        margin: 1
+      });
+
+      // Embed in Footer first page bottom right
+      doc.setPage(1);
+      doc.addImage(qrDataUrl, 'PNG', 500, 650, 100, 100);
+
+      doc.setFontSize(6);
+      doc.text("Version QR", 515, 775);
+    }
+  } catch (e) {
+    console.warn("Could not generate QR code", e);
   }
 
   // doc is complete
