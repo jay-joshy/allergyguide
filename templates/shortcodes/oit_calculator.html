@@ -1,10 +1,18 @@
+{% set tools = load_data(path="/js/tools_versioning.json") %}
+{% set tool_info = tools.oit_calculator %}
+
 <div class="oit_calculator">
 	<div class="oit-toolbar">
-		<button id="btn-undo" class="btn-secondary" disabled title="Undo (Ctrl+Z)">
-			↶ Undo
+		<div class="oit-version">
+			<span>v{{ tool_info.version }}</span>
+			<span class="separator">•</span>
+			<a href="{{ get_url(path='@/tools/resources/oit_calculator_changelog.md') }}" target="_blank" class="changelog-link">Changelog</a>
+		</div>
+		<button id="btn-undo" class="btn-secondary" disabled title="Undo (Ctrl+z)">
+			↶ Undo (Ctrl-z)
 		</button>
-		<button id="btn-redo" class="btn-secondary" disabled title="Redo (Ctrl+Y)">
-			↷ Redo
+		<button id="btn-redo" class="btn-secondary" disabled title="Redo (Ctrl+y)">
+			↷ Redo (Ctrl-y)
 		</button>
 	</div>
 	<!-- Food Selection and Settings -->
@@ -119,6 +127,4 @@
      style="display: none;"
 ></div>
 <!-- Load main script -->
-{% set tools = load_data(path="/js/tools_versioning.json") %}
-{% set tool_info = tools.oit_calculator %}
 <script type="module" src="/js/{{ tool_info.file }}"></script>

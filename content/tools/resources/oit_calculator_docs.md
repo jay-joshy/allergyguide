@@ -4,7 +4,6 @@ date = 2025-11-23
 draft = false
 
 [extra]
-keywords = "OIT, tool"
 toc = true
 authors = ["Joshua Yu"]
 +++

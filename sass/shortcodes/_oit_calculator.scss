@@ -1,4 +1,3 @@
-// SET UP COLOURS FOR DARK AND LIGHT MODE
 :root {
   /* Dark mode colors */
   --oit-bg: #1e1e1e;
@@ -82,12 +81,26 @@
     box-sizing: border-box;
   }
 
-  // undo redo
+  // undo redo and versioning
   .oit-toolbar {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+    margin-top: -0.5em;
+    align-items: center;
+
+    .oit-version {
+      margin-right: auto;
+      font-size: 0.85rem;
+      color: var(--oit-text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .separator {
+        opacity: 0.5;
+      }
+    }
   }
 
   // Settings Container
