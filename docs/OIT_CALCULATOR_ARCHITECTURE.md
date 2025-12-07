@@ -64,3 +64,6 @@ oit_calculator/
 - Unit testing flush out
 - Undo redo (helpful for user + also tracking how protocol was made for debugging)
 - UI refactor
+- New warnings:
+  - duplicate steps food X -> food X
+- ? refresh button
