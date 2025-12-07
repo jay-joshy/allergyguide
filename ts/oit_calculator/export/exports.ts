@@ -318,13 +318,13 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
       // Generate Data URL
       const qrDataUrl = await QRCode.toDataURL(b64, {
         errorCorrectionLevel: 'M',
-        width: 600,
+        width: 800,
         margin: 1
       });
 
       // Embed in Footer first page bottom right
       doc.setPage(1);
-      doc.addImage(qrDataUrl, 'PNG', 500, 770, 100, 100);
+      doc.addImage(qrDataUrl, 'PNG', 520, 10, 80, 80);
 
       doc.setFontSize(6);
     }

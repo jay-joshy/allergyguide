@@ -99,3 +99,101 @@ export function generateUserHistoryPayload(history: HistoryItem[]): UserHistoryP
     h: history.map(h => h.label) // Strip timestamps/objects, keep text log
   };
 }
+
+/**
+ * Decodes a Base64 encoded QR string into a human-readable JSON object
+ * @param b64String from QR code
+ * @returns fully expanded JavaScript object with readable keys and Enums resolved
+ */
+export async function decodeUserHistoryPayload(b64String: string): Promise<any> {
+  try {
+    const { inflate } = await import('pako');
+
+    // Decode Base64 to Binary String
+    const binaryString = atob(b64String);
+
+    // Convert Binary String to Uint8Array
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    // Decompress (Inflate)
+    // Note: 'to: "string"' forces pako to return a string instead of a Uint8Array
+    const jsonStr = inflate(bytes, { to: 'string' });
+
+    // Parse JSON (This gives us the Minified structure)
+    const minified = JSON.parse(jsonStr);
+
+    // Expand Minified Keys to Human Readable Names
+    return expandPayload(minified);
+
+  } catch (error) {
+    console.error("Failed to decode payload:", error);
+    return null;
+  }
+}
+
+// --- Helper: Expansion Logic ---
+
+function expandPayload(m: any): any {
+  return {
+    version: m.v,
+    timestamp: new Date(m.ts).toISOString(), // Convert epoch to Readable Date
+    protocol: expandProtocol(m.p),
+    historyLog: m.h
+  };
+}
+
+function expandProtocol(p: any): any {
+  return {
+    dosingStrategy: p.ds === 0 ? "STANDARD" : "SLOW",
+    foodAStrategy: mapFoodAStrategy(p.fas),
+    diThreshold: p.dt,
+    foodBThreshold: p.fbt, // undefined if not present
+    foodA: expandFood(p.fa),
+    foodB: p.fb ? expandFood(p.fb) : undefined,
+    steps: p.s.map(expandStep),
+  };
+}
+
+function expandFood(f: any): any {
+  return {
+    name: f.n,
+    type: f.t === 0 ? "SOLID" : "LIQUID",
+    gramsInServing: f.p,
+    servingSize: f.s,
+    proteinConcentrationMgPerUnit: (f.p * 1000) / f.s
+  };
+}
+
+function expandStep(s: any): any {
+  const method = s.m === "D" ? "DIRECT" : "DILUTE";
+
+  const step: any = {
+    stepIndex: s.i,
+    targetMg: s.t,
+    method: method,
+    dailyAmount: s.d,
+    foodSource: s.f === 0 ? "Food A" : "Food B"
+  };
+
+  // Add dilution specifics only if they exist
+  if (method === "DILUTE") {
+    step.mixFoodAmount = s.mf;
+    step.mixWaterAmount = s.mw;
+    step.servings = s.sv;
+  }
+
+  return step;
+}
+
+function mapFoodAStrategy(val: number): string {
+  switch (val) {
+    case 0: return "DILUTE_INITIAL";
+    case 1: return "DILUTE_ALL";
+    case 2: return "DILUTE_NONE";
+    default: return "UNKNOWN";
+  }
+}

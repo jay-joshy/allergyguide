@@ -46,6 +46,7 @@ export function initGlobalEvents(): void {
   attachDosingStrategyDelegation();
   attachCustomNoteDelegation();
   attachUndoRedoDelegation();
+  attachDebugDelegation();
 
   // Misc global listeners
   const clearFoodBBtn = document.getElementById("clear-food-b") as HTMLButtonElement;
@@ -382,4 +383,34 @@ function attachTableDelegation() {
       }
     }
   });
+}
+
+function attachDebugDelegation() {
+  const debugBtn = document.getElementById("debug-audit-btn");
+  const debugInput = document.getElementById("debug-audit-input") as HTMLInputElement;
+
+  if (debugBtn && debugInput) {
+    debugBtn.addEventListener("click", async () => {
+      const val = debugInput.value.trim();
+      if (!val) {
+        console.warn("No string provided");
+        alert("Please paste a Base64 string first.");
+        return;
+      }
+      try {
+        // Dynamically import to ensure we get the fresh module and don't bloat init if not needed
+        const { decodeUserHistoryPayload } = await import("../core/minify");
+
+        console.group("DECODED PAYLOAD");
+        console.log("Input:", val.substring(0, 20) + "...");
+
+        const result = await decodeUserHistoryPayload(val);
+        console.log("Result:", result);
+        console.groupEnd();
+      } catch (e) {
+        console.error("Decode failed", e);
+        alert("Decode failed. Check console for error details.");
+      }
+    });
+  }
 }
