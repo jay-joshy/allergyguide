@@ -12,6 +12,8 @@ authors = ["Joshua Yu"]
 
 ### Added
 
+- UserHistory system: Embed QR code in export PDF containing a log of actions taken to make protocol
+
 ### Changed
 
 ### Deprecated
