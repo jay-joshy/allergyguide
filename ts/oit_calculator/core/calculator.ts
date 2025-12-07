@@ -30,7 +30,7 @@ import {
 } from "../constants"
 
 /**
- * Compute feasible dilution candidates for a target protein dose.
+ * Compute feasible dilution candidates for a target protein dose
  *
  * For a target protein P (mg), searches across candidate mix sizes and daily amounts to produce practical dilution recipes that:
  * - respect tool resolution (minMeasurableMass/minMeasurableVolume)
@@ -39,7 +39,7 @@ import {
  * - achieve protein within relative tolerance PROTEIN_TOLERANCE
  * - for SOLID foods, prefer low w/v concentration based on MAX_SOLID_CONCENTRATION
  *
- * Liquid-in-liquid assumes additive volumes; solid-in-liquid assumes solid volume is negligible (validated separately via warnings).
+ * Liquid-in-liquid assumes additive volumes; solid-in-liquid assumes solid volume is negligible (validated separately via warnings) if w/v < certain amount
  *
  * Returned candidates are sorted by:
  * - whether they meet low-concentration preference (SOLID only), then
@@ -180,10 +180,10 @@ export function findDilutionCandidates(
 }
 
 /**
- * For a given target protein in a step, calculate the remaining numbers to formally define a step if possible.
+ * For a given target protein in a step, calculate the remaining numbers to formally define a step if possible
  *
- * When diluting, picks the first (best) candidate from findDilutionCandidates.
- * Returns null only when a dilution is required but no feasible candidate exists.
+ * When diluting, picks the first (best) candidate from findDilutionCandidates
+ * Returns null only when a dilution is required but no feasible candidate exists
  *
  * Side effects: none (pure)
  *
@@ -246,14 +246,14 @@ export function generateStepForTarget(
 }
 
 /**
- * Build a default protocol for Food A using the default dosing strategy.
+ * Build a default protocol for Food A using the default dosing strategy
  *
  * Uses:
  * - dosingStrategy: STANDARD
  * - foodAStrategy: DILUTE_INITIAL
  * - diThreshold: DEFAULT_CONFIG.DEFAULT_FOOD_A_DILUTION_THRESHOLD
  *
- * Steps are generated with generateStepForTarget. If a dilution is required but not feasible for a target, a DIRECT fallback step is emitted so the sequence remains continuous (validation will flag any issues).
+ * Steps are generated with generateStepForTarget. If a dilution is required but not feasible for a target, a DIRECT fallback step is emitted so the sequence remains continuous (validation will flag any issues)
  *
  * @param food Food A
  * @param config Protocol configuration and constraints
