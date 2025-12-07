@@ -13,7 +13,9 @@ import type { PDFDocument } from 'pdf-lib';
 import { AsciiTable3 } from "ascii-table3";
 
 // Need global commit hash 
+// And current tool version
 declare const __COMMIT_HASH__: string;
+declare const __VERSION_OIT_CALCULATOR__: string;
 
 /**
  * Generate a printable PDF of the current protocol using jsPDF + autoTable.
@@ -286,7 +288,7 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
     doc.setFont("helvetica", "italic");
     doc.setTextColor(100);
     doc.text("", 40, 760);
-    doc.text(`Always verify calculations before clinical use. Current tool version-hash: ${__COMMIT_HASH__}`, 40, 772);
+    doc.text(`Always verify calculations before clinical use. Current tool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`, 40, 772);
     doc.setTextColor(0);
   }
 
@@ -371,7 +373,7 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
 export function exportASCII(protocol: Protocol | null, customNote: string): void {
   if (!protocol) return
 
-  let text = "";
+  let text = "Tool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`\n";
   let foodAInfo = "";
   let foodBInfo = "";
 
