@@ -13,10 +13,10 @@ const defines = [
 // ENTRY POINTS
 // Format: "OutputFileName=InputSourceFile"
 // Creates static/js/{OutputFileName}.js
-// example for single TS file: `tabs=static/ts/tabs.ts`
-// example for TS folder proj: `oit_calculator=static/ts/oit_calculator/main.ts`
+// example for single TS file: `tabs=ts/tabs.ts`
+// example for TS folder proj: `oit_calculator=ts/oit_calculator/main.ts`
 const entryPoints = [
-  "oit_calculator=static/ts/oit_calculator/main.ts",
+  "oit_calculator=ts/oit_calculator/main.ts",
 ].join(' ');
 
 // esbuild command 
