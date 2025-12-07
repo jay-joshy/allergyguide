@@ -158,10 +158,32 @@ export function addFoodBToProtocol(
 ): Protocol {
   const newProtocol = { ...oldProtocol };
 
+  // PRE-PROCESS: Remove "Duplicate" transition artifacts from previous Food B (ie if another Food B is selected)
+  // If Step i (Food A) and Step i+1 (Food B) have same target, ignore Step i+1 (the duplicate) to prevent generating "stuttering" steps when switching Food B multiple times
+  const sourceSteps = newProtocol.steps;
+  const cleanedSourceSteps: Step[] = [];
+
+  for (let i = 0; i < sourceSteps.length; i++) {
+    const current = sourceSteps[i];
+    const next = sourceSteps[i + 1];
+
+    // if previous transition overlap exists (A -> B and same targetMg)
+    // skip B's step
+    if (next &&
+      current.food === 'A' &&
+      next.food === 'B' &&
+      current.targetMg.equals(next.targetMg)) {
+      cleanedSourceSteps.push(current);
+      i++;
+    } else {
+      cleanedSourceSteps.push(current);
+    }
+  }
+
   // Normalize all existing steps to be valid Food A steps
   // => if the transition point moves "later" (ie. another food B is chosen), steps before it which might have been Food B previously are correctly recalculated as Food A using `generateStepForTarget`
   const normalizedSteps: Step[] = [];
-  for (const existingStep of newProtocol.steps) {
+  for (const existingStep of cleanedSourceSteps) {
     const step = generateStepForTarget(
       existingStep.targetMg,
       existingStep.stepIndex,
