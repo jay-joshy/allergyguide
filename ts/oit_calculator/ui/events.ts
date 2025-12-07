@@ -64,6 +64,9 @@ function attachUndoRedoDelegation() {
 
   // keyboard shortcuts
   document.addEventListener('keydown', (e) => {
+    // Allow native undo/redo for the Custom Note textarea
+    if ((e.target as HTMLElement).tagName === 'TEXTAREA') return;
+
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
       e.preventDefault();
       e.shiftKey ? protocolState.redo() : protocolState.undo();
