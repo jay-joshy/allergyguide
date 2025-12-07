@@ -30,7 +30,7 @@ import {
 
 
 /**
- * Count the number of Food A steps in a protocol.
+ * Count the number of Food A steps in a protocol
  *
  * @param protocol Protocol to inspect
  * @returns Number of steps that belong to Food A
@@ -48,8 +48,12 @@ export function getFoodAStepCount(protocol: Protocol): number {
 }
 
 /**
- * Pure function to update properties of Food A or Food B.
- * @returns Protocol 
+ * Pure function to update properties of Food A or Food B
+ *
+ * @param protocol Protocol to update
+ * @param food 'A' or 'B' 
+ * @param updates Partial Food object with properties to update
+ * @returns New Protocol object with updated food details
  */
 export function updateFoodDetails(
   protocol: Protocol,
@@ -76,8 +80,12 @@ export function updateFoodDetails(
 }
 
 /**
- * Updates Food B details
- * if a threshold exists: recalculate the transition point
+ * Updates Food B details and recalculates the protocol
+ * If a threshold exists, recalculate the transition point because a change in Protein/Serving size changes where the transition happens
+ *
+ * @param protocol Protocol to update
+ * @param updates Partial Food object with properties to update for Food B
+ * @returns New Protocol object with updated Food B and recalculated steps
  */
 export function updateFoodBAndRecalculate(
   protocol: Protocol,
@@ -106,7 +114,11 @@ export function updateFoodBAndRecalculate(
 }
 
 /**
- * Updates the Food B transition threshold and recalculates the step sequence.
+ * Updates the Food B transition threshold and recalculates the step sequence
+ *
+ * @param protocol Protocol to update
+ * @param newAmount New threshold amount
+ * @returns New Protocol object with updated threshold and recalculated steps
  */
 export function updateFoodBThreshold(
   protocol: Protocol,
@@ -136,20 +148,19 @@ export function updateFoodBThreshold(
 }
 
 /**
- * Inject a Food B transition into an existing protocol.
+ * Inject a Food B transition into an existing protocol
  *
  * Finds the first step where targetMg ≥ (threshold.amount × foodB.mgPerUnit) and transitions at that point by:
  * - duplicating the transition target as the first Food B step
  * - converting all subsequent targets to Food B DIRECT steps
  * - reindexing steps
  *
- * Protocol.foodB and .foodBThreshold are assigned even if no transition point is found; the validation system will surface a warning in that case.
+ * Protocol.foodB and .foodBThreshold are assigned even if no transition point is found; the validation system will surface a warning in that case
  *
- *
- * @param oldProtocol Protocol - a new protocol with the modifications based on this will be done
+ * @param oldProtocol Protocol to modify (treated immutably)
  * @param foodB Food B definition
  * @param threshold Threshold to begin Food B, unit-specific amount (g/ml)
- * @returns Protocol - the new protocol with food B steps added
+ * @returns New Protocol with Food B steps added
  */
 export function addFoodBToProtocol(
   oldProtocol: Protocol,
@@ -290,12 +301,12 @@ export function addFoodBToProtocol(
 
 
 /**
- * Recompute the entire protocol step sequence from current high-level settings.
+ * Recompute the entire protocol step sequence from current high-level settings
  *
- * Rebuilds Food A steps from the selected dosing strategy and Food A strategy, then re-applies Food B transition if present. Triggers UI updates.
+ * Rebuilds Food A steps from the selected dosing strategy and Food A strategy, then re-applies Food B transition if present. Triggers UI updates
  *
- * @param oldProtocol Protocol - old protocol to recalculate based on its config
- * @returns Protocol
+ * @param oldProtocol Protocol to recalculate based on its config
+ * @returns New Protocol with recalculated steps
  */
 export function recalculateProtocol(oldProtocol: Protocol): Protocol {
 
@@ -334,12 +345,12 @@ export function recalculateProtocol(oldProtocol: Protocol): Protocol {
 }
 
 /**
- * Recompute per-step methods (DIRECT vs DILUTE) without changing targets/foods.
+ * Recompute per-step methods (DIRECT vs DILUTE) without changing targets/foods
  *
- * For Food B steps, always enforce DILUTE_NONE. For Food A steps, use the current Food A strategy and diThreshold. 
+ * For Food B steps, always enforce DILUTE_NONE. For Food A steps, use the current Food A strategy and diThreshold
  *
- * @param oldProtocol
- * @returns Protocol
+ * @param oldProtocol Protocol to update
+ * @returns New Protocol with updated step methods
  */
 export function recalculateStepMethods(oldProtocol: Protocol): Protocol {
   const newProtocol = { ...oldProtocol };
@@ -379,16 +390,16 @@ export function recalculateStepMethods(oldProtocol: Protocol): Protocol {
 }
 
 /**
- * Handle user change to a step's target protein (mg).
+ * Handle user change to a step's target protein (mg)
  *
  * Updates dependent fields:
  * - DIRECT: recompute dailyAmount = targetMg / mgPerUnit
  * - DILUTE: recompute servings and mixWaterAmount to preserve dailyAmount and mixFoodAmount
  *
- * @param oldProtocol
+ * @param oldProtocol Protocol to update
  * @param stepIndex 1-based index of the step to update
  * @param newTargetMg New target protein (mg)
- * @returns Protocol
+ * @returns New Protocol with updated step, or original protocol if validation fails
  */
 export function updateStepTargetMg(oldProtocol: Protocol, stepIndex: number, newTargetMg: any): Protocol {
   if (!oldProtocol) return oldProtocol;
@@ -437,17 +448,16 @@ export function updateStepTargetMg(oldProtocol: Protocol, stepIndex: number, new
 }
 
 /**
- * Handle user change to a step's daily amount (g/ml).
+ * Handle user change to a step's daily amount (g/ml)
  *
  * Updates dependent fields:
  * - DIRECT: recompute targetMg = dailyAmount × mgPerUnit
  * - DILUTE: recompute servings and mixWaterAmount to preserve targetMg and mixFoodAmount
  *
- *
- * @param oldProtocol Protocol
+ * @param oldProtocol Protocol to update
  * @param stepIndex 1-based index of the step to update
  * @param newDailyAmount New amount (g or ml), number-like
- * @returns Protocol
+ * @returns New Protocol with updated step
  */
 export function updateStepDailyAmount(oldProtocol: Protocol, stepIndex: number, newDailyAmount: any): Protocol {
   if (!oldProtocol) return oldProtocol;
@@ -487,14 +497,14 @@ export function updateStepDailyAmount(oldProtocol: Protocol, stepIndex: number, 
 }
 
 /**
- * Handle user change to a dilution step's mix food amount.
+ * Handle user change to a dilution step's mix food amount
  *
- * Updates dependent fields (servings and mixWaterAmount) while preserving targetMg and dailyAmount.
+ * Updates dependent fields (servings and mixWaterAmount) while preserving targetMg and dailyAmount
  *
- * @param oldProtocol Protocol
+ * @param oldProtocol Protocol to update
  * @param stepIndex 1-based index of the dilution step
  * @param newMixFoodAmount New amount of food to include in mix (g or ml), number-like
- * @returns Protocol
+ * @returns New Protocol with updated step
  */
 export function updateStepMixFoodAmount(
   oldProtocol: Protocol,
@@ -534,13 +544,13 @@ export function updateStepMixFoodAmount(
 }
 
 /**
- * Duplicate a step and insert it immediately after the original.
+ * Duplicate a step and insert it immediately after the original
  *
- * Copies all step fields; for DILUTE steps also copies mix amounts and servings. Reindexes all subsequent steps.  
+ * Copies all step fields; for DILUTE steps also copies mix amounts and servings. Reindexes all subsequent steps
  *
- * @param oldProtocol Protocol
+ * @param oldProtocol Protocol to update
  * @param stepIndex 1-based index after which to insert the new step
- * @returns Protocol
+ * @returns New Protocol with added step
  */
 export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol {
   if (!oldProtocol) return oldProtocol;
@@ -578,13 +588,13 @@ export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol
 }
 
 /**
- * Remove a step from the protocol and reindex the remaining steps.
+ * Remove a step from the protocol and reindex the remaining steps
  *
- * Does nothing if there is only one step. Triggers UI update.
+ * Does nothing if there is only one step
  *
- * @param oldProtocol Protocol
+ * @param oldProtocol Protocol to update
  * @param stepIndex 1-based index of the step to remove
- * @returns Protocol
+ * @returns New Protocol with step removed
  */
 export function removeStep(oldProtocol: Protocol, stepIndex: number): Protocol {
   if (!oldProtocol) return oldProtocol;
@@ -604,7 +614,7 @@ export function removeStep(oldProtocol: Protocol, stepIndex: number): Protocol {
 }
 
 /**
- * Toggle the form (SOLID ⇄ LIQUID) for Food A or Food B, updating all steps.
+ * Toggle the form (SOLID ⇄ LIQUID) for Food A or Food B, updating all steps
  *
  * For DILUTE steps:
  * - ensures dailyAmountUnit is "ml"
@@ -613,9 +623,9 @@ export function removeStep(oldProtocol: Protocol, stepIndex: number): Protocol {
  * For DIRECT steps:
  * - adjusts dailyAmountUnit to "g" (SOLID) or "ml" (LIQUID)
  *
- * @param oldProtocol Protocol
+ * @param oldProtocol Protocol to update
  * @param isFoodB When true, toggles Food B; otherwise toggles Food A
- * @returns Protocol
+ * @returns New Protocol with updated food type and steps
  */
 export function toggleFoodType(oldProtocol: Protocol, isFoodB: boolean): Protocol {
   if (!oldProtocol) return oldProtocol;
