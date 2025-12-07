@@ -91,10 +91,7 @@ function attachCustomNoteDelegation() {
 
         noteDebounceTimer = window.setTimeout(() => {
           const rawValue = target.value;
-          // Sanitize the input by creating a temporary element
-          const temp = document.createElement("div");
-          temp.textContent = rawValue;
-          protocolState.setCustomNote(temp.textContent || "", { skipRender: true }); // skip render true so user can type without the whole thing triggering rerender
+          protocolState.setCustomNote(rawValue, { skipRender: true });
         }, 300);
       }
     });
