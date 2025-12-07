@@ -324,10 +324,9 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
 
       // Embed in Footer first page bottom right
       doc.setPage(1);
-      doc.addImage(qrDataUrl, 'PNG', 500, 650, 100, 100);
+      doc.addImage(qrDataUrl, 'PNG', 500, 770, 100, 100);
 
       doc.setFontSize(6);
-      doc.text("Version QR", 515, 775);
     }
   } catch (e) {
     console.warn("Could not generate QR code", e);
