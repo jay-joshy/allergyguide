@@ -37,6 +37,16 @@ interface StepRowSpec {
  */
 export type RowSpec = HeaderRowSpec | StepRowSpec;
 
+
+export function updateUndoRedoButtons(canUndo: boolean, canRedo: boolean): void {
+  const undoBtn = document.getElementById("btn-undo") as HTMLButtonElement;
+  const redoBtn = document.getElementById("btn-redo") as HTMLButtonElement;
+
+  // Simple toggle button possible based on state
+  if (undoBtn) undoBtn.disabled = !canUndo;
+  if (redoBtn) redoBtn.disabled = !canRedo;
+}
+
 /**
  * Make dosing container and warnings container visible (after init of calc)
  *

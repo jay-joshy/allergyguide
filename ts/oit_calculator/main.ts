@@ -23,7 +23,8 @@ import {
   renderDosingStrategy,
   renderProtocolTable,
   updateWarnings,
-  updateFoodBDisabledState
+  updateFoodBDisabledState,
+  updateUndoRedoButtons
 } from "./ui/renderers";
 import { initSearchEvents } from "./ui/searchUI";
 import { attachClickwrapEventListeners } from "./ui/modals";
@@ -71,6 +72,7 @@ async function initializeCalculator(): Promise<void> {
       renderProtocolTable(protocol, note); // renders table (uses patching)
       updateWarnings(protocol, appState.warningsPageURL);
       updateFoodBDisabledState(protocol);
+      updateUndoRedoButtons(protocolState.getCanUndo(), protocolState.getCanRedo());
     }
   });
 

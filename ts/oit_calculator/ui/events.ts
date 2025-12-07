@@ -33,6 +33,8 @@ import { clearFoodB } from "./actions";
 // Debounce timers
 let inputDebounceTimer: number | null = null;
 let noteDebounceTimer: number | null = null;
+let foodADebounceTimer: number | null = null;
+let foodBDebounceTimer: number | null = null;
 
 /**
  * Initialize global event listeners using delegation
@@ -43,12 +45,33 @@ export function initGlobalEvents(): void {
   attachTableDelegation();
   attachDosingStrategyDelegation();
   attachCustomNoteDelegation();
+  attachUndoRedoDelegation();
 
   // Misc global listeners
   const clearFoodBBtn = document.getElementById("clear-food-b") as HTMLButtonElement;
   if (clearFoodBBtn) {
     clearFoodBBtn.addEventListener("click", clearFoodB);
   }
+}
+
+function attachUndoRedoDelegation() {
+  const undoBtn = document.getElementById("btn-undo");
+  const redoBtn = document.getElementById("btn-redo");
+
+  // button wiring
+  if (undoBtn) undoBtn.addEventListener("click", () => protocolState.undo());
+  if (redoBtn) redoBtn.addEventListener("click", () => protocolState.redo());
+
+  // keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      e.shiftKey ? protocolState.redo() : protocolState.undo();
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+      e.preventDefault();
+      protocolState.redo();
+    }
+  });
 }
 
 // TODO! bottom section is mix of both export and custom note... decouple?
@@ -81,14 +104,19 @@ function attachSettingsDelegation() {
   if (foodAContainer) {
     foodAContainer.addEventListener("input", (e) => {
       const target = e.target as HTMLElement;
+
       if (target.id === "food-a-name") {
-        const current = protocolState.getProtocol();
-        if (current) {
-          const updated = updateFoodDetails(current, 'A', {
-            name: (target as HTMLInputElement).value
-          });
-          protocolState.setProtocol(updated);
-        }
+        // debounce
+        if (foodADebounceTimer) clearTimeout(foodADebounceTimer);
+        foodADebounceTimer = window.setTimeout(() => {
+          const current = protocolState.getProtocol();
+          if (current) {
+            const updated = updateFoodDetails(current, 'A', {
+              name: (target as HTMLInputElement).value
+            });
+            protocolState.setProtocol(updated);
+          }
+        }, 300);
       }
     });
 
@@ -167,13 +195,17 @@ function attachSettingsDelegation() {
     foodBContainer.addEventListener("input", (e) => {
       const target = e.target as HTMLElement;
       if (target.id === "food-b-name") {
-        const current = protocolState.getProtocol();
-        if (current && current.foodB) {
-          const updated = updateFoodDetails(current, "B", {
-            name: (target as HTMLInputElement).value
-          });
-          protocolState.setProtocol(updated);
-        }
+        // debounce
+        if (foodBDebounceTimer) clearTimeout(foodBDebounceTimer);
+        foodBDebounceTimer = window.setTimeout(() => {
+          const current = protocolState.getProtocol();
+          if (current && current.foodB) {
+            const updated = updateFoodDetails(current, "B", {
+              name: (target as HTMLInputElement).value
+            });
+            protocolState.setProtocol(updated);
+          }
+        }, 300);
       }
     });
 
