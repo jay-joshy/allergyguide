@@ -119,4 +119,6 @@
      style="display: none;"
 ></div>
 <!-- Load main script -->
-<script type="module" src="/js/oit_calculator.js"></script>
+{% set tools = load_data(path="/js/tools_versioning.json") %}
+{% set tool_info = tools.oit_calculator %}
+<script type="module" src="/js/{{ tool_info.file }}"></script>
