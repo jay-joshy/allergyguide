@@ -2,6 +2,7 @@
  * @module
  *
  * Protocol modifying functions
+ * SHOULD not modify protocols passed in as arguements
  *
  */
 import Decimal from "decimal.js";
@@ -429,15 +430,18 @@ export function updateStepTargetMg(oldProtocol: Protocol, stepIndex: number, new
 export function updateStepDailyAmount(oldProtocol: Protocol, stepIndex: number, newDailyAmount: any): Protocol {
   if (!oldProtocol) return oldProtocol;
 
-  const newProtocol = { ...oldProtocol };
+  // Shallow copy steps array
+  const newSteps = [...oldProtocol.steps];
+  const originalStep = newSteps[stepIndex - 1];
+  if (!originalStep) return oldProtocol;
 
-  const step = newProtocol.steps[stepIndex - 1];
-  if (!step) return newProtocol;
+  // Copy step
+  const step = { ...originalStep };
 
   step.dailyAmount = new Decimal(newDailyAmount);
 
   const isStepFoodB = step.food === "B";
-  const food = isStepFoodB ? newProtocol.foodB! : newProtocol.foodA;
+  const food = isStepFoodB ? oldProtocol.foodB! : oldProtocol.foodA;
 
   if (step.method === Method.DIRECT) {
     // Recalculate target protein
@@ -456,7 +460,8 @@ export function updateStepDailyAmount(oldProtocol: Protocol, stepIndex: number, 
     }
   }
 
-  return newProtocol;
+  newSteps[stepIndex - 1] = step;
+  return { ...oldProtocol, steps: newSteps };
 }
 
 /**
@@ -477,15 +482,18 @@ export function updateStepMixFoodAmount(
 ): Protocol {
   if (!oldProtocol) return oldProtocol;
 
-  const newProtocol = { ...oldProtocol };
+  // Shallow copy steps array
+  const newSteps = [...oldProtocol.steps];
+  const originalStep = newSteps[stepIndex - 1];
+  if (!originalStep || originalStep.method !== Method.DILUTE) return oldProtocol;
 
-  const step = newProtocol.steps[stepIndex - 1];
-  if (!step || step.method !== Method.DILUTE) return newProtocol;
+  // Copy step
+  const step = { ...originalStep };
 
   step.mixFoodAmount = new Decimal(newMixFoodAmount);
 
   const isStepFoodB = step.food === "B";
-  const food = isStepFoodB ? newProtocol.foodB! : newProtocol.foodA;
+  const food = isStepFoodB ? oldProtocol.foodB! : oldProtocol.foodA;
 
   // Recalculate water to keep P and dailyAmount unchanged
   const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
@@ -499,7 +507,8 @@ export function updateStepMixFoodAmount(
     step.mixWaterAmount = mixTotalVolume.minus(step.mixFoodAmount);
   }
 
-  return newProtocol;
+  newSteps[stepIndex - 1] = step;
+  return { ...oldProtocol, steps: newSteps };
 }
 
 /**
@@ -514,10 +523,10 @@ export function updateStepMixFoodAmount(
 export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol {
   if (!oldProtocol) return oldProtocol;
 
-  const newProtocol = { ...oldProtocol };
-
-  const step = newProtocol.steps[stepIndex - 1];
-  if (!step) return newProtocol;
+  // Shallow copy steps array
+  let newSteps = [...oldProtocol.steps];
+  const step = newSteps[stepIndex - 1];
+  if (!step) return oldProtocol;
 
   // Duplicate the step
   const newStep: Step = {
@@ -535,14 +544,15 @@ export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol
     newStep.servings = step.servings;
   }
 
-  newProtocol.steps.splice(stepIndex, 0, newStep);
+  newSteps.splice(stepIndex, 0, newStep);
 
-  // Reindex
-  for (let i = 0; i < newProtocol.steps.length; i++) {
-    newProtocol.steps[i].stepIndex = i + 1;
-  }
+  // reindex and copy all steps to avoid mutating originals
+  newSteps = newSteps.map((s, i) => ({
+    ...s,
+    stepIndex: i + 1
+  }));
 
-  return newProtocol;
+  return { ...oldProtocol, steps: newSteps };
 }
 
 /**
@@ -557,18 +567,18 @@ export function addStepAfter(oldProtocol: Protocol, stepIndex: number): Protocol
 export function removeStep(oldProtocol: Protocol, stepIndex: number): Protocol {
   if (!oldProtocol) return oldProtocol;
 
-  const newProtocol = { ...oldProtocol };
+  if (oldProtocol.steps.length <= 1) return oldProtocol;
 
-  if (newProtocol.steps.length <= 1) return newProtocol;
+  // Filter out the step to remove (creates new array)
+  let newSteps = oldProtocol.steps.filter((_, i) => i !== stepIndex - 1);
 
-  newProtocol.steps.splice(stepIndex - 1, 1);
+  // Reindex and copy all steps
+  newSteps = newSteps.map((s, i) => ({
+    ...s,
+    stepIndex: i + 1
+  }));
 
-  // Reindex
-  for (let i = 0; i < newProtocol.steps.length; i++) {
-    newProtocol.steps[i].stepIndex = i + 1;
-  }
-
-  return newProtocol;
+  return { ...oldProtocol, steps: newSteps };
 }
 
 /**
@@ -591,22 +601,35 @@ export function toggleFoodType(oldProtocol: Protocol, isFoodB: boolean): Protoco
   const newProtocol = { ...oldProtocol };
 
   const food = isFoodB ? newProtocol.foodB! : newProtocol.foodA;
-  food.type = food.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
+
+  // Copy food object
+  const newFood = { ...food };
+  newFood.type = newFood.type === FoodType.SOLID ? FoodType.LIQUID : FoodType.SOLID;
+
+  if (isFoodB) {
+    newProtocol.foodB = newFood;
+  } else {
+    newProtocol.foodA = newFood;
+  }
 
   // Convert all relevant steps
-  for (const step of newProtocol.steps) {
-    const stepIsFoodB = step.food === "B";
-    if (stepIsFoodB !== isFoodB) continue;
+  // Map creates new array
+  newProtocol.steps = newProtocol.steps.map(originalStep => {
+    const stepIsFoodB = originalStep.food === "B";
+    if (stepIsFoodB !== isFoodB) return originalStep;
+
+    const step = { ...originalStep };
+
     if (step.method === Method.DILUTE) {
       // Convert mixFoodAmount assuming 1g ≈ 1ml (value stays the same)
       // Ensure dailyAmountUnit is always "ml" for dilutions
       step.dailyAmountUnit = "ml";
 
       // Recalculate servings and water based on new food type
-      const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
+      const totalMixProtein = step.mixFoodAmount!.times(newFood.getMgPerUnit());
       step.servings = totalMixProtein.dividedBy(step.targetMg);
 
-      if (food.type === FoodType.SOLID) {
+      if (newFood.type === FoodType.SOLID) {
         // Switched to solid (was liquid)
         // For solid: water = total volume (solid volume negligible)
         const mixTotalVolume = step.dailyAmount.times(step.servings);
@@ -620,11 +643,10 @@ export function toggleFoodType(oldProtocol: Protocol, isFoodB: boolean): Protoco
       }
     } else {
       // DIRECT - just update unit
-      step.dailyAmountUnit = food.type === FoodType.SOLID ? "g" : "ml";
+      step.dailyAmountUnit = newFood.type === FoodType.SOLID ? "g" : "ml";
     }
-  }
+    return step;
+  });
 
   return newProtocol;
 }
-
-
