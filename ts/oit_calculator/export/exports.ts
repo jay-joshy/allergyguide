@@ -373,7 +373,7 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
 export function exportASCII(protocol: Protocol | null, customNote: string): void {
   if (!protocol) return
 
-  let text = "Tool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`\n";
+  let text = "";
   let foodAInfo = "";
   let foodBInfo = "";
 
@@ -468,6 +468,8 @@ export function exportASCII(protocol: Protocol | null, customNote: string): void
     text += "========================================\n";
     text += `${customNote.trim()}`;
   }
+
+  text += `\n---\nTool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}\n`
 
   // Copy to clipboard
   navigator.clipboard.writeText(text).catch(() => {
