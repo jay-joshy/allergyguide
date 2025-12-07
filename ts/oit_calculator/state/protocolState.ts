@@ -2,6 +2,10 @@ import type { Protocol } from "../types";
 
 type Listener = (protocol: Protocol | null, note: string) => void;
 
+/**
+ * State manager for OIT Calculator
+ * Holds central state (Protocol and Custom Notes), manages Undo/Redo history stack, handles event subscriptions for UI updates
+ */
 export class ProtocolState {
   // FOR UNDO/REDO
   private MAX_HISTORY = 100;
@@ -15,11 +19,24 @@ export class ProtocolState {
   private customNote: string = "";
   private listeners: Listener[] = [];
 
+  /**
+   * @returns current Protocol object or null if not yet initialized
+   */
   public getProtocol(): Protocol | null { return this.protocol; }
+
+  /**
+   * @returns custom note string
+   */
   public getCustomNote(): string { return this.customNote; }
 
-  // for UI buttons expose ability to redo/undo
+  /**
+   * @returns true if there is history available to undo.
+   */
   public getCanUndo(): boolean { return this.history.length > 0; }
+
+  /**
+   * @returns `true` if there are future states available to redo
+   */
   public getCanRedo(): boolean { return this.future.length > 0; }
 
   /**
@@ -63,7 +80,14 @@ export class ProtocolState {
     }
   }
 
-  // Custom Note NOT part of the memento pattern
+  /**
+   * Updates the custom note content
+   * Note custom note is tracked separately from the Protocol object; excluded from undo/redo history 
+   *
+   * @param note - new text string for the note.
+   * @param options - Configuration options
+   * @param options.skipRender - If `true`, listeners will NOT be notified of this change 
+   */
   public setCustomNote(note: string, options?: { skipRender: boolean }) {
     this.customNote = note;
     if (!options?.skipRender) this.notify();

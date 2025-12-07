@@ -36,8 +36,9 @@ import {
  * - invalid/edge concentrations, servings, volumes, mismatch to tolerance
  * - measurement resolution impracticalities
  * - transition feasibility for Food B
+ * - others...
  *
- * No exceptions are thrown; issues are reported via structured Warning items.
+ * No exceptions are thrown; issues are reported via structured Warning items
  *
  * @remarks Validation should act on the ROUNDED VALUES PRESENTED TO THE USER, not the internally calculated ones.
  * @param protocol Protocol to validate

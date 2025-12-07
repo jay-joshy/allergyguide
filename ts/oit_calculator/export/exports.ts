@@ -364,6 +364,8 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
  *
  * Creates separate tables for Food A and Food B, includes mix instructions for dilution steps, and appends custom notes when present. Falls back to alerting the text when clipboard copy fails.
  *
+ * @param protocol Protocol
+ * @param customNote string
  * @returns void
  */
 export function exportASCII(protocol: Protocol | null, customNote: string): void {
