@@ -319,7 +319,6 @@ function buildFoodBHTML(protocol: Protocol): string {
 
 /**
  * Updates input's value if it differs from the new value: goal => preserving user focus
- * Skips the update if the input is currently the active element (focused): prevents interruption while input being modified
  *
  * @param container - The parent element containing the input
  * @param selector - CSS selector to locate the specific input element
@@ -328,7 +327,6 @@ function buildFoodBHTML(protocol: Protocol): string {
 function patchSettingsInput(container: HTMLElement, selector: string, newVal: string) {
   const input = container.querySelector(selector) as HTMLInputElement;
   if (!input) return;
-  if (document.activeElement === input) return; // Don't interrupt user typing, else...
   if (input.value !== newVal) input.value = newVal;
 }
 

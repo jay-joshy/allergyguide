@@ -20,6 +20,8 @@ authors = ["Joshua Yu"]
 
 ### Fixed
 
+- Fixed bug where Undo/Redo operations failed to update text inputs (e.g., Food Name) if the input field was still focused
+
 ### Security
 
 ## [0.8.0] - 2025-12-07
