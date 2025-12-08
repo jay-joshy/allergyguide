@@ -177,6 +177,11 @@ export interface Candidate {
 // JSON SCHEMAS / INTERFACES - expected structure of items in jsons loaded on init
 // ============================================
 
+// Helper to ensure strings are valid numbers
+const NumericString = z.string().refine((val) => !isNaN(parseFloat(val)) && isFinite(Number(val)), {
+  message: "Must be a valid number string",
+});
+
 // TODO! Clean up the CNF file; some of the SOLID/LIQUID distinctions are wrong still
 /**
  * Food database record (as loaded from JSON containing with data from Canadian Nutrient File, Health Canada, 2015).
@@ -190,14 +195,23 @@ export const FoodDataSchema = z.object({
 });
 export type FoodData = z.infer<typeof FoodDataSchema>;
 
-export const RowDataSchema = z.object({
+const BaseRow = z.object({
   food: z.enum(["A", "B"]),
-  protein: z.string(),
-  method: z.enum(["DIRECT", "DILUTE"]),
-  daily_amount: z.string(),
-  mix_amount: z.string().optional(),
-  water_amount: z.string().optional()
+  protein: NumericString,
+  daily_amount: NumericString,
 });
+
+const DirectRow = BaseRow.extend({
+  method: z.literal("DIRECT"),
+});
+
+const DiluteRow = BaseRow.extend({
+  method: z.literal("DILUTE"),
+  mix_amount: NumericString, // Now required!
+  water_amount: NumericString, // Now required!
+});
+
+export const RowDataSchema = z.discriminatedUnion("method", [DirectRow, DiluteRow]);
 export type RowData = z.infer<typeof RowDataSchema>;
 
 /**
@@ -210,18 +224,18 @@ export const ProtocolDataSchema = z.object({
   food_a: z.object({
     type: z.enum(FoodType),
     name: z.string(),
-    gramsInServing: z.string(),
-    servingSize: z.string(),
+    gramsInServing: NumericString,
+    servingSize: NumericString,
   }),
   food_a_strategy: z.enum(FoodAStrategy),
-  di_threshold: z.string(),
+  di_threshold: NumericString,
   food_b: z.object({
     type: z.enum(FoodType),
     name: z.string(),
-    gramsInServing: z.string(),
-    servingSize: z.string(),
+    gramsInServing: NumericString,
+    servingSize: NumericString,
   }).optional(),
-  food_b_threshold: z.string().optional(),
+  food_b_threshold: NumericString.optional(),
   table: z.array(RowDataSchema),
   custom_note: z.string().optional(),
 });

@@ -156,16 +156,30 @@ export function selectProtocol(protocolData: ProtocolData): void {
   // load steps from relevant table
   for (let i = 0; i < tableToLoad.length; i++) {
     const row = tableToLoad[i];
+
+    const isFoodA = row.food === "A";
+    let unit: Unit = "g"
+    if (row.method === "DILUTE") {
+      unit = "ml"
+    } else if (isFoodA) {
+      unit = foodA.type === FoodType.SOLID ? "g" : "ml";
+    } else {
+      //isFoodB
+      const typeB = protocolData.food_b?.type;
+      unit = typeB === "LIQUID" ? "ml" : "g";
+    }
+
+
     const step: Step = {
       stepIndex: i + 1,
       targetMg: new Decimal(row.protein),
       method: row.method === "DILUTE" ? Method.DILUTE : Method.DIRECT,
       dailyAmount: new Decimal(row.daily_amount),
-      dailyAmountUnit: row.method === "DILUTE" ? "ml" : row.food === "A" ? foodA.type === FoodType.SOLID ? "g" : "ml" : "g",
+      dailyAmountUnit: unit,
       food: row.food,
     };
 
-    if (row.method === "DILUTE" && row.mix_amount && row.water_amount) {
+    if (row.method === "DILUTE") { // mix_amount and water_amount are guaranteed by RowDataSchema
       step.mixFoodAmount = new Decimal(row.mix_amount);
       step.mixWaterAmount = new Decimal(row.water_amount);
       // Calculate servings
