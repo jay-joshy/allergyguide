@@ -4,6 +4,7 @@
  * Core data structures, enumerations, and type aliases
  */
 import Decimal from "decimal.js";
+import { z } from "zod";
 
 // ============================================
 // ENUMS
@@ -174,45 +175,44 @@ export interface Candidate {
 // TODO! Clean up the CNF file; some of the SOLID/LIQUID distinctions are wrong still
 /**
  * Food database record (as loaded from JSON containing with data from Canadian Nutrient File, Health Canada, 2015).
- * Raw values are UI-facing and converted to internal Decimal where needed.
+ * Raw values are UI-facing and will be converted to internal Decimal where needed later.
  */
-export interface FoodData {
-  Food: string;
-  "Mean protein in grams": number; // Not all will be mean
-  "Serving size": number; // 100g for CNF, but otherwise for custom foods will be variable
-  Type: string; // SOLID or LIQUID
-}
+export const FoodDataSchema = z.object({
+  Food: z.string(), // name
+  "Mean protein in grams": z.number(), // not all will be the mean: this applies mainly to CNF data, not custom foods
+  "Serving size": z.number(), // 100g for CNF but otherwise for custom foods will be variable
+  Type: z.string(), // SOLID or LIQUID
+});
+export type FoodData = z.infer<typeof FoodDataSchema>;
 
-// For loading of protocols from JSON file
 /**
  * Protocol template record (as loaded from JSON).
  * String fields representing numbers are parsed into Decimal during load.
  */
-export interface ProtocolData {
-  name: string;
-  dosing_strategy: string;
-  food_a: {
-    type: string;
-    name: string;
-    gramsInServing: string;
-    servingSize: string;
-    // mgPerUnit: string;
-  };
-  food_a_strategy: string;
-  di_threshold: string;
-  food_b?: {
-    type: string;
-    name: string;
-    gramsInServing: string;
-    servingSize: string;
-    // mgPerUnit: string;
-  };
-  food_b_threshold?: string;
-  table_di: any[]; // steps for protocol using dilution initial strategy
-  table_dn: any[]; // steps for protocol using dilution none strategy
-  table_da: any[]; // steps for protocol using dilution all strategy
-  custom_note?: string;
-}
+export const ProtocolDataSchema = z.object({
+  name: z.string(),
+  dosing_strategy: z.string(),
+  food_a: z.object({
+    type: z.string(),
+    name: z.string(),
+    gramsInServing: z.string(),
+    servingSize: z.string(),
+  }),
+  food_a_strategy: z.string(),
+  di_threshold: z.string(),
+  food_b: z.object({
+    type: z.string(),
+    name: z.string(),
+    gramsInServing: z.string(),
+    servingSize: z.string(),
+  }).optional(),
+  food_b_threshold: z.string().optional(),
+  table_di: z.array(z.any()),
+  table_dn: z.array(z.any()),
+  table_da: z.array(z.any()),
+  custom_note: z.string().optional(),
+});
+export type ProtocolData = z.infer<typeof ProtocolDataSchema>;
 
 // ============================================
 // HISTORY INTERFACES
