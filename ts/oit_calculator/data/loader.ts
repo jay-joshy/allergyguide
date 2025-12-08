@@ -37,7 +37,7 @@ function validateList<T>(list: unknown, schema: z.ZodSchema<T>, itemName: string
     if (typeof window !== "undefined" && window.alert) {
       window.alert(`Failed to load ${itemName}: Data is not an array.`);
     }
-    throw Error("Expected array for ${itemName}. Check console")
+    throw Error(`Expected array for ${itemName}. Check console`)
   }
 
   const validItems: T[] = [];
