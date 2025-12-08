@@ -283,6 +283,35 @@ function checkDirectStep({ step, protocol, food }: { step: Step, protocol: Proto
  * - if adjacent targetMg are duplicate, unless A -> transition
  */
 function checkStepSequence(steps: Step[]): Warning[] {
+  const warnings: Warning[] = [];
+
+  for (let i = 1; i < steps.length; i++) {
+    const currentStep = steps[i];
+    const prevStep = steps[i - 1];
+
+    // NON_ASCENDING_STEPS
+    if (currentStep.targetMg.lessThan(prevStep.targetMg)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.NON_ASCENDING_STEPS),
+        code: WarningCode.Yellow.NON_ASCENDING_STEPS,
+        message: `Step target proteins must be ascending or equal — check step ${currentStep.stepIndex} vs step ${prevStep.stepIndex}.`,
+        stepIndex: currentStep.stepIndex,
+      });
+    }
+
+    // DUPLICATE_STEP
+    // Two directly adjacent steps have the same dose, and are the same food.
+    if (currentStep.food === prevStep.food && currentStep.targetMg.equals(prevStep.targetMg)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.DUPLICATE_STEP),
+        code: WarningCode.Yellow.DUPLICATE_STEP,
+        message: `Step ${prevStep.stepIndex} and Step ${currentStep.stepIndex} have the same target protein. This is redundant.`,
+        stepIndex: currentStep.stepIndex,
+      });
+    }
+  }
+
+  return warnings;
 };
 
 
