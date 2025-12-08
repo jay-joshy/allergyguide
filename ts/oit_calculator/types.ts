@@ -248,6 +248,11 @@ export interface MStep {
   f: number; // 0=Food A, 1=Food B
 }
 
+export interface MWarning {
+  c: string; // code string
+  i?: number; // stepIndex
+}
+
 export interface MProtocol {
   ds: number;   // DosingStrategy: 0=STANDARD, 1=SLOW
   fas: number;  // FoodAStrategy: 0=INIT, 1=ALL, 2=NONE
@@ -265,6 +270,7 @@ export interface UserHistoryPayload {
   v: string;      // semver-hash, ie. 0.8.0-a1213b2c 
   ts: number;     // Generated At timestamp
   p: MProtocol;   // Current Protocol State
+  w?: MWarning[]; // Warnings
   h: string[];    // History of action labels only (stripped timestamps)
 }
 
@@ -292,6 +298,11 @@ export interface ReadableStep {
   servings?: number;
 }
 
+export interface ReadableWarning {
+  code: string;
+  stepIndex?: number;
+}
+
 export interface ReadableProtocol {
   dosingStrategy: string;
   foodAStrategy: string;
@@ -306,5 +317,6 @@ export interface ReadableHistoryPayload {
   version: string;
   timestamp: string; // ISO String
   protocol: ReadableProtocol;
+  warnings?: ReadableWarning[];
   historyLog: string[];
 }

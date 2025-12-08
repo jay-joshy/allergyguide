@@ -8,6 +8,9 @@ import type { Protocol, Unit, Food, Step } from "../types";
 import { formatNumber, formatAmount, escapeHtml } from "../utils";
 import { validateProtocol } from "../core/validator";
 
+// Need global commit hash 
+declare const __COMMIT_HASH__: string;
+
 // ============================================
 // MODULE SPECIFIC INTERFACES
 // ============================================
@@ -807,8 +810,26 @@ export function renderDebugResult(payload: any): void {
   const container = document.getElementById("debug-result-container");
   if (!container) return;
 
+  const currentCommit = __COMMIT_HASH__;
+  const payloadVersion = payload.v || "";
+  const isMismatch = !payloadVersion.includes(currentCommit);
+
+  let warningHtml = "";
+  if (isMismatch) {
+    warningHtml = `
+      <div style="background-color: #ffebee; color: #c62828; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid #ef9a9a;">
+        <strong>VERSION MISMATCH</strong><br/>
+        QR code was generated with a different version of the tool.<br/>
+        <strong>Payload Version:</strong> ${escapeHtml(payloadVersion)}<br/>
+        <strong>Current Tool:</strong> ...${currentCommit ? currentCommit : "On dev mode, no commit hash yet"}<br/><br/>
+        While the below is good enough for a snapshot, consider switching to the commit hash found in the payload version.
+      </div>
+    `;
+  }
+
   const html = `
     <div style="margin-top: 1rem; border-top: 1px solid #ccc; padding-top: 1rem;">
+      ${warningHtml}
       <p><strong>Version:</strong> ${escapeHtml(payload.version)}</p>
       <p><strong>Timestamp:</strong> ${escapeHtml(payload.timestamp)}</p>
       <details>
@@ -821,6 +842,15 @@ export function renderDebugResult(payload: any): void {
         <summary style="cursor: pointer; font-weight: bold;">Full Protocol JSON</summary>
         <pre style="background: #f5f5f5; padding: 0.5rem; overflow-x: auto; margin-top: 0.5rem;">${escapeHtml(JSON.stringify(payload.protocol, null, 2))}</pre>
       </details>
+      ${payload.warnings && payload.warnings.length > 0
+      ? `<details>
+            <summary style="cursor: pointer; font-weight: bold; color: orange;">Warnings (${payload.warnings.length})</summary>
+            <ul style="max-height: 200px; overflow-y: auto; background: #fff8e1; padding: 0.5rem 1.5rem; margin-top: 0.5rem;">
+              ${payload.warnings.map((w: any) => `<li>${escapeHtml(w.code)} (Step ${w.stepIndex ?? "N/A"})</li>`).join("")}
+            </ul>
+          </details>`
+      : ""
+    }      
     </div>
   `;
   container.innerHTML = html;

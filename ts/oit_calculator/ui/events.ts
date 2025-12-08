@@ -412,6 +412,7 @@ function attachDebugDelegation() {
         const { decodeUserHistoryPayload } = await import("../core/minify");
 
         console.group("DECODED PAYLOAD");
+        console.log("b64 length:", val.length)
         console.log("Input:", val.substring(0, 20) + "...");
 
         const result = await decodeUserHistoryPayload(val);

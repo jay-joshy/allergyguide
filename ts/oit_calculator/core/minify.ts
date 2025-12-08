@@ -14,22 +14,33 @@ import type {
   ReadableHistoryPayload,
   ReadableProtocol,
   ReadableFood,
-  ReadableStep
+  ReadableStep,
+  Warning,
+  MWarning,
+  ReadableWarning
 } from "../types";
 import {
   FoodType,
   Method,
   DosingStrategy,
   FoodAStrategy,
+  WarningCode
 } from "../types"
+import { validateProtocol } from "./validator";
 
 // Need global commit hash 
 // And current tool version
 declare const __COMMIT_HASH__: string;
 declare const __VERSION_OIT_CALCULATOR__: string;
 
-
 // --- Minification Helpers ---
+
+function minifyWarnings(warnings: Warning[]): MWarning[] {
+  return warnings.map(w => ({
+    c: w.code,
+    i: w.stepIndex
+  }));
+}
 
 function minifyFood(f: Food): MFood {
   // f is type Food, but we access properties to convert Decimal
@@ -96,10 +107,15 @@ export function generateUserHistoryPayload(history: HistoryItem[]): UserHistoryP
   // Current state is the last item in history (ProtocolState.getHistory returns [...past, current])
   const currentItem = history[history.length - 1];
 
+  // Calculate warnings for current protocol
+  const warnings = validateProtocol(currentItem.protocol);
+  const mWarnings = minifyWarnings(warnings);
+
   return {
     v: `${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`,
     ts: Date.now(),
     p: minifyProtocol(currentItem.protocol),
+    w: mWarnings.length > 0 ? mWarnings : undefined,
     h: history.map(h => h.label) // Strip timestamps/objects, keep text log
   };
 }
@@ -141,13 +157,26 @@ export async function decodeUserHistoryPayload(b64String: string): Promise<Reada
 
 // --- Helper: Expansion Logic ---
 
+function expandWarnings(mw: MWarning[]): ReadableWarning[] {
+  return mw.map(w => ({
+    code: w.c,
+    stepIndex: w.i
+  }));
+}
+
 function expandPayload(m: any): ReadableHistoryPayload {
-  return {
+  const result: ReadableHistoryPayload = {
     version: m.v,
     timestamp: new Date(m.ts).toISOString(), // Convert epoch to Readable Date
     protocol: expandProtocol(m.p),
     historyLog: m.h
   };
+
+  if (m.w && Array.isArray(m.w)) {
+    result.warnings = expandWarnings(m.w);
+  }
+
+  return result;
 }
 
 function expandProtocol(p: any): ReadableProtocol {
