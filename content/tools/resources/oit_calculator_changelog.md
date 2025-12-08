@@ -18,6 +18,8 @@ authors = ["Joshua Yu"]
 
 ### Changed
 
+- INVALID_CONCENTRATION warning: now flags if protein content > serving size. This state should be impossible with the current UI but this exists just in case now
+
 ### Deprecated
 
 ### Removed

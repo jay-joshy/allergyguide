@@ -68,7 +68,7 @@ function validateSettings(protocol: Protocol): Warning[] {
     });
   }
 
-  // INVALID_CONCENTRATION: zero or negative mgPerUnit for food A
+  // INVALID_CONCENTRATION: zero or negative mgPerUnit for food A, or grams of protein > serving size (impossible)
   if (protocol.foodA.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
@@ -76,12 +76,27 @@ function validateSettings(protocol: Protocol): Warning[] {
       message: `${escapeHtml(protocol.foodA.name)} protein concentration must be > 0 to be considered for OIT`,
     });
   }
-  // INVALID_CONCENTRATION: zero or negative mgPerUnit for food B
+  if (protocol.foodA.gramsInServing.greaterThan(protocol.foodA.servingSize)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
+      code: WarningCode.Red.INVALID_CONCENTRATION,
+      message: `${escapeHtml(protocol.foodA.name)} protein concentration cannot be greater than a serving size of ${formatAmount(protocol.foodA.servingSize, getMeasuringUnit(protocol.foodA))}`,
+    });
+  }
+
+  // INVALID_CONCENTRATION: zero or negative mgPerUnit for food B, or grams of protein > serving size (impossible)
   if (protocol.foodB?.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
       severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
       code: WarningCode.Red.INVALID_CONCENTRATION,
       message: `${escapeHtml(protocol.foodB?.name || "")} protein concentration must be > 0 to be considered for OIT`,
+    });
+  }
+  if (protocol.foodB?.gramsInServing.greaterThan(protocol.foodB?.servingSize)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
+      code: WarningCode.Red.INVALID_CONCENTRATION,
+      message: `${escapeHtml(protocol.foodB?.name)} protein concentration cannot be greater than a serving size of ${formatAmount(protocol.foodB?.servingSize, getMeasuringUnit(protocol.foodB))}`,
     });
   }
 
