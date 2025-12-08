@@ -46,6 +46,27 @@ export enum FoodAStrategy {
   DILUTE_NONE = "DILUTE_NONE",
 }
 
+export const WarningCode = {
+  Red: {
+    TOO_FEW_STEPS: "TOO_FEW_STEPS",
+    PROTEIN_MISMATCH: "PROTEIN_MISMATCH",
+    INSUFFICIENT_MIX_PROTEIN: "INSUFFICIENT_MIX_PROTEIN",
+    IMPOSSIBLE_VOLUME: "IMPOSSIBLE_VOLUME",
+    INVALID_CONCENTRATION: "INVALID_CONCENTRATION",
+    INVALID_TARGET: "INVALID_TARGET",
+    INVALID_DILUTION_STEP_VALUES: "INVALID_DILUTION_STEP_VALUES",
+  },
+  Yellow: {
+    LOW_SERVINGS: "LOW_SERVINGS",
+    NON_ASCENDING_STEPS: "NON_ASCENDING_STEPS",
+    BELOW_RESOLUTION: "BELOW_RESOLUTION",
+    HIGH_SOLID_CONCENTRATION: "HIGH_SOLID_CONCENTRATION",
+    NO_TRANSITION_POINT: "NO_TRANSITION_POINT",
+  }
+} as const;
+// to use in Warning interface
+export type SpecificWarningCode = typeof WarningCode.Red[keyof typeof WarningCode.Red] | typeof WarningCode.Yellow[keyof typeof WarningCode.Yellow];
+
 // ============================================
 // TYPE ALIASES
 // ============================================
@@ -129,7 +150,7 @@ export interface Protocol {
  */
 export interface Warning {
   severity: "red" | "yellow";
-  code: string;
+  code: SpecificWarningCode;
   message: string;
   stepIndex?: number;
 }
