@@ -387,8 +387,8 @@ function attachTableDelegation() {
 }
 
 function attachDebugDelegation() {
-  const debugBtn = document.getElementById("debug-audit-btn");
-  const debugInput = document.getElementById("debug-audit-input") as HTMLInputElement;
+  const debugBtn = document.getElementById("debug-btn");
+  const debugInput = document.getElementById("debug-input") as HTMLInputElement;
 
   if (debugBtn && debugInput) {
     debugBtn.addEventListener("click", async () => {
@@ -408,7 +408,7 @@ function attachDebugDelegation() {
         const result = await decodeUserHistoryPayload(val);
         console.log("Result:", result);
         console.groupEnd();
-        
+
         renderDebugResult(result);
       } catch (e) {
         console.error("Decode failed", e);
