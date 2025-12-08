@@ -20,7 +20,8 @@ import {
   escapeHtml,
   formatNumber,
   formatAmount,
-  getMeasuringUnit
+  getMeasuringUnit,
+  getWarningSeverity
 } from "../utils"
 
 import {
@@ -53,7 +54,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
   // TOO_FEW_STEPS: Too few steps
   if (protocol.steps.length < 5) {
     warnings.push({
-      severity: "red",
+      severity: getWarningSeverity(WarningCode.Red.TOO_FEW_STEPS),
       code: WarningCode.Red.TOO_FEW_STEPS,
       message:
         "Protocol < 5 steps, which is quite rapid for a full OIT protocol.",
@@ -63,7 +64,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
   // INVALID_CONCENTRATION: zero or negative mgPerUnit for food A
   if (protocol.foodA.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
-      severity: "red",
+      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
       code: WarningCode.Red.INVALID_CONCENTRATION,
       message: `${escapeHtml(protocol.foodA.name)} protein concentration must be > 0 to be considered for OIT`,
     });
@@ -71,7 +72,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
   // INVALID_CONCENTRATION: zero or negative mgPerUnit for food B
   if (protocol.foodB?.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
     warnings.push({
-      severity: "red",
+      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
       code: WarningCode.Red.INVALID_CONCENTRATION,
       message: `${escapeHtml(protocol.foodB?.name || "")} protein concentration must be > 0 to be considered for OIT`,
     });
@@ -87,7 +88,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
     }
     if (foodBinSteps === false) {
       warnings.push({
-        severity: "yellow",
+        severity: getWarningSeverity(WarningCode.Yellow.NO_TRANSITION_POINT),
         code: WarningCode.Yellow.NO_TRANSITION_POINT,
         message: `${escapeHtml(protocol.foodB.name)} has no transition point. Decrease the threshold if you want to transition.`,
       });
@@ -103,7 +104,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
     // INVALID_TARGET: Step targetMg zero or negative
     if (step.targetMg.lessThanOrEqualTo(new Decimal(0))) {
       warnings.push({
-        severity: "red",
+        severity: getWarningSeverity(WarningCode.Red.INVALID_TARGET),
         code: WarningCode.Red.INVALID_TARGET,
         message: `Step ${step.stepIndex}: A target protein of ${formatNumber(step.targetMg, 1)} mg is NOT valid. It must be >0.`,
         stepIndex: step.stepIndex,
@@ -143,7 +144,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
         if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
           warnings.push({
-            severity: "red",
+            severity: getWarningSeverity(WarningCode.Red.PROTEIN_MISMATCH),
             code: WarningCode.Red.PROTEIN_MISMATCH,
             message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
             stepIndex: step.stepIndex,
@@ -155,7 +156,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       if (step.servings!.lessThan(new Decimal(1))) {
         const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
         warnings.push({
-          severity: "red",
+          severity: getWarningSeverity(WarningCode.Red.INSUFFICIENT_MIX_PROTEIN),
           code: WarningCode.Red.INSUFFICIENT_MIX_PROTEIN,
           message: `Step ${step.stepIndex}: ${formatAmount(step.mixFoodAmount, getMeasuringUnit(food))} ${getMeasuringUnit(food)} of food only makes ${formatNumber(totalMixProtein, 1)} mg of total protein. However, target protein is ${formatNumber(step.targetMg, 1)} mg.`,
           stepIndex: step.stepIndex,
@@ -169,7 +170,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
           : step.mixFoodAmount!.plus(step.mixWaterAmount!);
       if (mixTotalVolume!.lessThan(step.dailyAmount)) {
         warnings.push({
-          severity: "red",
+          severity: getWarningSeverity(WarningCode.Red.IMPOSSIBLE_VOLUME),
           code: WarningCode.Red.IMPOSSIBLE_VOLUME,
           message: `Step ${step.stepIndex}: Total volume of dilution is ${formatNumber(mixTotalVolume, LIQUID_RESOLUTION)} ml; however, daily amount is ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml, which is impossible`,
           stepIndex: step.stepIndex,
@@ -179,7 +180,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       // INVALID_DILUTION_STEP_VALUES: if in dilution, no negatives or 0s allowed for daily amount, mix food amount, or mix water!
       if (step.dailyAmount.lessThanOrEqualTo(0)) {
         warnings.push({
-          severity: "red",
+          severity: getWarningSeverity(WarningCode.Red.INVALID_DILUTION_STEP_VALUES),
           code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
           message: `Step ${step.stepIndex}: Daily amount cannot be <= 0 ml`,
           stepIndex: step.stepIndex,
@@ -187,7 +188,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       }
       if (step.mixFoodAmount!.lessThanOrEqualTo(0)) {
         warnings.push({
-          severity: "red",
+          severity: getWarningSeverity(WarningCode.Red.INVALID_DILUTION_STEP_VALUES),
           code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
           message: `Step ${step.stepIndex}: Amount of food to mix cannot be <= 0 ${getMeasuringUnit(food)}`,
           stepIndex: step.stepIndex,
@@ -195,7 +196,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       }
       if (step.mixWaterAmount!.lessThan(0)) {
         warnings.push({
-          severity: "red",
+          severity: getWarningSeverity(WarningCode.Red.INVALID_DILUTION_STEP_VALUES),
           code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
           message: `Step ${step.stepIndex}: Amount of water to mix cannot be < 0 ml`,
           stepIndex: step.stepIndex,
@@ -208,7 +209,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         food.type === FoodType.SOLID && roundedMixFoodAmount.lessThan(protocol.config.minMeasurableMass)
       ) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
           code: WarningCode.Yellow.BELOW_RESOLUTION,
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for value ≥ ${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
@@ -219,7 +220,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         roundedMixFoodAmount.lessThan(protocol.config.minMeasurableVolume)
       ) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
           code: WarningCode.Yellow.BELOW_RESOLUTION,
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for value ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
@@ -227,7 +228,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       }
       if (roundedDailyAmount.lessThan(protocol.config.minMeasurableVolume)) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
           code: WarningCode.Yellow.BELOW_RESOLUTION,
           message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml is impractical. Aim for value ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
@@ -235,7 +236,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       }
       if (roundedMixWaterAmount.lessThan(protocol.config.minMeasurableVolume)) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
           code: WarningCode.Yellow.BELOW_RESOLUTION,
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water is impractical. Aim for value ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
@@ -248,7 +249,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         step.servings!.greaterThan(new Decimal(1))
       ) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.LOW_SERVINGS),
           code: WarningCode.Yellow.LOW_SERVINGS,
           message: `Step ${step.stepIndex}: Only ${formatNumber(step.servings, 1)} servings (< ${DEFAULT_CONFIG.minServingsForMix} - impractical). Consider increasing mix amounts.`,
           stepIndex: step.stepIndex,
@@ -263,7 +264,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
           .greaterThan(new Decimal(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION))
       ) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.HIGH_SOLID_CONCENTRATION),
           code: WarningCode.Yellow.HIGH_SOLID_CONCENTRATION,
           message: `Step ${step.stepIndex}: at ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food in ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water, the w/v is > ${formatNumber(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION.times(100), 0)}%. The assumption that the food contributes non-negligibly to the total volume of dilution is likely violated. Consider increasing the Daily Amount`,
           stepIndex: step.stepIndex,
@@ -283,7 +284,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
         if (delta.greaterThan(DEFAULT_CONFIG.PROTEIN_TOLERANCE)) {
           warnings.push({
-            severity: "red",
+            severity: getWarningSeverity(WarningCode.Red.PROTEIN_MISMATCH),
             code: WarningCode.Red.PROTEIN_MISMATCH,
             message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
             stepIndex: step.stepIndex,
@@ -298,7 +299,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         roundedDailyAmount.lessThan(protocol.config.minMeasurableMass)
       ) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
           code: WarningCode.Yellow.BELOW_RESOLUTION,
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for ≥ ${protocol.config.minMeasurableMass} g`,
           stepIndex: step.stepIndex,
@@ -309,7 +310,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
         roundedDailyAmount.lessThan(protocol.config.minMeasurableVolume)
       ) {
         warnings.push({
-          severity: "yellow",
+          severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
           code: WarningCode.Yellow.BELOW_RESOLUTION,
           message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for ≥ ${protocol.config.minMeasurableVolume} ml`,
           stepIndex: step.stepIndex,
@@ -322,7 +323,7 @@ export function validateProtocol(protocol: Protocol): Warning[] {
   for (let i = 1; i < protocol.steps.length; i++) {
     if (protocol.steps[i].targetMg.lessThan(protocol.steps[i - 1].targetMg)) {
       warnings.push({
-        severity: "yellow",
+        severity: getWarningSeverity(WarningCode.Yellow.NON_ASCENDING_STEPS),
         code: WarningCode.Yellow.NON_ASCENDING_STEPS,
         message: `Steps must be ascending or equal — check step ${protocol.steps[i].stepIndex} vs step ${protocol.steps[i - 1].stepIndex}.`,
         stepIndex: protocol.steps[i].stepIndex,

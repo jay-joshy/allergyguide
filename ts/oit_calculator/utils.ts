@@ -17,9 +17,23 @@ import {
   LIQUID_RESOLUTION,
 } from "./constants"
 
+import { WarningCode, type SpecificWarningCode } from "./types";
+
 // ============================================
 // UTILITY FUNCTIONS
 // ============================================
+
+/**
+ * Derives the severity ("red" or "yellow") from a SpecificWarningCode.
+ *
+ * @param code The warning code to check.
+ * @returns "red" if the code is a critical error, "yellow" otherwise.
+ */
+export function getWarningSeverity(code: SpecificWarningCode): "red" | "yellow" {
+  // Check if the code exists in WarningCode.Red
+  const isRed = Object.values(WarningCode.Red).includes(code as any);
+  return isRed ? "red" : "yellow";
+}
 
 /**
  * Escape a string for safe HTML insertion.
