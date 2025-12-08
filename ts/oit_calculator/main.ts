@@ -91,9 +91,18 @@ async function initializeCalculator(): Promise<void> {
   console.log("OIT Calculator initialized");
 }
 
+const init = async () => {
+  try {
+    await initializeCalculator();
+  } catch (e) {
+    console.error("Critical init error", e);
+    document.querySelector('.oit_calculator')!.innerHTML = `<div>Failed to load application data. Please refresh or contact support.</div>`;
+  }
+};
+
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeCalculator);
+  document.addEventListener("DOMContentLoaded", init);
 } else {
-  initializeCalculator();
+  init();
 }

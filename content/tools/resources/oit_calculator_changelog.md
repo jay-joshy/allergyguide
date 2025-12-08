@@ -13,6 +13,7 @@ authors = ["Joshua Yu"]
 ### Added
 
 - UserHistory system: Embed QR code in export PDF containing a log of actions taken to make protocol
+- On initialization, if loading of the food/protocol databases fail for whatever reason, the tool will no longer silently fail
 
 ### Changed
 
