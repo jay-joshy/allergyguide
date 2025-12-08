@@ -1039,5 +1039,77 @@
   #debug-result-container {
     color: var(--oit-text);
     border-top-color: var(--oit-border) !important;
+
+    .debug-result-content {
+      margin-top: 1rem;
+      border-top: 1px solid var(--oit-border);
+      padding-top: 1rem;
+    }
+
+    .version-mismatch-warning {
+      background-color: var(--oit-warning-red-bg);
+      color: var(--oit-warning-red-text);
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--oit-warning-red-border);
+
+      strong {
+        font-weight: 800;
+      }
+    }
+
+    details {
+      margin-top: 0.5rem;
+
+      summary {
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--oit-text);
+        margin-bottom: 0.25rem;
+
+        &:hover {
+          color: var(--oit-text-secondary);
+        }
+      }
+    }
+
+    .history-log {
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: var(--oit-input-bg);
+      padding: 0.5rem 1.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid var(--oit-border);
+      border-radius: 4px;
+      list-style-type: disc;
+    }
+
+    .json-log {
+      max-height: 200px;
+      overflow-x: auto;
+      background-color: var(--oit-input-bg);
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid var(--oit-border);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    .warning-summary {
+      color: var(--oit-warning-yellow-text);
+    }
+
+    .warnings-log {
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: var(--oit-warning-yellow-bg);
+      color: var(--oit-warning-yellow-text);
+      padding: 0.5rem 1.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid var(--oit-warning-yellow-border);
+      border-radius: 4px;
+    }
   }
 }
