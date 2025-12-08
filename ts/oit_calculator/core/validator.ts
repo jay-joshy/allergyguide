@@ -161,11 +161,86 @@ function validateAllSteps(protocol: Protocol): Warning[] {
 // ---------------
 
 /**
+ * Checks if the configured amounts are practically measurable by home tools - VALIDATES AGAINST ROUNDED AMOUNTS
  *  Problems checked:
  * - if measured amounts are < minMeasureableMass, minMeasurableVolume
  * - if grams in serving > serving size
  */
 function checkMeasurability({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+  const warnings: Warning[] = [];
+  const config = protocol.config;
+
+  // FOR DILUTION STEPS (need to handle mix food and mix water amounts)
+  if (step.method === Method.DILUTE) {
+
+    // GET ROUNDED AMOUNTS - USER FACING
+    const roundedMixFoodAmount = new Decimal(formatAmount(step.mixFoodAmount, getMeasuringUnit(food)));
+    const roundedMixWaterAmount = new Decimal(formatAmount(step.mixWaterAmount, "ml"));
+    const roundedDailyAmount = new Decimal(formatAmount(step.dailyAmount, "ml"));
+
+    // Mix Food Amount Resolution
+    if (food.type === FoodType.SOLID && roundedMixFoodAmount.lessThan(config.minMeasurableMass)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
+        code: WarningCode.Yellow.BELOW_RESOLUTION,
+        message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for value ≥ ${config.minMeasurableMass} g`,
+        stepIndex: step.stepIndex,
+      });
+    }
+    if (food.type === FoodType.LIQUID && roundedMixFoodAmount.lessThan(config.minMeasurableVolume)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
+        code: WarningCode.Yellow.BELOW_RESOLUTION,
+        message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixFoodAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for value ≥ ${config.minMeasurableVolume} ml`,
+        stepIndex: step.stepIndex,
+      });
+    }
+
+    // Daily Amount Resolution
+    if (roundedDailyAmount.lessThan(config.minMeasurableVolume)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
+        code: WarningCode.Yellow.BELOW_RESOLUTION,
+        message: `Step ${step.stepIndex}: Measuring a daily amount of ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml is impractical. Aim for value ≥ ${config.minMeasurableVolume} ml`,
+        stepIndex: step.stepIndex,
+      });
+    }
+
+    // Mix Water Resolution
+    if (roundedMixWaterAmount.lessThan(config.minMeasurableVolume)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
+        code: WarningCode.Yellow.BELOW_RESOLUTION,
+        message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water is impractical. Aim for value ≥ ${config.minMeasurableVolume} ml`,
+        stepIndex: step.stepIndex,
+      });
+    }
+
+  } else {
+    // DIRECT Method
+    // GET ROUNDED AMOUNTS
+    const dailyAmountUnit = step.dailyAmountUnit;
+    const roundedDailyAmount = new Decimal(formatAmount(step.dailyAmount, dailyAmountUnit));
+
+    if (food.type === FoodType.SOLID && roundedDailyAmount.lessThan(config.minMeasurableMass)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
+        code: WarningCode.Yellow.BELOW_RESOLUTION,
+        message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, SOLID_RESOLUTION)} g of food is impractical. Aim for ≥ ${config.minMeasurableMass} g`,
+        stepIndex: step.stepIndex,
+      });
+    }
+    if (food.type === FoodType.LIQUID && roundedDailyAmount.lessThan(config.minMeasurableVolume)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.BELOW_RESOLUTION),
+        code: WarningCode.Yellow.BELOW_RESOLUTION,
+        message: `Step ${step.stepIndex}: Measuring ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml of food is impractical. Aim for ≥ ${config.minMeasurableVolume} ml`,
+        stepIndex: step.stepIndex,
+      });
+    }
+  }
+
+  return warnings;
 };
 
 /**
