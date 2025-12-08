@@ -37,11 +37,18 @@ let noteDebounceTimer: number | null = null;
 let foodADebounceTimer: number | null = null;
 let foodBDebounceTimer: number | null = null;
 
+let isInitialized = false;
+
 /**
  * Initialize global event listeners using delegation
- * Call this ONLY ONCE at startup
+ * Call this ONLY ONCE at startup (is ensured by boolean flag)
  */
 export function initGlobalEvents(): void {
+  if (isInitialized) {
+    console.warn("Global events already initialized. Skipping.");
+    return;
+  }
+
   attachSettingsDelegation();
   attachTableDelegation();
   attachDosingStrategyDelegation();
@@ -54,6 +61,8 @@ export function initGlobalEvents(): void {
   if (clearFoodBBtn) {
     clearFoodBBtn.addEventListener("click", clearFoodB);
   }
+
+  isInitialized = true;
 }
 
 /**
