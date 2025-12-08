@@ -13,6 +13,8 @@ import {
 
 import type {
   Protocol,
+  Food,
+  Step,
   Warning,
 } from "../types"
 
@@ -55,6 +57,16 @@ export function validateProtocol(protocol: Protocol): Warning[] {
   return warnings;
 }
 
+// ============================================
+// GLOBAL / SETTINGS VALIDATORS
+// ============================================
+
+/**
+ * Problems checked:
+ * - if TOO_FEW_STEPS
+ * - if food B exists and there's no valid transition point
+ * - if food A or B has invalid settings
+ */
 function validateSettings(protocol: Protocol): Warning[] {
   const warnings: Warning[] = [];
 
@@ -68,36 +80,10 @@ function validateSettings(protocol: Protocol): Warning[] {
     });
   }
 
-  // INVALID_CONCENTRATION: zero or negative mgPerUnit for food A, or grams of protein > serving size (impossible)
-  if (protocol.foodA.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
-    warnings.push({
-      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
-      code: WarningCode.Red.INVALID_CONCENTRATION,
-      message: `${escapeHtml(protocol.foodA.name)} protein concentration must be > 0 to be considered for OIT`,
-    });
-  }
-  if (protocol.foodA.gramsInServing.greaterThan(protocol.foodA.servingSize)) {
-    warnings.push({
-      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
-      code: WarningCode.Red.INVALID_CONCENTRATION,
-      message: `${escapeHtml(protocol.foodA.name)} protein concentration cannot be greater than a serving size of ${formatAmount(protocol.foodA.servingSize, getMeasuringUnit(protocol.foodA))}`,
-    });
-  }
-
-  // INVALID_CONCENTRATION: zero or negative mgPerUnit for food B, or grams of protein > serving size (impossible)
-  if (protocol.foodB?.getMgPerUnit().lessThanOrEqualTo(new Decimal(0))) {
-    warnings.push({
-      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
-      code: WarningCode.Red.INVALID_CONCENTRATION,
-      message: `${escapeHtml(protocol.foodB?.name || "")} protein concentration must be > 0 to be considered for OIT`,
-    });
-  }
-  if (protocol.foodB?.gramsInServing.greaterThan(protocol.foodB?.servingSize)) {
-    warnings.push({
-      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
-      code: WarningCode.Red.INVALID_CONCENTRATION,
-      message: `${escapeHtml(protocol.foodB?.name)} protein concentration cannot be greater than a serving size of ${formatAmount(protocol.foodB?.servingSize, getMeasuringUnit(protocol.foodB))}`,
-    });
+  // Food config checks
+  warnings.push(...validateFoodConfig(protocol.foodA));
+  if (protocol.foodB) {
+    warnings.push(...validateFoodConfig(protocol.foodB))
   }
 
   // NO_TRANSITION_POINT: No transition point found for food B if it exists. That means the transition threshold is too high.
@@ -118,6 +104,93 @@ function validateSettings(protocol: Protocol): Warning[] {
   }
   return warnings;
 }
+
+
+/**
+ * Reusable validator for Food A or B config
+ * Checks:
+ * - if mgPerUnit <= 0  
+ * - if grams in serving > serving size
+ */
+function validateFoodConfig(food: Food): Warning[] {
+  const warnings: Warning[] = [];
+
+  if (food.getMgPerUnit().lessThanOrEqualTo(0)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
+      code: WarningCode.Red.INVALID_CONCENTRATION,
+      message: `${escapeHtml(food.name)} protein concentration must be > 0 to be considered for OIT`,
+    });
+  }
+  if (food.gramsInServing.greaterThan(food.servingSize)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_CONCENTRATION),
+      code: WarningCode.Red.INVALID_CONCENTRATION,
+      message: `${escapeHtml(food.name)} protein amount cannot be greater than a serving size of ${formatAmount(food.servingSize, getMeasuringUnit(food))}`,
+    });
+  }
+  return warnings;
+}
+
+// ============================================
+// STEP VALIDATORS
+// ============================================
+
+function validateAllSteps(protocol: Protocol): Warning[] {
+  const warnings: Warning[] = [];
+
+  // iterate through all steps
+  protocol.steps.forEach((step, index) => {
+    // Context object to pass around easily
+    const ctx = { step, protocol, food: step.food === "B" ? protocol.foodB! : protocol.foodA };
+
+    // Run checks
+
+    if (step.method === Method.DILUTE) {
+    } else {
+    }
+  });
+
+  // Run Sequence checks (needs access to full array)
+
+  return warnings;
+
+}
+
+// SPECIFIC STEP RULES
+// ---------------
+
+/**
+ *  Problems checked:
+ * - if measured amounts are < minMeasureableMass, minMeasurableVolume
+ * - if grams in serving > serving size
+ */
+function checkMeasurability({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+};
+
+/**
+ *  This is for checks that apply to ANY step regardless of method
+ *  Problems checked:
+ * - if all steps have at least ascending targetMg
+ * - if adjacent targetMg are duplicate, unless A -> transition
+ */
+function checkAnyStepType({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+};
+
+function checkDilutionStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+};
+
+function checkDirectStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+};
+
+/**
+ *  Problems checked:
+ * - if all steps have at least ascending targetMg
+ * - if adjacent targetMg are duplicate, unless A -> transition
+ */
+function checkStepSequence(steps: Step[]): Warning[] {
+};
+
 
 function validateSteps(protocol: Protocol): Warning[] {
   const warnings: Warning[] = []
