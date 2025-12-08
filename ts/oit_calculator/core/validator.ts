@@ -126,12 +126,25 @@ function validateSteps(protocol: Protocol): Warning[] {
     const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
 
+    // CHECKS FOR ANY STEP REGARDLESS OF METHOD
+    // ----
+
     // INVALID_TARGET: Step targetMg zero or negative
     if (step.targetMg.lessThanOrEqualTo(new Decimal(0))) {
       warnings.push({
         severity: getWarningSeverity(WarningCode.Red.INVALID_TARGET),
         code: WarningCode.Red.INVALID_TARGET,
         message: `Step ${step.stepIndex}: A target protein of ${formatNumber(step.targetMg, 1)} mg is NOT valid. It must be >0.`,
+        stepIndex: step.stepIndex,
+      });
+    }
+
+    // HIGH_DAILY_AMOUNT: more than the practical amount
+    if (step.dailyAmount.greaterThan(protocol.config.MAX_DAILY_AMOUNT)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.HIGH_DAILY_AMOUNT),
+        code: WarningCode.Yellow.HIGH_DAILY_AMOUNT,
+        message: `Step ${step.stepIndex}: Daily amount of ${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit} is impractically high (> ${formatAmount(protocol.config.MAX_DAILY_AMOUNT, step.dailyAmountUnit)} ${step.dailyAmountUnit}).`,
         stepIndex: step.stepIndex,
       });
     }
@@ -295,6 +308,19 @@ function validateSteps(protocol: Protocol): Warning[] {
           stepIndex: step.stepIndex,
         });
       }
+
+      // HIGH_MIX_WATER: more than the practical amount
+      if (
+        step.mixWaterAmount && step.mixWaterAmount.greaterThan(protocol.config.MAX_MIX_WATER)
+      ) {
+        warnings.push({
+          severity: getWarningSeverity(WarningCode.Yellow.HIGH_MIX_WATER),
+          code: WarningCode.Yellow.HIGH_MIX_WATER,
+          message: `Step ${step.stepIndex}: Mix water amount of ${formatAmount(step.mixWaterAmount, "ml")} ml is impractically high (> ${formatAmount(protocol.config.MAX_MIX_WATER, "ml")} ml).`,
+          stepIndex: step.stepIndex,
+        });
+      }
+
     }
     // FOR DIRECT
     else if (step.method === Method.DIRECT) {
@@ -372,5 +398,6 @@ function validateSteps(protocol: Protocol): Warning[] {
       });
     }
   }
+
   return warnings;
 }

@@ -39,6 +39,7 @@ DEFAULT_CONFIG = {
   DEFAULT_FOOD_B_THRESHOLD: new Decimal(0.2),
   MAX_SOLID_CONCENTRATION: new Decimal(0.05),
   MAX_MIX_WATER: new Decimal(500),
+  MAX_DAILY_AMOUNT: new Decimal(250),
   SOLID_MIX_CANDIDATES: [
     0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1, 2, 5, 10, 12, 14, 16, 18, 20, 25, 30
   ].map((num) => new Decimal(num)),

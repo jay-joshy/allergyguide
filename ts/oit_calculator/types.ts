@@ -62,7 +62,9 @@ export const WarningCode = {
     BELOW_RESOLUTION: "BELOW_RESOLUTION",
     HIGH_SOLID_CONCENTRATION: "HIGH_SOLID_CONCENTRATION",
     NO_TRANSITION_POINT: "NO_TRANSITION_POINT",
-    DUPLICATE_STEP: "DUPLICATE_STEP"
+    DUPLICATE_STEP: "DUPLICATE_STEP",
+    HIGH_DAILY_AMOUNT: "HIGH_DAILY_AMOUNT",
+    HIGH_MIX_WATER: "HIGH_MIX_WATER",
   }
 } as const;
 // to use in Warning interface
@@ -124,6 +126,7 @@ export interface ProtocolConfig {
   DEFAULT_FOOD_B_THRESHOLD: Decimal; // At what amount of Food B do you switch from Food A to Food B?
   MAX_SOLID_CONCENTRATION: Decimal; //  max g/ml ratio for solid diluted into liquids (default 0.05). Assume that if the solid concentration is above this threshold, then the solid contributes non-negligibly to the total volume of the mixture.
   MAX_MIX_WATER: Decimal;
+  MAX_DAILY_AMOUNT: Decimal;
   // Default candidate options for various parameters used to calculate optimal dilutions
   SOLID_MIX_CANDIDATES: Decimal[];
   LIQUID_MIX_CANDIDATES: Decimal[];

@@ -15,10 +15,12 @@ authors = ["Joshua Yu"]
 - UserHistory system: Embed QR code in export PDF containing a log of actions taken to make protocol
 - On initialization, if loading of the food/protocol databases fail for whatever reason, the tool will no longer silently fail; tool will now not be usable
 - New DUPLICATE_STEP warning: Flags redundant adjacent steps with the same food and target protein
+- New HIGH_DAILY_AMOUNT warning: Flags daily protein amounts exceeding an upper limit (yellow warning), 250 g or ml
+- New HIGH_MIX_WATER warning: Flags mix water volumes exceeding an upper limit (yellow warning), 500 ml
 
 ### Changed
 
-- INVALID_CONCENTRATION warning: now flags if protein content > serving size. This state should be impossible with the current UI but this exists just in case now
+- INVALID_CONCENTRATION warning: Flags if protein content > serving size (previously this was not explicitly flagged)
 
 ### Deprecated
 

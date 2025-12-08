@@ -57,7 +57,14 @@ describe('Core: Validator', () => {
       const badFood = { ...food, getMgPerUnit: () => new Decimal(0) };
       const protocol = generateDefaultProtocol(badFood, DEFAULT_CONFIG);
       const warnings = validateProtocol(protocol);
-      expect(warnings.some(w => w.code === WarningCode.Red.INVALID_CONCENTRATION)).toBe(true);
+      expect(warnings.some(w => w.code === WarningCode.Red.INVALID_CONCENTRATION && w.message.includes("protein concentration must be > 0"))).toBe(true);
+    });
+
+    it('should flag INVALID_CONCENTRATION when protein content is greater than serving size', () => {
+      const badFood = { ...food, gramsInServing: new Decimal(150), servingSize: new Decimal(100) }; // 150g protein in 100g serving
+      const protocol = generateDefaultProtocol(badFood, DEFAULT_CONFIG);
+      const warnings = validateProtocol(protocol);
+      expect(warnings.some(w => w.code === WarningCode.Red.INVALID_CONCENTRATION && w.message.includes("protein concentration cannot be greater than a serving size"))).toBe(true);
     });
   });
 
@@ -127,6 +134,28 @@ describe('Core: Validator', () => {
 
        const warnings = validateProtocol(protocol);
        expect(warnings.some(w => w.code === WarningCode.Yellow.DUPLICATE_STEP)).toBe(false);
+    });
+
+    it('should flag HIGH_DAILY_AMOUNT when daily amount exceeds limit', () => {
+       const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+       // Set daily amount to 300 (default max is 250)
+       const index = protocol.steps.findIndex(s => s.method === Method.DIRECT);
+       protocol.steps[index].dailyAmount = new Decimal(300);
+
+       const warnings = validateProtocol(protocol);
+       expect(warnings.some(w => w.code === WarningCode.Yellow.HIGH_DAILY_AMOUNT)).toBe(true);
+    });
+
+    it('should flag HIGH_MIX_WATER when mix water exceeds limit', () => {
+       const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+       const index = protocol.steps.findIndex(s => s.method === Method.DILUTE);
+       if (index === -1) return;
+
+       // Set mix water to 600 (default max is 500)
+       protocol.steps[index].mixWaterAmount = new Decimal(600);
+
+       const warnings = validateProtocol(protocol);
+       expect(warnings.some(w => w.code === WarningCode.Yellow.HIGH_MIX_WATER)).toBe(true);
     });
   });
 });
