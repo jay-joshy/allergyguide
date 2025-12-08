@@ -35,6 +35,12 @@ declare const __VERSION_OIT_CALCULATOR__: string;
 
 // --- Minification Helpers ---
 
+/**
+ * Minifies an array of warning objects 
+ *
+ * @param warnings - The array of Warning objects to minify
+ * @returns An array of minified warning objects (MWarning)
+ */
 function minifyWarnings(warnings: Warning[]): MWarning[] {
   return warnings.map(w => ({
     c: w.code,
@@ -42,6 +48,12 @@ function minifyWarnings(warnings: Warning[]): MWarning[] {
   }));
 }
 
+/**
+ * Minifies a Food object
+ *
+ * @param f - The Food object to minify
+ * @returns The minified food object (MFood)
+ */
 function minifyFood(f: Food): MFood {
   // f is type Food, but we access properties to convert Decimal
   return {
@@ -52,6 +64,12 @@ function minifyFood(f: Food): MFood {
   };
 }
 
+/**
+ * Minifies a Step object
+ *
+ * @param s - The Step object to minify
+ * @returns The minified step object (MStep)
+ */
 function minifyStep(s: Step): MStep {
   // s is Step
   const ms: MStep = {
@@ -73,6 +91,9 @@ function minifyStep(s: Step): MStep {
 
 /**
  * Converts a full Protocol object into a Minified Protocol (MProtocol)
+ *
+ * @param p - The full Protocol object
+ * @returns The minified protocol object
  */
 export function minifyProtocol(p: Protocol): MProtocol {
   const mp: MProtocol = {
@@ -100,6 +121,9 @@ export function minifyProtocol(p: Protocol): MProtocol {
 
 /**
  * Generates information for final QR Payload
+ *
+ * @param history - The array of history items
+ * @returns A UserHistoryPayload object containing the version, timestamp, minified protocol, warnings, and history log, or null if history is empty
  */
 export function generateUserHistoryPayload(history: HistoryItem[]): UserHistoryPayload | null {
   if (history.length === 0) return null;
@@ -122,8 +146,9 @@ export function generateUserHistoryPayload(history: HistoryItem[]): UserHistoryP
 
 /**
  * Decodes a Base64 encoded QR string into a human-readable JSON object
- * @param b64String from QR code
- * @returns fully expanded JavaScript object with readable keys and Enums resolved
+ *
+ * @param b64String - The Base64 string from the QR code
+ * @returns A fully expanded JavaScript object with readable keys and Enums resolved, or null on failure
  */
 export async function decodeUserHistoryPayload(b64String: string): Promise<ReadableHistoryPayload | null> {
   try {
@@ -157,6 +182,12 @@ export async function decodeUserHistoryPayload(b64String: string): Promise<Reada
 
 // --- Helper: Expansion Logic ---
 
+/**
+ * Expands minified warnings back to their readable format
+ *
+ * @param mw - The array of minified warnings
+ * @returns An array of readable warning objects
+ */
 function expandWarnings(mw: MWarning[]): ReadableWarning[] {
   return mw.map(w => ({
     code: w.c,
@@ -164,6 +195,12 @@ function expandWarnings(mw: MWarning[]): ReadableWarning[] {
   }));
 }
 
+/**
+ * Expands a minified payload object into a human-readable history payload
+ *
+ * @param m - The minified payload object (parsed from JSON)
+ * @returns The readable history payload
+ */
 function expandPayload(m: any): ReadableHistoryPayload {
   const result: ReadableHistoryPayload = {
     version: m.v,
@@ -179,6 +216,12 @@ function expandPayload(m: any): ReadableHistoryPayload {
   return result;
 }
 
+/**
+ * Expands a minified protocol object into a readable protocol object
+ *
+ * @param p - The minified protocol object
+ * @returns The readable protocol object
+ */
 function expandProtocol(p: any): ReadableProtocol {
   return {
     dosingStrategy: p.ds === 0 ? "STANDARD" : "SLOW",
@@ -191,6 +234,12 @@ function expandProtocol(p: any): ReadableProtocol {
   };
 }
 
+/**
+ * Expands a minified food object into a readable food object
+ *
+ * @param f - The minified food object
+ * @returns The readable food object
+ */
 function expandFood(f: any): ReadableFood {
   return {
     name: f.n,
@@ -201,6 +250,12 @@ function expandFood(f: any): ReadableFood {
   };
 }
 
+/**
+ * Expands a minified step object into a readable step object
+ *
+ * @param s - The minified step object
+ * @returns The readable step object
+ */
 function expandStep(s: any): ReadableStep {
   const method = s.m === "D" ? "DIRECT" : "DILUTE";
 
@@ -222,6 +277,12 @@ function expandStep(s: any): ReadableStep {
   return step;
 }
 
+/**
+ * Maps the minified Food A strategy integer to its corresponding string representation
+ *
+ * @param val - The integer value representing the strategy
+ * @returns The string representation of the strategy (eg, "DILUTE_INITIAL")
+ */
 function mapFoodAStrategy(val: number): string {
   switch (val) {
     case 0: return "DILUTE_INITIAL";
