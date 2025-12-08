@@ -181,7 +181,7 @@ export const FoodDataSchema = z.object({
   Food: z.string(), // name
   "Mean protein in grams": z.number(), // not all will be the mean: this applies mainly to CNF data, not custom foods
   "Serving size": z.number(), // 100g for CNF but otherwise for custom foods will be variable
-  Type: z.string(), // SOLID or LIQUID
+  Type: z.nativeEnum(FoodType),
 });
 export type FoodData = z.infer<typeof FoodDataSchema>;
 
@@ -191,17 +191,17 @@ export type FoodData = z.infer<typeof FoodDataSchema>;
  */
 export const ProtocolDataSchema = z.object({
   name: z.string(),
-  dosing_strategy: z.string(),
+  dosing_strategy: z.nativeEnum(DosingStrategy),
   food_a: z.object({
-    type: z.string(),
+    type: z.nativeEnum(FoodType),
     name: z.string(),
     gramsInServing: z.string(),
     servingSize: z.string(),
   }),
-  food_a_strategy: z.string(),
+  food_a_strategy: z.nativeEnum(FoodAStrategy),
   di_threshold: z.string(),
   food_b: z.object({
-    type: z.string(),
+    type: z.nativeEnum(FoodType),
     name: z.string(),
     gramsInServing: z.string(),
     servingSize: z.string(),

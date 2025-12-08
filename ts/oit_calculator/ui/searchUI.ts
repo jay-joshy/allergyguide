@@ -142,7 +142,7 @@ export function showSearchDropdown(
 
       item.innerHTML = `
         ${escapeHtml(foodData.Food)}
-        <span class="food-type"> - ${escapeHtml(foodData.Type)} - Protein: ${foodData["Mean protein in grams"].toFixed(1)} g/${foodData["Serving size"]} ${foodData.Type === "Solid" ? "g" : "ml"}</span>
+        <span class="food-type"> - ${escapeHtml(foodData.Type)} - Protein: ${foodData["Mean protein in grams"].toFixed(1)} g/${foodData["Serving size"]} ${foodData.Type === "SOLID" ? "g" : "ml"}</span>
       `;
       item.addEventListener("click", () => {
         if (inputId === "food-a-search") {

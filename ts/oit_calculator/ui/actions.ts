@@ -22,7 +22,7 @@ import { DEFAULT_CONFIG } from "../constants";
 export function selectFoodA(foodData: FoodData): void {
   const food: Food = {
     name: foodData.Food,
-    type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
+    type: foodData.Type === "SOLID" ? FoodType.SOLID : FoodType.LIQUID,
     gramsInServing: new Decimal(foodData["Mean protein in grams"]),
     servingSize: new Decimal(foodData["Serving size"]),
     getMgPerUnit: function() {
@@ -53,7 +53,7 @@ export function selectFoodB(foodData: FoodData): void {
 
   const food: Food = {
     name: foodData.Food,
-    type: foodData.Type === "Solid" ? FoodType.SOLID : FoodType.LIQUID,
+    type: foodData.Type === "SOLID" ? FoodType.SOLID : FoodType.LIQUID,
     gramsInServing: new Decimal(foodData["Mean protein in grams"]),
     servingSize: new Decimal(foodData["Serving size"]),
     getMgPerUnit: function() {

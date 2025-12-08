@@ -3,12 +3,12 @@
     "Food": "PB2 - Powdered Peanut Butter - Original",
     "Mean protein in grams": 46.15,
     "Serving size": 100,
-    "Type": "Solid"
+    "Type": "SOLID"
   },
   {
     "Food": "PB&Me Powdered Natural Peanut Butter",
     "Mean protein in grams": 6,
     "Serving size": 12,
-    "Type": "Solid"
+    "Type": "SOLID"
   }
 ]
