@@ -324,7 +324,7 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
 
       // Embed in Footer first page bottom right
       doc.setPage(1);
-      doc.addImage(qrDataUrl, 'PNG', 520, 10, 80, 80);
+      doc.addImage(qrDataUrl, 'PNG', 493, 10, 80, 80);
 
       doc.setFontSize(6);
     }
