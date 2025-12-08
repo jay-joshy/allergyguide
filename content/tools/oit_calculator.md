@@ -16,7 +16,7 @@ authors = ["Joshua Yu"]
 <br>
 {% admonition(type="danger", icon="info", title="TERMS OF USE") %}
 
-**This tool is strictly for informational and planning support by qualified clinicians**. By using this tool you acknowledge that you are a qualified medical physician. _All dosing decisions must be reviewed and confirmed by the physician responsible for the patient’s care._ See [full terms of use](/tools/resources/oit-calculator-terms/). No PHI data are collected from this tool.
+**This tool is strictly for informational and planning support by qualified clinicians. It does not replace professional medical advice**. _All dosing decisions must be reviewed and confirmed by the physician responsible for the patient’s care._ See [full terms of use](/tools/resources/oit-calculator-terms/). No PHI data are collected from this tool.
 
 {% end %}
 
