@@ -127,12 +127,13 @@
      style="display: none;"
 ></div>
 
-<div style="margin-top: 3rem; padding: 1rem; border: 2px dashed red; background: #fff0f0;">
+<div id="oit-debug-panel" style="display: none; margin-top: 3rem; padding: 1rem; border: 2px dashed red; background: #fff0f0;">
 	<h4 style="margin-top: 0; color: red;">payload decoder</h4>
 	<div style="display: flex; gap: 10px;">
 		<input type="text" id="debug-audit-input" placeholder="b64 here" style="flex-grow: 1; padding: 5px;">
 		<button id="debug-audit-btn" style="cursor: pointer; padding: 5px 15px;">Decode</button>
 	</div>
+	<div id="debug-result-container"></div>
 </div>
 <!-- Load main script -->
 <script type="module" src="/js/{{ tool_info.file }}"></script>

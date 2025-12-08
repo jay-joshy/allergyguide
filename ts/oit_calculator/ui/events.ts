@@ -29,6 +29,7 @@ import {
 import type { Protocol } from "../types";
 
 import { clearFoodB } from "./actions";
+import { renderDebugResult } from "./renderers";
 
 // Debounce timers
 let inputDebounceTimer: number | null = null;
@@ -407,6 +408,8 @@ function attachDebugDelegation() {
         const result = await decodeUserHistoryPayload(val);
         console.log("Result:", result);
         console.groupEnd();
+        
+        renderDebugResult(result);
       } catch (e) {
         console.error("Decode failed", e);
         alert("Decode failed. Check console for error details.");

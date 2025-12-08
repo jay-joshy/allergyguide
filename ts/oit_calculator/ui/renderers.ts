@@ -792,3 +792,31 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
 
   container.innerHTML = html;
 }
+
+/**
+ * Renders the decoded debug payload into the debug result container
+ *
+ * @param payload - The decoded user history payload
+ */
+export function renderDebugResult(payload: any): void {
+  const container = document.getElementById("debug-result-container");
+  if (!container) return;
+
+  const html = `
+    <div style="margin-top: 1rem; border-top: 1px solid #ccc; padding-top: 1rem;">
+      <p><strong>Version:</strong> ${escapeHtml(payload.version)}</p>
+      <p><strong>Timestamp:</strong> ${escapeHtml(payload.timestamp)}</p>
+      <details>
+        <summary style="cursor: pointer; font-weight: bold;">History Log (${payload.historyLog.length} items)</summary>
+        <ul style="max-height: 200px; overflow-y: auto; background: #f5f5f5; padding: 0.5rem 1.5rem; margin-top: 0.5rem;">
+          ${payload.historyLog.map((item: string) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </details>
+      <details style="margin-top: 0.5rem;">
+        <summary style="cursor: pointer; font-weight: bold;">Full Protocol JSON</summary>
+        <pre style="background: #f5f5f5; padding: 0.5rem; overflow-x: auto; margin-top: 0.5rem;">${escapeHtml(JSON.stringify(payload.protocol, null, 2))}</pre>
+      </details>
+    </div>
+  `;
+  container.innerHTML = html;
+}
