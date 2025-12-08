@@ -104,8 +104,11 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
     // Build Food A section PDF
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text(`${protocol.foodA.name}`, 40, yPosition);
-    yPosition += 20;
+
+    const maxWidth = 440; // Avoid overlapping with QR code at x=493
+    const splitTitle = doc.splitTextToSize(protocol.foodA.name, maxWidth);
+    doc.text(splitTitle, 40, yPosition);
+    yPosition += (20 * splitTitle.length);
 
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
