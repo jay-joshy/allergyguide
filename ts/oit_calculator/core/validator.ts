@@ -271,7 +271,138 @@ function checkAnyStepType({ step, protocol, food }: { step: Step, protocol: Prot
   return warnings;
 };
 
+/**
+ * CHECKS ARE RUN USING ROUNDED USER FACING VALUES
+ * Checks specific to DILUTE steps.
+ * Handles: PROTEIN_MISMATCH, INSUFFICIENT_MIX_PROTEIN, IMPOSSIBLE_VOLUME, 
+ * INVALID_DILUTION_STEP_VALUES, LOW_SERVINGS, HIGH_SOLID_CONCENTRATION, HIGH_MIX_WATER
+ */
 function checkDilutionStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+  const warnings: Warning[] = [];
+
+  // Setup Rounded Values for Calculation
+  const mixUnit = getMeasuringUnit(food);
+  const roundedMixFoodAmount = new Decimal(formatAmount(step.mixFoodAmount, mixUnit));
+  const roundedMixWaterAmount = new Decimal(formatAmount(step.mixWaterAmount, "ml"));
+  const roundedDailyAmount = new Decimal(formatAmount(step.dailyAmount, "ml"));
+
+  // Calculate Protein based on what the user actually measures
+  const totalMixProteinBasedOnRounded = roundedMixFoodAmount.times(food.getMgPerUnit());
+
+  // assume solid do not contribute to volume, while volume to volume is additive
+  let mixTotalVolumeBasedOnRounded = food.type === FoodType.SOLID
+    ? roundedMixWaterAmount
+    : roundedMixFoodAmount.plus(roundedMixWaterAmount);
+
+  // TODO! Anything better to handle this very weird case?
+  if (mixTotalVolumeBasedOnRounded.isZero()) {
+    mixTotalVolumeBasedOnRounded = new Decimal(1); // Avoid division by zero
+  }
+
+  // PROTEIN_MISMATCH:
+  // NOTE: this uses ROUNDED values
+  const calculatedProtein = totalMixProteinBasedOnRounded
+    .times(roundedDailyAmount)
+    .dividedBy(mixTotalVolumeBasedOnRounded);
+
+  if (!step.targetMg.isZero()) {
+    const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
+    if (delta.greaterThan(protocol.config.PROTEIN_TOLERANCE)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Red.PROTEIN_MISMATCH),
+        code: WarningCode.Red.PROTEIN_MISMATCH,
+        message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
+        stepIndex: step.stepIndex,
+      });
+    }
+  }
+
+  // INSUFFICIENT_MIX_PROTEIN:
+  // NOTE: this does NOT use rounded values
+  if (step.servings?.lessThan(new Decimal(1))) {
+    const totalMixProtein = step.mixFoodAmount!.times(food.getMgPerUnit());
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INSUFFICIENT_MIX_PROTEIN),
+      code: WarningCode.Red.INSUFFICIENT_MIX_PROTEIN,
+      message: `Step ${step.stepIndex}: ${formatAmount(step.mixFoodAmount, getMeasuringUnit(food))} ${getMeasuringUnit(food)} of food only makes ${formatNumber(totalMixProtein, 1)} mg of total protein. However, target protein is ${formatNumber(step.targetMg, 1)} mg.`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  // IMPOSSIBLE_VOLUME:
+  const mixTotalVolume = food.type === FoodType.SOLID
+    ? step.mixWaterAmount
+    : step.mixFoodAmount!.plus(step.mixWaterAmount!);
+
+  if (mixTotalVolume!.lessThan(step.dailyAmount)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.IMPOSSIBLE_VOLUME),
+      code: WarningCode.Red.IMPOSSIBLE_VOLUME,
+      message: `Step ${step.stepIndex}: Total volume of dilution is ${formatNumber(mixTotalVolume, LIQUID_RESOLUTION)} ml; however, daily amount is ${formatNumber(step.dailyAmount, LIQUID_RESOLUTION)} ml, which is impossible`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  // INVALID_DILUTION_STEP_VALUES:
+  if (step.dailyAmount.lessThanOrEqualTo(0)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_DILUTION_STEP_VALUES),
+      code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
+      message: `Step ${step.stepIndex}: Daily amount cannot be <= 0 ml`,
+      stepIndex: step.stepIndex,
+    });
+  }
+  if (step.mixFoodAmount!.lessThanOrEqualTo(0)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_DILUTION_STEP_VALUES),
+      code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
+      message: `Step ${step.stepIndex}: Amount of food to mix cannot be <= 0 ${getMeasuringUnit(food)}`,
+      stepIndex: step.stepIndex,
+    });
+  }
+  if (step.mixWaterAmount!.lessThan(0)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_DILUTION_STEP_VALUES),
+      code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
+      message: `Step ${step.stepIndex}: Amount of water to mix cannot be < 0 ml`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  // LOW_SERVINGS
+  if (step.servings!.lessThan(protocol.config.minServingsForMix) && step.servings!.greaterThan(new Decimal(1))) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Yellow.LOW_SERVINGS),
+      code: WarningCode.Yellow.LOW_SERVINGS,
+      message: `Step ${step.stepIndex}: Only ${formatNumber(step.servings, 1)} servings (< ${DEFAULT_CONFIG.minServingsForMix} - impractical). Consider increasing mix amounts.`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  // HIGH_SOLID_CONCENTRATION
+  if (
+    food.type === FoodType.SOLID &&
+    step.mixFoodAmount!.dividedBy(step.mixWaterAmount!).greaterThan(new Decimal(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION))
+  ) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Yellow.HIGH_SOLID_CONCENTRATION),
+      code: WarningCode.Yellow.HIGH_SOLID_CONCENTRATION,
+      message: `Step ${step.stepIndex}: at ${formatNumber(step.mixFoodAmount, SOLID_RESOLUTION)} g of food in ${formatNumber(step.mixWaterAmount, LIQUID_RESOLUTION)} ml of water, the w/v is > ${formatNumber(DEFAULT_CONFIG.MAX_SOLID_CONCENTRATION.times(100), 0)}%. The assumption that the food contributes non-negligibly to the total volume of dilution is likely violated. Consider increasing the Daily Amount`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  // HIGH_MIX_WATER
+  if (step.mixWaterAmount && step.mixWaterAmount.greaterThan(protocol.config.MAX_MIX_WATER)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Yellow.HIGH_MIX_WATER),
+      code: WarningCode.Yellow.HIGH_MIX_WATER,
+      message: `Step ${step.stepIndex}: Mix water amount of ${formatAmount(step.mixWaterAmount, "ml")} ml is impractically high (> ${formatAmount(protocol.config.MAX_MIX_WATER, "ml")} ml).`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  return warnings;
 };
 
 /**
