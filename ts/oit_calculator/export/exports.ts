@@ -47,7 +47,7 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
     });
 
   // generate main protocol doc table
-  const doc: any = new JsPdfClass({
+  const doc: jsPDF = new JsPdfClass({
     unit: "pt",
     format: "letter",
   });
@@ -283,8 +283,8 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
   }
 
   // Add footer with disclaimer
-  const pageCount = doc.internal.getNumberOfPages();
-  for (let i = 1; i <= pageCount; i++) {
+  const pageCount = doc.internal.pages.length;
+  for (let i = 1; i < pageCount; i++) {
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setFont("helvetica", "italic");
@@ -344,9 +344,9 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
 
   // order of pdfs
   const reviewSheetPages = await mergedPdf.copyPages(reviewSheetPdf, reviewSheetPdf.getPageIndices());
-  reviewSheetPages.forEach((page: any) => mergedPdf.addPage(page));
+  reviewSheetPages.forEach((page) => mergedPdf.addPage(page));
   const protocolPages = await mergedPdf.copyPages(protocolPdf, protocolPdf.getPageIndices());
-  protocolPages.forEach((page: any) => mergedPdf.addPage(page));
+  protocolPages.forEach((page) => mergedPdf.addPage(page));
 
   // create blob
   const mergedPdfBytes = await mergedPdf.save();
