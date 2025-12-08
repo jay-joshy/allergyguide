@@ -25,7 +25,7 @@ export class ProtocolState {
   }
 
   /**
-   * @returns Full rich history including current state
+   * @returns Full rich history including current state, which is *always the last element*
    */
   public getHistory(): HistoryItem[] {
     const list = [...this.history];
