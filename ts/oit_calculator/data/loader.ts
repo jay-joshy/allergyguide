@@ -1,14 +1,17 @@
 import fuzzysort from "fuzzysort";
 import type { FoodData, ProtocolData } from "../types";
 
+// Helper type: Takes any object T and adds the 'prepared' property from Fuzzysort
+type PreparedItem<T> = T & { prepared: Fuzzysort.Prepared };
+
 /**
  * Return type structure for the loaded application data.
  */
 export interface LoadedData {
   foodsDatabase: FoodData[];
   protocolsDatabase: ProtocolData[];
-  fuzzySortPreparedFoods: Fuzzysort.Prepared[];
-  fuzzySortPreparedProtocols: Fuzzysort.Prepared[];
+  fuzzySortPreparedFoods: PreparedItem<FoodData>[];
+  fuzzySortPreparedProtocols: PreparedItem<ProtocolData>[];
 }
 
 /**
@@ -64,8 +67,8 @@ export async function loadDatabases(): Promise<LoadedData> {
     return {
       foodsDatabase,
       protocolsDatabase,
-      fuzzySortPreparedFoods: fuzzySortPreparedFoods as any, // TODO! get rid of any in future
-      fuzzySortPreparedProtocols: fuzzySortPreparedProtocols as any
+      fuzzySortPreparedFoods,
+      fuzzySortPreparedProtocols
     };
   } catch (error) {
     console.error("Error loading databases:", error);
