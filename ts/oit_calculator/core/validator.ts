@@ -319,14 +319,31 @@ export function validateProtocol(protocol: Protocol): Warning[] {
     }
   }
 
-  // NON_ASCENDING_STEPS: Non-ascending steps
+  // SEQUENCE VALIDATION (Ascending and duplicates)
   for (let i = 1; i < protocol.steps.length; i++) {
-    if (protocol.steps[i].targetMg.lessThan(protocol.steps[i - 1].targetMg)) {
+    const currentStep = protocol.steps[i];
+    const prevStep = protocol.steps[i - 1];
+
+    // NON_ASCENDING_STEPS:
+    if (currentStep.targetMg.lessThan(prevStep.targetMg)) {
       warnings.push({
         severity: getWarningSeverity(WarningCode.Yellow.NON_ASCENDING_STEPS),
         code: WarningCode.Yellow.NON_ASCENDING_STEPS,
-        message: `Steps must be ascending or equal — check step ${protocol.steps[i].stepIndex} vs step ${protocol.steps[i - 1].stepIndex}.`,
-        stepIndex: protocol.steps[i].stepIndex,
+        message: `Steps must be ascending or equal — check step ${currentStep.stepIndex} vs step ${prevStep.stepIndex}.`,
+        stepIndex: currentStep.stepIndex,
+      });
+    }
+
+    // DUPLICATE_STEP: Two directly adj steps have the same dose, and are the same food.
+    if (
+      currentStep.food === prevStep.food &&
+      currentStep.targetMg.equals(prevStep.targetMg)
+    ) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Yellow.DUPLICATE_STEP),
+        code: WarningCode.Yellow.DUPLICATE_STEP,
+        message: `Step ${prevStep.stepIndex} and Step ${currentStep.stepIndex} have the same target protein. This is redundant.`,
+        stepIndex: currentStep.stepIndex,
       });
     }
   }

@@ -62,6 +62,7 @@ export const WarningCode = {
     BELOW_RESOLUTION: "BELOW_RESOLUTION",
     HIGH_SOLID_CONCENTRATION: "HIGH_SOLID_CONCENTRATION",
     NO_TRANSITION_POINT: "NO_TRANSITION_POINT",
+    DUPLICATE_STEP: "DUPLICATE_STEP"
   }
 } as const;
 // to use in Warning interface

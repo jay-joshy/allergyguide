@@ -105,5 +105,28 @@ describe('Core: Validator', () => {
        const warnings = validateProtocol(protocol);
        expect(warnings.some(w => w.code === WarningCode.Yellow.HIGH_SOLID_CONCENTRATION)).toBe(true);
     });
+
+    it('should flag DUPLICATE_STEP for redundant adjacent steps', () => {
+      const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+      // Make step 2 same as step 1
+      protocol.steps[1].targetMg = protocol.steps[0].targetMg;
+      
+      const warnings = validateProtocol(protocol);
+      expect(warnings.some(w => w.code === WarningCode.Yellow.DUPLICATE_STEP)).toBe(true);
+    });
+
+    it('should NOT flag DUPLICATE_STEP if foods are different (transition)', () => {
+       const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+       // Make adjacent steps have same target but different food
+       protocol.steps[1].targetMg = protocol.steps[0].targetMg;
+       protocol.steps[0].food = 'A';
+       protocol.steps[1].food = 'B';
+       
+       // Ensure Food B is defined
+       protocol.foodB = { ...food, name: 'Food B' };
+
+       const warnings = validateProtocol(protocol);
+       expect(warnings.some(w => w.code === WarningCode.Yellow.DUPLICATE_STEP)).toBe(false);
+    });
   });
 });
