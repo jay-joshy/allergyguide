@@ -469,9 +469,11 @@ export function renderProtocolTable(protocol: Protocol | null, customNote: strin
           break;
         }
         // Check method consistency to ensure input vs n/a matches
-        // THIS IS HARD CODED AND BRITTLE
-        // Method cell is index 2, Mix Amount is index 3.
-        const mixCell = row.children[3];
+        const mixCell = row.querySelector('.col-mix-food');
+        if (!mixCell) {
+          needsFullRebuild = true;
+          break;
+        }
         const hasInput = !!mixCell.querySelector('input');
         const shouldHaveInput = spec.step.method === Method.DILUTE;
         if (hasInput !== shouldHaveInput) {
@@ -525,29 +527,32 @@ export function renderProtocolTable(protocol: Protocol | null, customNote: strin
         patchInput(row, '.editable[data-field="dailyAmount"]', spec.dailyAmountVal, spec.step.stepIndex);
 
         // Method Text
-        // [2] = DILUTE or DIRECT
-        const methodCell = row.children[2] as HTMLElement;
-        if (methodCell.textContent !== spec.step.method) methodCell.textContent = spec.step.method;
+        const methodCell = row.querySelector('.col-method');
+        if (methodCell && methodCell.textContent !== spec.step.method) methodCell.textContent = spec.step.method;
 
         // Water / Servings
         if (spec.step.method === Method.DILUTE) {
-          const waterCell = row.children[4] as HTMLElement;
-          const text = `${formatAmount(spec.step.mixWaterAmount!, "ml")} ml`;
-          const html = `${text}\n<span style="color: var(--oit-text-secondary); font-size: 0.85rem;"> (${formatNumber(spec.step.servings!, 1)} servings)</span>\n`;
+          const waterCell = row.querySelector('.col-mix-water');
+          if (waterCell) {
+            const text = `${formatAmount(spec.step.mixWaterAmount!, "ml")} ml`;
+            const html = `${text}\n<span style="color: var(--oit-text-secondary); font-size: 0.85rem;"> (${formatNumber(spec.step.servings!, 1)} servings)</span>\n`;
 
-          // Simple check:
-          if (!waterCell.innerHTML.includes(text) || !waterCell.innerHTML.includes(formatNumber(spec.step.servings!, 1))) {
-            waterCell.innerHTML = html; // set
+            // Simple check:
+            if (!waterCell.innerHTML.includes(text) || !waterCell.innerHTML.includes(formatNumber(spec.step.servings!, 1))) {
+              waterCell.innerHTML = html; // set
+            }
           }
         }
 
-        // patch Units in:
-        // [3] - mix amount, [5] - daily amount
+        // patch Units
         if (spec.step.method === Method.DILUTE) {
-          const unitSpan = row.children[3].querySelector('span');
+          const mixCell = row.querySelector('.col-mix-food');
+          const unitSpan = mixCell ? mixCell.querySelector('span') : null;
           if (unitSpan && unitSpan.textContent?.trim() !== spec.mixUnit) unitSpan.textContent = ` ${spec.mixUnit}`;
         }
-        const daUnitSpan = row.children[5].querySelector('span');
+
+        const daCell = row.querySelector('.col-daily-amount');
+        const daUnitSpan = daCell ? daCell.querySelector('span') : null;
         if (daUnitSpan && daUnitSpan.textContent?.trim() !== spec.step.dailyAmountUnit) daUnitSpan.textContent = ` ${spec.step.dailyAmountUnit}`;
       }
     }
@@ -594,7 +599,7 @@ function renderFullTable(tableContainer: HTMLElement, expectedRows: RowSpec[], c
 
       // Actions + Step number
       html += `
-        <td>
+        <td class="col-actions">
           <div class="actions-cell">
             <button class="btn-add-step" data-step="${step.stepIndex}">+</button>
             <button class="btn-remove-step" data-step="${step.stepIndex}">−</button>
@@ -605,7 +610,7 @@ function renderFullTable(tableContainer: HTMLElement, expectedRows: RowSpec[], c
 
       // Protein (editable)
       html += `
-        <td>
+        <td class="col-protein">
           <input
             class="editable"
             type="number"
@@ -620,13 +625,13 @@ function renderFullTable(tableContainer: HTMLElement, expectedRows: RowSpec[], c
 
       // Method
       html += `
-        <td class="method-cell">${step.method}</td>
+        <td class="col-method">${step.method}</td>
       `;
 
       // Amount for mixture
       if (step.method === Method.DILUTE) {
         html += `
-          <td>
+          <td class="col-mix-food">
             <input
               class="editable"
               type="number"
@@ -640,24 +645,24 @@ function renderFullTable(tableContainer: HTMLElement, expectedRows: RowSpec[], c
           </td>
         `;
       } else {
-        html += `<td class="na-cell">n/a</td>`;
+        html += `<td class="na-cell col-mix-food">n/a</td>`;
       }
 
       // Water for mixture
       if (step.method === Method.DILUTE) {
         html += `
-          <td class="non-editable">
+          <td class="non-editable col-mix-water">
             ${formatAmount(step.mixWaterAmount!, "ml")} ml
             <span style="color: var(--oit-text-secondary); font-size: 0.85rem;"> (${formatNumber(step.servings!, 1)} servings)</span>
           </td>
         `;
       } else {
-        html += `<td class="na-cell">n/a</td>`;
+        html += `<td class="na-cell col-mix-water">n/a</td>`;
       }
 
       // Daily amount
       html += `
-        <td>
+        <td class="col-daily-amount">
           <input
             class="editable"
             type="number"
