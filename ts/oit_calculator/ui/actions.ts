@@ -118,7 +118,7 @@ export function selectCustomFood(name: string, inputId: string): void {
 /**
  * Load a protocol template from JSON metadata.
  *
- * Populates Food A, strategy, thresholds, and the appropriate step table (table_di, table_dn, or table_da). Also loads Food B and its threshold if present. Computes servings for any dilution steps.
+ * Populates Food A, strategy, thresholds, and the step/row table. Also loads Food B and its threshold if present. Computes servings for any dilution steps.
  *
  * changes global protocolState instance to trigger rerender
  *
@@ -150,15 +150,8 @@ export function selectProtocol(protocolData: ProtocolData): void {
     protocolState.setCustomNote(protocolData.custom_note);
   }
 
-  // load steps from the relevant table (table_di, table_dn, or table_da
-  let tableToLoad: any[] = [];
-  if (protocol.foodAStrategy === FoodAStrategy.DILUTE_INITIAL) {
-    tableToLoad = protocolData.table_di;
-  } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_NONE) {
-    tableToLoad = protocolData.table_dn;
-  } else if (protocol.foodAStrategy === FoodAStrategy.DILUTE_ALL) {
-    tableToLoad = protocolData.table_da;
-  }
+  // load steps 
+  const tableToLoad = protocolData.table;
 
   // load steps from relevant table
   for (let i = 0; i < tableToLoad.length; i++) {
@@ -168,15 +161,15 @@ export function selectProtocol(protocolData: ProtocolData): void {
       targetMg: new Decimal(row.protein),
       method: row.method === "DILUTE" ? Method.DILUTE : Method.DIRECT,
       dailyAmount: new Decimal(row.daily_amount),
-      dailyAmountUnit: row.method === "DILUTE" ? "ml" : row.food === foodA.name ? foodA.type === FoodType.SOLID ? "g" : "ml" : "g",
-      food: row.food === foodA.name ? "A" : "B",
+      dailyAmountUnit: row.method === "DILUTE" ? "ml" : row.food === "A" ? foodA.type === FoodType.SOLID ? "g" : "ml" : "g",
+      food: row.food,
     };
 
-    if (row.method === "DILUTE") {
+    if (row.method === "DILUTE" && row.mix_amount && row.water_amount) {
       step.mixFoodAmount = new Decimal(row.mix_amount);
       step.mixWaterAmount = new Decimal(row.water_amount);
       // Calculate servings
-      const food = row.food === foodA.name ? foodA : protocol.foodB!;
+      const food = row.food === "A" ? foodA : protocol.foodB!;
       const totalMixProtein = step.mixFoodAmount.times(food.getMgPerUnit());
       step.servings = totalMixProtein.dividedBy(step.targetMg);
     }

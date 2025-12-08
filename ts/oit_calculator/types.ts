@@ -172,6 +172,11 @@ export interface Candidate {
   servings: Decimal;
 }
 
+
+// ============================================
+// JSON SCHEMAS / INTERFACES - expected structure of items in jsons loaded on init
+// ============================================
+
 // TODO! Clean up the CNF file; some of the SOLID/LIQUID distinctions are wrong still
 /**
  * Food database record (as loaded from JSON containing with data from Canadian Nutrient File, Health Canada, 2015).
@@ -184,6 +189,16 @@ export const FoodDataSchema = z.object({
   Type: z.enum(FoodType),
 });
 export type FoodData = z.infer<typeof FoodDataSchema>;
+
+export const RowDataSchema = z.object({
+  food: z.enum(["A", "B"]),
+  protein: z.string(),
+  method: z.enum(["DIRECT", "DILUTE"]),
+  daily_amount: z.string(),
+  mix_amount: z.string().optional(),
+  water_amount: z.string().optional()
+});
+export type RowData = z.infer<typeof RowDataSchema>;
 
 /**
  * Protocol template record (as loaded from JSON).
@@ -207,9 +222,7 @@ export const ProtocolDataSchema = z.object({
     servingSize: z.string(),
   }).optional(),
   food_b_threshold: z.string().optional(),
-  table_di: z.array(z.any()),
-  table_dn: z.array(z.any()),
-  table_da: z.array(z.any()),
+  table: z.array(RowDataSchema),
   custom_note: z.string().optional(),
 });
 export type ProtocolData = z.infer<typeof ProtocolDataSchema>;
