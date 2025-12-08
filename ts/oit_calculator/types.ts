@@ -242,3 +242,44 @@ export interface UserHistoryPayload {
   p: MProtocol;   // Current Protocol State
   h: string[];    // History of action labels only (stripped timestamps)
 }
+
+// ============================================
+// READABLE INTERFACES (For Decoded Payload)
+// ============================================
+// The purpose of these interfaces is when a userhistory payload (minified as per above) needs to be read by a human. These don't include the config as these are not changeable by the user and can simply be found by going to the relevant commit hash
+
+export interface ReadableFood {
+  name: string;
+  type: string; // "SOLID" | "LIQUID"
+  gramsInServing: number;
+  servingSize: number;
+  proteinConcentrationMgPerUnit: number;
+}
+
+export interface ReadableStep {
+  stepIndex: number;
+  targetMg: number;
+  method: string; // "DIRECT" | "DILUTE"
+  dailyAmount: number;
+  foodSource: string; // "Food A" | "Food B"
+  mixFoodAmount?: number;
+  mixWaterAmount?: number;
+  servings?: number;
+}
+
+export interface ReadableProtocol {
+  dosingStrategy: string;
+  foodAStrategy: string;
+  diThreshold: number;
+  foodBThreshold?: number;
+  foodA: ReadableFood;
+  foodB?: ReadableFood;
+  steps: ReadableStep[];
+}
+
+export interface ReadableHistoryPayload {
+  version: string;
+  timestamp: string; // ISO String
+  protocol: ReadableProtocol;
+  historyLog: string[];
+}

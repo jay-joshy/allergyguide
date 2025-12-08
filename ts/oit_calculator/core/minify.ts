@@ -10,7 +10,11 @@ import type {
   MStep,
   Step,
   UserHistoryPayload,
-  Food
+  Food,
+  ReadableHistoryPayload,
+  ReadableProtocol,
+  ReadableFood,
+  ReadableStep
 } from "../types";
 import {
   FoodType,
@@ -105,7 +109,7 @@ export function generateUserHistoryPayload(history: HistoryItem[]): UserHistoryP
  * @param b64String from QR code
  * @returns fully expanded JavaScript object with readable keys and Enums resolved
  */
-export async function decodeUserHistoryPayload(b64String: string): Promise<any> {
+export async function decodeUserHistoryPayload(b64String: string): Promise<ReadableHistoryPayload | null> {
   try {
     const { inflate } = await import('pako');
 
@@ -137,7 +141,7 @@ export async function decodeUserHistoryPayload(b64String: string): Promise<any> 
 
 // --- Helper: Expansion Logic ---
 
-function expandPayload(m: any): any {
+function expandPayload(m: any): ReadableHistoryPayload {
   return {
     version: m.v,
     timestamp: new Date(m.ts).toISOString(), // Convert epoch to Readable Date
@@ -146,7 +150,7 @@ function expandPayload(m: any): any {
   };
 }
 
-function expandProtocol(p: any): any {
+function expandProtocol(p: any): ReadableProtocol {
   return {
     dosingStrategy: p.ds === 0 ? "STANDARD" : "SLOW",
     foodAStrategy: mapFoodAStrategy(p.fas),
@@ -158,7 +162,7 @@ function expandProtocol(p: any): any {
   };
 }
 
-function expandFood(f: any): any {
+function expandFood(f: any): ReadableFood {
   return {
     name: f.n,
     type: f.t === 0 ? "SOLID" : "LIQUID",
@@ -168,7 +172,7 @@ function expandFood(f: any): any {
   };
 }
 
-function expandStep(s: any): any {
+function expandStep(s: any): ReadableStep {
   const method = s.m === "D" ? "DIRECT" : "DILUTE";
 
   const step: any = {
