@@ -47,10 +47,17 @@ import {
  * @returns Array of warnings, possibly empty
  */
 export function validateProtocol(protocol: Protocol): Warning[] {
+  let warnings: Warning[] = [];
+
+  warnings = [...validateSettings(protocol)];
+  warnings = [...warnings, ...validateSteps(protocol)];
+
+  return warnings;
+}
+
+function validateSettings(protocol: Protocol): Warning[] {
   const warnings: Warning[] = [];
 
-  // NON STEP SETTINGS
-  // -----------------
   // TOO_FEW_STEPS: Too few steps
   if (protocol.steps.length < 5) {
     warnings.push({
@@ -94,9 +101,12 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       });
     }
   }
+  return warnings;
+}
 
-  // STEP VALIDATION ONE BY ONE
-  // --------------------------
+function validateSteps(protocol: Protocol): Warning[] {
+  const warnings: Warning[] = []
+
   for (const step of protocol.steps) {
     const isStepFoodB = step.food === "B";
     const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
@@ -347,6 +357,5 @@ export function validateProtocol(protocol: Protocol): Warning[] {
       });
     }
   }
-
   return warnings;
 }
