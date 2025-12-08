@@ -162,9 +162,7 @@ function validateAllSteps(protocol: Protocol): Warning[] {
 
 /**
  * Checks if the configured amounts are practically measurable by home tools - VALIDATES AGAINST ROUNDED AMOUNTS
- *  Problems checked:
- * - if measured amounts are < minMeasureableMass, minMeasurableVolume
- * - if grams in serving > serving size
+ * Handles BELOW_RESOLUTION for both Dilution and Direct methods
  */
 function checkMeasurability({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
   const warnings: Warning[] = [];
@@ -245,11 +243,32 @@ function checkMeasurability({ step, protocol, food }: { step: Step, protocol: Pr
 
 /**
  *  This is for checks that apply to ANY step regardless of method
- *  Problems checked:
- * - if all steps have at least ascending targetMg
- * - if adjacent targetMg are duplicate, unless A -> transition
+ *  Handles: INVALID_TARGET, HIGH_DAILY_AMOUNT
  */
 function checkAnyStepType({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+  const warnings: Warning[] = [];
+
+  // INVALID_TARGET: Step targetMg zero or negative
+  if (step.targetMg.lessThanOrEqualTo(new Decimal(0))) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Red.INVALID_TARGET),
+      code: WarningCode.Red.INVALID_TARGET,
+      message: `Step ${step.stepIndex}: A target protein of ${formatNumber(step.targetMg, 1)} mg is NOT valid. It must be >0.`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  // HIGH_DAILY_AMOUNT: more than the practical amount
+  if (step.dailyAmount.greaterThan(protocol.config.MAX_DAILY_AMOUNT)) {
+    warnings.push({
+      severity: getWarningSeverity(WarningCode.Yellow.HIGH_DAILY_AMOUNT),
+      code: WarningCode.Yellow.HIGH_DAILY_AMOUNT,
+      message: `Step ${step.stepIndex}: Daily amount of ${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit} is impractically high (> ${formatAmount(protocol.config.MAX_DAILY_AMOUNT, step.dailyAmountUnit)} ${step.dailyAmountUnit}).`,
+      stepIndex: step.stepIndex,
+    });
+  }
+
+  return warnings;
 };
 
 function checkDilutionStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
