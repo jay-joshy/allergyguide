@@ -17,6 +17,7 @@ authors = ["Joshua Yu"]
 - New DUPLICATE_STEP warning: Flags redundant adjacent steps with the same food and target protein
 - New HIGH_DAILY_AMOUNT warning: Flags daily protein amounts exceeding an upper limit (yellow warning), 250 g or ml
 - New HIGH_MIX_WATER warning: Flags mix water volumes exceeding an upper limit (yellow warning), 500 ml
+- Data integrity checks: on startup, validates all food and protocol data to prevent potential calculation errors caused by malformed database entries
 
 ### Changed
 
