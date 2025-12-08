@@ -11,9 +11,9 @@
     },
     "food_a_strategy": "DILUTE_INITIAL",
     "di_threshold": "0.5",
-    "table_di": [
+    "table": [
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "1",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -21,7 +21,7 @@
         "water_amount": "19"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "2.5",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -29,7 +29,7 @@
         "water_amount": "7"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "5",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -37,56 +37,54 @@
         "water_amount": "3"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "10",
         "method": "DIRECT",
         "daily_amount": "0.5"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "20",
         "method": "DIRECT",
         "daily_amount": "1"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "40",
         "method": "DIRECT",
         "daily_amount": "2"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "80",
         "method": "DIRECT",
         "daily_amount": "4"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "120",
         "method": "DIRECT",
         "daily_amount": "6"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "160",
         "method": "DIRECT",
         "daily_amount": "8"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "240",
         "method": "DIRECT",
         "daily_amount": "12"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "300",
         "method": "DIRECT",
         "daily_amount": "15"
       }
     ],
-    "table_dn": [],
-    "table_da": [],
     "custom_note": "Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving."
   },
   {
@@ -109,9 +107,9 @@
       "mgPerUnit": "210"
     },
     "food_b_threshold": "0.4",
-    "table_di": [
+    "table": [
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "1",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -119,7 +117,7 @@
         "water_amount": "19"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "2.5",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -127,7 +125,7 @@
         "water_amount": "7"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "5",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -135,62 +133,60 @@
         "water_amount": "3"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "10",
         "method": "DIRECT",
         "daily_amount": "0.5"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "20",
         "method": "DIRECT",
         "daily_amount": "1"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "40",
         "method": "DIRECT",
         "daily_amount": "2"
       },
       {
-        "food": "Elmhurst Milked Almonds Unsweetened Beverage",
+        "food": "A",
         "protein": "80",
         "method": "DIRECT",
         "daily_amount": "4"
       },
       {
-        "food": "Almonds (dry roasted, unblanched)",
+        "food": "B",
         "protein": "80",
         "method": "DIRECT",
         "daily_amount": "0.4"
       },
       {
-        "food": "Almonds (dry roasted, unblanched)",
+        "food": "B",
         "protein": "120",
         "method": "DIRECT",
         "daily_amount": "0.6"
       },
       {
-        "food": "Almonds (dry roasted, unblanched)",
+        "food": "B",
         "protein": "160",
         "method": "DIRECT",
         "daily_amount": "0.8"
       },
       {
-        "food": "Almonds (dry roasted, unblanched)",
+        "food": "B",
         "protein": "240",
         "method": "DIRECT",
         "daily_amount": "1.1"
       },
       {
-        "food": "Almonds (dry roasted, unblanched)",
+        "food": "B",
         "protein": "300",
         "method": "DIRECT",
         "daily_amount": "1.4"
       }
     ],
-    "table_dn": [],
-    "table_da": [],
     "custom_note": "Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving."
   },
   {
@@ -205,9 +201,9 @@
     },
     "food_a_strategy": "DILUTE_INITIAL",
     "di_threshold": "0.1",
-    "table_di": [
+    "table": [
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "1",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -215,7 +211,7 @@
         "water_amount": "77"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "2.5",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -223,7 +219,7 @@
         "water_amount": "30"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "5",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -231,7 +227,7 @@
         "water_amount": "15"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "10",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -239,7 +235,7 @@
         "water_amount": "8"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "20",
         "method": "DILUTE",
         "daily_amount": "1",
@@ -247,44 +243,42 @@
         "water_amount": "8"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "40",
         "method": "DIRECT",
         "daily_amount": "0.1"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "80",
         "method": "DIRECT",
         "daily_amount": "0.2"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "120",
         "method": "DIRECT",
         "daily_amount": "0.3"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "160",
         "method": "DIRECT",
         "daily_amount": "0.4"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "240",
         "method": "DIRECT",
         "daily_amount": "0.6"
       },
       {
-        "food": "PB2 Powdered Almond Butter",
+        "food": "A",
         "protein": "300",
         "method": "DIRECT",
         "daily_amount": "0.8"
       }
     ],
-    "table_dn": [],
-    "table_da": [],
     "custom_note": "Make a fresh mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase PB2 Powdered Almond Butter with 5 grams of protein per 13 gram serving."
   },
   {
@@ -299,63 +293,61 @@
     },
     "food_a_strategy": "DILUTE_NONE",
     "di_threshold": "0.2",
-    "table_di": [],
-    "table_dn": [
+    "table": [
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "1",
         "method": "DIRECT",
         "daily_amount": "0.25"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "2.5",
         "method": "DIRECT",
         "daily_amount": "0.63"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "5",
         "method": "DIRECT",
         "daily_amount": "1.25"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "10",
         "method": "DIRECT",
         "daily_amount": "2.5"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "20",
         "method": "DIRECT",
         "daily_amount": "5"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "40",
         "method": "DIRECT",
         "daily_amount": "10"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "80",
         "method": "DIRECT",
         "daily_amount": "20"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "160",
         "method": "DIRECT",
         "daily_amount": "40"
       },
       {
-        "food": "Cow Milk",
+        "food": "A",
         "protein": "300",
         "method": "DIRECT",
         "daily_amount": "75"
       }
-    ],
-    "table_da": []
+    ]
   }
 ]
