@@ -274,7 +274,32 @@ function checkAnyStepType({ step, protocol, food }: { step: Step, protocol: Prot
 function checkDilutionStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
 };
 
+/**
+ * Checks specific to DIRECT steps.
+ * Uses ROUNDED USER FACING VALUES to check
+ * Handles: PROTEIN_MISMATCH
+ */
 function checkDirectStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+  const warnings: Warning[] = [];
+
+  const dailyAmountUnit = step.dailyAmountUnit;
+  const roundedDailyAmount = new Decimal(formatAmount(step.dailyAmount, dailyAmountUnit));
+  const calculatedProtein = roundedDailyAmount.times(food.getMgPerUnit());
+
+  // PROTEIN_MISMATCH
+  if (!step.targetMg.isZero()) {
+    const delta = calculatedProtein.dividedBy(step.targetMg).minus(1).abs();
+    if (delta.greaterThan(protocol.config.PROTEIN_TOLERANCE)) {
+      warnings.push({
+        severity: getWarningSeverity(WarningCode.Red.PROTEIN_MISMATCH),
+        code: WarningCode.Red.PROTEIN_MISMATCH,
+        message: `Step ${step.stepIndex}: Protein mismatch. Target ${formatNumber(step.targetMg, 1)} mg but calculated ${formatNumber(calculatedProtein, 1)} mg: ${formatNumber(delta.times(100), 0)}% difference.`,
+        stepIndex: step.stepIndex,
+      });
+    }
+  }
+
+  return warnings;
 };
 
 /**
