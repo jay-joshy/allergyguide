@@ -79,6 +79,15 @@ async function initializeCalculator(): Promise<void> {
   // Set up clickwrap modal
   attachClickwrapEventListeners(triggerPdfGeneration);
 
+  // Check for debug mode
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('debug') === 'true') {
+    const debugPanel = document.getElementById('oit-debug-panel');
+    if (debugPanel) {
+      debugPanel.style.display = 'block';
+    }
+  }
+
   console.log("OIT Calculator initialized");
 }
 
