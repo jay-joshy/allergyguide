@@ -30,7 +30,8 @@
     "pdf-lib": "^1.17.1",
     "qrcode": "^1.5.4",
     "replace-in-file": "^8.1.0",
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.17.4",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
