@@ -368,7 +368,8 @@ function attachTableDelegation() {
       let value = parseFloat(target.value);
 
       // for ALL table inputs, disallow negatives
-      if (isNaN(value)) return;
+      // treat as 0
+      if (isNaN(value)) value = 0;
       if (value < 0) value = 0; // clamping logic
 
       // get current state of protocol

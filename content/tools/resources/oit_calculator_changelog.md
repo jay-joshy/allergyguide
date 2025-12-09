@@ -21,6 +21,7 @@ authors = ["Joshua Yu"]
 ### Fixed
 
 - Bug: users could input negative or null/NaN values in Food A or B thresholds. Values are now clamped and revert to 0
+- Bug: users could leave input fields in the table (Protein target, Mix Food, Mix Water, Daily Amount) blank or NaN leading to unintended behaviour: the user sees an empty box, but the internal state retains the previous number. Now,
 
 ### Security
 
