@@ -25,3 +25,13 @@ Site is deployed from Netlify from GitHub. It is built using Zola, an excellent 
 See the following links for more details:
 https://www.getzola.org/
 https://abridge.pages.dev/
+
+## Disclaimer
+
+**Medical Information Disclaimer**
+The content of this repository and the associated website (allergyguide.ca) is for **educational and informational purposes only**. It is intended for use by medical professionals and is **not** a substitute for professional medical judgment.
+
+- **Not Medical Advice:** This information should not be used to diagnose or treat any health problem or disease.
+- **No Warranty:** The maintainers and contributors cannot guarantee that all information is up-to-date or error-free.
+
+By using this code or contributing to this repository, you agree to the full [Terms of Use](https://allergyguide.ca/termsofuse/).
