@@ -33,6 +33,25 @@ authors = ["Joshua Yu"]
 
 ### Security
 
+## [0.9.0] - 2025-12-08
+
+### Added
+
+- UserHistory system: Embed QR code in export PDF containing a log of actions taken to make protocol
+- On initialization, if loading of the food/protocol databases fail for whatever reason, the tool will no longer silently fail; tool will now not be usable
+- New DUPLICATE_STEP warning: Flags redundant adjacent steps with the same food and target protein
+- New HIGH_DAILY_AMOUNT warning: Flags daily protein amounts exceeding an upper limit (yellow warning), 250 g or ml
+- New HIGH_MIX_WATER warning: Flags mix water volumes exceeding an upper limit (yellow warning), 500 ml
+- Data integrity checks: on startup, validates all food and protocol data to prevent potential calculation errors caused by malformed database entries
+
+### Changed
+
+- INVALID_CONCENTRATION warning: Flags if protein content > serving size (previously this was not explicitly flagged)
+
+### Fixed
+
+- Fixed bug where Undo/Redo operations failed to update text inputs (e.g., Food Name) if the input field was still focused
+
 ## [0.8.0] - 2025-12-07
 
 ### Added
