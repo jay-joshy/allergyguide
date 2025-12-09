@@ -32,7 +32,7 @@ Each time a protocol is loaded or edited in the OIT Calculator, it is validated 
 
 **Invalid Food Protein Content**
 
-- A food for OIT cannot have a protein concentration of zero or a negative value.
+- A food for OIT cannot have a protein concentration of zero or a negative value. It also cannot have a protein content that exceeds the serving size (e.g., 110g of protein in a 100g serving).
 
 <div style="height:0.75rem;"> </div>
 
@@ -91,5 +91,23 @@ Each time a protocol is loaded or edited in the OIT Calculator, it is validated 
 **Food B Transition Not Met**
 
 - A second food (Food B) and a transition threshold have been specified, but the protocol does not contain any steps that meet or exceed the dose required for the transition. To enable the transition, you must either lower the dose threshold for Food B or add higher-dose steps to the protocol.
+
+<div style="height:0.75rem;"> </div>
+
+**Duplicate Step**
+
+- Two adjacent steps have the same target protein dose using the same food. This is redundant.
+
+<div style="height:0.75rem;"> </div>
+
+**Impractically High Daily Amount**
+
+- A step requires a daily amount of food (liquid or solid) that exceeds practical limits (e.g., > 250 g or ml).
+
+<div style="height:0.75rem;"> </div>
+
+**Impractically High Mix Water**
+
+- A dilution step requires an excessive amount of water for mixing (e.g., > 500 ml).
 
 {% end %}
