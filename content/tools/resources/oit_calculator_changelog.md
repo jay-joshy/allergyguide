@@ -33,7 +33,7 @@ authors = ["Joshua Yu"]
 
 ### Added
 
-- UserHistory system: Embed QR code in export PDF containing a log of actions taken to make protocol
+- UserHistory system: Embed QR code in export PDF containing a log of actions taken to make protocol. **No PHI data is within the action log**; the custom note is also not stored.
 - On initialization, if loading of the food/protocol databases fail for whatever reason, the tool will no longer silently fail; tool will now not be usable
 - New DUPLICATE_STEP warning: Flags redundant adjacent steps with the same food and target protein
 - New HIGH_DAILY_AMOUNT warning: Flags daily protein amounts exceeding an upper limit (yellow warning), 250 g or ml
