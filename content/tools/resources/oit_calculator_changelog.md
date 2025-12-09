@@ -20,6 +20,8 @@ authors = ["Joshua Yu"]
 
 ### Fixed
 
+- Bug: users could input negative or null/NaN values in Food A or B thresholds. Values are now clamped and revert to 0
+
 ### Security
 
 ## [0.9.0] - 2025-12-08

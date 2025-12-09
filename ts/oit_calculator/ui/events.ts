@@ -164,6 +164,8 @@ function attachSettingsDelegation() {
         protocolState.setProtocol(recalculateStepMethods(updated), `Food A Serving Size changed to: ${value}`);
       } else if (target.id === "food-a-protein") {
         let value = parseFloat((target as HTMLInputElement).value);
+
+        // Food A protein input clamping
         if (value < 0) value = 0;
         if (value > current.foodA.servingSize.toNumber()) value = current.foodA.servingSize.toNumber();
         if (Number.isNaN(value)) value = 0;
@@ -173,11 +175,16 @@ function attachSettingsDelegation() {
         protocolState.setProtocol(recalculateStepMethods(updated), `Food A Protein changed to: ${value}`);
       } else if (target.id === "food-a-threshold") {
         const val = (target as HTMLInputElement).value;
+
+        // Food A threshold value clamping
+        let value = parseFloat(val);
+        if (value < 0) value = 0;
+        if (Number.isNaN(value)) value = 0;
         const updated: Protocol = {
           ...current,
-          diThreshold: new Decimal((target as HTMLInputElement).value)
+          diThreshold: new Decimal(value)
         }
-        protocolState.setProtocol(recalculateStepMethods(updated), `Food A DI Threshold changed to: ${val}`);
+        protocolState.setProtocol(recalculateStepMethods(updated), `Food A DI Threshold changed to: ${value}`);
       }
     });
 
@@ -265,9 +272,13 @@ function attachSettingsDelegation() {
         });
         protocolState.setProtocol(updated, `Food B Protein changed to: ${value}`);
       } else if (target.id === "food-b-threshold") {
-        const val = (target as HTMLInputElement).value;
-        const updated = updateFoodBThreshold(current, new Decimal((target as HTMLInputElement).value));
-        protocolState.setProtocol(updated, `Food B Threshold changed to: ${val}`);
+        let value = parseFloat((target as HTMLInputElement).value);
+
+        // Food B threshold input clamp
+        if (value < 0) value = 0;
+        if (Number.isNaN(value)) value = 0;
+        const updated = updateFoodBThreshold(current, new Decimal(value));
+        protocolState.setProtocol(updated, `Food B Threshold changed to: ${value}`);
       }
     });
 
