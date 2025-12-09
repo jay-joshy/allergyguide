@@ -113,7 +113,7 @@ export function showSearchDropdown(
   const customItem = document.createElement("div");
   customItem.className = "search-result-item";
   customItem.setAttribute("data-index", "0");
-  customItem.innerHTML = `<strong>Custom:</strong> ${escapeHtml(query || "New food")}`;
+  customItem.innerHTML = `<strong>Create Custom Food:</strong> ${escapeHtml(query || "New food")}`;
   customItem.addEventListener("click", () => {
     callbacks.onSelectCustom(query || "New Food", inputId);
     hideSearchDropdown(inputId);

@@ -14,6 +14,8 @@ authors = ["Joshua Yu"]
 
 ### Changed
 
+- When typing, the search bar shows: "Create Custom Food: <...>" instead of just "Custom:"
+
 ### Deprecated
 
 ### Removed
