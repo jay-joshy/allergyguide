@@ -12,6 +12,8 @@ authors = ["Joshua Yu"]
 
 ### Added
 
+- Small footnote explaining what the +/- buttons do
+
 ### Changed
 
 - When typing, the search bar shows: "Create Custom Food: <...>" instead of just "Custom:"
