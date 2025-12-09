@@ -50,10 +50,6 @@
   baseline: 2pt,
 )
 
-This document was generated using an open-source tool. The treating physician has reviewed and approved all dosing and safety instructions. In the event of a discrepancy between this handout and your physician's verbal instructions, follow your physician's instructions."
-
-#pagebreak()
-
 #align(center)[
   #text(size: 24pt, weight: "bold")[Oral Immunotherapy (OIT)]\
   #v(0.1pt)
@@ -81,6 +77,8 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
       size: (15, 5),
       x-tick-step: none,
       y-tick-step: none,
+      x-label: none,
+      y-label: none,
       axis-style: "school-book",
       {
         // The Build-up Phase (Sloping up)
@@ -125,7 +123,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 
     // Axis Labels
     content((7.5, -0.5), [*Time*])
-    content((-0.5, 3.5), [*Daily dose of food*], angle: 90deg)
+    content((-0.5, 3), [*Daily dose of food*], angle: 90deg)
   }),
 )
 
