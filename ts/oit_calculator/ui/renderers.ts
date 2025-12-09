@@ -740,6 +740,9 @@ function patchInput(row: HTMLElement, selector: string, newVal: string, stepInde
   }
 
   if (document.activeElement === input) {
+    // If the input is empty and the new value is "0", don't overwrite it. Let the user keep the field empty while typing
+    if (input.value.trim() === "" && parseFloat(newVal) === 0) return;
+
     const currentNum = parseFloat(input.value);
     const newNum = parseFloat(newVal);
     // Avoid overwriting if numerically equivalent (handles "1." vs "1")
