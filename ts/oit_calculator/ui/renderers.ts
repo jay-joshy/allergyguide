@@ -806,7 +806,8 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
  *
  * @param payload - The decoded user history payload
  */
-export function renderDebugResult(payload: ReadableHistoryPayload): void {
+export function renderDebugResult(payload: ReadableHistoryPayload | null): void {
+  if (!payload) return;
   const container = document.getElementById("debug-result-container");
   if (!container) return;
 
