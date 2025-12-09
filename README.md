@@ -10,7 +10,7 @@ Please refer to the [about](allergyguide.ca/about/) section of the website for m
 
 ## What is required to make this succeed both short and long term?
 
-- A consistent editor (Josh)
+- A consistent editor
 - A well-defined contributing process, with a way for non-coders to contribute
 - Well defined topics
 - Resident contribution across Canada
