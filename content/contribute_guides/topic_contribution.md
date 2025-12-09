@@ -133,7 +133,7 @@ Within a topic page, there are many ways to customize the text: in particular, *
   | Bob    | A good guy, who likes to communicate with Alice                         |
   | Malroy | Not so nice guy. Tries to mess with the communication of Alice and Bob. |
 
-  - This doesn't mean we can't accommodate more complex tables (ie with nesting), but it does mean Josh/editors need to manually code it in
+  - This doesn't mean we can't accommodate more complex tables (ie with nesting), but it does mean editors need to manually code it in
 
 ### Shortcodes
 
