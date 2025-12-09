@@ -241,10 +241,14 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
     // Render Sections Sequentially
     y = renderHeader(doc, y);
 
+    // Calculate Step Counts to determine "Last Phase"
+    const foodAStepCount = getFoodAStepCount(protocol);
+    const hasFoodBSteps = foodAStepCount < protocol.steps.length;
+
     // Food A
     const foodASteps = protocol.steps.slice(0, getFoodAStepCount(protocol));
     if (foodASteps.length > 0) {
-      const rows = buildStepRows(foodASteps, protocol.foodA.type, !protocol.foodB);
+      const rows = buildStepRows(foodASteps, protocol.foodA.type, !hasFoodBSteps);
       y = renderFoodSection(doc, y, protocol.foodA.name, protocol.foodA, rows, 440);
     }
 
@@ -331,6 +335,80 @@ async function handlePdfMergeAndDownload(doc: jsPDF, reviewSheetBytes: ArrayBuff
 }
 
 /**
+ * Pure function to generate the ASCII string content.
+ * Extracted from exportASCII to allow for easier unit testing of output logic.
+ *
+ * @param protocol Protocol
+ * @param customNote string
+ * @returns The formatted ASCII string or empty string if protocol is null
+ */
+export function generateAsciiContent(protocol: Protocol | null, customNote: string): string {
+  if (!protocol) return "";
+
+  let text = "";
+
+  // --- Header Information ---
+  const foodAType = protocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
+  const foodAUnit = protocol.foodA.type === FoodType.SOLID ? "g" : "ml";
+
+  text += `${protocol.foodA.name} (${foodAType}). Protein: ${formatNumber(protocol.foodA.getMgPerUnit(), 1)} mg/${foodAUnit}`;
+
+  if (protocol.foodB) {
+    const foodBType = protocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
+    const foodBUnit = protocol.foodB.type === FoodType.SOLID ? "g" : "ml";
+    text += `\n${protocol.foodB.name} (${foodBType}). Protein: ${formatNumber(protocol.foodB.getMgPerUnit(), 1)} mg/${foodBUnit}`;
+  }
+  text += "\n\n";
+
+  // --- Table Generation ---
+
+  // Define consistent headers matching buildStepRows output
+  const headers = ["Step", "Protein", "Method", "Mix Details", "Daily Amount", "Interval"];
+
+  // Food A Table
+  const foodAStepCount = getFoodAStepCount(protocol);
+  const hasFoodBSteps = foodAStepCount < protocol.steps.length;
+  const foodASteps = protocol.steps.slice(0, foodAStepCount);
+
+  if (foodASteps.length > 0) {
+    const tableA = new AsciiTable3(protocol.foodA.name);
+    tableA.setHeading(...headers);
+
+    const rows = buildStepRows(foodASteps, protocol.foodA.type, !hasFoodBSteps);
+    tableA.addRowMatrix(rows);
+
+    text += tableA.toString();
+  }
+
+  // Food B Table
+  const totalSteps = protocol.steps.length;
+  if (protocol.foodB && foodAStepCount < totalSteps) {
+    text += `\n--- TRANSITION TO: ${protocol.foodB.name} ---\n`;
+
+    const tableB = new AsciiTable3(protocol.foodB.name);
+    tableB.setHeading(...headers);
+
+    const foodBSteps = protocol.steps.slice(foodAStepCount);
+    const rows = buildStepRows(foodBSteps, protocol.foodB.type, true);
+    tableB.addRowMatrix(rows);
+
+    text += tableB.toString();
+  }
+
+  // --- Notes & Footer ---
+  if (customNote && customNote.trim()) {
+    text += "\n========================================\n";
+    text += "NOTES\n";
+    text += "========================================\n";
+    text += `${customNote.trim()}\n`;
+  }
+
+  text += `\n---\nTool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}\n`;
+
+  return text
+}
+
+/**
  * Generate and copy an ASCII representation of the protocol to clipboard.
  *
  * Creates separate tables for Food A and Food B, includes mix instructions for dilution steps, and appends custom notes when present. Falls back to alerting the text when clipboard copy fails.
@@ -340,107 +418,10 @@ async function handlePdfMergeAndDownload(doc: jsPDF, reviewSheetBytes: ArrayBuff
  * @returns void
  */
 export function exportASCII(protocol: Protocol | null, customNote: string): void {
-  if (!protocol) return
+  const text = generateAsciiContent(protocol, customNote);
+  if (!text) return;
 
-  let text = "";
-  let foodAInfo = "";
-  let foodBInfo = "";
-
-  // get food A and B? info
-  const foodAType =
-    protocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
-  const foodAUnit = protocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-  foodAInfo += `${protocol.foodA.name} (${foodAType}). Protein: ${formatNumber(protocol.foodA.getMgPerUnit(), 1)} mg/${foodAUnit}`;
-
-  if (protocol.foodB) {
-    const foodBType =
-      protocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
-    const foodBUnit =
-      protocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-    foodBInfo += `${protocol.foodB.name} (${foodBType}). Protein: ${formatNumber(protocol.foodB.getMgPerUnit(), 1)} mg/${foodBUnit}`;
-  }
-
-  // GENERATE TABLES
-  const totalSteps = protocol.steps.length;
-  const foodAStepCount = getFoodAStepCount(protocol);
-
-  // Create separate tables for each food
-  const foodATable = new AsciiTable3(protocol.foodA.name);
-  const foodBTable = new AsciiTable3(protocol.foodB?.name);
-
-  foodATable.setHeading(
-    "Step",
-    "Protein",
-    "Method",
-    "Daily Amount",
-    "Mix Details",
-  );
-  foodBTable.setHeading(
-    "Step",
-    "Protein",
-    "Method",
-    "Daily Amount",
-    "Mix Details",
-  );
-
-  // Iterate over steps and build rows for each table
-  for (const step of protocol.steps) {
-    const isStepFoodB = step.food === "B";
-    const food = isStepFoodB ? protocol.foodB! : protocol.foodA;
-
-    // Create table for this step
-    let table: AsciiTable3;
-    if (!isStepFoodB) {
-      table = foodATable;
-    } else {
-      table = foodBTable;
-    }
-
-    let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
-    let mixDetails = "N/A"; // default unless dilution
-
-    if (step.method === Method.DILUTE) {
-      const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-      mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
-    }
-
-    table.addRow(
-      step.stepIndex,
-      `${formatNumber(step.targetMg, 1)} mg`,
-      step.method,
-      dailyAmountStr,
-      mixDetails,
-    );
-  }
-
-  // Baseline data
-  if (protocol.foodB) {
-    text += foodAInfo + "\n" + foodBInfo + "\n\n";
-  } else {
-    text += foodAInfo + "\n\n";
-  }
-
-  // ADD TABLES
-  if (foodAStepCount > 0) {
-    text += foodATable.toString();
-  }
-
-  if (foodAStepCount < totalSteps) {
-    text += `--- TRANSITION TO: ---\n`;
-    text += foodBTable.toString();
-  }
-
-  // ADD CUSTOM NOTES IF PROVIDED
-  if (customNote && customNote.trim()) {
-    text += "========================================\n";
-    text += "NOTES\n";
-    text += "========================================\n";
-    text += `${customNote.trim()}`;
-  }
-
-  text += `\n---\nTool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}\n`
-
-  // Copy to clipboard
+  // --- Copy to Clipboard ---
   navigator.clipboard.writeText(text).catch(() => {
     alert("Failed to copy to clipboard. Please copy manually:\n\n" + text);
   });
