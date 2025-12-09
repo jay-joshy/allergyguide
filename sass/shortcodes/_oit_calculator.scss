@@ -361,7 +361,7 @@
     padding: 1rem;
     border-radius: 8px;
     border: 1px solid var(--oit-border);
-    margin-bottom: 1rem;
+    margin-bottom: 0.3rem;
 
     h3 {
       margin: 0 0 0.5rem 0;
@@ -376,10 +376,51 @@
     }
   }
 
+  .step-controls-footer {
+    text-align: left;
+    color: var(--oit-text-secondary);
+    font-size: 0.85rem;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+
+    .subtle-text {
+      display: flex;
+      align-items: center;
+    }
+
+    .mini-btn-add,
+    .mini-btn-remove {
+      width: 0.8rem;
+      height: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--oit-bg-secondary);
+      border: 1px solid var(--oit-border);
+      border-radius: 3px;
+      font-weight: bold;
+      margin: 0 3px;
+      line-height: 1;
+      cursor: default;
+    }
+
+    .mini-btn-add {
+      color: var(--oit-success-text);
+    }
+
+    .mini-btn-remove {
+      color: var(--oit-warning-red-text);
+    }
+  }
+
   // Output Container
   .output-container {
     display: flex;
     flex-direction: column;
+    margin-top: -0.6rem;
     gap: 1rem;
   }
 
