@@ -55,7 +55,7 @@ export function updateUndoRedoButtons(canUndo: boolean, canRedo: boolean): void 
 }
 
 /**
- * Make dosing container and warnings container visible (after init of calc)
+ * Make dosing container and warnings container visible (after init of calc); also make +/- step controls visible
  *
  * @returns void
  */
@@ -66,12 +66,18 @@ export function showProtocolUI(): void {
   const warningsContainer = document.querySelector(
     ".warnings-container",
   ) as HTMLElement;
+  const stepBtnHintContainer = document.querySelector(
+    ".step-controls-footer",
+  ) as HTMLElement;
 
   if (dosingContainer) {
     dosingContainer.classList.remove("oit-hidden-on-init");
   }
   if (warningsContainer) {
     warningsContainer.classList.remove("oit-hidden-on-init");
+  }
+  if (stepBtnHintContainer) {
+    stepBtnHintContainer.classList.remove("oit-hidden-on-init");
   }
 }
 

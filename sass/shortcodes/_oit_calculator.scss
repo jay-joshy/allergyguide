@@ -61,7 +61,7 @@
 }
 
 .oit-hidden-on-init {
-  display: none;
+  display: none !important;
 }
 
 // Main Container
@@ -361,7 +361,7 @@
     padding: 1rem;
     border-radius: 8px;
     border: 1px solid var(--oit-border);
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
 
     h3 {
       margin: 0 0 0.5rem 0;
