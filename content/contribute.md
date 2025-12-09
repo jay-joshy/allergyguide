@@ -7,7 +7,7 @@ in_search_index = false
 updated = "2025-03-17"
 [extra]
 toc = true
-authors = ["Joshua Yu"]
+authors = ["Allergyguide"]
 +++
 
 Thanks for checking us out! If you're interested in clinical allergy and immunology and would like to help out, connect with us (see the mail button at the bottom of the page). We are interested in recruiting medical students, residents, and allergy-immunology staff.

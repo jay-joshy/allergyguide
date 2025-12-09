@@ -9,7 +9,7 @@ tags = ["Research","Asthma"]
 [extra]
 keywords = "Asthma"
 toc = true
-authors = ["Joshua Yu"]
+authors = ["Allergyguide"]
 +++
 
 <table style="margin:0rem">

@@ -4,7 +4,7 @@ date = 2025-03-17
 draft = false
 [extra]
 toc = true
-authors = ["Joshua Yu"]
+authors = ["Allergyguide"]
 +++
 
 Example of a finished topic page: [Chronic rhinosinusitis](/topics/hypersensitivity/airway_ent/chronic-rhinosinusitis/).

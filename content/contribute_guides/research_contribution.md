@@ -5,7 +5,7 @@ draft = false
 
 [extra]
 toc = true
-authors = ["Joshua Yu"]
+authors = ["Allergyguide"]
 +++
 
 <br>
@@ -59,17 +59,16 @@ See the page for the [SYGMA2 trial](/research/sygma2) for an example:
   - Primary: list
   - Reviewers: list
   - Editor: list
- 
+
 <!-- split -->
 
 - What's the clinical question?
 - PICO (in more depth)
 - Study design (will depend on if primary vs secondary evidence)
-- Results 
+- Results
 - Limitations
 - Conclusion
 - Study quality
-
 
 {% end %}
 
