@@ -95,8 +95,7 @@ export interface Food {
   type: FoodType;
   gramsInServing: Decimal;
   servingSize: Decimal;
-  getMgPerUnit(): Decimal;
-  // mgPerUnit: Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
+  getMgPerUnit(): Decimal; // mg of protein per gram or ml of food. Canonical protein unit for calculations in the tool
 }
 
 /**
