@@ -5,7 +5,7 @@
  */
 
 import { FoodType, Method } from "../types";
-import type { Protocol, Unit } from "../types";
+import type { Protocol, Unit, Step } from "../types";
 import { formatNumber, formatAmount } from "../utils";
 import { getFoodAStepCount } from "../core/protocol";
 import type { jsPDF } from 'jspdf';
@@ -18,6 +18,194 @@ import { generateUserHistoryPayload } from "../core/minify";
 // And current tool version
 declare const __COMMIT_HASH__: string;
 declare const __VERSION_OIT_CALCULATOR__: string;
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+/**
+ * Prepares table rows for a subset of steps (Food A or Food B).
+ * Shared logic for formatting amounts and mix instructions.
+ */
+function buildStepRows(steps: Step[], foodType: FoodType, isLastPhase: boolean): any[] {
+  return steps.map((step, index) => {
+    let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
+    let mixDetails = "N/A";
+
+    if (step.method === Method.DILUTE) {
+      const mixUnit: Unit = foodType === FoodType.SOLID ? "g" : "ml";
+      mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
+    }
+
+    const isLastStep = index === steps.length - 1;
+    const interval = (isLastStep && isLastPhase) ? "Continue long term" : "2-4 weeks";
+
+    return [
+      step.stepIndex,
+      `${formatNumber(step.targetMg, 1)} mg`,
+      step.method,
+      mixDetails,
+      dailyAmountStr,
+      interval,
+    ];
+  });
+}
+
+async function generateCompressedQrCode(): Promise<string | null> {
+  try {
+    const history = protocolState.getHistory();
+    const payload = generateUserHistoryPayload(history);
+    if (!payload) return null;
+
+    const [{ default: QRCode }, { deflate }] = await Promise.all([
+      import('qrcode'),
+      import('pako')
+    ]);
+
+    const jsonStr = JSON.stringify(payload);
+    const compressed = deflate(jsonStr);
+
+    // Convert Uint8Array to binary string for btoa
+    // Using reduce for large arrays can stack overflow, simple loop is safer here
+    let binary = '';
+    const len = compressed.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(compressed[i]);
+    }
+    const b64 = btoa(binary);
+
+    return await QRCode.toDataURL(b64, {
+      errorCorrectionLevel: 'M',
+      width: 800,
+      margin: 1
+    });
+  } catch (e) {
+    console.warn("Could not generate QR code", e);
+    return null;
+  }
+}
+
+async function fetchReviewSheet(): Promise<ArrayBuffer> {
+  const res = await fetch('/tool_assets/oit_patient_resource_terms.pdf');
+  if (!res.ok) throw new Error("Failed to load review sheet PDF");
+  return res.arrayBuffer();
+}
+
+// async function fetchHandout(): Promise<ArrayBuffer> {
+//   const res = await fetch('/tool_assets/oit_patient_resource.pdf'); // TODO
+//   if (!res.ok) throw new Error("Failed to load handout PDF");
+//   return res.arrayBuffer();
+// }
+
+// ============================================
+// PDF SECTION RENDERERS
+// ============================================
+// All renderers receive the doc and current Y, and return the new Y
+
+function renderHeader(doc: jsPDF, y: number): number {
+  doc.setFontSize(18);
+  doc.setFont("helvetica", "bold");
+  doc.text("Oral Immunotherapy Protocol", 40, y);
+  return y + 30;
+}
+
+function renderFoodSection(doc: jsPDF, y: number, name: string, food: any, rows: any[], titleMaxWidth?: number): number {
+  // Check page break before starting section
+  if (y > 650) {
+    doc.addPage();
+    y = 40;
+  }
+
+  // Title
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+
+  const splitTitle = doc.splitTextToSize(name, titleMaxWidth || 520);
+  // 440 for first food A
+  doc.text(splitTitle, 40, y);
+  y += (20 * splitTitle.length);
+
+  // Subtitle
+  const unit = food.type === FoodType.SOLID ? "g" : "ml";
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text(
+    `Protein: ${formatNumber(food.gramsInServing, 2)} g per ${food.servingSize} ${unit} serving.`,
+    40,
+    y
+  );
+  y += 15;
+
+  // Table
+  (doc as any).autoTable({
+    startY: y,
+    head: [["Step", "Protein", "Method", "How to make mix", "Daily Amount", "Interval"]],
+    body: rows,
+    theme: "striped",
+    headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
+    styles: { fontSize: 9, cellPadding: 6, overflow: 'linebreak', valign: 'middle', halign: 'left' },
+    columnStyles: {
+      0: { halign: 'center' },
+      1: { halign: 'center' },
+      2: { halign: 'center' },
+    },
+    margin: { left: 40, right: 40 },
+  });
+
+  return (doc as any).lastAutoTable.finalY + 20;
+}
+
+function renderNotes(doc: jsPDF, y: number, note: string): number {
+  if (!note || !note.trim()) return y;
+
+  if (y > 650) {
+    doc.addPage();
+    y = 40;
+  }
+
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text("Notes", 40, y);
+  y += 15;
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+
+  const maxWidth = 520;
+  const lines = doc.splitTextToSize(note.trim(), maxWidth);
+
+  for (const line of lines) {
+    if (y > 730) {
+      doc.addPage();
+      y = 40;
+    }
+    doc.text(line, 40, y);
+    y += 14;
+  }
+  return y;
+}
+
+function renderFooterAndQR(doc: jsPDF, qrDataUrl: string | null) {
+  const pageCount = doc.internal.pages.length;
+  for (let i = 1; i < pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "italic");
+    doc.setTextColor(100);
+    doc.text(`Always verify calculations before clinical use. Current tool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`, 40, 772);
+    doc.setTextColor(0);
+  }
+
+  if (qrDataUrl) {
+    // Always on Page 1, top right
+    doc.setPage(1);
+    doc.addImage(qrDataUrl, 'PNG', 493, 10, 80, 80);
+  }
+}
+
+// --- MAIN EXPORT FUNCTION --
+
+
 
 /**
  * Generate a printable PDF of the current protocol using jsPDF + autoTable.
@@ -39,333 +227,70 @@ declare const __VERSION_OIT_CALCULATOR__: string;
 export async function generatePdf(protocol: Protocol | null, customNote: string, JsPdfClass: typeof jsPDF, PdfDocClass: typeof PDFDocument): Promise<void> {
   if (!protocol) return;
 
-  // fetch physician review sheet and education handout pdfs
-  const reviewSheetPromise = fetch('/tool_assets/oit_patient_resource_terms.pdf')
-    .then(res => {
-      if (!res.ok) throw new Error("Failed to load review sheet PDF");
-      return res.arrayBuffer();
-    });
-
-  // generate main protocol doc table
-  const doc: jsPDF = new JsPdfClass({
-    unit: "pt",
-    format: "letter",
-  });
-
-  let yPosition = 40;
-
-  // Add title
-  doc.setFontSize(18);
-  doc.setFont("helvetica", "bold");
-  doc.text("Oral Immunotherapy Protocol", 40, yPosition);
-  yPosition += 30;
-
-  // Get food information
-  const foodAUnit = protocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-  const foodAStepCount = getFoodAStepCount(protocol);
-  const totalSteps = protocol.steps.length;
-
-  // Build Food A table data if it exists (it always should ... unless the user does Food A -> B and then deletes all the Food A steps for some dumb reason)
-  if (foodAStepCount > 0) {
-    const foodARows: any[] = [];
-    for (let i = 0; i < foodAStepCount; i++) {
-      const step = protocol.steps[i];
-      const food = protocol.foodA;
-
-      let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
-      let mixDetails = "N/A";
-
-      if (step.method === Method.DILUTE) {
-        const mixUnit: Unit = food.type === FoodType.SOLID ? "g" : "ml";
-        mixDetails = `${formatAmount(step.mixFoodAmount!, mixUnit)} ${mixUnit} food + ${formatAmount(step.mixWaterAmount!, "ml")} ml water`;
-      }
-
-      if (i === totalSteps - 1) {
-        foodARows.push([
-          step.stepIndex,
-          `${formatNumber(step.targetMg, 1)} mg`,
-          step.method,
-          mixDetails,
-          dailyAmountStr,
-          "Continue long term",
-        ]);
-      } else {
-        foodARows.push([
-          step.stepIndex,
-          `${formatNumber(step.targetMg, 1)} mg`,
-          step.method,
-          mixDetails,
-          dailyAmountStr,
-          "2-4 weeks",
-        ]);
-      }
-    }
-
-    // Build Food A section PDF
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-
-    const maxWidth = 440; // Avoid overlapping with QR code at x=493
-    const splitTitle = doc.splitTextToSize(protocol.foodA.name, maxWidth);
-    doc.text(splitTitle, 40, yPosition);
-    yPosition += (20 * splitTitle.length);
-
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(
-      `Protein: ${formatNumber(protocol.foodA.gramsInServing, 2)} g per ${protocol.foodA.servingSize} ${foodAUnit} serving.`,
-      40,
-      yPosition,
-    );
-    yPosition += 15;
-
-    // Food A table
-    (doc as any).autoTable({
-      startY: yPosition,
-      head: [
-        [
-          "Step",
-          "Protein",
-          "Method",
-          "How to make mix",
-          "Daily Amount",
-          "Interval",
-        ],
-      ],
-      body: foodARows,
-      theme: "striped",
-      headStyles: {
-        fillColor: [220, 220, 220], // Light gray, B&W friendly
-        textColor: [0, 0, 0],
-        fontStyle: 'bold',
-      },
-      styles: {
-        fontSize: 9,
-        cellPadding: 6,
-        overflow: 'linebreak',
-        valign: 'middle',
-        halign: 'left',
-      },
-      columnStyles: {
-        0: { halign: 'center' }, // Step
-        1: { halign: 'center' }, // Protein
-        2: { halign: 'center' }, // Method
-      },
-      margin: { left: 40, right: 40 },
-    });
-
-    yPosition = (doc as any).lastAutoTable.finalY + 20;
-  }
-
-  // Food B section (if exists)
-  if (protocol.foodB && foodAStepCount < totalSteps) {
-    const foodBUnit =
-      protocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-
-    // Build Food B table data
-    const foodBRows: any[] = [];
-    for (let i = foodAStepCount; i < totalSteps; i++) {
-      const step = protocol.steps[i];
-
-      let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
-      let mixDetails = "N/A"; // default for food B since there is no mix
-
-      if (step.method === Method.DILUTE) {
-        console.log("A step for food B should never be diluted by design.", step)
-      }
-
-      // last step should say continue long term
-      if (i === totalSteps - 1) {
-        foodBRows.push([
-          step.stepIndex,
-          `${formatNumber(step.targetMg, 1)} mg`,
-          step.method,
-          mixDetails,
-          dailyAmountStr,
-          "Continue long term",
-        ]);
-      } else {
-        foodBRows.push([
-          step.stepIndex,
-          `${formatNumber(step.targetMg, 1)} mg`,
-          step.method,
-          mixDetails,
-          dailyAmountStr,
-          "2-4 weeks",
-        ]);
-      }
-    }
-
-    // Check if we need a new page
-    if (yPosition > 650) {
-      doc.addPage();
-      yPosition = 40;
-    }
-
-    yPosition += 10;
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${protocol.foodB.name}`, 40, yPosition);
-    yPosition += 20;
-
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(
-      `Protein: ${formatNumber(protocol.foodB.gramsInServing, 2)} g per ${protocol.foodB.servingSize} ${foodBUnit} serving`,
-      40,
-      yPosition,
-    );
-    yPosition += 15;
-
-    // Food B table
-    (doc as any).autoTable({
-      startY: yPosition,
-      head: [
-        [
-          "Step",
-          "Protein",
-          "Method",
-          "How to make mix",
-          "Daily Amount",
-          "Interval",
-        ],
-      ],
-      body: foodBRows,
-      theme: "striped",
-      headStyles: {
-        fillColor: [220, 220, 220], // Light gray, B&W friendly
-        textColor: [0, 0, 0],
-        fontStyle: 'bold',
-      },
-      styles: {
-        fontSize: 9,
-        cellPadding: 6,
-        overflow: 'linebreak',
-        valign: 'middle',
-        halign: 'left',
-      },
-      columnStyles: {
-        0: { halign: 'center' }, // Step
-        1: { halign: 'center' }, // Protein
-        2: { halign: 'center' }, // Method
-      },
-      margin: { left: 40, right: 40 },
-    });
-
-    yPosition = (doc as any).lastAutoTable.finalY + 20;
-  }
-
-  // Custom notes section
-  if (customNote && customNote.trim()) {
-    // Check if we need a new page
-    if (yPosition > 650) {
-      doc.addPage();
-      yPosition = 40;
-    }
-
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.text("Notes", 40, yPosition);
-    yPosition += 15;
-
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-
-    // Split notes into lines that fit the page width
-    const maxWidth = 520; // page width minus margins
-    const lines = doc.splitTextToSize(customNote.trim(), maxWidth);
-
-    for (const line of lines) {
-      if (yPosition > 730) {
-        doc.addPage();
-        yPosition = 40;
-      }
-      doc.text(line, 40, yPosition);
-      yPosition += 14;
-    }
-  }
-
-  // Add footer with disclaimer
-  const pageCount = doc.internal.pages.length;
-  for (let i = 1; i < pageCount; i++) {
-    doc.setPage(i);
-    doc.setFontSize(8);
-    doc.setFont("helvetica", "italic");
-    doc.setTextColor(100);
-    doc.text("", 40, 760);
-    doc.text(`Always verify calculations before clinical use. Current tool version-hash: v${__VERSION_OIT_CALCULATOR__}-${__COMMIT_HASH__}`, 40, 772);
-    doc.setTextColor(0);
-  }
-
-  // --- QR CODE GENERATION ---
   try {
-    // get payload
-    const history = protocolState.getHistory();
-    const payload = generateUserHistoryPayload(history);
+    // fetch
+    const [reviewSheetBytes, qrDataUrl] = await Promise.all([
+      fetchReviewSheet(),
+      generateCompressedQrCode()
+    ]);
 
-    if (payload) {
-      const { default: QRCode } = await import('qrcode');
+    // Initialize PDF
+    const doc: jsPDF = new JsPdfClass({ unit: "pt", format: "letter" });
+    let y = 40;
 
-      const { deflate } = await import('pako');
+    // Render Sections Sequentially
+    y = renderHeader(doc, y);
 
-      const jsonStr = JSON.stringify(payload);
-      const compressed = deflate(jsonStr);
-      // Convert to Base64 string for QR
-      let binary = '';
-      const len = compressed.byteLength;
-      for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(compressed[i]);
-      }
-      const b64 = btoa(binary);
-
-      // Generate Data URL
-      const qrDataUrl = await QRCode.toDataURL(b64, {
-        errorCorrectionLevel: 'M',
-        width: 800,
-        margin: 1
-      });
-
-      // Embed in Footer first page bottom right
-      doc.setPage(1);
-      doc.addImage(qrDataUrl, 'PNG', 493, 10, 80, 80);
-
-      doc.setFontSize(6);
+    // Food A
+    const foodASteps = protocol.steps.slice(0, getFoodAStepCount(protocol));
+    if (foodASteps.length > 0) {
+      const rows = buildStepRows(foodASteps, protocol.foodA.type, !protocol.foodB);
+      y = renderFoodSection(doc, y, protocol.foodA.name, protocol.foodA, rows, 440);
     }
-  } catch (e) {
-    console.warn("Could not generate QR code", e);
+
+    // Food B
+    const foodBStart = getFoodAStepCount(protocol);
+    const foodBSteps = protocol.steps.slice(foodBStart);
+    if (protocol.foodB && foodBSteps.length > 0) {
+      const rows = buildStepRows(foodBSteps, protocol.foodB.type, true);
+      y = renderFoodSection(doc, y, protocol.foodB.name, protocol.foodB, rows);
+    }
+
+    // Notes
+    y = renderNotes(doc, y, customNote);
+
+    // Footer & QR
+    renderFooterAndQR(doc, qrDataUrl);
+
+    // Merge & Download
+    await handlePdfMergeAndDownload(doc, reviewSheetBytes, PdfDocClass);
+
+  } catch (error) {
+    console.error("PDF Generation Failed:", error);
+    alert("An error occurred while generating the PDF.");
   }
+}
 
-  // doc is complete
-  // prep for merge: need array buffers for pdf-lib
+async function handlePdfMergeAndDownload(doc: jsPDF, reviewSheetBytes: ArrayBuffer, PdfDocClass: typeof PDFDocument) {
   const jsPdfBytes = doc.output('arraybuffer');
-  const reviewSheetBytes = await reviewSheetPromise;
 
-  // merge
   const mergedPdf = await PdfDocClass.create();
   const protocolPdf = await PdfDocClass.load(jsPdfBytes);
   const reviewSheetPdf = await PdfDocClass.load(reviewSheetBytes);
 
-  // order of pdfs
+  // Copy pages
   const reviewSheetPages = await mergedPdf.copyPages(reviewSheetPdf, reviewSheetPdf.getPageIndices());
-  reviewSheetPages.forEach((page) => mergedPdf.addPage(page));
+  reviewSheetPages.forEach((p) => mergedPdf.addPage(p));
+
   const protocolPages = await mergedPdf.copyPages(protocolPdf, protocolPdf.getPageIndices());
-  protocolPages.forEach((page) => mergedPdf.addPage(page));
+  protocolPages.forEach((p) => mergedPdf.addPage(p));
 
-  // create blob
   const mergedPdfBytes = await mergedPdf.save();
-  const pdfBlob = new Blob(
-    [mergedPdfBytes as Uint8Array<ArrayBuffer>],
-    { type: "application/pdf" }
-  );
+  const blob = new Blob([mergedPdfBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" });
+  const blobUrl = URL.createObjectURL(blob);
 
-  const blobUrl = URL.createObjectURL(pdfBlob);
-
-  // Detect if user is on mobile device
-  const isMobile =
-    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ||
-    (("ontouchstart" in window || navigator.maxTouchPoints > 0) &&
-      window.innerWidth <= 1024);
+  // Mobile/Desktop handling
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 0 && window.innerWidth <= 1024);
 
   if (isMobile) {
     // Mobile: Use download link approach for better compatibility
@@ -402,6 +327,7 @@ export async function generatePdf(protocol: Protocol | null, customNote: string,
       URL.revokeObjectURL(blobUrl);
     }, 1000);
   }
+
 }
 
 /**
