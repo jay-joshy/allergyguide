@@ -282,6 +282,17 @@ function checkAnyStepType({ step, protocol, food }: { step: Step, protocol: Prot
  * INVALID_DILUTION_STEP_VALUES, LOW_SERVINGS, HIGH_SOLID_CONCENTRATION, HIGH_MIX_WATER
  */
 function checkDilutionStep({ step, protocol, food }: { step: Step, protocol: Protocol, food: Food }): Warning[] {
+  // Guard clause for malformed data
+  if (step.mixFoodAmount == null || step.mixWaterAmount == null) {
+    // Push a technical error warning or return early
+    return [{
+      severity: "red",
+      code: WarningCode.Red.INVALID_DILUTION_STEP_VALUES,
+      message: `Step ${step.stepIndex}: Missing mix amounts for dilution.`,
+      stepIndex: step.stepIndex
+    }];
+  }
+
   const warnings: Warning[] = [];
 
   // Setup Rounded Values for Calculation
