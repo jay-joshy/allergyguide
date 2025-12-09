@@ -4,7 +4,7 @@
  * DOM Rendering logic
  */
 import { Method, FoodType, DosingStrategy, FoodAStrategy } from "../types";
-import type { Protocol, Unit, Food, Step } from "../types";
+import type { Protocol, Unit, Food, Step, ReadableHistoryPayload } from "../types";
 import { formatNumber, formatAmount, escapeHtml } from "../utils";
 import { validateProtocol } from "../core/validator";
 
@@ -806,12 +806,12 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
  *
  * @param payload - The decoded user history payload
  */
-export function renderDebugResult(payload: any): void {
+export function renderDebugResult(payload: ReadableHistoryPayload): void {
   const container = document.getElementById("debug-result-container");
   if (!container) return;
 
   const currentCommit = __COMMIT_HASH__;
-  const payloadVersion = payload.v || "On dev mode, no version-commit hash yet";
+  const payloadVersion = payload.version || "On dev mode, no version-commit hash yet";
   const isMismatch = !payloadVersion.includes(currentCommit);
 
   let warningHtml = "";
