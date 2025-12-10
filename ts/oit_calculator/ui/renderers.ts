@@ -780,7 +780,7 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
   if (warnings.length === 0) {
     container.innerHTML = `
       <div class="no-warnings">
-      ✓ Protocol passes internal checks: see <a href="${rulesURL}" target="_blank">here</a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS SAFE. DOSES MUST STILL BE VERIFIED/REVIEWED.
+      ✓ Protocol passes internal checks: see <a href="${rulesURL}" target="_blank">here</a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS VALID.<br>DOSES MUST STILL BE VERIFIED/REVIEWED.
       </div>
     `;
     return;
