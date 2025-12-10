@@ -10,6 +10,7 @@ let clickwrapCheckbox0: HTMLInputElement | null = null;
 let clickwrapCheckbox1: HTMLInputElement | null = null;
 let clickwrapCheckbox2: HTMLInputElement | null = null;
 let clickwrapCheckbox3: HTMLInputElement | null = null;
+let clickwrapCheckbox4: HTMLInputElement | null = null;
 let clickwrapGenerateBtn: HTMLButtonElement | null = null;
 let clickwrapCancelBtn: HTMLButtonElement | null = null;
 
@@ -60,6 +61,7 @@ export function hideClickwrapModal(): void {
     if (clickwrapCheckbox1) clickwrapCheckbox1.checked = false;
     if (clickwrapCheckbox2) clickwrapCheckbox2.checked = false;
     if (clickwrapCheckbox3) clickwrapCheckbox3.checked = false;
+    if (clickwrapCheckbox4) clickwrapCheckbox4.checked = false;
     if (clickwrapGenerateBtn) clickwrapGenerateBtn.disabled = true;
   }
 }
@@ -73,18 +75,19 @@ export function attachClickwrapEventListeners(onGenerate: () => Promise<void>): 
   clickwrapCheckbox1 = document.getElementById('clickwrap-checkbox-1') as HTMLInputElement;
   clickwrapCheckbox2 = document.getElementById('clickwrap-checkbox-2') as HTMLInputElement;
   clickwrapCheckbox3 = document.getElementById('clickwrap-checkbox-3') as HTMLInputElement;
+  clickwrapCheckbox4 = document.getElementById('clickwrap-checkbox-4') as HTMLInputElement;
   clickwrapGenerateBtn = document.getElementById('clickwrap-generate-btn') as HTMLButtonElement;
   clickwrapCancelBtn = document.getElementById('clickwrap-cancel-btn') as HTMLButtonElement;
 
   // all checkboxes must exist to continue
-  if (!clickwrapModal || !clickwrapCheckbox0 || !clickwrapCheckbox1 || !clickwrapCheckbox2 || !clickwrapCheckbox3 || !clickwrapGenerateBtn || !clickwrapCancelBtn) {
+  if (!clickwrapModal || !clickwrapCheckbox0 || !clickwrapCheckbox1 || !clickwrapCheckbox2 || !clickwrapCheckbox3 || !clickwrapCheckbox4 || !clickwrapGenerateBtn || !clickwrapCancelBtn) {
     return;
   }
 
   // all checkboxes must be clicked to continue
   const validateCheckboxes = () => {
     if (clickwrapGenerateBtn) {
-      clickwrapGenerateBtn.disabled = !(clickwrapCheckbox0?.checked && clickwrapCheckbox1?.checked && clickwrapCheckbox2?.checked && clickwrapCheckbox3?.checked);
+      clickwrapGenerateBtn.disabled = !(clickwrapCheckbox0?.checked && clickwrapCheckbox1?.checked && clickwrapCheckbox2?.checked && clickwrapCheckbox3?.checked && clickwrapCheckbox4?.checked);
     }
   };
 
@@ -92,6 +95,7 @@ export function attachClickwrapEventListeners(onGenerate: () => Promise<void>): 
   clickwrapCheckbox1.addEventListener('change', validateCheckboxes);
   clickwrapCheckbox2.addEventListener('change', validateCheckboxes);
   clickwrapCheckbox3.addEventListener('change', validateCheckboxes);
+  clickwrapCheckbox4.addEventListener('change', validateCheckboxes);
   clickwrapCancelBtn.addEventListener('click', hideClickwrapModal);
 
   // allow ESC to get out of modal
