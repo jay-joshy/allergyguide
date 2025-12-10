@@ -12,6 +12,20 @@ authors = ["Joshua Yu"]
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.9.1] - 2025-12-09
+
+### Added
+
 - Small footnote explaining what the +/- buttons do
 - Added another checkbox to clickwrapper: verification that food protein content(s) require manual check and that searchable foods are not guaranteed to be accurate
 - Added small footer under protein content inputs Food A and B reminding user to always verify concentration with the Nutrition Facts label
@@ -21,16 +35,10 @@ authors = ["Joshua Yu"]
 - When typing, the search bar shows: "Create Custom Food: <...>" instead of just "Custom:"
 - Debounce time for food name changing is now longer
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Bug: users could input negative or null/NaN values in Food A or B thresholds. Values are now clamped and revert to 0
 - Bug: users could leave input fields in the table (Protein target, Mix Food, Mix Water, Daily Amount) blank or NaN leading to unintended behaviour: the user sees an empty box, but the internal state retains the previous number. Now, it becomes 0
-
-### Security
 
 ## [0.9.0] - 2025-12-08
 
