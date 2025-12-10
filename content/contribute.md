@@ -16,7 +16,6 @@ Thanks for checking us out! If you're interested in clinical allergy and immunol
 
 After exploring what options exist on the [contribution hub](https://docs.google.com/spreadsheets/d/1tm2AntOqbr0d6mDEJ-A_TqVjwmLKI67KboSagkZ9Au0/edit?usp=sharing):
 
-{{ img(src="/images/hub.png" class="ci" alt="Picture of the Google Sheets hub for topic/medication/research availability" link="https://docs.google.com/spreadsheets/d/1tm2AntOqbr0d6mDEJ-A_TqVjwmLKI67KboSagkZ9Au0/edit?usp=sharing") }}
 <br>
 The contribution process follows this rough timeline:
 
