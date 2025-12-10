@@ -75,5 +75,5 @@ oxipng -o 4 --strip all -a -Z *.png
 ## ROADMAP and TODO!:
 
 ```md
-{{ remote_text(src="https://raw.githubusercontent.com/jay-joshy/allergyguide/refs/heads/main/TODO.md") }}
+{{ remote_text(src="https://raw.githubusercontent.com/allergyguide/allergyguide/refs/heads/main/TODO.md") }}
 ```

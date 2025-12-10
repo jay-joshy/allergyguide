@@ -47,7 +47,7 @@ You agree these Terms are governed by the laws of the **Province of British Colu
 
 ### Software & Source Code (GNU GPLv3)
 
-The underlying software (available on the GitHub repository) are licensed under the [GNU General Public License v3 (GPLv3)](https://github.com/jay-joshy/allergyguide/blob/main/LICENSE). You are free to use, modify, and distribute the software. If you distribute modified versions of this software, they must remain open-source under the same GPLv3 license.
+The underlying software (available on the GitHub repository) are licensed under the [GNU General Public License v3 (GPLv3)](https://github.com/allergyguide/allergyguide/blob/main/LICENSE). You are free to use, modify, and distribute the software. If you distribute modified versions of this software, they must remain open-source under the same GPLv3 license.
 
 ### Website Content (CC BY 4.0)
 
