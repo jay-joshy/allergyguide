@@ -21,6 +21,7 @@ authors = ["Joshua Yu"]
 ### Fixed
 
 - on mobile, format of clickwrap modal is now not cut off
+- on mobile, table is now auto x-scroll
 
 ### Security
 
