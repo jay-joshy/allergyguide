@@ -257,6 +257,9 @@ function buildFoodAHTML(protocol: Protocol): string {
           <span>${protocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
         </div>
       </div>
+      <div class="input-warning-text">
+        Manufacturers can change formulations. Always verify these values match the Nutrition Facts label.
+      </div>
       <div class="setting-row">
         <label>Form:</label>
         <div class="toggle-group">
@@ -307,6 +310,9 @@ function buildFoodBHTML(protocol: Protocol): string {
             <input type="number" id="food-b-serving-size" min="0" value="${protocol.foodB.servingSize.toFixed(1)}" step="0.1" />
             <span>${protocol.foodB.type === FoodType.SOLID ? "g" : "ml"}</span>
           </div>
+        </div>
+        <div class="input-warning-text">
+          Manufacturers can change formulations. Always verify these values match the Nutrition Facts label.
         </div>
         <div class="setting-row">
           <label>Form:</label>

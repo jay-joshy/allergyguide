@@ -143,7 +143,7 @@ function attachSettingsDelegation() {
             });
             protocolState.setProtocol(updated, `Renamed Food A: ${val}`);
           }
-        }, 300);
+        }, 400);
       }
     });
 
@@ -244,7 +244,7 @@ function attachSettingsDelegation() {
             });
             protocolState.setProtocol(updated, `Renamed Food B to: ${val}`);
           }
-        }, 300);
+        }, 400);
       }
     });
 

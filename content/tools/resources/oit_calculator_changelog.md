@@ -14,10 +14,12 @@ authors = ["Joshua Yu"]
 
 - Small footnote explaining what the +/- buttons do
 - Added another checkbox to clickwrapper: verification that food protein content(s) require manual check and that searchable foods are not guaranteed to be accurate
+- Added small footer under protein content inputs Food A and B reminding user to always verify concentration with the Nutrition Facts label
 
 ### Changed
 
 - When typing, the search bar shows: "Create Custom Food: <...>" instead of just "Custom:"
+- Debounce time for food name changing is now longer
 
 ### Deprecated
 
