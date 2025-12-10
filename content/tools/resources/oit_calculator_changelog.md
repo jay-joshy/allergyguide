@@ -20,6 +20,8 @@ authors = ["Joshua Yu"]
 
 ### Fixed
 
+- on mobile, format of clickwrap modal is now not cut off
+
 ### Security
 
 ## [0.9.1] - 2025-12-09

@@ -954,8 +954,10 @@
   padding: 2rem;
   border-radius: 8px;
   border: 1px solid var(--oit-border);
-  width: 90%;
-  max-width: 80%;
+  width: 85%;
+  max-width: 85%;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
   font-family: "Times New Roman", Times, serif;
