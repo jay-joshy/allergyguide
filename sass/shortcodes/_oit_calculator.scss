@@ -840,6 +840,17 @@
   @media (max-width: 768px) {
     padding: 1rem;
 
+    .oit-mobile-hidden-shortcut {
+      display: none;
+    }
+
+    .oit-modal-overlay,
+    .oit-modal-content {
+      max-width: 100%;
+      width: 100%;
+      overflow-x: auto;
+    }
+
     .settings-container {
       gap: 1rem;
     }
