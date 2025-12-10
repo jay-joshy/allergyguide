@@ -5,9 +5,7 @@ date = 2024-11-24
 updated = 2025-02-07
 draft = false
 in_search_index = false
-
-[extra]
-toc = true
+template = "pages.html"
 +++
 
 ## Highlights
