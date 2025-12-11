@@ -157,5 +157,45 @@ describe('Core: Validator', () => {
       const warnings = validateProtocol(protocol);
       expect(warnings.some(w => w.code === WarningCode.Yellow.HIGH_MIX_WATER)).toBe(true);
     });
+
+    it('should flag RAPID_ESCALATION for >2x increase in dose', () => {
+      const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+      // Construct steps: 10mg -> 25mg (2.5x increase)
+      protocol.steps[0].targetMg = new Decimal(10);
+      protocol.steps[1].targetMg = new Decimal(25);
+
+      const warnings = validateProtocol(protocol);
+      expect(warnings.some(w => w.code === WarningCode.Yellow.RAPID_ESCALATION)).toBe(true);
+    });
+
+    it('should NOT flag RAPID_ESCALATION for >2x increase if both doses <= 5mg', () => {
+      const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+      // Construct steps: 1mg -> 4mg (4x increase, but small doses)
+      protocol.steps[0].targetMg = new Decimal(1);
+      protocol.steps[1].targetMg = new Decimal(4);
+
+      const warnings = validateProtocol(protocol);
+      expect(warnings.some(w => w.code === WarningCode.Yellow.RAPID_ESCALATION)).toBe(false);
+    });
+
+    it('should flag RAPID_ESCALATION for >2x increase when crossing 5mg threshold (e.g. 3mg -> 7mg)', () => {
+      const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+      // Construct steps: 3mg -> 7mg (2.33x increase, and 7mg > 5mg)
+      protocol.steps[0].targetMg = new Decimal(3);
+      protocol.steps[1].targetMg = new Decimal(7);
+
+      const warnings = validateProtocol(protocol);
+      expect(warnings.some(w => w.code === WarningCode.Yellow.RAPID_ESCALATION)).toBe(true);
+    });
+
+    it('should NOT flag RAPID_ESCALATION for <=2x increase', () => {
+      const protocol = generateDefaultProtocol(food, DEFAULT_CONFIG);
+      // Construct steps: 10mg -> 20mg (2x increase)
+      protocol.steps[0].targetMg = new Decimal(10);
+      protocol.steps[1].targetMg = new Decimal(20);
+
+      const warnings = validateProtocol(protocol);
+      expect(warnings.some(w => w.code === WarningCode.Yellow.RAPID_ESCALATION)).toBe(false);
+    });
   });
 });
