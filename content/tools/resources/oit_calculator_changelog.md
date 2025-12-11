@@ -14,6 +14,18 @@ authors = ["Joshua Yu"]
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.9.2] - 2025-12-10
+
+### Changed
+
 - ASCII export for protocols no longer outputs a table as it looks bad on non-mono-font EMRs by default.
 
 Old output example:
@@ -21,6 +33,7 @@ Old output example:
 ```txt
 Elmhurst Milked Almonds Unsweetened Beverage (Liquid). Protein: 20.0 mg/ml
 Almonds (dry roasted, unblanched) (Solid). Protein: 210.0 mg/g
+
 +------------------------------------------------------------------------------+
 |                 Elmhurst Milked Almonds Unsweetened Beverage                 |
 +------+---------+--------+-------------------------+--------------+-----------+
@@ -72,16 +85,10 @@ Protein: 21.00 g per 100 g serving.
 (12): 300.0 mg - 1.40 g (Direct)
 ```
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - on mobile, format of clickwrap modal is now not cut off
 - on mobile, table is now auto x-scroll
-
-### Security
 
 ## [0.9.1] - 2025-12-09
 
