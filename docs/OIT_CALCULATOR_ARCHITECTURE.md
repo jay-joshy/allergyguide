@@ -92,3 +92,7 @@ oit_calculator/
 ### 5. Stability and Persistence
 
 - **Undo/Redo Stability:** Verify `ProtocolState` history stack and doesn't grow infinitely or behave unpredictably during complex edits.
+
+### 6. User and Dev documentation stable
+
+- Include user section on how calculations are done (ie. dropdown in .md file)
