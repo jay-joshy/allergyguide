@@ -141,7 +141,7 @@ function attachSettingsDelegation() {
             const updated = updateFoodDetails(current, 'A', {
               name: (target as HTMLInputElement).value
             });
-            protocolState.setProtocol(updated, `Renamed Food A: ${val}`);
+            protocolState.setProtocol(updated, `Renamed Food A`);
           }
         }, 400);
       }
@@ -242,7 +242,7 @@ function attachSettingsDelegation() {
             const updated = updateFoodDetails(current, "B", {
               name: (target as HTMLInputElement).value
             });
-            protocolState.setProtocol(updated, `Renamed Food B to: ${val}`);
+            protocolState.setProtocol(updated, `Renamed Food B`);
           }
         }, 400);
       }
