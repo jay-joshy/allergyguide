@@ -14,6 +14,64 @@ authors = ["Joshua Yu"]
 
 ### Changed
 
+- ASCII export for protocols no longer outputs a table as it looks bad on non-mono-font EMRs by default.
+
+Old output example:
+
+```txt
+Elmhurst Milked Almonds Unsweetened Beverage (Liquid). Protein: 20.0 mg/ml
+Almonds (dry roasted, unblanched) (Solid). Protein: 210.0 mg/g
++------------------------------------------------------------------------------+
+|                 Elmhurst Milked Almonds Unsweetened Beverage                 |
++------+---------+--------+-------------------------+--------------+-----------+
+| Step | Protein | Method |       Mix Details       | Daily Amount | Interval  |
++------+---------+--------+-------------------------+--------------+-----------+
+|    1 | 1.0 mg  | DILUTE | 1 ml food + 19 ml water | 1 ml         | 2-4 weeks |
+|    2 | 2.5 mg  | DILUTE | 1 ml food + 7 ml water  | 1 ml         | 2-4 weeks |
+|    3 | 5.0 mg  | DILUTE | 1 ml food + 3 ml water  | 1 ml         | 2-4 weeks |
+|    4 | 10.0 mg | DIRECT | N/A                     | 0.5 ml       | 2-4 weeks |
+|    5 | 20.0 mg | DIRECT | N/A                     | 1 ml         | 2-4 weeks |
+|    6 | 40.0 mg | DIRECT | N/A                     | 2 ml         | 2-4 weeks |
+|    7 | 80.0 mg | DIRECT | N/A                     | 4 ml         | 2-4 weeks |
++------+---------+--------+-------------------------+--------------+-----------+
+--- TRANSITION TO: Almonds (dry roasted, unblanched) ---
++----------------------------------------------------------------------------+
+|                     Almonds (dry roasted, unblanched)                      |
++------+----------+--------+-------------+--------------+--------------------+
+| Step | Protein  | Method | Mix Details | Daily Amount |      Interval      |
++------+----------+--------+-------------+--------------+--------------------+
+|    8 | 80.0 mg  | DIRECT | N/A         | 0.40 g       | 2-4 weeks          |
+|    9 | 120.0 mg | DIRECT | N/A         | 0.60 g       | 2-4 weeks          |
+|   10 | 160.0 mg | DIRECT | N/A         | 0.80 g       | 2-4 weeks          |
+|   11 | 240.0 mg | DIRECT | N/A         | 1.10 g       | 2-4 weeks          |
+|   12 | 300.0 mg | DIRECT | N/A         | 1.40 g       | Continue long term |
++------+----------+--------+-------------+--------------+--------------------+
+```
+
+New output:
+
+```txt
+Elmhurst Milked Almonds Unsweetened Beverage (LIQUID).
+Protein: 5.00 g per 250 ml serving.
+(1): 1.0 mg - 1 ml (Dilution: 1 ml food + 19 ml water)
+(2): 2.5 mg - 1 ml (Dilution: 1 ml food + 7 ml water)
+(3): 5.0 mg - 1 ml (Dilution: 1 ml food + 3 ml water)
+(4): 10.0 mg - 0.5 ml (Direct)
+(5): 20.0 mg - 1 ml (Direct)
+(6): 40.0 mg - 2 ml (Direct)
+(7): 80.0 mg - 4 ml (Direct)
+
+--- TRANSITION TO ---
+
+Almonds (dry roasted, unblanched) (SOLID).
+Protein: 21.00 g per 100 g serving.
+(8): 80.0 mg - 0.40 g (Direct)
+(9): 120.0 mg - 0.60 g (Direct)
+(10): 160.0 mg - 0.80 g (Direct)
+(11): 240.0 mg - 1.10 g (Direct)
+(12): 300.0 mg - 1.40 g (Direct)
+```
+
 ### Deprecated
 
 ### Removed

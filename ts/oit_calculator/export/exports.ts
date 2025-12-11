@@ -22,11 +22,20 @@ declare const __VERSION_OIT_CALCULATOR__: string;
 // HELPER FUNCTIONS
 // ============================================
 
+interface ExportRow {
+  stepIndex: number;
+  targetProtein: string;
+  method: Method;
+  mixDetails: string;
+  dailyAmount: string;
+  interval: string;
+}
+
 /**
  * Prepares table rows for a subset of steps (Food A or Food B).
  * Shared logic for formatting amounts and mix instructions.
  */
-function buildStepRows(steps: Step[], foodType: FoodType, isLastPhase: boolean): any[] {
+function buildStepRows(steps: Step[], foodType: FoodType, isLastPhase: boolean): ExportRow[] {
   return steps.map((step, index) => {
     let dailyAmountStr = `${formatAmount(step.dailyAmount, step.dailyAmountUnit)} ${step.dailyAmountUnit}`;
     let mixDetails = "N/A";
@@ -39,14 +48,14 @@ function buildStepRows(steps: Step[], foodType: FoodType, isLastPhase: boolean):
     const isLastStep = index === steps.length - 1;
     const interval = (isLastStep && isLastPhase) ? "Continue long term" : "2-4 weeks";
 
-    return [
-      step.stepIndex,
-      `${formatNumber(step.targetMg, 1)} mg`,
-      step.method,
+    return {
+      stepIndex: step.stepIndex,
+      targetProtein: `${formatNumber(step.targetMg, 1)} mg`,
+      method: step.method,
       mixDetails,
-      dailyAmountStr,
+      dailyAmount: dailyAmountStr,
       interval,
-    ];
+    };
   });
 }
 
@@ -108,7 +117,7 @@ function renderHeader(doc: jsPDF, y: number): number {
   return y + 30;
 }
 
-function renderFoodSection(doc: jsPDF, y: number, name: string, food: any, rows: any[], titleMaxWidth?: number): number {
+function renderFoodSection(doc: jsPDF, y: number, name: string, food: any, rows: ExportRow[], titleMaxWidth?: number): number {
   // Check page break before starting section
   if (y > 650) {
     doc.addPage();
@@ -136,10 +145,19 @@ function renderFoodSection(doc: jsPDF, y: number, name: string, food: any, rows:
   y += 15;
 
   // Table
+  const tableBody = rows.map(r => [
+    r.stepIndex,
+    r.targetProtein,
+    r.method,
+    r.mixDetails,
+    r.dailyAmount,
+    r.interval,
+  ]);
+
   (doc as any).autoTable({
     startY: y,
     head: [["Step", "Protein", "Method", "How to make mix", "Daily Amount", "Interval"]],
-    body: rows,
+    body: tableBody,
     theme: "striped",
     headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
     styles: { fontSize: 9, cellPadding: 6, overflow: 'linebreak', valign: 'middle', halign: 'left' },
@@ -333,7 +351,7 @@ async function handlePdfMergeAndDownload(doc: jsPDF, reviewSheetBytes: ArrayBuff
 
 }
 
-function generateRoughAsciiTableForFood(food: Food, rows: any[]): string {
+function generateRoughAsciiTableForFood(food: Food, rows: ExportRow[]): string {
   if (!food || !rows) return "";
 
   let text = "";
@@ -341,21 +359,11 @@ function generateRoughAsciiTableForFood(food: Food, rows: any[]): string {
   const foodUnit = food.type === FoodType.SOLID ? "g" : "ml";
   text += `${food.name} (${foodType}).\nProtein: ${formatNumber(food.gramsInServing, 2)} g per ${food.servingSize} ${foodUnit} serving.\n`;
 
-  // ideally would make rows[] typed... to avoid brittle index errors
-  // but would have to alter the genPDF section since the table making package wants []
-  // [
-  //   step.stepIndex,
-  //   `${formatNumber(step.targetMg, 1)} mg`,
-  //   step.method,
-  //   mixDetails,
-  //   dailyAmountStr,
-  //   interval,
-  // ];
   for (const row of rows) {
-    if (row[2] === Method.DILUTE) {
-      text += `(${row[0]}): ${row[1]} - ${row[4]} (Dilution: ${row[3]})\n`;
+    if (row.method === Method.DILUTE) {
+      text += `(${row.stepIndex}): ${row.targetProtein} - ${row.dailyAmount} (Dilution: ${row.mixDetails})\n`;
     } else {
-      text += `(${row[0]}): ${row[1]} - ${row[4]} (Direct)\n`;
+      text += `(${row.stepIndex}): ${row.targetProtein} - ${row.dailyAmount} (Direct)\n`;
     }
   }
   return text;
