@@ -12,7 +12,8 @@ oit_calculator/
 │   ├── calculator.ts       # math for dilutions and step generation
 │   ├── protocol.ts         # protocol manipulation 
 │   ├── validator.ts        # red/yellow rule checking
-│   └── search.ts           # fuzzy search 
+│   ├── search.ts           # fuzzy search
+│   └── minify.ts           # data for qr code compression and generation
 ├── state/                  
 │   ├── appstate.ts         # immutable global app config (loaded data)
 │   ├── protocolstate.ts    # observable state container for active protocol
@@ -22,9 +23,11 @@ oit_calculator/
 ├── export/                 
 │   └── exports.ts          # pdf (jspdf) and ascii generation logic
 ├── tests/                  
-│   └── core/               
+│   ├── core/               
+│   ├── export/             
+│   └── data_integrity.test.ts  
 └── ui/                     
-    ├── renderers.ts        # big renderer etc needs to be broken up
+    ├── renderers.ts        # big renderer file, a bit monolithic
     ├── events.ts           # controller layer: most (not all) global event delegation + inputs
     ├── actions.ts          # bit of glue with logic connecting ui to state, mainly search / selection of foods/protocols
     ├── searchui.ts         # search input events, dropdown rendering
@@ -57,13 +60,35 @@ oit_calculator/
 
 ## Known Issues / Design Decisions
 
-- **Clear Button Behavior:** "Clear Food B" button is destructive and resets steps that were converted to Food B back to Food A steps (recalculating based on Food A settings); ? in future make it so that if steps are deleted and the food B is cleared, that the number of steps / targetMgs are preserved?
+- **Clear Button Behavior:** "Clear Food B" button is destructive and resets steps that were converted to Food B back to Food A steps (recalculating based on Food A settings); ? in future make it so that if steps are deleted and the food B is cleared, that the number of steps / targetMgs are preserved? TBD
 
-## Roadmap
+## Roadmap to v1.0.0
 
-- Unit testing flush out
-- Undo redo (helpful for user + also tracking how protocol was made for debugging)
-- UI refactor
-- New warnings:
-  - duplicate steps food X -> food X
-- ? refresh button
+### 1. Safety and Core Logic Validation
+
+- The logic in `calculator.ts` and `protocol.ts` (dose calculations, dilution determination) must be **stabilized** and very thoroughly tested.
+- `validator.ts` must be robust and comprehensive as possible. Current warnings should be reviewed and other possible warnings should be brainstormed and implemented if valid.
+- Disclaimer/Liability language should be solidified.
+
+### 2. Data Integrity and "Rough" Assets
+
+- Clean `typed_foods_rough.json`. Likely remove foods with protein of 0. Have more accurate generated food types. Rename 'final' to `cnf_foods_v1.json`.
+- Ensure bounds in `data_integrity.test.ts` are comprehensive (e.g., ensure no food has 0g protein unless intended, check for duplicates).
+
+### 3. Development of export content / format
+
+- Make sure PDF resource for static patient handout is comprehensive and peer-reviewed
+- Make sure ASCII export works well in EMRs
+
+### 4. Testing, QA
+
+- **Unit Test Coverage:** Mainly want high coverage for `core/` files. Some edge cases:
+  - Transitioning foods with vastly different protein concentrations.
+  - Switching from Solid to Liquid mid-protocol.
+  - Floating point precision (round-trip verification).
+- **User Testing:** Stress testing by non-developers to try and generate nonsensical protocols or any bugs. Making sure the UI is intuitive and there are no further breaking features to implement.
+- **Mobile Testing:** while this is intended for desktop, it should still work as expected on mobile.
+
+### 5. Stability and Persistence
+
+- **Undo/Redo Stability:** Verify `ProtocolState` history stack and doesn't grow infinitely or behave unpredictably during complex edits.
