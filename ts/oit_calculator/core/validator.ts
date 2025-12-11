@@ -452,6 +452,7 @@ function checkDirectStep({ step, protocol, food }: { step: Step, protocol: Proto
  *  Problems checked:
  * - if all steps have at least ascending targetMg
  * - if adjacent targetMg are duplicate, unless A -> transition
+ * - if dose increases by more than 100%
  */
 function checkStepSequence(steps: Step[]): Warning[] {
   const warnings: Warning[] = [];
@@ -460,7 +461,7 @@ function checkStepSequence(steps: Step[]): Warning[] {
     const currentStep = steps[i];
     const prevStep = steps[i - 1];
 
-    // NON_ASCENDING_STEPS
+    // NON_ASCENDING_STEPS:
     if (currentStep.targetMg.lessThan(prevStep.targetMg)) {
       warnings.push({
         severity: getWarningSeverity(WarningCode.Yellow.NON_ASCENDING_STEPS),
@@ -470,7 +471,7 @@ function checkStepSequence(steps: Step[]): Warning[] {
       });
     }
 
-    // DUPLICATE_STEP
+    // DUPLICATE_STEP:
     // Two directly adjacent steps have the same dose, and are the same food.
     if (currentStep.food === prevStep.food && currentStep.targetMg.equals(prevStep.targetMg)) {
       warnings.push({
@@ -479,6 +480,28 @@ function checkStepSequence(steps: Step[]): Warning[] {
         message: `Step ${prevStep.stepIndex} and Step ${currentStep.stepIndex} have the same target protein. This is redundant.`,
         stepIndex: currentStep.stepIndex,
       });
+    }
+
+    // RAPID_ESCALATION:
+    // More than doubling between adj steps
+    // In general most protocols in trials / clinical practice never go beyond, unless in very small steps (e.g. 1mg -> 2.5mg)
+    // That said, there is no guideline that explicitly says >X % increase should not be done 
+    // And for very rare and specific circumstances (ie. anti-IgE rush protocols) sometimes >2x is done...
+    if (prevStep.targetMg.greaterThan(0)) {
+      // limit is 2x unless previous step and current step <=5mg
+      if (prevStep.targetMg.lessThanOrEqualTo(5) && currentStep.targetMg.lessThanOrEqualTo(5)) continue;
+
+      const doublePrev = prevStep.targetMg.times(2);
+      if (currentStep.targetMg.greaterThan(doublePrev)) {
+        const ratio = currentStep.targetMg.dividedBy(prevStep.targetMg);
+
+        warnings.push({
+          severity: getWarningSeverity(WarningCode.Yellow.RAPID_ESCALATION),
+          code: WarningCode.Yellow.RAPID_ESCALATION,
+          message: `Step ${currentStep.stepIndex}: Rapid escalation (${formatNumber(ratio, 1)} times the previous dose). Most protocols in the literature do not exceed doubling in a single step, except at very small target doses.`,
+          stepIndex: currentStep.stepIndex,
+        });
+      }
     }
   }
 

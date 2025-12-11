@@ -14,6 +14,8 @@ authors = ["Joshua Yu"]
 
 - Tooltips for Food A and B thresholds
 - Within the table when the user first opens the tool, brief instructions have been added
+- More validators:
+  - Flags if step Mg increased >2x, if both steps are not <= 5mg. If both steps are <=5mg, then >2x changes are allowed (ie. 1mg to 2.5mg)
 
 ### Changed
 

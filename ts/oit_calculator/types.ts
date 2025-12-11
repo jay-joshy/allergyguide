@@ -66,6 +66,7 @@ export const WarningCode = {
     DUPLICATE_STEP: "DUPLICATE_STEP",
     HIGH_DAILY_AMOUNT: "HIGH_DAILY_AMOUNT",
     HIGH_MIX_WATER: "HIGH_MIX_WATER",
+    RAPID_ESCALATION: "RAPID_ESCALATION",
   }
 } as const;
 // to use in Warning interface
