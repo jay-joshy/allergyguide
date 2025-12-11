@@ -42,12 +42,8 @@ describe('Export Output Logic', () => {
     const output = generateAsciiContent(baseProtocol, "Keep it up!");
 
     // Check Headers
-    expect(output).toContain("Peanut Flour (Solid)");
+    expect(output).toContain("Peanut Flour (SOLID)");
     expect(output).not.toContain("TRANSITION TO");
-
-    // Check last step interval
-    // Should be "Continue long term" because there is no Food B
-    expect(output).toMatch(/Continue long term\s+\|$/m);
   });
 
   it('Scenario: Food A -> Food B Transition', () => {
@@ -62,17 +58,11 @@ describe('Export Output Logic', () => {
 
     // 1. Should have both tables
     expect(output).toContain("Peanut Flour");
-    expect(output).toContain("TRANSITION TO: Bamba");
+    // New format separates header from food name
+    expect(output).toContain("--- TRANSITION TO ---");
+    expect(output).toContain("Bamba (SOLID)");
 
-    // 2. Food A section should end with "2-4 weeks" NOT "Continue long term"
-    // We split the string at the transition header to verify the top half
-    const [foodAPart, foodBPart] = output.split("TRANSITION TO:");
-
-    expect(foodAPart).toContain("2-4 weeks");
-    expect(foodAPart).not.toContain("Continue long term");
-
-    // 3. Food B section should end with "Continue long term"
-    expect(foodBPart).toContain("Continue long term");
+    // 2. Interval checks removed as they are not in the new ASCII format
   });
 
   it('Scenario: High Food B Threshold (Ghost Food B)', () => {
@@ -88,9 +78,6 @@ describe('Export Output Logic', () => {
 
     // Should NOT show transition header
     expect(output).not.toContain("TRANSITION TO");
-
-    // Food A should treat itself as the final phase ("Continue long term")
-    expect(output).toContain("Continue long term");
   });
 
   it('Scenario: Deleted Food A (Starts immediately with B)', () => {
@@ -112,12 +99,9 @@ describe('Export Output Logic', () => {
     // 1. Should show Bamba Name
     expect(output).toContain("Bamba");
 
-    // 2. Should NOT show Peanut Flour table body (Name might be in header summary though)
-    // The table generation for A requires steps > 0.
-    // We can check this by ensuring the first step in the output is Bamba.
-
-    // Logic check: if Food A steps are 0, it skips A table and goes to "TRANSITION TO: Bamba" -> B Table.
-    expect(output).toContain("TRANSITION TO: Bamba");
+    // 2. Logic check: if Food A steps are 0, it skips A table and goes directly to B Table.
+    // In this case, it should NOT print the transition header because there is nothing to transition FROM.
+    expect(output).not.toContain("TRANSITION TO");
   });
 
   it('Scenario: Dilution Logic Check', () => {
@@ -214,5 +198,24 @@ describe('Export Output Logic', () => {
 
     const outSolid = generateAsciiContent(pSolid, "");
     expect(outSolid).toContain("1.00 g");
+  });
+
+  it('Scenario: Custom Notes', () => {
+    const note = "Patient must eat with 200ml of water.";
+    const output = generateAsciiContent(baseProtocol, note);
+
+    expect(output).toContain("NOTES");
+    expect(output).toContain(note);
+    expect(output).toContain("========================================");
+  });
+
+  it('Scenario: Empty Protocol', () => {
+    const output = generateAsciiContent(null, "Notes");
+    expect(output).toBe("");
+  });
+
+  it('Scenario: Version Footer', () => {
+    const output = generateAsciiContent(baseProtocol, "");
+    expect(output).toContain(`Tool version-hash: v${globalThis.__VERSION_OIT_CALCULATOR__}-${globalThis.__COMMIT_HASH__}`);
   });
 });
