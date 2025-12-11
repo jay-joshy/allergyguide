@@ -19,7 +19,7 @@
     {%- if authors | length > 3 %}, et al.{%else%}.{% endif %} 
 
     {% if ref.tags.url %}
-<a class="ref-link" href="{{ref.tags.url}}" target="_blank">
+<a class="ref-link" href="{{ref.tags.url}}" target="_blank" rel="noopener noreferrer">
   <b>{{ ref.tags.title }}</b>,
 </a>
 {% else %}
@@ -45,7 +45,7 @@
     {%- endfor -%}
     {%- if authors | length > 3 %}, et al.{%else%}.{% endif %} 
     {%- if ref.tags.url -%}
-<a class="ref-link" href="{{ref.tags.url}}" target="_blank">
+<a class="ref-link" href="{{ref.tags.url}}" target="_blank" rel="noopener noreferrer" >
   <b>{{ ref.tags.title }}</b>.
 </a>
 {%- else -%}
@@ -108,6 +108,6 @@
     {% if ref.tags.doi %}
 <a href="https://doi.org/{{ ref.tags.doi }}">{{ ref.tags.doi }}</a>
 {% elif ref.tags.url %}
-<a href="{{ ref.tags.url }}" target="_blank">{{ ref.tags.url }}</a>
+<a href="{{ ref.tags.url }}" target="_blank" rel="noopener noreferrer" >{{ ref.tags.url }}</a>
 {% endif %}
 {% endmacro bib_misc %}
