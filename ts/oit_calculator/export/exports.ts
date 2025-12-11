@@ -5,12 +5,11 @@
  */
 
 import { FoodType, Method } from "../types";
-import type { Protocol, Unit, Step } from "../types";
+import type { Protocol, Unit, Step, Food } from "../types";
 import { formatNumber, formatAmount } from "../utils";
 import { getFoodAStepCount } from "../core/protocol";
 import type { jsPDF } from 'jspdf';
 import type { PDFDocument } from 'pdf-lib';
-import { AsciiTable3 } from "ascii-table3";
 import { protocolState } from "../state/instances";
 import { generateUserHistoryPayload } from "../core/minify";
 
@@ -334,6 +333,34 @@ async function handlePdfMergeAndDownload(doc: jsPDF, reviewSheetBytes: ArrayBuff
 
 }
 
+function generateRoughAsciiTableForFood(food: Food, rows: any[]): string {
+  if (!food || !rows) return "";
+
+  let text = "";
+  const foodType = food.type;
+  const foodUnit = food.type === FoodType.SOLID ? "g" : "ml";
+  text += `${food.name} (${foodType}).\nProtein: ${formatNumber(food.gramsInServing, 2)} g per ${food.servingSize} ${foodUnit} serving.\n`;
+
+  // ideally would make rows[] typed... to avoid brittle index errors
+  // but would have to alter the genPDF section since the table making package wants []
+  // [
+  //   step.stepIndex,
+  //   `${formatNumber(step.targetMg, 1)} mg`,
+  //   step.method,
+  //   mixDetails,
+  //   dailyAmountStr,
+  //   interval,
+  // ];
+  for (const row of rows) {
+    if (row[2] === Method.DILUTE) {
+      text += `(${row[0]}): ${row[1]} - ${row[4]} (Dilution: ${row[3]})\n`;
+    } else {
+      text += `(${row[0]}): ${row[1]} - ${row[4]} (Direct)\n`;
+    }
+  }
+  return text;
+}
+
 /**
  * Pure function to generate the ASCII string content.
  * Extracted from exportASCII to allow for easier unit testing of output logic.
@@ -344,55 +371,29 @@ async function handlePdfMergeAndDownload(doc: jsPDF, reviewSheetBytes: ArrayBuff
  */
 export function generateAsciiContent(protocol: Protocol | null, customNote: string): string {
   if (!protocol) return "";
-
   let text = "";
-
-  // --- Header Information ---
-  const foodAType = protocol.foodA.type === FoodType.SOLID ? "Solid" : "Liquid";
-  const foodAUnit = protocol.foodA.type === FoodType.SOLID ? "g" : "ml";
-
-  text += `${protocol.foodA.name} (${foodAType}). Protein: ${formatNumber(protocol.foodA.getMgPerUnit(), 1)} mg/${foodAUnit}`;
-
-  if (protocol.foodB) {
-    const foodBType = protocol.foodB.type === FoodType.SOLID ? "Solid" : "Liquid";
-    const foodBUnit = protocol.foodB.type === FoodType.SOLID ? "g" : "ml";
-    text += `\n${protocol.foodB.name} (${foodBType}). Protein: ${formatNumber(protocol.foodB.getMgPerUnit(), 1)} mg/${foodBUnit}`;
-  }
-  text += "\n\n";
 
   // --- Table Generation ---
 
-  // Define consistent headers matching buildStepRows output
-  const headers = ["Step", "Protein", "Method", "Mix Details", "Daily Amount", "Interval"];
-
-  // Food A Table
+  // Food A information
   const foodAStepCount = getFoodAStepCount(protocol);
   const hasFoodBSteps = foodAStepCount < protocol.steps.length;
   const foodASteps = protocol.steps.slice(0, foodAStepCount);
 
   if (foodASteps.length > 0) {
-    const tableA = new AsciiTable3(protocol.foodA.name);
-    tableA.setHeading(...headers);
-
-    const rows = buildStepRows(foodASteps, protocol.foodA.type, !hasFoodBSteps);
-    tableA.addRowMatrix(rows);
-
-    text += tableA.toString();
+    const foodARows = buildStepRows(foodASteps, protocol.foodA.type, !hasFoodBSteps);
+    text += generateRoughAsciiTableForFood(protocol.foodA, foodARows);
   }
 
   // Food B Table
   const totalSteps = protocol.steps.length;
   if (protocol.foodB && foodAStepCount < totalSteps) {
-    text += `\n--- TRANSITION TO: ${protocol.foodB.name} ---\n`;
-
-    const tableB = new AsciiTable3(protocol.foodB.name);
-    tableB.setHeading(...headers);
+    if (foodASteps.length > 0) text += `\n--- TRANSITION TO ---\n\n`;
 
     const foodBSteps = protocol.steps.slice(foodAStepCount);
-    const rows = buildStepRows(foodBSteps, protocol.foodB.type, true);
-    tableB.addRowMatrix(rows);
+    const foodBRows = buildStepRows(foodBSteps, protocol.foodB.type, true);
 
-    text += tableB.toString();
+    text += generateRoughAsciiTableForFood(protocol.foodB, foodBRows)
   }
 
   // --- Notes & Footer ---

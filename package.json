@@ -18,7 +18,6 @@
     "build": "npm run build:ts && npm run abridge --"
   },
   "dependencies": {
-    "ascii-table3": "^1.0.1",
     "decimal.js": "^10.6.0",
     "fast-toml": "^0.5.4",
     "fuzzysort": "^3.1.0",
