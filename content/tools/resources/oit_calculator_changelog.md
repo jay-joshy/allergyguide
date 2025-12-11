@@ -12,6 +12,9 @@ authors = ["Joshua Yu"]
 
 ### Added
 
+- Tooltips for Food A and B thresholds
+- Within the table when the user first opens the tool, brief instructions have been added
+
 ### Changed
 
 ### Deprecated

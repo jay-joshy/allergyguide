@@ -282,6 +282,9 @@ function buildFoodAHTML(protocol: Protocol): string {
         <div class="input-unit-group">
           <input type="number" id="food-a-threshold" min="0" value="${formatAmount(protocol.diThreshold, protocol.foodA.type === FoodType.SOLID ? "g" : "ml")}" step="0.1" />
           <span>${protocol.foodA.type === FoodType.SOLID ? "g" : "ml"}</span>
+          <span class="info-tooltip" data-tooltip="Once you can measure at least this much food, switch from dilution to direct doses.">
+          ⓘ
+          </span>
         </div>
       </div>
       `
@@ -326,6 +329,9 @@ function buildFoodBHTML(protocol: Protocol): string {
           <div class="input-unit-group">
             <input type="number" id="food-b-threshold" value="${formatAmount(protocol.foodBThreshold!.amount, protocol.foodBThreshold!.unit)}" step="0.1" min="0" />
             <span>${protocol.foodBThreshold!.unit}</span>
+            <span class="info-tooltip" data-tooltip="Once you can measure at least this much food, transition from the first food to this food.">
+            ⓘ
+            </span>
           </div>
         </div>
       </div>

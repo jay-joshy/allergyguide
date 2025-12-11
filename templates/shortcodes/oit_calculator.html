@@ -6,7 +6,7 @@
 		<div class="oit-version">
 			<span>v{{ tool_info.version }}</span>
 			<span class="separator">•</span>
-			<a href="{{ get_url(path='@/tools/resources/oit_calculator_changelog.md') }}" target="_blank" class="changelog-link">Changelog</a>
+			<a href="{{ get_url(path='@/tools/resources/oit_calculator_changelog.md') }}" target="_blank" rel="noopener noreferrer" class="changelog-link">Changelog</a>
 		</div>
 		<button id="btn-undo" class="btn-secondary" disabled title="Undo (Ctrl+z)">
 			↶ Undo <span class="oit-mobile-hidden-shortcut">(Ctrl-z)</span>
@@ -80,7 +80,26 @@
                             padding: 1rem;
                         "
 					>
-						Select a food or protocol to generate steps.
+						<div class="startup-instructions">
+							<h3>Quick Start</h3>
+							<ol>
+								<li><b>Select:</b>
+								Search for a pre-defined protocol, food (e.g., "Peanut Flour"), or create a custom food from the search bar.<br>
+								<em>Food data is aggregated from Health Canada <a href='https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-about-us.html' target="_blank" rel="noopener noreferrer">(Canadian Nutrient File, 2015)</a>
+									and manual entries for specific branded products.</em></li>
+								<li><b>Verify:</b>
+								Always confirm the protein content matches your specific product label. <i>We cannot guarantee the protein contents remain up-to-date or accurate</i>: manufacturers change formulations.</li>
+								<li><b>Customize:</b>
+								Adjust dose progression, food parameters, and specific steps.</li>
+								<li><b>Transition (Optional):</b>
+								Search for a transition food to create a transition protocol (e.g. almond milk → almonds).</li>
+								<li><b>Export:</b>
+								Obtain a concise copy-pasteable ASCII for the EMR or a PDF with the protocol and general patient handout.</li>
+							</ol>
+							<p class="empty-footer">
+								<em>This tool runs entirely in your browser (client-side). <b><u>No PHI is collected or transmitted.</u></b></em>
+							</p>
+						</div>
 					</td>
 				</tr>
 			</tbody>
@@ -104,7 +123,7 @@
 		<div class="oit-modal-checkbox-container">
 			<label>
 				<input type="checkbox" id="clickwrap-checkbox-0">
-				<b>I have reviewed the <a href="{{ get_url(path='@/tools/resources/oit_calculator_terms.md') }}" target="_blank">Terms of Use</a>.</b>
+				<b>I have reviewed the <a href="{{ get_url(path='@/tools/resources/oit_calculator_terms.md') }}" target="_blank" rel="noopener noreferrer">Terms of Use</a>.</b>
 			</label>
 			<label>
 				<input type="checkbox" id="clickwrap-checkbox-1">
