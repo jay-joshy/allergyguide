@@ -77,7 +77,7 @@ export class ProtocolState {
       timestamp: Date.now()
     };
 
-    console.log(label);
+    console.debug(label);
 
     if (this.current && options.addToHistory) {
       this.history.push(this.current);
