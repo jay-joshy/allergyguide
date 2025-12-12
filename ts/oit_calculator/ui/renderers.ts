@@ -4,7 +4,7 @@
  * DOM Rendering logic
  */
 import { Method, FoodType, DosingStrategy, FoodAStrategy } from "../types";
-import type { Protocol, Unit, Food, Step, ReadableHistoryPayload } from "../types";
+import type { Protocol, Warning, Unit, Food, Step, ReadableHistoryPayload } from "../types";
 import { formatNumber, formatAmount, escapeHtml } from "../utils";
 import { validateProtocol } from "../core/validator";
 
@@ -798,28 +798,70 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
   let html = "";
 
   if (redWarnings.length > 0) {
-    html += `
-      <div class="warning-section red-warnings">
-        <h4>Critical Issues (Red)</h4>
-        <ul>
-          ${redWarnings.map((w) => `<li><strong>${w.message}</strong></li>`).join("")}
-        </ul>
-      </div>
-    `;
+    html += renderWarningGroup("Critical Issues (Red)", redWarnings, "red-warnings");
   }
 
   if (yellowWarnings.length > 0) {
-    html += `
-      <div class="warning-section yellow-warnings">
-        <h4>Cautions (Yellow)</h4>
-        <ul>
-          ${yellowWarnings.map((w) => `<li>${w.message}</li>`).join("")}
-        </ul>
-      </div>
-    `;
+    html += renderWarningGroup("Cautions (Yellow)", yellowWarnings, "yellow-warnings");
   }
 
   container.innerHTML = html;
+}
+
+/**
+ * Helper to group warnings by step index and render them cleanly
+ */
+function renderWarningGroup(title: string, warnings: Warning[], cssClass: string): string {
+  // Grouping Logic
+  const globalWarnings: Warning[] = [];
+  const stepWarnings = new Map<number, Warning[]>();
+
+  warnings.forEach(w => {
+    if (w.stepIndex !== undefined && w.stepIndex !== null) {
+      if (!stepWarnings.has(w.stepIndex)) {
+        stepWarnings.set(w.stepIndex, []);
+      }
+      stepWarnings.get(w.stepIndex)!.push(w);
+    } else {
+      globalWarnings.push(w);
+    }
+  });
+
+  const sortedSteps = Array.from(stepWarnings.keys()).sort((a, b) => a - b);
+
+  // HTML Generation
+  let html = `<div class="warning-section ${cssClass}">`;
+  html += `<h4>${title}</h4>`;
+
+  // Global Warnings
+  if (globalWarnings.length > 0) {
+    html += `<ul>`;
+    html += globalWarnings.map(w => `<li>${w.severity === 'red' ? `<strong>${w.message}</strong>` : w.message}</li>`).join("");
+    html += `</ul>`;
+  }
+
+  // Step Warnings
+  if (sortedSteps.length > 0) {
+    sortedSteps.forEach(index => {
+      const list = stepWarnings.get(index)!;
+      html += `<div class="step-warning-header">Step ${index}</div>`;
+      html += `<ul>`;
+      html += list.map(w => {
+        let msg = w.message;
+        const prefix = `Step ${index}: `;
+        if (msg.startsWith(prefix)) {
+          msg = msg.substring(prefix.length);
+          // capitalize first letter of truncated string
+          if (msg.length > 0) msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+        }
+        return `<li>${w.severity === 'red' ? `<strong>${msg}</strong>` : msg}</li>`;
+      }).join("");
+      html += `</ul>`;
+    });
+  }
+
+  html += `</div>`;
+  return html;
 }
 
 /**

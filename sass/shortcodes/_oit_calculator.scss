@@ -775,6 +775,13 @@
   .warning-section {
     margin-bottom: 1.5rem;
 
+    .step-warning-header {
+      font-weight: 700;
+      margin: 0.5rem 0 0.25rem 0.25rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -809,6 +816,10 @@
   }
 
   .red-warnings {
+    .step-warning-header {
+      color: var(--oit-warning-red-text);
+    }
+
     li {
       background-color: var(--oit-warning-red-bg);
       border: 1px solid var(--oit-warning-red-border);
@@ -821,6 +832,10 @@
   }
 
   .yellow-warnings {
+    .step-warning-header {
+      color: var(--oit-warning-yellow-text);
+    }
+
     li {
       background-color: var(--oit-warning-yellow-bg);
       border: 1px solid var(--oit-warning-yellow-border);
