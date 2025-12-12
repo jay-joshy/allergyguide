@@ -12,7 +12,7 @@
     "elasticlunr": "npm run abridge -- elasticlunr",
     "pagefind": "npm run abridge -- pagefind",
     "tinysearch": "npm run abridge -- tinysearch",
-    "test": "vitest",
+    "test": "vitest run",
     "check:ts": "tsc --noEmit",
     "build:ts": "npm run check:ts && node build.mjs",
     "build": "npm run build:ts && npm run abridge --"
