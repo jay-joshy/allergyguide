@@ -792,6 +792,10 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
     return;
   }
 
+  // counts
+  const redCount = warnings.filter(w => w.severity === 'red').length;
+  const yellowCount = warnings.filter(w => w.severity === 'yellow').length;
+
   // Grouping Warnings by scope: Global or Step-Specific
   const globalWarnings: Warning[] = [];
   const stepWarnings = new Map<number, Warning[]>();
@@ -809,6 +813,16 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
 
   const sortedSteps = Array.from(stepWarnings.keys()).sort((a, b) => a - b);
   let html = "";
+
+  // Render summary header
+  html += `<div class="warnings-summary-header">`;
+  if (redCount > 0) {
+    html += `<span class="summary-badge red"><strong>${redCount}</strong> Critical</span>`;
+  }
+  if (yellowCount > 0) {
+    html += `<span class="summary-badge yellow"><strong>${yellowCount}</strong> Caution</span>`;
+  }
+  html += `</div>`;
 
   // Render Global Warnings (if any)
   if (globalWarnings.length > 0) {

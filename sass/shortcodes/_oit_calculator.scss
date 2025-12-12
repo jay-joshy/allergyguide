@@ -772,6 +772,33 @@
     border-radius: 6px;
   }
 
+  .warnings-summary-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+
+    .summary-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+
+      strong {
+        font-weight: 800;
+        font-size: 1.1em;
+      }
+
+      &.red {
+        color: var(--oit-warning-red-text);
+      }
+
+      &.yellow {
+        color: var(--oit-warning-yellow-text);
+      }
+    }
+  }
+
   .warning-group {
     background-color: var(--oit-bg-secondary);
     border: 1px solid var(--oit-border);
