@@ -6,8 +6,7 @@
       "type": "LIQUID",
       "name": "Elmhurst Milked Cashews Unsweetened Beverage",
       "gramsInServing": "4",
-      "servingSize": "250",
-      "mgPerUnit": "16"
+      "servingSize": "250"
     },
     "food_a_strategy": "DILUTE_INITIAL",
     "di_threshold": "0.6",
