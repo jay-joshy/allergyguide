@@ -398,12 +398,35 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
 // ]
 #pagebreak()
 
-= Daily Dosing Checklist
+#align(center)[
+  #text(size: 24pt, weight: "bold")[Giving daily doses]\
+  #v(0.1pt)
+  #text()[*READ THIS SECTION CAREFULLY*]
+  #line(length: 100%, stroke: 2pt)
+]
+- For OIT to be effective and safe, it must be performed correctly and consistently. However:
+  - There are circumstances that increase the risk of both mild and severe reactions, where giving the daily dose is NOT appropriate.
+  - There are times therefore when giving the daily dose should be postponed or stopped. IT IS OK TO MISS A DOSE - safety is a priority.
+- Before giving a daily dose, you must make sure the safety checklist is fulfilled.
 
-Doses should be given around 24h apart
+= Safety checklist
+
+If any of these are present, the daily dose should not be given. Ensure NONE of the following are present before giving the daily dose:
+
+keep food consistent - do not switch brands without informing your doctor
+check the label, and make sure the protein content matches the protocol
+Doses should be given around 22-26h apart
 No empty stomach
-ALWAYS eat a snack prior to dose
-keep food consistent
+No uncontrolled asthma
+No sleep depreviation
+No heavy exercise within 2 hours.
+No symptoms of EoE
+ensure good lip care to avoid quick absorption, consider petroleum jelly before and after each dose.
+ALWAYS eat a snack prior to dose, no empty stomach
+Patient is not sick or feverish. See page X for the breakdown.
+Someone can watch the patient for at least 2 hours after the dose in case of reaction.
+Have an EpiPEN that is UTD
+
 
 Before giving the dose every day, check these 5 things:
 
@@ -415,31 +438,60 @@ Before giving the dose every day, check these 5 things:
   - *Monitoring:* Someone can watch the patient for at least 2 hours after the dose?
 ]
 
-== Minor side effects from dose
-COMMON
-Please see page XYZ for how to deal with them
-- ensure good lip care to avoid quick absorption, consider petroleum jelly before and after each dose.
-- Taking Reactine 1 hour before daily dose during build-up can minimize mild side effects.
+= How to give
 
-Keep a diary of any reactions for follow-up.
+Prepare the daily dose as per page X
+If you are doing OIT to multiple foods, give each food sequentially at least 1 minute apart from each other.
+To improve the taste we suggest mixing it with a food that the child likes to hide the taste
+Consider AH first 1 hour beforehand. This is purely for symptom relief and is not mandatory
+Make sure you are around for at least 2 hours after the dose
 
-*When to increase the dose?*
-q2-4 weeks usually
-rule of thumb: if on a dose for 2 weeks and no reactions => ok to move to the next step, otherwise stay on it longer
+As a reminder - especially in the beginning, MILD REACTIONS ARE COMMON AND EXPECTED.
+Taking Reactine 1 hour before daily dose during build-up can minimize mild side effects. It does not prevent severe reactions.
+See page Y for how to deal with reactions - both expected mild and rare severe.
+If there is a severe reaction the daily dosing should stop and you should contact your doctor.
+
+= When to increase the dose?
+
+Ask your doctor. Depending on their practice and the patient's risk profile, some will do:
+- virtual updosing
+- at home
+- in clinic
+- hybrid
+
+Typically this is every 2-4 weeks.
+rule of thumb: if on a dose for 2 weeks and no reactions => usually ok to move to the next step, otherwise stay on it longer
 
 #pagebreak()
 
-= Troubleshooting
+#align(center)[
+  #text(size: 24pt, weight: "bold")[Troubleshooting]\
+  #v(0.1pt)
+  #text()[Reactions and more]
+  #line(length: 100%, stroke: 2pt)
+]
 
-== What if my child has a reaction?
+= What do I do if there's a reaction after a dose?
+
+Reactions can be either MILD or SEVERE. Mild reactions are expected especially in the beginning; however, they should be monitored in the rare case it progresses to a severe reaction. Record reactions in a diary.
+
+== Mild
+
+What do I look out for?
+What do I do?
+
+== Severe
+
+What do I look out for?
+What do I do?
+
+= What if the patient is sick?
 
 Add diagram
 
-== Sickness
+= What if the patient misses doses?
 
-Add diagram
-
-== Missed doses
+= Troubleshooting other problems with daily doses
 
 == Child dislikes the taste
 - *Masking:* Mix the dose with strong flavors like chocolate pudding, apple sauce, cranberry juice.
@@ -447,16 +499,29 @@ Add diagram
 
 == Other
 
+
+
 = When to contact the clinic
 - Epi or severe reactions
 - missed >3d doses
 - new, frequent heartburn or stomach pain.
 - new uncontrolled asthma symptoms
 
-= Frequently Asked Questions
+#pagebreak()
+#align(center)[
+  #text(size: 24pt, weight: "bold")[Frequently Asked Questions]\
+  #v(0.1pt)
+  #line(length: 100%, stroke: 2pt)
+]
 
+= OIT in general
 *Q: Is OIT a cure?*
 Not exactly. It is a treatment. If you stop taking the daily dose, the allergy may likely come back.
+
+*Can multiple foods be treated together during OIT?*
+Yes, many children undergo OIT to multiple foods at the same time.
+
+= About giving doses
 
 *Q: Can the immunotherapy dose be taken on an empty stomach?*
 NO. It is VERY IMPORTANT the dose NOT be taken with empty stomach. It MUST be taken with a snack or meal to slow digestion and absorption of the dose, which reduces the risk of reaction.
@@ -467,18 +532,17 @@ May increase allergen absroption speed and also make it easier for the body to r
 *Q: Can I switch brands of food?*
 A: Ask us first. Different brands of food can have slightly different amounts of protein or degrees of processing.
 
-*Can multiple foods be treated together during OIT?*
-Yes, many children undergo OIT to multiple foods at the same time.
+*Q: What if the patient spits out all or most of their dose?*
 
-*What if the patient spits out all or most of their dose?*
+*Q: What if the patient is going to have an unrelated surgery?*
 
-*What if the patient is going to have an unrelated surgery?*
+*Q: Should the patient avoid NSAIDs (Non-steroidal anti-inflammatory drugs) during OIT?*
 
-*Should the patient avoid NSAIDs (Non-steroidal anti-inflammatory drugs) during OIT?*
+*Q: Does the patient need an antihistamine EVERY time before their dose of OIT?*
 
-*Does the patient need an antihistamine EVERY time before their dose of OIT?*
+= About potential side effects
 
-*Eczema worse*?
+*Q: Eczema worse*?
 
 - eczema more commonly worse from lots of non allergic triggers - dryness, irritants, stress, etc instead of food itself
 - existing food tests like SPT or sIgE don't test for this
@@ -490,6 +554,5 @@ DOes not mean you have to stop
 Spits up most of all of their dose
 don't double dose, resume normal next day. if recurring contact team
 
-#pagebreak()
 
 
