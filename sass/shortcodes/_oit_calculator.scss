@@ -430,8 +430,16 @@
     margin-top: -0.6rem;
     gap: 1rem;
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    position: relative;
+
+    // Apply overflow logic ONLY when screen is small (e.g., tablet/mobile)
+    @media (max-width: 650px) {
+      overflow-x: auto; // Allow horizontal scroll
+      overflow-y: auto; // Allow vertical scroll
+
+      max-height: 85vh; // required sadly
+      border: 1px solid var(--oit-border);
+    }
   }
 
   .bottom-section {

@@ -20,6 +20,8 @@ authors = ["Joshua Yu"]
 
 ### Fixed
 
+- Fix bug where table sticky header stopped working
+
 ### Security
 
 ## [0.10.0] - 2025-12-11
