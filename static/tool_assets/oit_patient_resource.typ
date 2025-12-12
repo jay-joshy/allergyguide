@@ -59,13 +59,13 @@
 ]
 
 = What is OIT?
-OIT is a medical treatment for food allergies that helps patients gradually gain tolerance to the allergen. By slowly giving tiny amounts of the allergen and then slowly increasing the dose over time, the body gradually becomes used to the allergen. _Eventually over ~2 years, the body becomes trained to tolerate doses of the allergen it previously could not_.
+OIT is a medical treatment for food allergies that helps patients gradually gain tolerance to the allergen. By slowly giving tiny amounts of the allergen and then slowly increasing the dose over time, the body gradually becomes used to the allergen. _In other words, the body becomes trained to tolerate doses of the allergen it previously could not_.
 
 *OIT has two main phases:*
 
-1. *Phase 1: Build-up.* Starting with a _tiny_ daily dose, every 2-4 weeks we slowly increase the dose until we reach a maintenance dose (usually a bit less than a serving size). This takes 6 - 12 months.
+1. *Phase 1: Build-up.* Starting with a _*tiny*_ daily dose, every 2-4 weeks we slowly increase the dose until we reach a maintenance dose (usually a bit less than a serving size). This takes 6 - 12 months.
 2. *Phase 2: Maintenance.* Once you reach the maintenance dose, it will be eaten daily for 12 months.
-
+#v(0.5em)
 // --- CETZ DIAGRAM: OIT PHASES ---
 // https://www.csaci.ca/wp-content/uploads/2020/02/Key-concepts-teaching-tool.pdf
 #figure(
@@ -127,15 +127,13 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   }),
 )
 
-= What are the possible outcomes?
+= What are the possible outcomes with OIT?
 
-There are three main outcomes with OIT:
+1. *Full Freedom (Tolerance):* you can eat a full serving of the food (like a whole glass of milk or a peanut butter sandwich) without reaction. Around 80% of preschoolers will get here.
 
-1. *Full Freedom (Tolerance):* you can eat a full serving of the food (like a whole glass of milk or a peanut butter sandwich) without reaction. Around 80%
+2. *Safety (Bite-proof):* While you may still react if you eat a full serving, you can tolerate smaller amounts. This protects you from severe reactions if you accidentally eat the food. Around 18% of preschoolers will get here.
 
-2. *Safety (Bite-proof):* While you may still react if you eat a full serving, you can tolerate smaller amounts. This protects you from severe reactions if you accidentally eat the food. ~18%
-
-3. *Stopping:* Sometimes, OIT becomes difficult due to taste aversion, is too time consuming for patients and families, or side effects, and we have to stop. This is rare. ~2%
+3. *Stopping:* Sometimes, OIT becomes difficult due to taste aversion, is too time consuming for patients and families, or side effects, and we have to stop. This is rare: only around 2% of preschoolers have to stop.
 
 #warning-box("Important Safety Note:")[
   *Remember:* Even after you finish the maintenance phase, if the food is not regularly consumed at least weekly to help the body 'remember' the food is not harmful, the allergy may return.
@@ -152,22 +150,20 @@ There are three main outcomes with OIT:
   table.header([*Who is a GOOD candidate?*], [*Who might NOT be?*]),
   table.hline(stroke: 1pt),
   [
-    - *Confirmed food allergy:* convincing history of reaction with either positive skin test or IgE blood test
+    - *Confirmed food allergy:* convincing story of reaction + either positive skin or blood testing.
 
-    - *Young children:* Infants and preschoolers (under age 6) have immune systems that more easily 'unlearn' allergies.They are also much less likely to have severe reactions during OIT than older children (imagine \<1% versus 14%).
+    - *Young children:* Infants and preschoolers (under age 6) have immune systems that more easily 'unlearn' allergies.They are much less likely to have severe reactions during OIT than older children (imagine 1% versus 14%).
 
-    - *Ability to be consistent:* Able to eat a dose every single day at around the same time. the family must be willing, able, and ready to recognize and treat allergic reactions, including using self-injectable epinephrine properly and in a timely manner
+    - *Ability to be consistent:* The ideal patient eats their dose every day at around the same time. Their family must be willing, able, and ready to recognize and treat allergic reactions, including using self-injectable epinephrine properly.
   ],
   [
-    - *Uncontrolled Asthma:* Your asthma must be well-managed before starting.
+    - *Have uncontrolled asthma:* asthma *must* be well-managed before starting. Badly controlled asthma is a strong risk factor for more severe allergic reactions.
 
-    - *Severe active Eczema:* Severe eczema can make it hard to tell when an allergic reaction is happening.
+    - *Severe active eczema:* Severe eczema can make it hard to tell when an allergic reaction is happening.
 
-    - *Older patients:* > age of 6, more likely to have anaphylaxis, less likely to adhere
+    - *Older patients:* while not a strict rule, once over 6 years old, patients are more likely to have anaphylaxis, and less likely to be consistent with doses
 
-    - *Inability to obtain required equipment, language barriers*
-
-    - *Inconsistent schedule:* If you travel constantly or cannot stick to a daily routine.
+    - *Inability to obtain required equipment, language barriers, or inconsistent schedule*
 
   ],
 )
@@ -182,16 +178,16 @@ There are three main outcomes with OIT:
   table.header([*Benefits (The Good)*], [*Risks (The Bad)*]),
   table.hline(stroke: 1pt),
   [
-    - *Diet:* At the best outcome, the patient could eat a full serving size without reacting
+    - *Diet:* At the best outcome, patients can eat a full serving size of allergen without reacting.
 
     - *Safety:* Much lower risk of a scary reaction from accidental bites.
 
-    - *Anxiety:* Less fear when going to restaurants or school: both for the patient and families.
+    - *Anxiety:* Less fear when going to restaurants or school.
   ],
   [
-    - *EoE:* Around 3% (probably lower in toddlers): if it occurs we consider stopping OIT and involving our Gastroenterology specialists. (not sure if cause or association since EoE is more common in those with food allergies in general; in some select cases we elect to continue)
+    - *Food pipe (esophagus) inflammation:*\ During OIT, around 3% develop inflammation of their esophagus. This condition is more common in those with food allergies in general, and we're not sure if OIT causes this, or is simply a bystander. If this occurs, we consider stopping OIT and involving our Gastroenterology specialists. In the majority of patients, this inflammation is transient and goes away when OIT is stopped.
 
-    - *Reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe reactions are rare especially in pre-schoolers but possible.
+    - *Allergic reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe reactions are rare, especially in preschoolers.
   ],
 )
 
@@ -206,34 +202,8 @@ There are three main outcomes with OIT:
 
 #pagebreak()
 
-= TOC
-
-- Getting ready: equipment and how to use it
-
-- Giving doses: checklist, how to give, when to increase
-
-- What to expect from the first few weeks
-
-- Troubleshooting
-
-  - What to do when my child has a reaction
-
-  - Sickness
-
-  - Missed doses
-
-  - Child dislikes taste
-
-  - Other
-
-- When to contact us
-
-- Q and A for common questions
-
-#pagebreak()
-
 #align(center)[
-  #text(size: 24pt, weight: "bold")[Equipment, and how to use]\
+  #text(size: 24pt, weight: "bold")[Equipment, and how to use them]\
   #v(0.1pt)
   #text(
     size: 14pt,
@@ -266,8 +236,8 @@ There are three main outcomes with OIT:
 - *Epinephrine Auto-injector:* Must be up to date and nearby at each dose.
 
 - *Non-drowsy antihistamine:* Optional but highly recommended. These can be bought over the counter.
-  - Example: Reactine. For children under 2, give half of the smallest indicated dosage on the bottle. This usually is 2.5-5mg
-  - Avoid Benadryl
+  - Example: Reactine. For children under 2, give half of the smallest indicated dosage on the bottle. This usually is 2.5-5mg.
+  - Avoid Benadryl - it is less effective and comes with more side effects.
 
 = Measuring
 
@@ -282,7 +252,6 @@ There are three main outcomes with OIT:
 1. Push the plunger of the syringe all the way down.
 2. Put the tip into the liquid.
 3. Pull back slowly to the line matching your dose. If you pull too fast, too much air can enter the syringe.
-4. Check for air bubbles. Flick the syringe to remove them.
 
 #warning-box("Money Saving Tip")[
   *Non-dairy milks spoil fast*. You can freeze them!
@@ -291,46 +260,132 @@ There are three main outcomes with OIT:
   3. Thaw one cube at a time in the fridge to use for doses. Do not reuse the milk once thawed.
 ]
 
-== Making dilutions
-- for some foods you need to dilute to get the right dose. Show example of table
+= Making dilutions
 
-#table(
-  // Define column widths. The mix column gets more space (2fr).
-  columns: (auto, auto, auto, 2fr, auto, auto),
+Sometimes the daily dose is too tiny to weigh directly on a scale. To get the right amount, you must mix the food with water first. This is called a *dilution*. Below are two examples:
 
-  // Align the columns: mostly centered, but the instructions are left-aligned
-  align: (col, row) => (
-    (center, center, center, left, center, center).at(col) + horizon
+#show figure.caption: set align(left)
+#show figure.where(kind: table): set figure.caption(position: top)
+#figure(
+  caption: [*Example A*: diluting a powder (e.g. peanut powder) into water],
+  kind: table,
+  supplement: none, // Removes the word "Table"
+  numbering: none, // Removes the number "1"
+  table(
+    // Define column widths. The mix column gets more space (2fr).
+    columns: (auto, auto, auto, 2fr, auto, auto),
+
+    // Align the columns: mostly centered, but the instructions are left-aligned
+    align: (col, row) => (
+      (center, center, center, left, center, center).at(col) + horizon
+    ),
+
+    // Add padding inside cells
+    inset: 8pt,
+
+    // Remove default stroke (borders)
+    stroke: 1pt + rgb("cccccc"),
+
+    // Add the light gray background to the header row only
+    fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
+
+    // Header row
+    table.header(
+      [*Step*],
+      [*Protein*],
+      [*Method*],
+      [*How to make mix*],
+      [*Daily Amount*],
+      [*Interval*],
+    ),
+
+    // Data rows
+    [1],
+    [1.0 mg],
+    [DILUTE],
+    [0.50 g of food + 15.3 ml water],
+    [1 ml],
+    [2-4 weeks],
   ),
-
-  // Add padding inside cells
-  inset: 12pt,
-
-  // Remove default stroke (borders)
-  stroke: none,
-
-  // Add the light gray background to the header row only
-  fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
-
-  // Header row
-  table.header(
-    [*Step*],
-    [*Protein*],
-    [*Method*],
-    [*How to make mix*],
-    [*Daily Amount*],
-    [*Interval*],
-  ),
-
-  // Data rows
-  [1], [1.0 mg], [DILUTE], [0.50 g food + 15.3 ml water], [1 ml], [2-4 weeks],
-  [2], [2.5 mg], [DILUTE], [0.50 g food + 10.0 ml water], [1 ml], [2-4 weeks],
 )
 
-- measure x powder with scale then add the amount of water mix well etc.
-- only a small amount of the dilution is given as the daily dose
-- For some foods, it is natural to see sediment build up at the bottom. This occurs due to some of the powders having a higher fiber content. There is no harm to consuming the sediment.
-- In the first few months of OIT, prepare the powder mixture away from patient if possible, avoid accidental inhalation of powder
+#figure(
+  caption: [*Example B*: diluting a liquid (e.g. almond milk) into water],
+  kind: table,
+  supplement: none, // Removes the word "Table"
+  numbering: none, // Removes the number "1"
+  table(
+    // Define column widths. The mix column gets more space (2fr).
+    columns: (auto, auto, auto, 2fr, auto, auto),
+
+    // Align the columns: mostly centered, but the instructions are left-aligned
+    align: (col, row) => (
+      (center, center, center, left, center, center).at(col) + horizon
+    ),
+
+    // Add padding inside cells
+    inset: 8pt,
+
+    // Remove default stroke (borders)
+    stroke: 1pt + rgb("cccccc"),
+
+    // Add the light gray background to the header row only
+    fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
+
+    // Header row
+    table.header(
+      [*Step*],
+      [*Protein*],
+      [*Method*],
+      [*How to make mix*],
+      [*Daily Amount*],
+      [*Interval*],
+    ),
+
+    // Data rows
+    [1],
+    [1.0 mg],
+    [DILUTE],
+    [0.5 ml of food + 15.3 ml water],
+    [1 ml],
+    [2-4 weeks],
+  ),
+)
+
+== Instructions
+#v(0.5em)
+#enum(
+  tight: false, // Adds spacing between numbered items for readability
+  spacing: 1.2em,
+
+  [
+    *Measure the Water*: \
+    Use a syringe to measure the exact water amount listed in "How to make mix" (e.g., 15.3 ml). Empty the water into a small cup. Note: you can use a combination of syringe sizes to measure. For example, to measure 15.3 ml you could use a 10 ml syringe and 1 ml syringe.
+  ],
+  [
+    *Add the Food*: \
+    - *Powder:* weigh the amount (e.g., 0.50 g).
+    - *Liquid:* Use a syringe to measure the volume (e.g., 0.5 ml).
+
+    Add the food to the water you prepared in step 1.
+  ],
+  [
+    *Mix Well*: \
+    Stir the mixture thoroughly until combined. We recommend using a fork.
+  ],
+  [
+    *Measure out the Daily Amount*: \
+    - Measure the *Daily Amount* using a syringe (e.g. ), immediately after the mixture is thoroughly combined to prevent particles from settling. This is the amount that will actually be eaten.
+    - *Important:* _Do not give more than the daily amount in a day_!
+  ],
+)
+#place(bottom)[
+  #warning-box("Note:")[
+    - *Sediment is normal:* For high-fiber foods, you might see powder settle at the bottom of the mixture. This is safe to consume.
+    - *Avoid the dust:* When preparing powders, if possible, prepare the mix in a different room from the person with the allergy.
+  ]
+]
+#pagebreak()
 
 = Daily Dosing Checklist
 
