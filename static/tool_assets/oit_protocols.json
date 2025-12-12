@@ -1,6 +1,6 @@
 [
   {
-    "name": "Protocol: almond milk",
+    "name": "Almond milk",
     "dosing_strategy": "STANDARD",
     "food_a": {
       "type": "LIQUID",
@@ -88,7 +88,7 @@
     "custom_note": "Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving."
   },
   {
-    "name": "Protocol: almond milk to whole almonds",
+    "name": "Almond milk to whole almonds",
     "dosing_strategy": "STANDARD",
     "food_a": {
       "type": "LIQUID",
@@ -190,7 +190,7 @@
     "custom_note": "Make a new almond milk mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase Elmhurst Milked Almonds Unsweetened Beverage with 5 grams of protein per 1 cup (250mL) serving."
   },
   {
-    "name": "Protocol: almond powder initial dilution",
+    "name": "Almond powder initial dilution",
     "dosing_strategy": "STANDARD",
     "food_a": {
       "type": "SOLID",
@@ -282,7 +282,7 @@
     "custom_note": "Make a fresh mixture at least every 3 days. Refrigerate and mix well before giving. Please purchase PB2 Powdered Almond Butter with 5 grams of protein per 13 gram serving."
   },
   {
-    "name": "Protocol: milk wrong",
+    "name": "Milk wrong",
     "dosing_strategy": "STANDARD",
     "food_a": {
       "type": "LIQUID",
