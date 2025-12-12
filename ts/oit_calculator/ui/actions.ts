@@ -5,7 +5,7 @@
  */
 import Decimal from "decimal.js";
 import { protocolState } from "../state/instances";
-import { generateDefaultProtocol } from "../core/calculator";
+import { generateDefaultProtocol, generateStepForTarget } from "../core/calculator";
 import { addFoodBToProtocol, recalculateProtocol } from "../core/protocol";
 import type { FoodData, ProtocolData, Food, Protocol, Step, Unit } from "../types";
 import { FoodType, DosingStrategy, FoodAStrategy, Method } from "../types";
@@ -219,8 +219,7 @@ export function selectProtocol(protocolData: ProtocolData): void {
 
 /**
  * Remove Food B and its transition from the current protocol.
- *
- * Recomputes the protocol as Food A only and modifies global instance of protocolState
+ * Rebuilds the protocol using only Food A, but preserving the existing step target proteins.
  *
  * @returns void
  */
@@ -228,12 +227,45 @@ export function clearFoodB(): void {
   const current = protocolState.getProtocol();
   if (!current) return;
 
-  // remove food B and recalc
+  // Create shallow copy without Food B
   const protocolWithoutB: Protocol = {
     ...current,
     foodB: undefined,
     foodBThreshold: undefined
   };
-  const updated = recalculateProtocol(protocolWithoutB);
-  protocolState.setProtocol(updated, "Cleared Food B");
+
+  const newSteps: Step[] = [];
+
+  // Iterate over existing steps to preserve their targetMg
+  current.steps.forEach((step, i) => {
+    // generate a step for Food A for this target
+    const newStep = generateStepForTarget(
+      step.targetMg,
+      i + 1, // 1-based index
+      protocolWithoutB.foodA,
+      protocolWithoutB.foodAStrategy,
+      protocolWithoutB.diThreshold,
+      protocolWithoutB.config
+    );
+
+    if (newStep) {
+      newSteps.push(newStep);
+    } else {
+      // Fallback if dilution fails (e.g. target too small for Food A config)
+      // force a DIRECT step so the data isn't lost
+      console.error("Unable to find new valid dilution for step:", step);
+      const unit = protocolWithoutB.foodA.type === FoodType.SOLID ? "g" : "ml";
+      newSteps.push({
+        stepIndex: i + 1,
+        targetMg: step.targetMg,
+        method: Method.DIRECT,
+        dailyAmount: step.targetMg.dividedBy(protocolWithoutB.foodA.getMgPerUnit()),
+        dailyAmountUnit: unit,
+        food: "A"
+      });
+    }
+  });
+
+  protocolWithoutB.steps = newSteps;
+  protocolState.setProtocol(protocolWithoutB, "Cleared Food B");
 }

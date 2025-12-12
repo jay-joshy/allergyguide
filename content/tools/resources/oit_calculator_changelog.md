@@ -14,6 +14,8 @@ authors = ["Joshua Yu"]
 
 ### Changed
 
+- Updated "Clear Optional Food" behaviour to preserve existing step protein targets, rather than resetting the entire protocol to the default standard dosing strategy.
+
 ### Deprecated
 
 ### Removed
