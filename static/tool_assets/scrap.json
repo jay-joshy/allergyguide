@@ -1,0 +1,38 @@
+  {
+    "name": "name",
+    "dosing_strategy": "STANDARD",
+    "food_a": {
+      "type": "",
+      "name": "",
+      "gramsInServing": "",
+      "servingSize": "",
+      "mgPerUnit": ""
+    },
+    "food_a_strategy": "DILUTE_INITIAL",
+    "di_threshold": "",
+    "food_b": {
+      "type": "",
+      "name": "",
+      "gramsInServing": "",
+      "servingSize": "",
+      "mgPerUnit": ""
+    },
+    "food_b_threshold": "",
+    "table": [
+      {
+        "food": "A",
+        "protein": "",
+        "method": "DILUTE",
+        "mix_amount": "",
+        "water_amount": "",
+        "daily_amount": ""
+      },
+      {
+        "food": "B",
+        "protein": "",
+        "method": "DIRECT",
+        "daily_amount": ""
+      }
+    ],
+    "custom_note": ""
+  }
