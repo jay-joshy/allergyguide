@@ -773,7 +773,7 @@ function patchInput(row: HTMLElement, selector: string, newVal: string, stepInde
 
 /**
  * Update warnings sidebar.
- // TODO! ? group step warnings together? so it's not just Step 1 ... Step 1 ... Step 1 if step 1 has ++ warnings
+ * Groups first by step, then severity
  */
 export function updateWarnings(protocol: Protocol | null, rulesURL: string): void {
   if (!protocol) return;
@@ -786,33 +786,13 @@ export function updateWarnings(protocol: Protocol | null, rulesURL: string): voi
   if (warnings.length === 0) {
     container.innerHTML = `
       <div class="no-warnings">
-      ✓ Protocol passes internal checks: see <a href="${rulesURL}" target="_blank">here</a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS VALID.<br>DOSES MUST STILL BE VERIFIED/REVIEWED.
+      Protocol passes internal checks: see <a href="${rulesURL}" target="_blank">here</a> for the issues we check for.<br><br>THIS DOES NOT GUARANTEE THE PROTOCOL IS VALID.<br>DOSES MUST STILL BE VERIFIED/REVIEWED.
       </div>
     `;
     return;
   }
 
-  const redWarnings = warnings.filter((w) => w.severity === "red");
-  const yellowWarnings = warnings.filter((w) => w.severity === "yellow");
-
-  let html = "";
-
-  if (redWarnings.length > 0) {
-    html += renderWarningGroup("Critical Issues (Red)", redWarnings, "red-warnings");
-  }
-
-  if (yellowWarnings.length > 0) {
-    html += renderWarningGroup("Cautions (Yellow)", yellowWarnings, "yellow-warnings");
-  }
-
-  container.innerHTML = html;
-}
-
-/**
- * Helper to group warnings by step index and render them cleanly
- */
-function renderWarningGroup(title: string, warnings: Warning[], cssClass: string): string {
-  // Grouping Logic
+  // Grouping Warnings by scope: Global or Step-Specific
   const globalWarnings: Warning[] = [];
   const stepWarnings = new Map<number, Warning[]>();
 
@@ -828,39 +808,72 @@ function renderWarningGroup(title: string, warnings: Warning[], cssClass: string
   });
 
   const sortedSteps = Array.from(stepWarnings.keys()).sort((a, b) => a - b);
+  let html = "";
 
-  // HTML Generation
-  let html = `<div class="warning-section ${cssClass}">`;
-  html += `<h4>${title}</h4>`;
-
-  // Global Warnings
+  // Render Global Warnings (if any)
   if (globalWarnings.length > 0) {
-    html += `<ul>`;
-    html += globalWarnings.map(w => `<li>${w.severity === 'red' ? `<strong>${w.message}</strong>` : w.message}</li>`).join("");
-    html += `</ul>`;
+    // Determine overall block severity
+    const isRed = globalWarnings.some(w => w.severity === 'red');
+    html += renderWarningBlock("Protocol Issues", globalWarnings, isRed ? 'red' : 'yellow');
   }
 
-  // Step Warnings
-  if (sortedSteps.length > 0) {
-    sortedSteps.forEach(index => {
-      const list = stepWarnings.get(index)!;
-      html += `<div class="step-warning-header">Step ${index}</div>`;
-      html += `<ul>`;
-      html += list.map(w => {
-        let msg = w.message;
-        const prefix = `Step ${index}: `;
-        if (msg.startsWith(prefix)) {
-          msg = msg.substring(prefix.length);
-          // capitalize first letter of truncated string
-          if (msg.length > 0) msg = msg.charAt(0).toUpperCase() + msg.slice(1);
-        }
-        return `<li>${w.severity === 'red' ? `<strong>${msg}</strong>` : msg}</li>`;
-      }).join("");
-      html += `</ul>`;
+  // Render Step Warnings (grouped by severity within)
+  // Each step gets ONE block, containing all its warnings (red + yellow mixed)
+  sortedSteps.forEach(index => {
+    const list = stepWarnings.get(index)!;
+    // Sort: Red warnings first, then yellow
+    list.sort((a, b) => {
+      if (a.severity === b.severity) return 0;
+      return a.severity === 'red' ? -1 : 1;
     });
-  }
 
-  html += `</div>`;
+    const isRed = list.some(w => w.severity === 'red');
+    html += renderWarningBlock(`Step ${index}`, list, isRed ? 'red' : 'yellow');
+  });
+
+  container.innerHTML = html;
+}
+
+/**
+ * Helper to render a unified warning block (card).
+ * @param title - The title of the block (e.g., "Step 5")
+ * @param warnings - List of warnings to display
+ * @param blockSeverity - 'red' or 'yellow'. Determines the border color.
+ */
+function renderWarningBlock(title: string, warnings: Warning[], blockSeverity: 'red' | 'yellow'): string {
+  // CSS class for the block container
+  const cssClass = `warning-group severity-${blockSeverity}`;
+
+  let html = `<div class="${cssClass}">`;
+  html += `<div class="warning-header">${escapeHtml(title)}</div>`;
+  html += `<ul class="warning-list">`;
+
+  html += warnings.map(w => {
+    // Remove redundant prefix if present ("Step X: ...")
+    let msg = w.message;
+    const prefix = `${title}: `;
+    if (msg.startsWith(prefix)) {
+      msg = msg.substring(prefix.length);
+      if (msg.length > 0) msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+    } else if (msg.startsWith("Step ")) {
+      // generic "Step N: " removal if title matched partially
+      const parts = msg.split(": ");
+      if (parts.length > 1 && parts[0].includes("Step")) {
+        msg = parts.slice(1).join(": ");
+        if (msg.length > 0) msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+      }
+    }
+
+    // Individual item styling
+    const itemClass = w.severity === 'red' ? 'item-red' : 'item-yellow';
+
+    // Red warnings get bold text
+    const content = w.severity === 'red' ? `<strong>${escapeHtml(msg)}</strong>` : escapeHtml(msg);
+
+    return `<li class="${itemClass}">${content}</li>`;
+  }).join("");
+
+  html += `</ul></div>`;
   return html;
 }
 
