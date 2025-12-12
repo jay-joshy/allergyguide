@@ -91,7 +91,7 @@
   align(center)[
     #text(size: 10pt, fill: gray)[
       GENERATED CONTENT WARNING:
-      This document was created using an open-source calculation tool. This tool does not exercise clinical judgment. This document is NOT valid until reviewed and signed by a licensed physician. Any use of this document without direct physician supervision is strictly prohibited.
+      This document was created using an open-source calculation tool. You should review available literature and local OIT guidelines, and decide if this protocol and general handout are applicable to your practice. This tool does not exercise clinical judgment. This document is NOT valid until reviewed and signed by a licensed physician. Any use of this document without direct physician supervision is strictly prohibited.
     ]
   ]
 }

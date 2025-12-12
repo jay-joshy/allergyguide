@@ -164,7 +164,6 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
     - *Older patients:* while not a strict rule, once over 6 years old, patients are more likely to have anaphylaxis, and less likely to be consistent with doses
 
     - *Inability to obtain required equipment, language barriers, or inconsistent schedule*
-
   ],
 )
 
@@ -187,7 +186,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   [
     - *Food pipe (esophagus) inflammation:*\ During OIT, around 3% develop inflammation of their esophagus. This condition is more common in those with food allergies in general, and we're not sure if OIT causes this, or is simply a bystander. If this occurs, we consider stopping OIT and involving our Gastroenterology specialists. In the majority of patients, this inflammation is transient and goes away when OIT is stopped.
 
-    - *Allergic reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe life-threatening reactions are possible but rare, especially in preschoolers.
+    - *Allergic reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe life-threatening reactions are rare, especially in preschoolers.
   ],
 )
 
@@ -199,6 +198,16 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   ]
   #v(2pt)
 ]
+
+#pagebreak()
+
+= TODO!
+
+Add section on updosing: options include either:
+- Virtually assisted
+- Home based
+- In-clinic only
+- Hybrid
 
 #pagebreak()
 
@@ -237,38 +246,47 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
     - Example: Reactine. For children under 2, give half of the smallest indicated dosage on the bottle. This usually is 2.5-5mg.
     - Avoid Benadryl - it is less effective and comes with more side effects. It also makes many children sleepy, which can make it more difficult to see the early stages of a developing allergic reaction.
 ]
+
+= Supply examples
+#text()[Feel free to shop around for the best price!]
+
+== Syringes
+
+== Scales
+
+== Medications
+
+#pagebreak()
+
 = Measuring solids and liquids accurately
-
-== Measuring solids (powders, crushed food, thick liquids)
-#enum(
-  spacing: 0.75em,
-  [Turn on the scale.],
-  [Place a small cup/bowl or wax paper on the scale.],
-  [Press the *"Tare"* or "Zero" button so the scale reads `0.00`.],
-  [Slowly add the powder until you reach the target number.],
-  [Mix the powder with a wet food your child likes (applesauce, pudding, yogurt).],
+#v(-0.5em)
+#table(
+  columns: (1fr, 1fr),
+  inset: 10pt,
+  align: top + left,
+  stroke: none,
+  table.header(
+    [*Measuring solids (powders, butters, etc.)*],
+    [*Measuring liquids (water, milks, etc.)*],
+  ),
+  table.hline(stroke: 1pt),
+  [
+    + Turn on the scale, and place a small cup/bowl/cupcake liner or wax paper on the scale.
+    + Press the *"Tare"* or "*Zero*" button so the scale reads `0.00`.
+    + Slowly add the powder until you reach the target number.
+    + Mix the powder with a tasty wet food (applesauce, pudding, yogurt).
+  ],
+  [
+    + Push the plunger of the syringe all the way down.
+    + Put the tip into the liquid.
+    + Pull back slowly to the line matching your dose. If you pull too fast, too much air can enter the syringe.
+  ],
 )
-
-== Measuring liquids (water, milks, etc.)
-#enum(
-  spacing: 0.75em,
-  [Push the plunger of the syringe all the way down.],
-  [Put the tip into the liquid.],
-  [Pull back slowly to the line matching your dose. If you pull too fast, too much air can enter the syringe.],
-)
-#warning-box(
-  "Money Saving Tip: Non-dairy milks spoil fast. You can freeze them!",
-)[
-  1. Pour liquid into an ice cube tray.
-  2. Once frozen, store cubes in a ziploc bag.
-  3. Thaw one cube at a time in the fridge to use for doses. Do not reuse the milk once thawed.
-]
-
+#v(-1em)
 = Making dilutions
 
-Sometimes the daily dose is too tiny to weigh directly on a scale. To get the right amount, you must mix the food with water first. This is called a *dilution*. Below are two examples:
+Sometimes the daily dose is too tiny to measure directly with a scale or syringe. To get the right amount, you must mix the food with water first. This is called a *dilution*. Below are two examples:
 
-#v(1em)
 #block()[
   #show figure.caption: set align(left)
   #show figure.where(kind: table): set figure.caption(position: top)
@@ -278,23 +296,18 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
     supplement: none, // Removes the word "Table"
     numbering: none, // Removes the number "1"
     table(
-      // Define column widths. The mix column gets more space (2fr).
+      // Define column widths
       columns: (auto, auto, auto, 2fr, auto, auto),
-
-      // Align the columns: mostly centered, but the instructions are left-aligned
+      // Align the columns
       align: (col, row) => (
         (center, center, center, left, center, center).at(col) + horizon
       ),
-
       // Add padding inside cells
       inset: 8pt,
-
       // Remove default stroke (borders)
       stroke: 1pt + rgb("cccccc"),
-
       // Add the light gray background to the header row only
       fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
-
       // Header row
       table.header(
         [*Step*],
@@ -304,7 +317,6 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
         [*Daily Amount*],
         [*Interval*],
       ),
-
       // Data rows
       [1],
       [1.0 mg],
@@ -314,30 +326,24 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
       [2-4 weeks],
     ),
   )
-  #v(0.5em)
   #figure(
     caption: [*Example B*: diluting a liquid (e.g. almond milk) into water],
     kind: table,
     supplement: none, // Removes the word "Table"
     numbering: none, // Removes the number "1"
     table(
-      // Define column widths. The mix column gets more space (2fr).
+      // Define column widths
       columns: (auto, auto, auto, 2fr, auto, auto),
-
       // Align the columns: mostly centered, but the instructions are left-aligned
       align: (col, row) => (
         (center, center, center, left, center, center).at(col) + horizon
       ),
-
       // Add padding inside cells
       inset: 8pt,
-
       // Remove default stroke (borders)
       stroke: 1pt + rgb("cccccc"),
-
       // Add the light gray background to the header row only
       fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
-
       // Header row
       table.header(
         [*Step*],
@@ -347,7 +353,6 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
         [*Daily Amount*],
         [*Interval*],
       ),
-
       // Data rows
       [1],
       [1.0 mg],
@@ -358,9 +363,8 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
     ),
   )
 ]
-#v(1em)
 
-== Instructions
+=== Instructions:
 #v(0.5em)
 #enum(
   tight: false, // Adds spacing between numbered items for readability
@@ -368,31 +372,30 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
 
   [
     *Measure the Water*: \
-    Use a syringe to measure the exact water amount listed in "How to make mix" (e.g., 15.3 ml). Empty the water into a small cup. Note: you can use a combination of syringe sizes to measure. For example, to measure 15.3 ml you could use a 10 ml syringe and 1 ml syringe.
+    - Measure the exact water amount listed in "*How to make mix*" (e.g., 15.3 ml), and place in a small container. Note: you can use a combination of syringe sizes to measure. For example, to measure 15.3 ml you could use a 10 ml syringe and 1 ml syringe.
   ],
   [
     *Add the Food*: \
-    - *Powder:* weigh the amount (e.g., 0.50 g).
+    - *Powder:* weigh the amount (e.g., 0.50 g). If possible, do this in a different room from the patient.
     - *Liquid:* Use a syringe to measure the volume (e.g., 0.5 ml).
 
     Add the food to the water you prepared in step 1.
   ],
   [
     *Mix Well*: \
-    Stir the mixture thoroughly until combined, and there are no large visible chunks. We recommend using a fork.
+    - Stir the mixture thoroughly until combined (no more large chunks). We recommend using a fork.
   ],
   [
     *Measure out the Daily Amount*: \
-    - Measure the *Daily Amount* using a syringe (e.g. ), immediately after the mixture is thoroughly combined to prevent particles from settling. This is the amount that will actually be eaten.
+    - Measure the *Daily Amount* using a syringe, immediately after the mixture is thoroughly combined to prevent particles from settling. This is the amount that will actually be eaten.
     - *Important:* _Do not give more than the daily amount in a day_!
   ],
 )
-#place(bottom)[
-  #warning-box("Note:")[
-    - *Sediment is normal:* For some high-fiber foods, you might see powder settle at the bottom of the mixture. This is safe to consume.
-    - *Avoid the dust:* When preparing powders, if possible, prepare the mix in a different room from the person with the allergy.
-  ]
-]
+// #place(bottom)[
+//   #warning-box("Note:")[
+//     - *Sediment is normal:* For some high-fiber foods, you might see powder settle at the bottom of the mixture. This is safe to consume.
+//     - *Avoid the dust:* When preparing powders, //   ]
+// ]
 #pagebreak()
 
 = Daily Dosing Checklist
