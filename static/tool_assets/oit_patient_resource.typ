@@ -187,7 +187,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   [
     - *Food pipe (esophagus) inflammation:*\ During OIT, around 3% develop inflammation of their esophagus. This condition is more common in those with food allergies in general, and we're not sure if OIT causes this, or is simply a bystander. If this occurs, we consider stopping OIT and involving our Gastroenterology specialists. In the majority of patients, this inflammation is transient and goes away when OIT is stopped.
 
-    - *Allergic reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe reactions are rare, especially in preschoolers.
+    - *Allergic reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe life-threatening reactions are possible but rare, especially in preschoolers.
   ],
 )
 
@@ -195,7 +195,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   #warning-box(
     "Strict Food Avoidance Is Not “Risk Free” either:",
   )[
-    Even with strict avoidance, accidental allergic reactions are possible (the author of this handout had two reactions to nuts in the past 5 years).
+    Even with strict avoidance, accidental allergic reactions are possible (despite trying to strictly avoid them, the author of this handout had two episodes of anaphylaxis to nuts in the past 5 years alone).
   ]
   #v(2pt)
 ]
@@ -205,56 +205,60 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 #align(center)[
   #text(size: 24pt, weight: "bold")[Equipment, and how to use them]\
   #v(0.1pt)
-  #text(
-    size: 14pt,
-    style: "italic",
-  )[You need the right tools to measure small amounts of food and water safely.]
-  \
   #line(length: 100%, stroke: 2pt)
 ]
 
 #counter(heading).update(0)
 = Equipment
 
-== A) 1 ml disposable oral syringes (without needles)
+=== A) 1 ml and 10ml disposable oral syringes (without needles)
 
-- Look for markings every *0.1 mL*.
+#list(
+  spacing: 0.75em,
+  [Look for markings every *0.1 mL* for the 1ml syringes.],
+  [*Cleaning:* If used for liquid food (like milk), wash with hot soapy water within an hour of use, and air dry. If used only for water, just air dry.],
+  [*Examples:* BD eclipse 1mL oral syringes or Terumo 1mL oral tuberculin syringes (available on amazon.ca or local pharmacies)],
+)
 
-- *Cleaning:* If used for liquid food (like milk), wash with hot soapy water within an hour of use, and air dry. If used only for water, just air dry.
+=== B) Digital Scale
+#list(
+  spacing: 0.75em,
+  [*Precision:* Must measure *0.01 grams* (two decimal places).],
+  [*Calibration:* Buy one that comes with a calibration weight (a little metal weight to test the scale).],
+  [*Cost:* Usually \$20 - \$30 online.],
+)
 
-- *Examples:* BD eclipse 1mL oral syringes or Terumo 1mL oral tuberculin syringes (available on amazon.ca or local pharmacies)
+=== C) Medicines
 
-== B) Digital Scale
+#block()[
+  #set list(spacing: 0.75em)
+  - *Epinephrine Auto-injector:* Must be up to date and nearby at each dose.
+  - *Non-drowsy antihistamine:* Optional but highly recommended. These can be bought over the counter.
+    - Example: Reactine. For children under 2, give half of the smallest indicated dosage on the bottle. This usually is 2.5-5mg.
+    - Avoid Benadryl - it is less effective and comes with more side effects. It also makes many children sleepy, which can make it more difficult to see the early stages of a developing allergic reaction.
+]
+= Measuring solids and liquids accurately
 
-- *Precision:* Must measure *0.01 grams* (two decimal places).
-- *Calibration:* Buy one that comes with a calibration weight (a little metal weight to test the scale).
+== Measuring solids (powders, crushed food, thick liquids)
+#enum(
+  spacing: 0.75em,
+  [Turn on the scale.],
+  [Place a small cup/bowl or wax paper on the scale.],
+  [Press the *"Tare"* or "Zero" button so the scale reads `0.00`.],
+  [Slowly add the powder until you reach the target number.],
+  [Mix the powder with a wet food your child likes (applesauce, pudding, yogurt).],
+)
 
-- *Cost:* Usually \$20 - \$30 online.
-
-== C) Medicines
-
-- *Epinephrine Auto-injector:* Must be up to date and nearby at each dose.
-
-- *Non-drowsy antihistamine:* Optional but highly recommended. These can be bought over the counter.
-  - Example: Reactine. For children under 2, give half of the smallest indicated dosage on the bottle. This usually is 2.5-5mg.
-  - Avoid Benadryl - it is less effective and comes with more side effects.
-
-= Measuring
-
-== Measuring Solids (Powders, crushed food, thick liquids)
-1. Turn on the scale.
-2. Place a small cup/bowel or wax paper on the scale.
-3. Press the *"Tare"* or "Zero" button so the scale reads `0.00`.
-4. Slowly add the powder until you reach the target number.
-5. Mix the powder with a wet food your child likes (applesauce, pudding, yogurt).
-
-== Measuring Liquids (water, milks, etc.)
-1. Push the plunger of the syringe all the way down.
-2. Put the tip into the liquid.
-3. Pull back slowly to the line matching your dose. If you pull too fast, too much air can enter the syringe.
-
-#warning-box("Money Saving Tip")[
-  *Non-dairy milks spoil fast*. You can freeze them!
+== Measuring liquids (water, milks, etc.)
+#enum(
+  spacing: 0.75em,
+  [Push the plunger of the syringe all the way down.],
+  [Put the tip into the liquid.],
+  [Pull back slowly to the line matching your dose. If you pull too fast, too much air can enter the syringe.],
+)
+#warning-box(
+  "Money Saving Tip: Non-dairy milks spoil fast. You can freeze them!",
+)[
   1. Pour liquid into an ice cube tray.
   2. Once frozen, store cubes in a ziploc bag.
   3. Thaw one cube at a time in the fridge to use for doses. Do not reuse the milk once thawed.
@@ -264,93 +268,97 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 
 Sometimes the daily dose is too tiny to weigh directly on a scale. To get the right amount, you must mix the food with water first. This is called a *dilution*. Below are two examples:
 
-#show figure.caption: set align(left)
-#show figure.where(kind: table): set figure.caption(position: top)
-#figure(
-  caption: [*Example A*: diluting a powder (e.g. peanut powder) into water],
-  kind: table,
-  supplement: none, // Removes the word "Table"
-  numbering: none, // Removes the number "1"
-  table(
-    // Define column widths. The mix column gets more space (2fr).
-    columns: (auto, auto, auto, 2fr, auto, auto),
+#v(1em)
+#block()[
+  #show figure.caption: set align(left)
+  #show figure.where(kind: table): set figure.caption(position: top)
+  #figure(
+    caption: [*Example A*: diluting a powder (e.g. peanut powder) into water],
+    kind: table,
+    supplement: none, // Removes the word "Table"
+    numbering: none, // Removes the number "1"
+    table(
+      // Define column widths. The mix column gets more space (2fr).
+      columns: (auto, auto, auto, 2fr, auto, auto),
 
-    // Align the columns: mostly centered, but the instructions are left-aligned
-    align: (col, row) => (
-      (center, center, center, left, center, center).at(col) + horizon
+      // Align the columns: mostly centered, but the instructions are left-aligned
+      align: (col, row) => (
+        (center, center, center, left, center, center).at(col) + horizon
+      ),
+
+      // Add padding inside cells
+      inset: 8pt,
+
+      // Remove default stroke (borders)
+      stroke: 1pt + rgb("cccccc"),
+
+      // Add the light gray background to the header row only
+      fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
+
+      // Header row
+      table.header(
+        [*Step*],
+        [*Protein*],
+        [*Method*],
+        [*How to make mix*],
+        [*Daily Amount*],
+        [*Interval*],
+      ),
+
+      // Data rows
+      [1],
+      [1.0 mg],
+      [DILUTE],
+      [0.50 g of food + 15.3 ml water],
+      [1 ml],
+      [2-4 weeks],
     ),
+  )
+  #v(0.5em)
+  #figure(
+    caption: [*Example B*: diluting a liquid (e.g. almond milk) into water],
+    kind: table,
+    supplement: none, // Removes the word "Table"
+    numbering: none, // Removes the number "1"
+    table(
+      // Define column widths. The mix column gets more space (2fr).
+      columns: (auto, auto, auto, 2fr, auto, auto),
 
-    // Add padding inside cells
-    inset: 8pt,
+      // Align the columns: mostly centered, but the instructions are left-aligned
+      align: (col, row) => (
+        (center, center, center, left, center, center).at(col) + horizon
+      ),
 
-    // Remove default stroke (borders)
-    stroke: 1pt + rgb("cccccc"),
+      // Add padding inside cells
+      inset: 8pt,
 
-    // Add the light gray background to the header row only
-    fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
+      // Remove default stroke (borders)
+      stroke: 1pt + rgb("cccccc"),
 
-    // Header row
-    table.header(
-      [*Step*],
-      [*Protein*],
-      [*Method*],
-      [*How to make mix*],
-      [*Daily Amount*],
-      [*Interval*],
+      // Add the light gray background to the header row only
+      fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
+
+      // Header row
+      table.header(
+        [*Step*],
+        [*Protein*],
+        [*Method*],
+        [*How to make mix*],
+        [*Daily Amount*],
+        [*Interval*],
+      ),
+
+      // Data rows
+      [1],
+      [1.0 mg],
+      [DILUTE],
+      [0.5 ml of food + 15.3 ml water],
+      [1 ml],
+      [2-4 weeks],
     ),
-
-    // Data rows
-    [1],
-    [1.0 mg],
-    [DILUTE],
-    [0.50 g of food + 15.3 ml water],
-    [1 ml],
-    [2-4 weeks],
-  ),
-)
-
-#figure(
-  caption: [*Example B*: diluting a liquid (e.g. almond milk) into water],
-  kind: table,
-  supplement: none, // Removes the word "Table"
-  numbering: none, // Removes the number "1"
-  table(
-    // Define column widths. The mix column gets more space (2fr).
-    columns: (auto, auto, auto, 2fr, auto, auto),
-
-    // Align the columns: mostly centered, but the instructions are left-aligned
-    align: (col, row) => (
-      (center, center, center, left, center, center).at(col) + horizon
-    ),
-
-    // Add padding inside cells
-    inset: 8pt,
-
-    // Remove default stroke (borders)
-    stroke: 1pt + rgb("cccccc"),
-
-    // Add the light gray background to the header row only
-    fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
-
-    // Header row
-    table.header(
-      [*Step*],
-      [*Protein*],
-      [*Method*],
-      [*How to make mix*],
-      [*Daily Amount*],
-      [*Interval*],
-    ),
-
-    // Data rows
-    [1],
-    [1.0 mg],
-    [DILUTE],
-    [0.5 ml of food + 15.3 ml water],
-    [1 ml],
-    [2-4 weeks],
-  ),
-)
+  )
+]
+#v(1em)
 
 == Instructions
 #v(0.5em)
@@ -371,7 +379,7 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
   ],
   [
     *Mix Well*: \
-    Stir the mixture thoroughly until combined. We recommend using a fork.
+    Stir the mixture thoroughly until combined, and there are no large visible chunks. We recommend using a fork.
   ],
   [
     *Measure out the Daily Amount*: \
@@ -381,7 +389,7 @@ Sometimes the daily dose is too tiny to weigh directly on a scale. To get the ri
 )
 #place(bottom)[
   #warning-box("Note:")[
-    - *Sediment is normal:* For high-fiber foods, you might see powder settle at the bottom of the mixture. This is safe to consume.
+    - *Sediment is normal:* For some high-fiber foods, you might see powder settle at the bottom of the mixture. This is safe to consume.
     - *Avoid the dust:* When preparing powders, if possible, prepare the mix in a different room from the person with the allergy.
   ]
 ]
@@ -447,6 +455,9 @@ Add diagram
 *Q: Is OIT a cure?*
 Not exactly. It is a treatment. If you stop taking the daily dose, the allergy may likely come back.
 
+*Q: Can the immunotherapy dose be taken on an empty stomach?*
+NO. It is VERY IMPORTANT the dose NOT be taken with empty stomach. It MUST be taken with a snack or meal to slow digestion and absorption of the dose, which reduces the risk of reaction.
+
 *Q: Why do I need to avoid exercise after the dose?*
 May increase allergen absroption speed and also make it easier for the body to react. This is a very common cause of reactions in OIT.
 
@@ -456,11 +467,22 @@ A: Ask us first. Different brands of food can have slightly different amounts of
 *Can multiple foods be treated together during OIT?*
 Yes, many children undergo OIT to multiple foods at the same time.
 
+*What if the patient spits out all or most of their dose?*
+
+*What if the patient is going to have an unrelated surgery?*
+
+*Should the patient avoid NSAIDs (Non-steroidal anti-inflammatory drugs) during OIT?*
+
+*Does the patient need an antihistamine EVERY time before their dose of OIT?*
+
 *Eczema worse*?
 
 - eczema more commonly worse from lots of non allergic triggers - dryness, irritants, stress, etc instead of food itself
 - existing food tests like SPT or sIgE don't test for this
 - benefits of OIT working tend to outweight any short term risk of flaring eczema
+
+Worsening eczema is unlikely to be caused by the OIT
+DOes not mean you have to stop
 
 Spits up most of all of their dose
 don't double dose, resume normal next day. if recurring contact team
