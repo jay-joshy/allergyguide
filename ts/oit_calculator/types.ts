@@ -187,7 +187,7 @@ const NumericString = z.string().refine((val) => !isNaN(parseFloat(val)) && isFi
  * Food database record (as loaded from JSON containing with data from Canadian Nutrient File, Health Canada, 2015).
  * Raw values are UI-facing and will be converted to internal Decimal where needed later.
  */
-export const FoodDataSchema = z.object({
+export const FoodDataSchema = z.strictObject({
   Food: z.string(), // name
   "Mean protein in grams": z.number(), // not all will be the mean: this applies mainly to CNF data, not custom foods
   "Serving size": z.number(), // 100g for CNF but otherwise for custom foods will be variable
@@ -195,7 +195,7 @@ export const FoodDataSchema = z.object({
 });
 export type FoodData = z.infer<typeof FoodDataSchema>;
 
-const BaseRow = z.object({
+const BaseRow = z.strictObject({
   food: z.enum(["A", "B"]),
   protein: NumericString,
   daily_amount: NumericString,
@@ -218,10 +218,10 @@ export type RowData = z.infer<typeof RowDataSchema>;
  * Protocol template record (as loaded from JSON).
  * String fields representing numbers are parsed into Decimal during load.
  */
-export const ProtocolDataSchema = z.object({
+export const ProtocolDataSchema = z.strictObject({
   name: z.string(),
   dosing_strategy: z.enum(DosingStrategy),
-  food_a: z.object({
+  food_a: z.strictObject({
     type: z.enum(FoodType),
     name: z.string(),
     gramsInServing: NumericString,
@@ -229,7 +229,7 @@ export const ProtocolDataSchema = z.object({
   }),
   food_a_strategy: z.enum(FoodAStrategy),
   di_threshold: NumericString,
-  food_b: z.object({
+  food_b: z.strictObject({
     type: z.enum(FoodType),
     name: z.string(),
     gramsInServing: NumericString,
