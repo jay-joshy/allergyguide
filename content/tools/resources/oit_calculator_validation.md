@@ -111,4 +111,10 @@ Each time a protocol is loaded or edited in the OIT Calculator, it is validated 
 
 - A dilution step requires an excessive amount of water for mixing (e.g., > 500 ml).
 
+<div style="height:0.75rem;"> </div>
+
+**Rapid dose progression**
+
+- A step increases by more than double from the previous. Most protocols do not exceed this, except potentially during initial very low magnitude protein targets.
+
 {% end %}
