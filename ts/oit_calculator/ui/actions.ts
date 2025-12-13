@@ -6,7 +6,7 @@
 import Decimal from "decimal.js";
 import { protocolState } from "../state/instances";
 import { generateDefaultProtocol, generateStepForTarget } from "../core/calculator";
-import { addFoodBToProtocol, recalculateProtocol } from "../core/protocol";
+import { addFoodBToProtocol } from "../core/protocol";
 import type { FoodData, ProtocolData, Food, Protocol, Step, Unit } from "../types";
 import { FoodType, DosingStrategy, FoodAStrategy, Method } from "../types";
 import { DEFAULT_CONFIG } from "../constants";
@@ -226,6 +226,10 @@ export function selectProtocol(protocolData: ProtocolData): void {
 export function clearFoodB(): void {
   const current = protocolState.getProtocol();
   if (!current) return;
+
+  // if there's no food B to begin with return early so history stack isn't polluted
+  // and needless calculations are done
+  if (!current.foodB || !current.foodBThreshold) return;
 
   // Create shallow copy without Food B
   const protocolWithoutB: Protocol = {
