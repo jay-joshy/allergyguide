@@ -145,9 +145,10 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
 
 2. *Safety (Bite-proof):* While you may still react if you eat a full serving, you can tolerate smaller amounts. This protects you from severe reactions if you accidentally eat the food. Around 18% of preschoolers will get here.
 
-3. *Stopping:* Sometimes, OIT becomes difficult due to taste aversion, is too time consuming for patients and families, or side effects, and we have to stop. This is rare: only around 2% of preschoolers have to stop.
+3. *Stopping:* Sometimes, OIT is stopped. This may be due to taste aversion, lack of time to commit for patient/family, side effects, or other reasons. This is rare: only around 2% of preschoolers have to stop.
 
 #warning-box("Important Safety Note:")[
+  #v(0em)
   *Remember:* Even after you finish the maintenance phase, if the food is not regularly consumed at least weekly to help the body 'remember' the food is not harmful, the allergy may return.
 ]
 
@@ -275,8 +276,8 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   [
     + Turn on the scale, and place a small cup/bowl/cupcake liner or wax paper on the scale.
     + Press the *"Tare"* or "*Zero*" button so the scale reads `0.00`.
-    + Slowly add the powder until you reach the target number.
-    + Mix the powder with a tasty wet food (applesauce, pudding, yogurt).
+    + Slowly add the solid until you reach the target number.
+    + Mix the solid with a tasty wet food (applesauce, pudding, yogurt).
   ],
   [
     + Push the plunger of the syringe all the way down.
@@ -293,7 +294,7 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
   #show figure.caption: set align(left)
   #show figure.where(kind: table): set figure.caption(position: top)
   #figure(
-    caption: [*Example A*: diluting a powder (e.g. peanut powder) into water],
+    caption: [*Example A*: diluting a solid (e.g. peanut powder) into water],
     kind: table,
     supplement: none, // Removes the word "Table"
     numbering: none, // Removes the number "1"
@@ -378,7 +379,7 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
   ],
   [
     *Add the Food*: \
-    - *If powder:* weigh the amount (e.g., 0.50 g). If possible, do this in a different room from the patient.
+    - *If solid:* weigh the amount (e.g., 0.50 g). If possible, do this in a different room from the patient.
     - *If liquid:* Use a syringe to measure the volume (e.g., 0.5 ml).
 
     Add the food to the water you prepared in step 1.
@@ -428,8 +429,6 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
   - Symptoms of food-pipe inflammation (e.g. food getting stuck, chest pain, using more water to wash down food).
 ]
 
-TIP: ensure good lip care to avoid quick absorption, consider petroleum jelly before and after each dose.
-
 == 2. I HAVE THE RIGHT TIMING, EQUIPMENT, AND FOOD
 #rect(width: 100%, stroke: 1pt, radius: 4pt, inset: 12pt)[
   #set list(marker: check-box)
@@ -439,16 +438,15 @@ TIP: ensure good lip care to avoid quick absorption, consider petroleum jelly be
   - The patient can avoid naps or bedtime within 2 hours of dose.
 ]
 
-= How to give a daily dose
-
-After checking that it is safe to give the dose:
+= How to give a daily dose, once it's safe
 
 #enum(
-  spacing: 1.2em,
-  [Optional: consider AH first 1 hour beforehand. This is purely for symptom relief and is not mandatory],
-  [Prepare the daily dose. Doses should be given around 22-26h apart, ideally at same time of day.],
-  [Give the dose with a meal or light snack! To improve the taste, we suggest mixing it with a strongly flavoured food.],
-  [If you are doing OIT to multiple foods, give each food sequentially at least 1 minute apart from each other.],
+  spacing: 1em,
+  [*Optional*: consider giving a non-drowsy antihistamine 1 hour before the dose. This is purely for symptom relief and is not mandatory],
+  [*Prepare the daily dose*. Doses should be given around 22-26 hours apart, ideally at same time of day.],
+  [*TIP*: if you are a very messy eater or have chapped lips, consider Vaseline around the lips/mouth first],
+  [*Give the dose with a meal or light snack*! To improve the taste, we suggest mixing it with a strongly flavoured food.],
+  [*Space out doses*. If you are doing OIT to multiple foods, give each food sequentially at least 1 minute apart from each other.],
 )
 
 #pagebreak()
