@@ -510,7 +510,7 @@ Each step has a different _protein target_. In the example below, during Step 1 
           text(
             weight: "bold",
           )[#sym.arrow.b],
-          [*When should I start eating 2.5mg of protein daily?*],
+          [*For example, when should I start eating 2.5 mg of protein daily?*],
           text(
             weight: "bold",
           )[#sym.arrow.b],
@@ -535,71 +535,74 @@ Each step has a different _protein target_. In the example below, during Step 1 
 
 - There are four different approaches for dose escalation, based on patient/physician preference and risk profile:
 #v(1em)
-#grid(
-  columns: (1fr, 1fr),
-  gutter: 1em,
-  // Set a fixed height for the rows here.
-  rows: 9em,
+#[
+  #set list(spacing: 0.9em)
+  #grid(
+    columns: (1fr, 1fr),
+    gutter: 1em,
+    // Set a fixed height for the rows here.
+    rows: 9.5em,
 
-  // Card 1
-  rect(
-    width: 100%,
-    height: 100%,
-    inset: 12pt,
-    radius: 4pt,
-    stroke: 1pt + gray,
-    [
-      *1. In-Clinic supervision*
-      #v(0em)
-      - You come to the clinic for _every_ dose increase, every 2-4 weeks.\
-      - You do the rest of the step's daily maintenance doses at home.
-    ],
-  ),
+    // Card 1
+    rect(
+      width: 100%,
+      height: 100%,
+      inset: 12pt,
+      radius: 4pt,
+      stroke: 1pt + gray,
+      [
+        *1. In-Clinic supervision*
+        #v(0em)
+        - You come to the clinic for _every_ dose increase, every 2-4 weeks.\
+        - You do the rest of the step's daily maintenance doses at home.
+      ],
+    ),
 
-  // Card 2
-  rect(
-    width: 100%,
-    height: 100%,
-    inset: 12pt,
-    radius: 4pt,
-    stroke: 1pt + gray,
-    [
-      *2. Virtual-assistance*
-      #v(0em)
-      - You increase the dose at home, but on a video call with the allergy team.
-      - You do the daily maintenance doses at home.
-    ],
-  ),
+    // Card 2
+    rect(
+      width: 100%,
+      height: 100%,
+      inset: 12pt,
+      radius: 4pt,
+      stroke: 1pt + gray,
+      [
+        *2. Virtual-assistance*
+        #v(0em)
+        - You increase the dose at home, but on a video call with the allergy team.
+        - You do the daily maintenance doses at home.
+      ],
+    ),
 
-  // Card 3
-  rect(
-    width: 100%,
-    height: 100%,
-    inset: 12pt,
-    radius: 4pt,
-    stroke: 1pt + gray,
-    [
-      *3. Home-Based*
-      #v(0em)
-      - The very first dose is done in the clinic.
-      - After that, you increase the dose at home on your own, and do the maintenance doses at home too.
-    ],
-  ),
+    // Card 3
+    rect(
+      width: 100%,
+      height: 100%,
+      inset: 12pt,
+      radius: 4pt,
+      stroke: 1pt + gray,
+      [
+        *3. Home-Based*
+        #v(0em)
+        - The very first dose is done in the clinic.
+        - After that, you increase the dose at home on your own, and do the maintenance doses at home too.
+      ],
+    ),
 
-  // Card 4
-  rect(
-    width: 100%,
-    height: 100%,
-    inset: 12pt,
-    radius: 4pt,
-    stroke: 1pt + gray,
-    [
-      *4. Hybrid*
-      #v(0em)
-      - A mix of the above. E.g. you might do early doses in-clinic, and later doses at home.
-    ],
-  ),
-)
+    // Card 4
+    rect(
+      width: 100%,
+      height: 100%,
+      inset: 12pt,
+      radius: 4pt,
+      stroke: 1pt + gray,
+      [
+        *4. Hybrid*
+        #v(0em)
+        - A mix of the others. E.g. you might do early doses in-clinic, and later doses at home.
+      ],
+    ),
+  )
+]
 
 #pagebreak()
 
