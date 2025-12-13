@@ -32,6 +32,13 @@ This open-source tool aims to addresses these challenges by providing a robust a
 
 OIT protocols involve a series of increasing allergen doses over time. The specific progression of protein targets, food form (e.g., powder, whole food, liquid), dilution methods, and total steps can vary significantly between clinicians, even within a single food. This heterogeneity makes standardized protocol generation difficult: while the calculations are easy, there are many steps and repetitions: manual methods are time-consuming and are more prone to human error.
 
+From personal experience:
+
+- OIT is done many different ways
+- Current approaches do not handle this complexity and diversity well enough to provide an efficient way to individualize protocols easily for patients
+- Manual calculations are easy but very time consuming, and there are many variables, heuristics, and assumptions to keep in mind that don't appear in calculations - what is a practical dose to aim for? Should I keep the daily dose consistent? What are the limits of my instrument resolution? As a rule of thumb what should I am for in dilutions? There are MANY possible solutions.
+- => need opinionated tool in some ways to select certain solutions out of many and present them in a neat, easily editable way
+
 ### 1.2 Underlying Assumptions and Defaults
 
 The calculator operates based on a set of clinical and practical assumptions to ensure generated protocols are both safe and measurable in a home setting:
