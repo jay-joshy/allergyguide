@@ -94,7 +94,7 @@ async function generateCompressedQrCode(): Promise<string | null> {
 }
 
 async function fetchReviewSheet(): Promise<ArrayBuffer> {
-  const res = await fetch('/tool_assets/oit_patient_resource_terms.pdf');
+  const res = await fetch('/pdfs/oit_patient_resource_terms.pdf');
   if (!res.ok) throw new Error("Failed to load review sheet PDF");
   return res.arrayBuffer();
 }
