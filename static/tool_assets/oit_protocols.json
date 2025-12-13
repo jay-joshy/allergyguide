@@ -1,5 +1,105 @@
 [
   {
+    "name": "Cashew milk to whole cashews",
+    "dosing_strategy": "STANDARD",
+    "food_a": {
+      "type": "LIQUID",
+      "name": "Cashew milk",
+      "gramsInServing": "4",
+      "servingSize": "250"
+    },
+    "food_a_strategy": "DILUTE_INITIAL",
+    "di_threshold": "0.6",
+    "food_b": {
+      "type": "SOLID",
+      "name": "Dry roasted cashews",
+      "gramsInServing": "15",
+      "servingSize": "100"
+    },
+    "food_b_threshold": "0.5",
+    "table": [
+      {
+        "food": "A",
+        "protein": "1",
+        "method": "DILUTE",
+        "mix_amount": "1",
+        "water_amount": "15",
+        "daily_amount": "1"
+      },
+      {
+        "food": "A",
+        "protein": "2.5",
+        "method": "DILUTE",
+        "mix_amount": "1",
+        "water_amount": "5",
+        "daily_amount": "1"
+      },
+      {
+        "food": "A",
+        "protein": "5",
+        "method": "DILUTE",
+        "mix_amount": "1",
+        "water_amount": "2",
+        "daily_amount": "1"
+      },
+      {
+        "food": "A",
+        "protein": "10",
+        "method": "DIRECT",
+        "daily_amount": "0.6"
+      },
+      {
+        "food": "A",
+        "protein": "20",
+        "method": "DIRECT",
+        "daily_amount": "1.3"
+      },
+      {
+        "food": "A",
+        "protein": "40",
+        "method": "DIRECT",
+        "daily_amount": "2.5"
+      },
+      {
+        "food": "A",
+        "protein": "80",
+        "method": "DIRECT",
+        "daily_amount": "5.0"
+      },
+      {
+        "food": "B",
+        "protein": "80",
+        "method": "DIRECT",
+        "daily_amount": "0.50"
+      },
+      {
+        "food": "B",
+        "protein": "120",
+        "method": "DIRECT",
+        "daily_amount": "0.80"
+      },
+      {
+        "food": "B",
+        "protein": "160",
+        "method": "DIRECT",
+        "daily_amount": "1.10"
+      },
+      {
+        "food": "B",
+        "protein": "240",
+        "method": "DIRECT",
+        "daily_amount": "1.60"
+      },
+      {
+        "food": "B",
+        "protein": "300",
+        "method": "DIRECT",
+        "daily_amount": "2.00"
+      }
+    ],
+    "custom_note": "Make a new cashew milk mixture at least every 3 days. Refrigerate and mix well before giving."
+  },
+  {
     "name": "Cashew milk",
     "dosing_strategy": "STANDARD",
     "food_a": {

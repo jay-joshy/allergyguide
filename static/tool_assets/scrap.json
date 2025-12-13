@@ -5,8 +5,7 @@
       "type": "",
       "name": "",
       "gramsInServing": "",
-      "servingSize": "",
-      "mgPerUnit": ""
+      "servingSize": ""
     },
     "food_a_strategy": "DILUTE_INITIAL",
     "di_threshold": "",
@@ -14,8 +13,7 @@
       "type": "",
       "name": "",
       "gramsInServing": "",
-      "servingSize": "",
-      "mgPerUnit": ""
+      "servingSize": ""
     },
     "food_b_threshold": "",
     "table": [
