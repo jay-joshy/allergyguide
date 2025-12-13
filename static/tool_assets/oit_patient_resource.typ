@@ -38,7 +38,7 @@
   below: 1em, // Space after the line
   it,
 )
-#set text(font: "Arial", size: 11pt, lang: "en")
+#set text(font: "Arimo", size: 11pt, lang: "en")
 #set par(justify: true, leading: 0.65em)
 
 // --- CUSTOM STYLES ---

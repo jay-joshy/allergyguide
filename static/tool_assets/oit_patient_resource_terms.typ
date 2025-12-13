@@ -2,7 +2,7 @@
   paper: "us-letter",
   margin: (x: 0.75in, y: 0.75in),
 )
-#set text(font: "Arial", size: 11pt, lang: "en")
+#set text(font: "Arimo", size: 11pt, lang: "en")
 #set par(justify: true, leading: 0.65em)
 
 
