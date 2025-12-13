@@ -170,7 +170,7 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
     - *Ability to be consistent:* The ideal patient eats their dose every day at around the same time. Their family must be willing, able, and ready to recognize and treat allergic reactions, including using self-injectable epinephrine properly.
   ],
   [
-    - *Have uncontrolled asthma:* asthma *must* be well-managed before starting. Badly controlled asthma is a strong risk factor for more severe allergic reactions.
+    - *Have uncontrolled asthma:* asthma *must* be well-managed before starting. Badly controlled asthma is a strong risk factor for severe allergic reactions during OIT.
 
     - *Severe active eczema:* Severe eczema can make it hard to tell when an allergic reaction is happening.
 
@@ -197,9 +197,9 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
     - *Anxiety:* Less fear when going to restaurants or school.
   ],
   [
-    - *Food pipe (esophagus) inflammation:*\ During OIT, around 3% develop inflammation of their esophagus. This condition is more common in those with food allergies in general, and we're not sure if OIT causes this, or is simply a bystander. If this occurs, we consider stopping OIT and involving our Gastroenterology specialists. In the majority of patients, this inflammation is transient and goes away when OIT is stopped.
-
     - *Allergic reactions:* Mild reactions (itchy mouth, mild hives) *are common and expected, especially during the build-up phase*. Severe life-threatening reactions are rare, especially in preschoolers.
+
+    - *Food pipe (esophagus) inflammation:*\ During OIT, around 3% develop inflammation of their esophagus. This condition is more common in those with food allergies in general, and we're not sure if OIT causes this, or is simply a bystander. If this occurs, we consider stopping OIT and involving our Gastroenterology specialists. In the majority of patients, this inflammation is transient and goes away when OIT is stopped.
   ],
 )
 
@@ -609,7 +609,6 @@ Each step has a different _protein target_. In the example below, during Step 1 
 #align(center)[
   #text(size: 24pt, weight: "bold")[Troubleshooting]\
   #v(0.1pt)
-  #text()[Reactions and more]
   #line(length: 100%, stroke: 2pt)
 ]
 
