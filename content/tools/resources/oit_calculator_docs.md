@@ -23,11 +23,6 @@ This open-source tool aims to addresses these challenges by providing a robust a
 - **Real-time Validation:** Immediate, colour-coded warnings for potential safety or practicality concerns during protocol creation.
 - **Export Options:** ASCII export to clipboard and PDF export of plan for patients.
 
-**Future Enhancements:**
-
-- Implement warnings for very high target protein doses (>5000mg).
-- Expand PDF export to include comprehensive patient information about OIT at home.
-
 ### 1.1 There is substantial variability in OIT implementation
 
 OIT protocols involve a series of increasing allergen doses over time. The specific progression of protein targets, food form (e.g., powder, whole food, liquid), dilution methods, and total steps can vary significantly between clinicians, even within a single food. This heterogeneity makes standardized protocol generation difficult: while the calculations are easy, there are many steps and repetitions: manual methods are time-consuming and are more prone to human error.

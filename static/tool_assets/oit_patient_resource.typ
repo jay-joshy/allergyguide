@@ -679,6 +679,7 @@ A: Ask us first. Different brands of food can have slightly different amounts of
 
 *Q: Does the patient need an antihistamine EVERY time before their dose of OIT?*
 
+*If you are getting on an airplane, ferry, or long form of transport*
 = About potential side effects
 
 *Q: Eczema worse*?
