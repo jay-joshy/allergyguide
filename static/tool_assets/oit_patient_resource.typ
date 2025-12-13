@@ -7,7 +7,9 @@
   margin: (x: 0.75in, y: 0.75in),
   numbering: "— 1 —",
   footer: {
-    align(right)[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION]
+    align(
+      right,
+    )[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION. Source: allergyguide. Content licensed under CC 4.0]
   },
   header: context {
     if counter(page).get().first() in (1, 2) {
@@ -376,8 +378,8 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
   ],
   [
     *Add the Food*: \
-    - *Powder:* weigh the amount (e.g., 0.50 g). If possible, do this in a different room from the patient.
-    - *Liquid:* Use a syringe to measure the volume (e.g., 0.5 ml).
+    - *If powder:* weigh the amount (e.g., 0.50 g). If possible, do this in a different room from the patient.
+    - *If liquid:* Use a syringe to measure the volume (e.g., 0.5 ml).
 
     Add the food to the water you prepared in step 1.
   ],
@@ -401,42 +403,38 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
 #align(center)[
   #text(size: 24pt, weight: "bold")[Giving daily doses]\
   #v(0.1pt)
-  #text()[*READ THIS SECTION CAREFULLY*]
   #line(length: 100%, stroke: 2pt)
 ]
-- For OIT to be effective and safe, it must be performed correctly and consistently. However:
-  - There are circumstances that increase the risk of both mild and severe reactions, where giving the daily dose is NOT appropriate.
-  - There are times therefore when giving the daily dose should be postponed or stopped. IT IS OK TO MISS A DOSE - safety is a priority.
-- Before giving a daily dose, you must make sure the safety checklist is fulfilled.
+#warning-box("READ THIS SECTION CAREFULLY.")[
+  - While consistency is important for OIT, *safety is always a priority*.
+  - *It is OK to miss/postpone a dose if required.*
+]
 
-= Safety checklist
+= Safety checklist before giving a dose
 
-If any of these are present, the daily dose should not be given. Ensure NONE of the following are present before giving the daily dose:
+If any of these are present, the daily dose should not be given. These are known as *cofactors* - things that increase the risk of severe allergic reactions.
 
-keep food consistent - do not switch brands without informing your doctor
-check the label, and make sure the protein content matches the protocol
-Doses should be given around 22-26h apart
-No empty stomach
-No uncontrolled asthma
-No sleep depreviation
-No heavy exercise within 2 hours.
-No symptoms of EoE
-ensure good lip care to avoid quick absorption, consider petroleum jelly before and after each dose.
-ALWAYS eat a snack prior to dose, no empty stomach
-Patient is not sick or feverish. See page X for the breakdown.
-Someone can watch the patient for at least 2 hours after the dose in case of reaction.
-Have an EpiPEN that is UTD
+== No cofactors
+#rect(width: 100%, stroke: 1pt, radius: 4pt, inset: 12pt)[
+  #set list(marker: check-box)
+  - No empty stomach
+  - No fever or severe illness. See page X for the breakdown.
+  - No heavy exercise (sweating) or hot showers/bathes 2 hours before and after the dose. Regular play is fine.
+  - No sleep depreviation
+  - No uncontrolled asthma
+  - No symptoms of EoE
+]
 
-
-Before giving the dose every day, check these 5 things:
-
+== Setup
 #rect(width: 100%, stroke: 1pt, radius: 4pt, inset: 12pt)[
   #set list(marker: check-box)
   - *Check the Label:* Is this the right food? Did the brand change?
-  - *Severe sickness / fever*
-  - *The "2-Hour Rule":* No heavy exercise (sweating) or hot showers/bathes 2 hours before and after the dose. Regular play is fine.
+  - Have an EpiPEN that is UTD
+  - check the label, and make sure the protein content matches the protocol
   - *Monitoring:* Someone can watch the patient for at least 2 hours after the dose?
 ]
+
+TIP: ensure good lip care to avoid quick absorption, consider petroleum jelly before and after each dose.
 
 = How to give
 
@@ -445,9 +443,11 @@ If you are doing OIT to multiple foods, give each food sequentially at least 1 m
 To improve the taste we suggest mixing it with a food that the child likes to hide the taste
 Consider AH first 1 hour beforehand. This is purely for symptom relief and is not mandatory
 Make sure you are around for at least 2 hours after the dose
+Doses should be given around 22-26h apart
 
 As a reminder - especially in the beginning, MILD REACTIONS ARE COMMON AND EXPECTED.
 Taking Reactine 1 hour before daily dose during build-up can minimize mild side effects. It does not prevent severe reactions.
+Avoid naps or bedtime within 2 hours of dosing
 See page Y for how to deal with reactions - both expected mild and rare severe.
 If there is a severe reaction the daily dosing should stop and you should contact your doctor.
 
