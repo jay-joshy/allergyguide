@@ -29,7 +29,9 @@ const FILENAME = "typst.tar.xz";
 const typstBin = './typst';
 const pdfOutDir = 'static/pdfs';
 const fontPath = 'fonts';
-const typstSrcDir = 'static/tool_assets';
+const typstSrcDirs = [
+  'static/tool_assets',
+];
 
 try {
   // Check for existing Typst binary (ie in dev)
@@ -68,33 +70,41 @@ try {
   }
 
   // Find and Compile .typ files
-  if (existsSync(typstSrcDir)) {
-    const files = readdirSync(typstSrcDir).filter(f => f.endsWith('.typ'));
+  let filesFound = false;
+  typstSrcDirs.forEach(srcDir => {
+    if (existsSync(srcDir)) {
+      const files = readdirSync(srcDir).filter(f => f.endsWith('.typ'));
 
-    if (files.length > 0) {
-      console.log(`Found ${files.length} Typst files to compile.`);
-      files.forEach(file => {
-        const inputPath = path.join(typstSrcDir, file);
-        const outputFilename = file.replace('.typ', '.pdf');
-        const outputPath = path.join(pdfOutDir, outputFilename);
+      if (files.length > 0) {
+        filesFound = true;
+        console.log(`Found ${files.length} Typst files in ${srcDir}.`);
+        files.forEach(file => {
+          const inputPath = path.join(srcDir, file);
+          const outputFilename = file.replace('.typ', '.pdf');
+          const outputPath = path.join(pdfOutDir, outputFilename);
 
-        try {
-          console.log(`Compiling: ${inputPath} -> ${outputPath}`);
+          try {
+            console.log(`Compiling: ${inputPath} -> ${outputPath}`);
 
-          // Pass variables via --input flags
-          const cmd = `${typstCommand} compile \
+            // Pass variables via --input flags
+            const cmd = `${typstCommand} compile \
             --font-path "${fontPath}" \
             --input commit_hash="${commit_hash}" \
             "${inputPath}" "${outputPath}"`;
-          execSync(cmd);
-        } catch (e) {
-          console.warn(`Failed to compile ${file}.`, e);
-          throw (e)
-        }
-      });
+            execSync(cmd);
+          } catch (e) {
+            console.warn(`Failed to compile ${file}.`, e);
+            throw (e)
+          }
+        });
+      }
+    } else {
+      console.log("No 'typst-src' directory found, skipping PDF generation.");
     }
-  } else {
-    console.log("No 'typst-src' directory found, skipping PDF generation.");
+  });
+
+  if (!filesFound) {
+    console.log("No Typst files found in any source directories.");
   }
 
 } catch (error) {
