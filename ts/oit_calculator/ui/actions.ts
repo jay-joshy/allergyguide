@@ -240,8 +240,25 @@ export function clearFoodB(): void {
 
   const newSteps: Step[] = [];
 
-  // Iterate over existing steps to preserve their targetMg
-  current.steps.forEach((step, i) => {
+  // Filter out the redundant transition step if it exists
+  // e.g. food A 80mg -> food B 80mg, on clear food B the latter step should be removed...
+  // Criteria: Current step is Food B, Previous step is Food A, and Targets are identical
+  const filteredSteps = current.steps.filter((step, index) => {
+    if (index === 0) return true;
+    const prevStep = current.steps[index - 1];
+
+    if (
+      prevStep.food === "A" &&
+      step.food === "B" &&
+      step.targetMg.equals(prevStep.targetMg)
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  // Iterate over filtered steps to preserve their targetMg
+  filteredSteps.forEach((step, i) => {
     // generate a step for Food A for this target
     const newStep = generateStepForTarget(
       step.targetMg,
