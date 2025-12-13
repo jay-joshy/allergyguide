@@ -28,7 +28,7 @@ const TYPST_HASH = "a6044cbad2a954deb921167e257e120ac0a16b20339ec01121194ff9d394
 const FILENAME = "typst.tar.xz";
 const typstBin = './typst';
 const pdfOutDir = 'static/pdfs';
-const fontPath = 'static/fonts';
+const fontPath = 'fonts';
 const typstSrcDir = 'static/tool_assets';
 
 try {
