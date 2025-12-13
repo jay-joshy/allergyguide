@@ -16,6 +16,16 @@
       align(right)[GENERAL INFORMATION - #counter(page).display("1")]
     } else if counter(page).get().first() in (3, 4) {
       align(right)[EQUIPMENT - #counter(page).display("1")]
+    } else if counter(page).get().first() in (5, 6) {
+      align(right)[GIVING DAILY DOSES - #counter(page).display("1")]
+    } else if counter(page).get().first() in (7,) {
+      align(right)[TROUBLESHOOTING: REACTIONS - #counter(page).display("1")]
+    } else if counter(page).get().first() in (8,) {
+      align(right)[TROUBLESHOOTING: SICKNESS - #counter(page).display("1")]
+    } else if counter(page).get().first() in (9,) {
+      align(right)[TROUBLESHOOTING: MISSED DOSES - #counter(page).display("1")]
+    } else if counter(page).get().first() in (10,) {
+      align(right)[TROUBLESHOOTING: MISC - #counter(page).display("1")]
     } else {
       align(right)[X - #counter(page).display("1")]
     }
@@ -200,16 +210,6 @@ OIT is a medical treatment for food allergies that helps patients gradually gain
   ]
   #v(2pt)
 ]
-
-#pagebreak()
-
-= TODO!
-
-Add section on updosing: options include either:
-- Virtually assisted
-- Home based
-- In-clinic only
-- Hybrid
 
 #pagebreak()
 
@@ -401,66 +401,207 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
 #pagebreak()
 
 #align(center)[
-  #text(size: 24pt, weight: "bold")[Giving daily doses]\
+  #text(
+    size: 24pt,
+    weight: "bold",
+  )[Giving daily doses]\
   #v(0.1pt)
   #line(length: 100%, stroke: 2pt)
 ]
 #warning-box("READ THIS SECTION CAREFULLY.")[
   - While consistency is important for OIT, *safety is always a priority*.
-  - *It is OK to miss/postpone a dose if required.*
+  - *It is OK to miss or postpone doses if required.*
 ]
 
 = Safety checklist before giving a dose
 
-If any of these are present, the daily dose should not be given. These are known as *cofactors* - things that increase the risk of severe allergic reactions.
+== 1. THERE ARE NO COFACTORS
+*Cofactors* are things that increase the risk of severe allergic reactions. *If any of these are present, that dose should not be given*.
 
-== No cofactors
 #rect(width: 100%, stroke: 1pt, radius: 4pt, inset: 12pt)[
   #set list(marker: check-box)
-  - No empty stomach
-  - No fever or severe illness. See page X for the breakdown.
-  - No heavy exercise (sweating) or hot showers/bathes 2 hours before and after the dose. Regular play is fine.
-  - No sleep depreviation
-  - No uncontrolled asthma
-  - No symptoms of EoE
-]
-
-== Setup
-#rect(width: 100%, stroke: 1pt, radius: 4pt, inset: 12pt)[
-  #set list(marker: check-box)
-  - *Check the Label:* Is this the right food? Did the brand change?
-  - Have an EpiPEN that is UTD
-  - check the label, and make sure the protein content matches the protocol
-  - *Monitoring:* Someone can watch the patient for at least 2 hours after the dose?
+  - Fever or severe illness. *See page X* for what to do when the patient is sick.
+  - Uncontrolled asthma. If you’re unsure, please inform your doctor.
+  - Heavy exercise (sweating) or hot showers/baths 2 hours before and after the dose: regular play is fine.
+  - Getting the dose on an empty stomach.
+  - Sleep deprivation (e.g. overnight flight).
+  - Symptoms of food-pipe inflammation (e.g. food getting stuck, chest pain, using more water to wash down food).
 ]
 
 TIP: ensure good lip care to avoid quick absorption, consider petroleum jelly before and after each dose.
 
-= How to give
+== 2. I HAVE THE RIGHT TIMING, EQUIPMENT, AND FOOD
+#rect(width: 100%, stroke: 1pt, radius: 4pt, inset: 12pt)[
+  #set list(marker: check-box)
+  - The protein content per serving on the food label matches the protocol.
+  - Have an Epinephrine Auto-injector (e.g. EpiPEN) available, that is up-to-date.
+  - Someone is available to watch the patient for at least 2 hours after the dose.
+  - The patient can avoid naps or bedtime within 2 hours of dose.
+]
 
-Prepare the daily dose as per page X
-If you are doing OIT to multiple foods, give each food sequentially at least 1 minute apart from each other.
-To improve the taste we suggest mixing it with a food that the child likes to hide the taste
-Consider AH first 1 hour beforehand. This is purely for symptom relief and is not mandatory
-Make sure you are around for at least 2 hours after the dose
-Doses should be given around 22-26h apart
+= How to give a daily dose
 
-As a reminder - especially in the beginning, MILD REACTIONS ARE COMMON AND EXPECTED.
-Taking Reactine 1 hour before daily dose during build-up can minimize mild side effects. It does not prevent severe reactions.
-Avoid naps or bedtime within 2 hours of dosing
-See page Y for how to deal with reactions - both expected mild and rare severe.
-If there is a severe reaction the daily dosing should stop and you should contact your doctor.
+After checking that it is safe to give the dose:
 
-= When to increase the dose?
+#enum(
+  spacing: 1.2em,
+  [Optional: consider AH first 1 hour beforehand. This is purely for symptom relief and is not mandatory],
+  [Prepare the daily dose. Doses should be given around 22-26h apart, ideally at same time of day.],
+  [Give the dose with a meal or light snack! To improve the taste, we suggest mixing it with a strongly flavoured food.],
+  [If you are doing OIT to multiple foods, give each food sequentially at least 1 minute apart from each other.],
+)
 
-Ask your doctor. Depending on their practice and the patient's risk profile, some will do:
-- virtual updosing
-- at home
-- in clinic
-- hybrid
+#pagebreak()
 
-Typically this is every 2-4 weeks.
-rule of thumb: if on a dose for 2 weeks and no reactions => usually ok to move to the next step, otherwise stay on it longer
+= What to expect from the first few weeks
+
+- Especially near the beginning of OIT, mild reactions are common, and expected. Examples of mild reactions may include mild hives around the mouth, an itchy mouth, or mild stomachache. Refer to page X for full details about what to do if there is a reaction.
+- Mild symptoms can be improved / potentially prevented by taking a non-drowsy antihistamine 1 hour before the dose. They do not prevent severe reactions.
+
+= When do we move onto the next step?
+
+Each step has a different _protein target_. In the example below, during Step 1 the patient will eat 1.0 mg of allergen protein daily; during Step 2, they will increase that to 2.5 mg of protein daily. But when do you move onto the next step?
+
+#figure(
+  kind: table,
+  supplement: none,
+  numbering: none,
+  table(
+    columns: (auto, auto, auto, 2fr, auto, auto),
+    align: (col, row) => (
+      (center, center, center, left, center, center).at(col) + horizon
+    ),
+    inset: 8pt,
+    // Global stroke for the standard cells
+    stroke: 1pt + rgb("cccccc"),
+    fill: (col, row) => if row == 0 { rgb("e6e6e6") } else { none },
+
+    table.header(
+      [*Step*],
+      [*Protein*],
+      [*Method*],
+      [*How to make mix*],
+      [*Daily Amount*],
+      [*Interval*],
+    ),
+
+    // --- Step 1 Row ---
+    [1],
+    [1.0 mg],
+    [DILUTE],
+    [0.20 g of food + 77 ml water],
+    [1 ml],
+    [2-4 weeks],
+
+    // --- INTERSTITIAL "SPLIT" ROW ---
+    table.cell(
+      colspan: 6, // Span across all columns
+      align: center,
+      // Keep top/bottom borders to close the tables, but remove X (vertical) borders
+      stroke: (
+        top: 1pt + rgb("cccccc"),
+        bottom: 1pt + rgb("cccccc"),
+        x: none,
+      ),
+      inset: 1.5em,
+      [
+        #set text(fill: black.lighten(10%))
+        #stack(
+          dir: ltr,
+          spacing: 0.5em,
+          text(
+            weight: "bold",
+          )[#sym.arrow.b],
+          [*When should I start eating 2.5mg of protein daily?*],
+          text(
+            weight: "bold",
+          )[#sym.arrow.b],
+        )
+      ],
+    ),
+
+    // --- Step 2 Row ---
+    [2],
+    [2.5 mg],
+    [DILUTE],
+    [0.20 g of food + 30 ml water],
+    [1 ml],
+    [2-4 weeks],
+  ),
+)
+
+#v(0.5em)
+== The answer: ask your doctor, it depends.
+#v(1em)
+- Usually, the daily dose is _escalated_ or _'updosed'_ (increased to the next step's dose) every 2-4 weeks *if there are no/minimal reactions*. _It may take more than 4 weeks for a step for some patients_.
+
+- There are four different approaches for dose escalation, based on patient/physician preference and risk profile:
+#v(1em)
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 1em,
+  // Set a fixed height for the rows here.
+  rows: 9em,
+
+  // Card 1
+  rect(
+    width: 100%,
+    height: 100%,
+    inset: 12pt,
+    radius: 4pt,
+    stroke: 1pt + gray,
+    [
+      *1. In-Clinic supervision*
+      #v(0em)
+      - You come to the clinic for _every_ dose increase, every 2-4 weeks.\
+      - You do the rest of the step's daily maintenance doses at home.
+    ],
+  ),
+
+  // Card 2
+  rect(
+    width: 100%,
+    height: 100%,
+    inset: 12pt,
+    radius: 4pt,
+    stroke: 1pt + gray,
+    [
+      *2. Virtual-assistance*
+      #v(0em)
+      - You increase the dose at home, but on a video call with the allergy team.
+      - You do the daily maintenance doses at home.
+    ],
+  ),
+
+  // Card 3
+  rect(
+    width: 100%,
+    height: 100%,
+    inset: 12pt,
+    radius: 4pt,
+    stroke: 1pt + gray,
+    [
+      *3. Home-Based*
+      #v(0em)
+      - The very first dose is done in the clinic.
+      - After that, you increase the dose at home on your own, and do the maintenance doses at home too.
+    ],
+  ),
+
+  // Card 4
+  rect(
+    width: 100%,
+    height: 100%,
+    inset: 12pt,
+    radius: 4pt,
+    stroke: 1pt + gray,
+    [
+      *4. Hybrid*
+      #v(0em)
+      - A mix of the above. E.g. you might do early doses in-clinic, and later doses at home.
+    ],
+  ),
+)
 
 #pagebreak()
 
@@ -485,11 +626,17 @@ What do I do?
 What do I look out for?
 What do I do?
 
+#pagebreak()
+
 = What if the patient is sick?
 
 Add diagram
 
+#pagebreak()
+
 = What if the patient misses doses?
+
+#pagebreak()
 
 = Troubleshooting other problems with daily doses
 
@@ -498,14 +645,6 @@ Add diagram
 - *Temperature:* Cold foods hide taste better.
 
 == Other
-
-
-
-= When to contact the clinic
-- Epi or severe reactions
-- missed >3d doses
-- new, frequent heartburn or stomach pain.
-- new uncontrolled asthma symptoms
 
 #pagebreak()
 #align(center)[
