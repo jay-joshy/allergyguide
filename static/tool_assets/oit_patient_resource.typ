@@ -465,7 +465,7 @@ Sometimes the daily dose is too tiny to measure directly with a scale or syringe
 
 = When do we move onto the next step?
 
-Each step has a different _protein target_. In the example below, during Step 1 the patient will eat 1.0 mg of allergen protein daily; during Step 2, they will increase that to 2.5 mg of protein daily. But when do you move onto the next step?
+Each step has a different _protein target_. In the example below, during Step 1 the patient will eat 1.0 mg of allergen protein daily for 2-4 weeks. At some point, they will increase the dose to Step 2, which is 2.5 mg of protein daily. But when exactly are they supposed to move from one step to the next step?
 
 #figure(
   kind: table,
@@ -540,7 +540,7 @@ Each step has a different _protein target_. In the example below, during Step 1 
 #v(1em)
 - Usually, the daily dose is _escalated_ or _'updosed'_ (increased to the next step's dose) every 2-4 weeks *if there are no/minimal reactions*. _It may take more than 4 weeks for a step for some patients_.
 
-- There are four different approaches for dose escalation, based on patient/physician preference and risk profile:
+- There are four different approaches for dose escalation, based on patient/physician preference, risk profile, and resources available:
 #v(1em)
 #[
   #set list(spacing: 0.9em)
@@ -558,7 +558,7 @@ Each step has a different _protein target_. In the example below, during Step 1 
       radius: 4pt,
       stroke: 1pt + gray,
       [
-        *1. In-Clinic supervision*
+        *A. In-clinic supervision*
         #v(0em)
         - You come to the clinic for _every_ dose increase, every 2-4 weeks.\
         - You do the rest of the step's daily maintenance doses at home.
@@ -573,7 +573,7 @@ Each step has a different _protein target_. In the example below, during Step 1 
       radius: 4pt,
       stroke: 1pt + gray,
       [
-        *2. Virtual-assistance*
+        *B. Virtual-assistance*
         #v(0em)
         - You increase the dose at home, but on a video call with the allergy team.
         - You do the daily maintenance doses at home.
@@ -588,7 +588,7 @@ Each step has a different _protein target_. In the example below, during Step 1 
       radius: 4pt,
       stroke: 1pt + gray,
       [
-        *3. Home-Based*
+        *C. Home-based*
         #v(0em)
         - The very first dose is done in the clinic.
         - After that, you increase the dose at home on your own, and do the maintenance doses at home too.
@@ -603,7 +603,7 @@ Each step has a different _protein target_. In the example below, during Step 1 
       radius: 4pt,
       stroke: 1pt + gray,
       [
-        *4. Hybrid*
+        *D. Hybrid*
         #v(0em)
         - A mix of the others. E.g. you might do early doses in-clinic, and later doses at home.
       ],
