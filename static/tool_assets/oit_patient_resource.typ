@@ -2,14 +2,21 @@
 #import "@preview/cetz-plot:0.1.3": chart, plot
 
 // --- DOCUMENT SETUP ---
+#let commit_hash = sys.inputs.at("commit_hash", default: "dev-build")
+
 #set page(
   paper: "us-letter",
   margin: (x: 0.75in, y: 0.75in),
   numbering: "— 1 —",
   footer: {
-    align(
-      right,
-    )[#v(1em)NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION. Source: allergyguide. Content licensed under CC 4.0]
+    [#text(style: "italic", size: 0.6em)[
+        version: #commit_hash
+      ] #h(
+        1fr,
+      ) #text(
+        size: 0.7em,
+      )[NOT FOR USE WITHOUT DIRECT MEDICAL SUPERVISION. Source: allergyguide. Content licensed under CC 4.0]
+    ]
   },
   header: context {
     if counter(page).get().first() in (1, 2) {
